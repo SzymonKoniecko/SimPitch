@@ -49,8 +49,8 @@ packages/
 
 secrets.json
 appsettings.Local.json
-#.env
-#.env.*
+.env
+.env.*
 !Services/**/.env.development
 !Services/**/.env.staging
 !Services/**/.env.production
