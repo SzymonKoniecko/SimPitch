@@ -1,6 +1,9 @@
 services:
   simulationapi:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5000:5000"
+      - "${SIMULATIONAPI_HOST_PORT}:${SIMULATIONAPI_CONTAINER_PORT}"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=http://0.0.0.0:${SIMULATIONAPI_CONTAINER_PORT}
+    networks:
+      - backend_network

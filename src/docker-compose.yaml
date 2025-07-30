@@ -1,17 +1,10 @@
-﻿version: "3.8"
-
+﻿
 services:
   simulationapi:
     build:
       context: .
       dockerfile: Services/SimulationAPI/Dockerfile
-    ports:
-      - "${SIMULATIONAPI_PORT}:${SIMULATIONAPI_PORT}"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=http://0.0.0.0:${SIMULATIONAPI_PORT}
-    networks:
-      - backend_network
+    
 
 networks:
   backend_network:
