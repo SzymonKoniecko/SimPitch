@@ -1,6 +1,0 @@
-services:
-  simulationapi:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-    ports:
-      - "5001:5000"

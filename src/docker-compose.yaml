@@ -4,6 +4,10 @@ services:
     build:
       context: .
       dockerfile: Services/SimulationAPI/Dockerfile
+  sportsdataapi:
+    build:
+      context: .
+      dockerfile: Services/SportsDataAPI/Dockerfile
     
 
 networks:

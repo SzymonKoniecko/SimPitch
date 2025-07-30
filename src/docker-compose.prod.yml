@@ -1,6 +1,0 @@
-services:
-  simulationapi:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "80:5000"
