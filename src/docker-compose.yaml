@@ -4,11 +4,18 @@ services:
     build:
       context: .
       dockerfile: Services/SimulationAPI/Dockerfile
-  sportsdataapi:
+  sportsdata-service:
     build:
       context: .
-      dockerfile: Services/SportsDataAPI/Dockerfile
-    
+      dockerfile: Services/SportsDataService/SportsDataService.API/Dockerfile
 
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+  mssql-init:
+    image: mcr.microsoft.com/mssql-tools
+    
 networks:
   backend_network:
+volumes:
+  mssql_data:
