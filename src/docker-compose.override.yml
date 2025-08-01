@@ -1,4 +1,15 @@
 services:
+  logging-service:
+    ports:
+      - "${LOGGING_SERVICE_HOST_PORT}:${LOGGING_SERVICE_CONTAINER_PORT}"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - ConnectionStrings__LoggingDb=Server=mssql;Database=LoggingDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};
+    networks:
+      - backend_network
+    depends_on:
+      - mssql
   simulationapi:
     ports:
       - "${SIMULATIONAPI_HOST_PORT}:${SIMULATIONAPI_CONTAINER_PORT}"
@@ -9,6 +20,7 @@ services:
       - backend_network
     depends_on:
       - mssql
+      - logging-service
 
   sportsdata-service:
     ports:
@@ -21,6 +33,7 @@ services:
       - backend_network
     depends_on:
       - mssql
+      - logging-service
       
   mssql:
     environment:

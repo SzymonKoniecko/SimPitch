@@ -1,17 +1,11 @@
-using System.Data;
-using System.Data.SqlClient;
-using Microsoft.AspNetCore.Connections;
 using SportsDataService.API.Services;
-using SportsDataService.Application.Interfaces;
-using SportsDataService.Infrastructure.Persistence;
+using SportsDataService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Dodaj gRPC, jeśli używasz
 builder.Services.AddGrpc();
-
-builder.Services.AddScoped<IDbConnectionFactory, SqlConnectionFactory>();
-builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 
 var app = builder.Build();

@@ -1,7 +1,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-
+namespace LoggingService.Infrastructure;
 public interface IDbConnectionFactory
 {
     IDbConnection CreateConnection();
@@ -13,8 +13,8 @@ public class SqlConnectionFactory : IDbConnectionFactory
 
     public SqlConnectionFactory(IConfiguration configuration)
     {
-        _connectionString = configuration.GetConnectionString("SportsDataDb")
-            ?? throw new InvalidOperationException("Connection string 'SportsDataDb' not found.");
+        _connectionString = configuration.GetConnectionString("LoggingDb")
+            ?? throw new InvalidOperationException("Connection string 'LoggingDb' not found.");
     }
 
     public IDbConnection CreateConnection()

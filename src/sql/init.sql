@@ -1,3 +1,4 @@
+----SportsDataDb Initialization Script----
 --DATABASES
 IF DB_ID('SportsDataDb') IS NULL
 BEGIN
@@ -22,3 +23,27 @@ BEGIN
         ShortName NVARCHAR(100) NOT NULL
     );
 END
+-----LoggingService Initialization Script----
+--DATABASES
+IF DB_ID('LoggingDb') IS NULL
+BEGIN
+    CREATE DATABASE LoggingDb;
+END
+GO
+
+USE LoggingDb;
+GO
+--TABLES
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='LogEntry' AND xtype='U')
+BEGIN
+    CREATE TABLE LogEntry (
+        Id UNIQUEIDENTIFIER PRIMARY KEY,
+        [Timestamp] DATETIME2 NOT NULL,
+        [Message] NVARCHAR(MAX),
+        [Level] NVARCHAR(50),
+        StackTrace NVARCHAR(MAX),
+        Source NVARCHAR(255),
+        Context NVARCHAR(255)
+    );
+END
+GO

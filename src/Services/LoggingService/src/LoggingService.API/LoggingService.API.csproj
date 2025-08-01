@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\team.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\logging.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,10 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SportsDataService.Application\SportsDataService.Application.csproj" />
-    <ProjectReference Include="..\SportsDataService.Infrastructure\SportsDataService.Infrastructure.csproj" />
-    <ProjectReference Include="..\SportsDataService.Contracts\SportsDataService.Contracts.csproj" />
+    <ProjectReference Include="..\LoggingService.Application\LoggingService.Application.csproj" />
+    <ProjectReference Include="..\LoggingService.Infrastructure\LoggingService.Infrastructure.csproj" />
   </ItemGroup>
-
 
 </Project>

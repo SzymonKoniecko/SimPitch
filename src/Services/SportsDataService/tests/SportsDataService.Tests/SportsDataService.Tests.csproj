@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SportsDataService.Application\SportsDataService.Application.csproj" />
-    <ProjectReference Include="..\SportsDataService.Domain\SportsDataService.Domain.csproj" />
+    <ProjectReference Include="..\..\src\SportsDataService.Application\SportsDataService.Application.csproj" />
+    <ProjectReference Include="..\..\src\SportsDataService.Domain\SportsDataService.Domain.csproj" />
   </ItemGroup>
 
 </Project>

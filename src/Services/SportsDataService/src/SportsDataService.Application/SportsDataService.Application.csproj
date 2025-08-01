@@ -2,11 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SportsDataService.Domain\SportsDataService.Domain.csproj" />
-    <ProjectReference Include="..\SportsDataService.Contracts\SportsDataService.Contracts.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="12.0.0" />
   </ItemGroup>
 
   <PropertyGroup>
