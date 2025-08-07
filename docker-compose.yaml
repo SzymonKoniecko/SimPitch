@@ -2,12 +2,12 @@
 services:
   logging-service:
     build:
-      context: ./Services
-      dockerfile: LoggingService/src/LoggingService.API/Dockerfile
+      context: src/Services/LoggingService/
+      dockerfile: src/LoggingService.API/Dockerfile
   sportsdata-service:
     build:
-      context: .
-      dockerfile: Services/SportsDataService/src/SportsDataService.API/Dockerfile
+      context: src/Services/SportsDataService/
+      dockerfile: src/SportsDataService.API/Dockerfile
 
 
 

@@ -1,5 +1,5 @@
 using Grpc.Core;
-using LoggingService.API.Protos;
+using Logging;
 using LoggingService.Application.Interfaces;
 
 namespace LoggingService.API.Services;
@@ -13,18 +13,18 @@ public class LogEntryService : LogService.LogServiceBase
         _logRepository = logRepository;
     }
 
-    public override Task<Empty> LogEntry(LogEntryRequest request, ServerCallContext context)
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> LogEntry(LogEntryRequest request, ServerCallContext context)
     {
-        _logRepository.CreateLogEntryAsync(new Domain.Entities.LogEntry
+        await _logRepository.CreateLogEntryAsync(new Domain.Entities.LogEntry
         {
             Id = Guid.Parse(request.Id),
-            Timestamp = DateTime.Parse(request.Timestamp),
+            Timestamp = request.Timestamp.ToDateTime(),
             Message = request.Message,
             Level = request.Level,
             StackTrace = request.StackTrace,
             Source = request.Source,
             Context = request.Context
-        }).GetAwaiter().GetResult();
-        return Task.FromResult(new Empty());
+        });
+        return new Google.Protobuf.WellKnownTypes.Empty();
     }
 }

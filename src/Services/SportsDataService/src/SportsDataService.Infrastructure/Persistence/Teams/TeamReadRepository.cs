@@ -14,7 +14,7 @@ public class TeamReadRepository : ITeamReadRepository
     public async Task<Team?> GetTeamByIdAsync(Guid teamId)
     {
         using var connection = _connectionFactory.CreateConnection();
-        const string sql = "SELECT * FROM Teams WHERE Id = @Id";
+        const string sql = "SELECT * FROM Team WHERE Id = @Id";
         var team = await connection.QueryFirstOrDefaultAsync<Team>(sql, new { Id = teamId });
         if (team == null)
         {
@@ -26,7 +26,7 @@ public class TeamReadRepository : ITeamReadRepository
     public async Task<IEnumerable<Team>> GetAllTeamsAsync()
     {
         using var connection = _connectionFactory.CreateConnection();
-        const string sql = "SELECT * FROM Teams order by Name";
+        const string sql = "SELECT * FROM Team order by Name";
         return await connection.QueryAsync<Team>(sql);
     }
 }

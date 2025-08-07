@@ -6,6 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Protobuf Include="..\SimPitchProtos\team.proto" GrpcServices="Server" />
+    <Protobuf Include="..\SimPitchProtos\logging.proto" GrpcServices="Client" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
@@ -22,7 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SportsDataService.Application\SportsDataService.Application.csproj" />
     <ProjectReference Include="..\SportsDataService.Infrastructure\SportsDataService.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\..\Protos\Shared.Protos\Shared.Protos.csproj" />
   </ItemGroup>
 
 </Project>

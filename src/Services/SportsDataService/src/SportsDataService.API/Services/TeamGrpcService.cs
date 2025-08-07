@@ -1,8 +1,7 @@
+
 using Grpc.Core;
 using MediatR;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using SportsDataService.SimPitchProtos;
 
 namespace SportsDataService.API.Services
 {

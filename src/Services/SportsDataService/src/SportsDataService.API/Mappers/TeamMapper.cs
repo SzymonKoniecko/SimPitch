@@ -1,9 +1,10 @@
-using SportsDataService.API.Protos;
 using SportsDataService.Domain.Entities;
+using SportsDataService.SimPitchProtos;
+
 
 public static class TeamMapper
 {
-    public static TeamResponse TeamToResponse(this Team team)
+    public static TeamResponse TeamToResponse(Team team)
     {
         return new TeamResponse
         {
