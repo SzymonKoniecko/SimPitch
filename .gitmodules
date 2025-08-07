@@ -1,0 +1,3 @@
+[submodule "src/Services/Protos/Shared.Protos"]
+	path = src/Services/Protos/Shared.Protos
+	url = https://github.com/SzymonKoniecko/SimPitchProtos.git
