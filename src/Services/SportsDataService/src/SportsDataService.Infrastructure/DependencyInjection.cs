@@ -1,15 +1,18 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SportsDataService.Application.Interfaces;
-using SportsDataService.Infrastructure.Persistence;
+using SportsDataService.Domain.Interfaces.Read;
+using SportsDataService.Domain.Interfaces.Write;
+using SportsDataService.Infrastructure.Persistence.Teams;
 
 namespace SportsDataService.Infrastructure;
+
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
-        services.AddScoped<ITeamRepository, TeamRepository>();
+        services.AddTransient<ITeamReadRepository, TeamReadRepository>();
+        services.AddTransient<ITeamWriteRepository, TeamWriteRepository>();
         return services;
     }
 }

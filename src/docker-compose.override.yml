@@ -5,30 +5,19 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=${ASPNETCORE_URL}:${LOGGING_SERVICE_CONTAINER_PORT}
-      - ConnectionStrings__LoggingDb=Server=mssql;Database=LoggingDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};
-    networks:
-      - backend_network
-    depends_on:
-      - mssql
-  simulationapi:
-    ports:
-      - "${SIMULATIONAPI_HOST_PORT}:${SIMULATIONAPI_CONTAINER_PORT}"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${SIMULATIONAPI_CONTAINER_PORT}
-    networks:
-      - backend_network
-    depends_on:
-      - mssql
-      - logging-service
+      - ConnectionStrings__LoggingDb=Server=mssql;Database=LoggingDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
 
+    networks:
+      - backend_network
+    depends_on:
+      - mssql
   sportsdata-service:
     ports:
       - "${SPORTSDATA_SERVICE_HOST_PORT}:${SPORTSDATA_SERVICE_CONTAINER_PORT}"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=${ASPNETCORE_URL}:${SPORTSDATA_SERVICE_CONTAINER_PORT}
-      - ConnectionStrings__SportsDataDb=Server=mssql;Database=SportsDataDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};
+      - ConnectionStrings__SportsDataDb=Server=mssql;Database=SportsDataDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
     networks:
       - backend_network
     depends_on:

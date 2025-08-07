@@ -1,5 +1,5 @@
-using LoggingService.API.Protos;
 using Grpc.Core;
+using LoggingService.API.Protos;
 using LoggingService.Application.Interfaces;
 
 namespace LoggingService.API.Services;
@@ -17,7 +17,7 @@ public class LogEntryService : LogService.LogServiceBase
     {
         _logRepository.CreateLogEntryAsync(new Domain.Entities.LogEntry
         {
-            Id = request.Id,
+            Id = Guid.Parse(request.Id),
             Timestamp = DateTime.Parse(request.Timestamp),
             Message = request.Message,
             Level = request.Level,

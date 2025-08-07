@@ -10,12 +10,14 @@ dotnet new classlib -n SportsDataService.Application -o src/SportsDataService.Ap
 dotnet new classlib -n SportsDataService.Domain -o src/SportsDataService.Domain
 dotnet new classlib -n SportsDataService.Infrastructure -o src/SportsDataService.Infrastructure
 dotnet new xunit -n SportsDataService.Tests -o tests/SportsDataService.Tests
+dotnet new classlib -n SportsDataService.Protos -o src/SportsDataService.Protos 
 
 # Add projects to solution
 dotnet sln add src/SportsDataService.API/SportsDataService.API.csproj
 dotnet sln add src/SportsDataService.Application/SportsDataService.Application.csproj
 dotnet sln add src/SportsDataService.Domain/SportsDataService.Domain.csproj
 dotnet sln add src/SportsDataService.Infrastructure/SportsDataService.Infrastructure.csproj
+dotnet sln add src/SportsDataService.Protos/SportsDataService.Protos.csproj
 dotnet sln add tests/SportsDataService.Tests/SportsDataService.Tests.csproj
 
 # Add project references
@@ -39,3 +41,25 @@ dotnet add package dapper
 dotnet add package Microsoft.Data.SqlClient --version 6.1.0
 dotnet add package Microsoft.Extensions.Configuration.Abstractions --version 9.0.0
 dotnet add package Microsoft.Extensions.DependencyInjection.Abstractions
+dotnet add package Grpc.Net.ClientFactory ##obsolete?
+dotnet add package Grpc.Net.Client --version 2.60.0
+dotnet add package Grpc.Tools --version 2.60.0
+dotnet add package Microsoft.Extensions.Logging.Abstractions --version 9.0.0
+
+###API###
+dotnet add package Grpc.AspNetCore.Server.Reflection
+dotnet add package Grpc.Net.Client --version 2.60.0
+dotnet add package Grpc.Tools --version 2.60.0
+dotnet add package Google.Protobuf
+dotnet add package MediatR
+
+##Application##
+dotnet add package FluentValidation
+dotnet add package MediatR --version 11.1.0
+dotnet add package MediatR.Extensions.Microsoft.DependencyInjection  --version 11.1.0
+dotnet add package FluentValidation.DependencyInjectionExtensions
+
+
+#####to grpc####
+dotnet add reference ../../../Protos/Shared.Protos/Shared.Protos.csproj
+

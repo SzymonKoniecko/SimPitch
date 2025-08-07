@@ -2,16 +2,13 @@
 services:
   logging-service:
     build:
-      context: ./Services/LoggingService
-      dockerfile: src/LoggingService.API/Dockerfile
-  simulationapi:
-    build:
-      context: .
-      dockerfile: Services/SimulationAPI/Dockerfile
+      context: ./Services
+      dockerfile: LoggingService/src/LoggingService.API/Dockerfile
   sportsdata-service:
     build:
-      context: ./Services/SportsDataService
-      dockerfile: src/SportsDataService.API/Dockerfile
+      context: .
+      dockerfile: Services/SportsDataService/src/SportsDataService.API/Dockerfile
+
 
 
   mssql:

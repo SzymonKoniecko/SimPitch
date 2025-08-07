@@ -1,15 +1,12 @@
 using Dapper;
-using SportsDataService.Application.Interfaces;
 using SportsDataService.Domain.Entities;
-using System.Data;
-
-namespace SportsDataService.Infrastructure.Persistence;
-
-public class TeamRepository : ITeamRepository
+using SportsDataService.Domain.Interfaces.Read;
+namespace SportsDataService.Infrastructure.Persistence.Teams;
+public class TeamReadRepository : ITeamReadRepository
 {
     private readonly IDbConnectionFactory _connectionFactory;
 
-    public TeamRepository(IDbConnectionFactory connectionFactory)
+    public TeamReadRepository(IDbConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
     }
@@ -31,20 +28,5 @@ public class TeamRepository : ITeamRepository
         using var connection = _connectionFactory.CreateConnection();
         const string sql = "SELECT * FROM Teams order by Name";
         return await connection.QueryAsync<Team>(sql);
-    }
-
-    public async Task AddTeamAsync(Team team)
-    {
-        throw new NotImplementedException("AddTeamAsync method is not implemented yet.");
-    }
-
-    public async Task UpdateTeamAsync(Team team)
-    {
-        throw new NotImplementedException("UpdateTeamAsync method is not implemented yet.");
-    }
-
-    public async Task DeleteTeamAsync(int teamId)
-    {
-        throw new NotImplementedException("DeleteTeamAsync method is not implemented yet.");
     }
 }

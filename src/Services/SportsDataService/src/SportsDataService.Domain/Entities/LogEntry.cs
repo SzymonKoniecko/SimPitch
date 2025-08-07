@@ -1,4 +1,4 @@
-namespace LoggingService.Domain.Entities;
+namespace SportsDataService.Domain.Entities;
 public class LogEntry
 {
     public Guid Id { get; set; }

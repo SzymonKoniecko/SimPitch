@@ -14,7 +14,7 @@ class LogRepository : ILogRepository
     public async Task CreateLogEntryAsync(LogEntry logEntry)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        const string sql = "INSERT INTO LogEntries (Id, Timestamp, Message, Level, StackTrace, Source, Context) " +
+        const string sql = "INSERT INTO LogEntry (Id, Timestamp, Message, Level, StackTrace, Source, Context) " +
                            "VALUES (@Id, @Timestamp, @Message, @Level, @StackTrace, @Source, @Context)";
         await connection.ExecuteAsync(sql, logEntry);
     }

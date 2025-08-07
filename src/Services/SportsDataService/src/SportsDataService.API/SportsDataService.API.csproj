@@ -6,22 +6,23 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Protobuf Include="Protos\team.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.60.0" />
     <PackageReference Include="Grpc.Tools" Version="2.60.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SportsDataService.Application\SportsDataService.Application.csproj" />
     <ProjectReference Include="..\SportsDataService.Infrastructure\SportsDataService.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Protos\Shared.Protos\Shared.Protos.csproj" />
   </ItemGroup>
 
 </Project>
