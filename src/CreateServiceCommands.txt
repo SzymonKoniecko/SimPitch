@@ -42,13 +42,14 @@ dotnet add tests/SportsDataService.Tests/SportsDataService.Tests.csproj referenc
 ###Infrastructure###
 dotnet add package dapper
 dotnet add package Microsoft.Data.SqlClient --version 6.1.0
-dotnet add package Microsoft.Extensions.Configuration.Abstractions --version 9.0.0
+dotnet add package Microsoft.Extensions.Configuration.Abstractions --version 9.0.4
 dotnet add package Microsoft.Extensions.DependencyInjection.Abstractions
 dotnet add package Grpc.Net.ClientFactory ##obsolete?
 dotnet add package Grpc.Net.Client --version 2.60.0
 dotnet add package Grpc.Tools --version 2.60.0
-dotnet add package Microsoft.Extensions.Logging.Abstractions --version 9.0.0
-
+dotnet add package Google.Protobuf
+dotnet add package Microsoft.Extensions.Logging.Abstractions --version 9.0.4
+otnet add package Microsoft.Extensions.Configuration.Binder --version 9.0.4
 ###API###
 dotnet add package Grpc.AspNetCore.Server.Reflection
 dotnet add package Grpc.Net.Client --version 2.60.0

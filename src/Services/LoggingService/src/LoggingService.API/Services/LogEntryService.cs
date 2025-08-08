@@ -1,6 +1,6 @@
 using Grpc.Core;
-using Logging;
 using LoggingService.Application.Interfaces;
+using LoggingService.SimPitchProtos;
 
 namespace LoggingService.API.Services;
 

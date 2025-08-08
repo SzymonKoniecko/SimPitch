@@ -10,7 +10,6 @@ services:
       - backend_network
     depends_on:
       - mssql
-      - mssql-init
 
   sportsdata-service:
     ports:
@@ -19,11 +18,12 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=${ASPNETCORE_URL}:${SPORTSDATA_SERVICE_CONTAINER_PORT}
       - ConnectionStrings__SportsDataDb=Server=mssql;Database=SportsDataDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
+      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - GrpcLogging__SourceName=SportsDataService
     networks:
       - backend_network
     depends_on:
       - mssql
-      - mssql-init
       - logging-service
 
   mssql:
@@ -39,18 +39,18 @@ services:
       - ./sql/init.sql:/tmp/init.sql
 
   mssql-init:
-    depends_on:
-      - mssql
     entrypoint: >
       /bin/bash -c "
         echo 'Waiting for SQL Server...';
-        sleep 30;
+        sleep 3;
         /opt/mssql-tools/bin/sqlcmd -S mssql -U ${DB_ADMIN} -P ${DB_PASSWORD} -d master -i /tmp/init.sql;
       "
     volumes:
       - ./sql/init.sql:/tmp/init.sql
     networks:
       - backend_network
+    depends_on:
+      - mssql
 
 networks:
   backend_network:
