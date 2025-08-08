@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Behaviors/ Validations/" />
+    <Folder Include="Clients/" />
     <Folder Include="Teams/Commands/" />
   </ItemGroup>
 

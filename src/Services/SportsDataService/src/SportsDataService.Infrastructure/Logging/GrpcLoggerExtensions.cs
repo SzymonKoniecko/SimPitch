@@ -1,36 +1,21 @@
-using LoggingService.SimPitchProtos;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using SportsDataService.Infrastructure.Clients;
 
 namespace SportsDataService.Infrastructure.Logging;
-
 public static class GrpcLoggerExtensions
 {
-    public static ILoggingBuilder AddGrpcLogger(this ILoggingBuilder builder, IConfiguration configuration)
+    public static ILoggingBuilder AddGrpcLogger(this ILoggingBuilder builder, string sourceName)
     {
-        var section = configuration.GetSection(GrpcLoggerOptions.SectionName);
+        if (builder == null) throw new ArgumentNullException(nameof(builder));
 
-        // OPTION B: bind bez użycia Microsoft.Extensions.Options.ConfigurationExtensions
-        builder.Services.Configure<GrpcLoggerOptions>(options => section.Bind(options));
-
-        // Dodaj klienta gRPC
-        builder.Services.AddGrpcClient<LogService.LogServiceClient>((services, options) =>
+        builder.Services.TryAddSingleton<IGrpcLoggingClient, GrpcLoggingClient>();
+        builder.Services.AddSingleton<ILoggerProvider>(sp =>
         {
-            var config = services.GetRequiredService<IConfiguration>();
-            // wymaga Microsoft.Extensions.Configuration.Binder (GetValue / Bind)
-            var address = config.GetValue<string>($"{GrpcLoggerOptions.SectionName}:Address");
-
-            if (string.IsNullOrEmpty(address))
-            {
-                throw new InvalidOperationException("gRPC LoggingService address is not configured.");
-            }
-
-            options.Address = new Uri(address);
+            var client = sp.GetRequiredService<IGrpcLoggingClient>();
+            return new GrpcLoggerProvider(client, sourceName);
         });
-
-        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, GrpcLoggerProvider>());
 
         return builder;
     }

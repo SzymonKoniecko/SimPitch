@@ -2,10 +2,17 @@ using SportsDataService.API.Services;
 using SportsDataService.Infrastructure;
 using MediatR;
 using SportsDataService.Infrastructure.Logging;
+using SportsDataService.Infrastructure.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
 
 
 
+// Czyścimy wbudowanych providerów
+builder.Logging.ClearProviders();
+
+// Dodajemy gRPC loggera
+builder.Logging.AddGrpcLogger("SportsDataService");
+builder.Logging.AddConsole();
 
 // Dodaj gRPC, jeśli używasz
 builder.Services.AddGrpc();
@@ -16,20 +23,19 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddMediatR(typeof(GetTeamByIdHandler).Assembly);
 builder.Services.AddMediatR(typeof(GetAllTeamsQuery).Assembly);
 
-//builder.Logging.ClearProviders();
-builder.Logging.AddGrpcLogger(builder.Configuration);
-builder.Logging.AddConsole();
+builder.Services.AddScoped<GrpcExceptionInterceptor>();
 
-var grpcClient = new GrpcCliento("http://logging-service:80");
-await grpcClient.LogAsync();
-Console.WriteLine($"Received data: {"message"}");
-
+builder.Services.AddGrpc(options =>
+{
+    options.Interceptors.Add<GrpcExceptionInterceptor>();
+});
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapGrpcReflectionService();
 }
+
 
 app.MapGrpcService<TeamGrpcService>();
 

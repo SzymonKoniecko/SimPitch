@@ -1,63 +1,61 @@
-using System;
 using Google.Protobuf.WellKnownTypes;
 using LoggingService.SimPitchProtos;
 using Microsoft.Extensions.Logging;
-using SportsDataService.Domain.Entities;
+using SportsDataService.Infrastructure.Clients;
 
 namespace SportsDataService.Infrastructure.Logging;
 
 public class GrpcLogger : ILogger
 {
+    private readonly IGrpcLoggingClient _grpcClient;
     private readonly string _categoryName;
     private readonly string _sourceName;
-    private readonly LogService.LogServiceClient _grpcClient;
 
-    public GrpcLogger(string categoryName, string sourceName, LogService.LogServiceClient grpcClient)
+    public GrpcLogger(
+        string categoryName,
+        IGrpcLoggingClient grpcClient,
+        string sourceName)
     {
         _categoryName = categoryName;
-        _sourceName = sourceName;
-        _grpcClient = grpcClient;
+        _grpcClient = grpcClient ?? throw new ArgumentNullException(nameof(grpcClient));
+        _sourceName = sourceName ?? "SportsDataService";
     }
 
-    // Zakresy (scopes) można zaimplementować, jeśli są potrzebne, w przeciwnym razie prosta implementacja
     public IDisposable BeginScope<TState>(TState state) where TState : notnull => default!;
 
     public bool IsEnabled(LogLevel logLevel) => logLevel != LogLevel.None;
 
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId,
+        TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
         if (!IsEnabled(logLevel))
-        {
             return;
-        }
 
         var message = formatter(state, exception);
-        var request = new LogEntryRequest
-        {
-            Id = Guid.NewGuid().ToString(),
-            Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
-            Message = message,
-            Level = logLevel.ToString(),
-            StackTrace = exception?.StackTrace ?? string.Empty,
-            Source = _sourceName, // Nazwa mikroserwisu, np. "SportsDataService"
-            Context = _categoryName // Kontekst logu, np. nazwa klasy
-        };
 
-        // Wysyłamy log asynchronicznie w tle (fire-and-forget)
-        // aby nie blokować wykonania aplikacji.
-        // Ważne: W prawdziwej aplikacji warto dodać mechanizm kolejkowania i ponawiania prób.
-        _ = Task.Run(async () =>
+        // Wysyłamy async ale nie blokujemy wątku startowego
+        _ = SendLogAsync(logLevel, message, exception);
+    }
+
+    private async Task SendLogAsync(LogLevel logLevel, string message, Exception? exception)
+    {
+        try
         {
-            try
+            var request = new LogEntryRequest
             {
-                await _grpcClient.LogEntryAsync(request);
-            }
-            catch (Exception ex)
-            {
-                // Jeśli usługa logowania jest niedostępna, zaloguj błąd do konsoli
-                // aby uniknąć pętli logowania i awarii aplikacji.
-                Console.WriteLine($"[CRITICAL] Could not send log to gRPC LoggingService: {ex.Message}");
-            }
-        });
+                Id = Guid.NewGuid().ToString(),
+                Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
+                Message = message,
+                Level = logLevel.ToString(),
+                StackTrace = exception?.StackTrace ?? string.Empty,
+                Source = _sourceName,
+                Context = _categoryName
+            };
+
+            await _grpcClient.LogAsync(request);
+        }
+        catch
+        {
+        }
     }
 }

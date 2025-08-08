@@ -1,31 +1,25 @@
-using System;
-using System.Collections.Concurrent;
-using LoggingService.SimPitchProtos;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using SportsDataService.Infrastructure.Clients;
 
 namespace SportsDataService.Infrastructure.Logging;
-
+[ProviderAlias("GrpcLogger")]
 public class GrpcLoggerProvider : ILoggerProvider
 {
-    private readonly IOptions<GrpcLoggerOptions> _options;
-    private readonly LogService.LogServiceClient _grpcClient;
-    private readonly ConcurrentDictionary<string, GrpcLogger> _loggers = new();
+    private readonly IGrpcLoggingClient _grpcLoggingClient;
+    private readonly string _sourceName;
 
-    public GrpcLoggerProvider(IOptions<GrpcLoggerOptions> options, LogService.LogServiceClient grpcClient)
+    public GrpcLoggerProvider(IGrpcLoggingClient grpcLoggingClient, string sourceName)
     {
-        _options = options;
-        _grpcClient = grpcClient;
+        _grpcLoggingClient = grpcLoggingClient ?? throw new ArgumentNullException(nameof(grpcLoggingClient));
+        _sourceName = sourceName ?? "SportsDataService";
     }
 
     public ILogger CreateLogger(string categoryName)
     {
-        return _loggers.GetOrAdd(categoryName, name => new GrpcLogger(name, _options.Value.SourceName, _grpcClient));
+        return new GrpcLogger(categoryName, _grpcLoggingClient, _sourceName);
     }
 
     public void Dispose()
     {
-        _loggers.Clear();
-        GC.SuppressFinalize(this);
     }
 }
