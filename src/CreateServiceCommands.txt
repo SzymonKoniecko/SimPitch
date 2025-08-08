@@ -1,0 +1,67 @@
+git clone --recurse-submodules https://github.com/SzymonKoniecko/SimPitchProtos.git
+
+
+# Create the solution
+dotnet new sln -n SportsDataService
+
+# Create directories
+mkdir -p src tests
+
+# Create projects
+dotnet new grpc -n SportsDataService.API -o src/SportsDataService.API
+dotnet new classlib -n SportsDataService.Application -o src/SportsDataService.Application
+dotnet new classlib -n SportsDataService.Domain -o src/SportsDataService.Domain
+dotnet new classlib -n SportsDataService.Infrastructure -o src/SportsDataService.Infrastructure
+dotnet new xunit -n SportsDataService.Tests -o tests/SportsDataService.Tests
+dotnet new classlib -n SportsDataService.Protos -o src/SportsDataService.Protos 
+
+# Add projects to solution
+dotnet sln add src/SportsDataService.API/SportsDataService.API.csproj
+dotnet sln add src/SportsDataService.Application/SportsDataService.Application.csproj
+dotnet sln add src/SportsDataService.Domain/SportsDataService.Domain.csproj
+dotnet sln add src/SportsDataService.Infrastructure/SportsDataService.Infrastructure.csproj
+dotnet sln add src/SportsDataService.Protos/SportsDataService.Protos.csproj
+dotnet sln add tests/SportsDataService.Tests/SportsDataService.Tests.csproj
+
+# Add project references
+dotnet add src/SportsDataService.API/SportsDataService.API.csproj reference \
+  src/SportsDataService.Application/SportsDataService.Application.csproj \
+  src/SportsDataService.Infrastructure/SportsDataService.Infrastructure.csproj
+
+dotnet add src/SportsDataService.Application/SportsDataService.Application.csproj reference \
+  src/SportsDataService.Domain/SportsDataService.Domain.csproj
+
+dotnet add src/SportsDataService.Infrastructure/SportsDataService.Infrastructure.csproj reference \
+  src/SportsDataService.Application/SportsDataService.Application.csproj \
+  src/SportsDataService.Domain/SportsDataService.Domain.csproj
+
+dotnet add tests/SportsDataService.Tests/SportsDataService.Tests.csproj reference \
+  src/SportsDataService.Application/SportsDataService.Application.csproj \
+  src/SportsDataService.Domain/SportsDataService.Domain.csproj
+
+###Infrastructure###
+dotnet add package dapper
+dotnet add package Microsoft.Data.SqlClient --version 6.1.0
+dotnet add package Microsoft.Extensions.Configuration.Abstractions --version 9.0.4
+dotnet add package Microsoft.Extensions.DependencyInjection.Abstractions
+dotnet add package Grpc.Net.ClientFactory ##obsolete?
+dotnet add package Grpc.Net.Client --version 2.60.0
+dotnet add package Grpc.Tools --version 2.60.0
+dotnet add package Google.Protobuf
+dotnet add package Microsoft.Extensions.Logging.Abstractions --version 9.0.4
+dotnet add package Microsoft.Extensions.Configuration.Binder --version 9.0.4
+dotnet add package Newtonsoft.Json --version 13.0.3
+###API###
+dotnet add package Grpc.AspNetCore.Server.Reflection
+dotnet add package Grpc.Net.Client --version 2.60.0
+dotnet add package Grpc.Tools --version 2.60.0
+dotnet add package Google.Protobuf
+dotnet add package MediatR
+
+##Application##
+dotnet add package FluentValidation
+dotnet add package MediatR --version 11.1.0
+dotnet add package MediatR.Extensions.Microsoft.DependencyInjection  --version 11.1.0
+dotnet add package FluentValidation.DependencyInjectionExtensions
+
+

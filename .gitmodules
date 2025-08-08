@@ -1,0 +1,6 @@
+[submodule "src/Services/SportsDataService/src/SimPitchProtos"]
+	path = src/Services/SportsDataService/src/SimPitchProtos
+	url = https://github.com/SzymonKoniecko/SimPitchProtos.git
+[submodule "src/Services/LoggingService/src/SimPitchProtos"]
+	path = src/Services/LoggingService/src/SimPitchProtos
+	url = https://github.com/SzymonKoniecko/SimPitchProtos.git
