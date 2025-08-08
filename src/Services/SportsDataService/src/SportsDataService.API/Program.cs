@@ -43,17 +43,3 @@ app.MapGet("/", () => "Use gRPC clients for communication");
 
 
 app.Run();
-
-// Przykład użycia - wstrzyknij ILogger<T> w dowolnym serwisie lub kontrolerze
-var logger = app.Services.GetRequiredService<ILogger<Program>>();
-logger.LogInformation("SportsDataService is starting up.");
-logger.LogWarning("This is a sample warning.");
-try
-{
-    throw new InvalidOperationException("Something went wrong!");
-}
-catch (Exception ex)
-{
-    logger.LogError(ex, "An error occurred during startup.");
-}
-
