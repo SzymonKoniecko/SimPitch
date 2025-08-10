@@ -1,7 +1,7 @@
 using Dapper;
 using SportsDataService.Domain.Entities;
 using SportsDataService.Domain.Interfaces.Read;
-namespace SportsDataService.Infrastructure.Persistence.Teams;
+namespace SportsDataService.Infrastructure.Persistence.Read;
 public class TeamReadRepository : ITeamReadRepository
 {
     private readonly IDbConnectionFactory _connectionFactory;
@@ -11,22 +11,37 @@ public class TeamReadRepository : ITeamReadRepository
         _connectionFactory = connectionFactory;
     }
 
-    public async Task<Team?> GetTeamByIdAsync(Guid teamId)
+    public async Task<Team?> GetTeamByIdAsync(Guid teamId, CancellationToken cancellationToken)
     {
         using var connection = _connectionFactory.CreateConnection();
         const string sql = "SELECT * FROM Team WHERE Id = @Id";
-        var team = await connection.QueryFirstOrDefaultAsync<Team>(sql, new { Id = teamId });
+        
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { Id = teamId },
+            cancellationToken: cancellationToken
+        );
+
+        var team = await connection.QueryFirstOrDefaultAsync<Team>(command);
+
         if (team == null)
         {
             throw new KeyNotFoundException($"Team with Id '{teamId}' was not found.");
         }
+
         return team;
     }
 
-    public async Task<IEnumerable<Team>> GetAllTeamsAsync()
+    public async Task<IEnumerable<Team>> GetAllTeamsAsync(CancellationToken cancellationToken)
     {
         using var connection = _connectionFactory.CreateConnection();
         const string sql = "SELECT * FROM Team order by Name";
-        return await connection.QueryAsync<Team>(sql);
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            cancellationToken: cancellationToken
+        );
+
+        return await connection.QueryAsync<Team>(command);
     }
 }
