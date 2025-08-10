@@ -50,7 +50,7 @@ namespace SportsDataService.API.Services
                 
             var teamId = await _mediator.Send(new CreateTeamCommand(TeamMapper.ToDto(request)));
 
-            return teamId != null
+            return teamId != Guid.Empty
                 ? new TeamIdResponse { Id = teamId.ToString() }
                 : throw new RpcException(new Status(StatusCode.Internal, "Failed to create team"));
         }
