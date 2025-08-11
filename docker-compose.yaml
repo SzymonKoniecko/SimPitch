@@ -8,6 +8,10 @@ services:
     build:
       context: src/Services/SportsDataService/
       dockerfile: src/SportsDataService.API/Dockerfile
+  simulation-service:
+    build:
+      context: src/Services/SimulationService/
+      dockerfile: src/SimulationService.API/Dockerfile
 
 
 

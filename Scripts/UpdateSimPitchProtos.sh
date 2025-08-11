@@ -5,6 +5,7 @@ set -e
 services=(
   "src/Services/LoggingService/src/SimPitchProtos"
   "src/Services/SportsDataService/src/SimPitchProtos"
+  "src/Services/SimulationService/src/SimPitchProtos"
 )
 cd ..
 for proto_path in "${services[@]}"; do

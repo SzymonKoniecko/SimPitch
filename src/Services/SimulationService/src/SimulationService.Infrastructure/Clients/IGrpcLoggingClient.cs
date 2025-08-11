@@ -2,7 +2,7 @@ using Grpc.Net.Client;
 using LoggingService.SimPitchProtos;
 using Microsoft.Extensions.Configuration;
 
-namespace SportsDataService.Infrastructure.Clients;
+namespace SimulationService.Infrastructure.Clients;
 
 public interface IGrpcLoggingClient
 {

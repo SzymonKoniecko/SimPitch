@@ -4,3 +4,6 @@
 [submodule "src/Services/LoggingService/src/SimPitchProtos"]
 	path = src/Services/LoggingService/src/SimPitchProtos
 	url = https://github.com/SzymonKoniecko/SimPitchProtos.git
+[submodule "src/Services/SimulationService/src/SimPitchProtos"]
+	path = src/Services/SimulationService/src/SimPitchProtos
+	url = https://github.com/SzymonKoniecko/SimPitchProtos.git
