@@ -13,14 +13,12 @@ dotnet new classlib -n SimulationService.Application -o src/SimulationService.Ap
 dotnet new classlib -n SimulationService.Domain -o src/SimulationService.Domain
 dotnet new classlib -n SimulationService.Infrastructure -o src/SimulationService.Infrastructure
 dotnet new xunit -n SimulationService.Tests -o tests/SimulationService.Tests
-dotnet new classlib -n SimulationService.Protos -o src/SimulationService.Protos 
 
 # Add projects to solution
 dotnet sln add src/SimulationService.API/SimulationService.API.csproj
 dotnet sln add src/SimulationService.Application/SimulationService.Application.csproj
 dotnet sln add src/SimulationService.Domain/SimulationService.Domain.csproj
 dotnet sln add src/SimulationService.Infrastructure/SimulationService.Infrastructure.csproj
-dotnet sln add src/SimulationService.Protos/SimulationService.Protos.csproj
 dotnet sln add tests/SimulationService.Tests/SimulationService.Tests.csproj
 
 # Add project references
