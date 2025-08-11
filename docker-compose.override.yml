@@ -51,6 +51,16 @@ services:
       - backend_network
     depends_on:
       - mssql
+  seed-data:
+    environment:
+      DB_ADMIN: ${DB_ADMIN}
+      SA_PASSWORD: ${DB_PASSWORD}
+      SEED_DATA: ${SEED_DATA}
+    networks:
+      - backend_network
+    depends_on:
+      - mssql
+
 
 networks:
   backend_network:
