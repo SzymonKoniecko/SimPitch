@@ -3,6 +3,7 @@ using SportsDataService.Infrastructure;
 using MediatR;
 using SportsDataService.Infrastructure.Logging;
 using SportsDataService.Infrastructure.Middlewares;
+using SportsDataService.Application.Features;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -19,9 +20,7 @@ builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
 builder.Services.AddInfrastructure(builder.Configuration);
-
-builder.Services.AddMediatR(typeof(GetTeamByIdHandler).Assembly);
-builder.Services.AddMediatR(typeof(GetAllTeamsQuery).Assembly);
+builder.Services.AddMediatRServices();
 
 builder.Services.AddScoped<GrpcExceptionInterceptor>();
 
@@ -38,6 +37,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.MapGrpcService<TeamGrpcService>();
+app.MapGrpcService<StadiumGrpcService>();
 
 app.MapGet("/", () => "Use gRPC clients for communication");
 

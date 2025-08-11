@@ -1,4 +1,3 @@
-
 -----LoggingService Initialization Script----
 --DATABASES
 IF DB_ID('LoggingDb') IS NULL
@@ -34,17 +33,69 @@ GO
 USE SportsDataDb;
 GO
 --TABLES
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Country' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.Country
+    (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        [Name] NVARCHAR(255) NOT NULL,
+        [Code] NVARCHAR(255) NOT NULL,
+        CreatedAt DATETIME2 NOT NULL,
+        UpdatedAt DATETIME2 NOT NULL,
+    );
+END
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='League' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.League
+    (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        [Name] NVARCHAR(255) NOT NULL,
+        CountryId UNIQUEIDENTIFIER NOT NULL,
+        [Sport] NVARCHAR(255) NOT NULL,
+        CreatedAt DATETIME2 NOT NULL,
+        UpdatedAt DATETIME2 NOT NULL,
+    );
+END
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Stadium' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.Stadium
+    (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        [Name] NVARCHAR(255) NOT NULL,
+        Capacity INT NOT NULL,
+        CreatedAt DATETIME2 NOT NULL,
+        UpdatedAt DATETIME2 NOT NULL,
+    );
+END
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Team' AND xtype='U')
 BEGIN
     CREATE TABLE dbo.Team
     (
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         [Name] NVARCHAR(255) NOT NULL,
-        CityId UNIQUEIDENTIFIER NOT NULL,
-        CountryId UNIQUEIDENTIFIER NOT NULL,
-        StadiumId UNIQUEIDENTIFIER NOT NULL,
-        LeagueId UNIQUEIDENTIFIER NOT NULL,
-        LogoUrl NVARCHAR(1024) NOT NULL,
-        ShortName NVARCHAR(100) NOT NULL
+        CountryId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES Country(Id),
+        StadiumId UNIQUEIDENTIFIER NULL FOREIGN KEY REFERENCES Stadium(Id),
+        LeagueId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES League(Id),
+        LogoUrl NVARCHAR(1024) NULL,
+        ShortName NVARCHAR(100) NULL,
+        Sport NVARCHAR(100) NULL
+    );
+END
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FootballSeasonStats' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.FootballSeasonStats
+    (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        TeamId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES Team(Id),
+        SeasonYear NVARCHAR(255) NOT NULL,
+        LeagueId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES League(Id),
+        MatchesPlayed INT NOT NULL,
+        Wins INT NOT NULL,
+        Losses INT NOT NULL,
+        Draws INT NOT NULL,
+        GoalsFor INT NOT NULL,
+        GoalsAgainst INT NOT NULL,
+        CreatedAt DATETIME2 NOT NULL,
+        UpdatedAt DATETIME2 NOT NULL
     );
 END

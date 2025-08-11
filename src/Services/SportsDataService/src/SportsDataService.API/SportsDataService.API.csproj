@@ -7,8 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\SimPitchProtos\team.proto" GrpcServices="Server" />
-    <Protobuf Include="..\SimPitchProtos\logging.proto" GrpcServices="Client" />
+    <Protobuf Include="..\SimPitchProtos\SportsDataService\Team\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SportsDataService" />
+    <Protobuf Include="..\SimPitchProtos\SportsDataService\Stadium\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SportsDataService" />
+    <Protobuf Include="..\SimPitchProtos\SportsDataService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos\SportsDataService" />
+    <Protobuf Include="..\SimPitchProtos\logging.proto" GrpcServices="Client"  ProtoRoot="..\SimPitchProtos" />
   </ItemGroup>
 
 
