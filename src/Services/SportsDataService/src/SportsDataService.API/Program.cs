@@ -37,6 +37,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.MapGrpcService<TeamGrpcService>();
+app.MapGrpcService<StadiumGrpcService>();
 
 app.MapGet("/", () => "Use gRPC clients for communication");
 

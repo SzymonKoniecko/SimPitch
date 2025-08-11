@@ -5,5 +5,5 @@ namespace SportsDataService.Domain.Interfaces.Write;
 
 public interface IStadiumWriteRepository
 {
-    Task<Guid> CreateStadiumAsync(Stadium stadium, CancellationToken cancellationToken);
+    Task CreateStadiumAsync(Stadium stadium, CancellationToken cancellationToken);
 }

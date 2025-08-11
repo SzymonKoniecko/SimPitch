@@ -4,4 +4,4 @@ using SportsDataService.Application.DTOs;
 
 namespace SportsDataService.Application.Features.Stadium.Queries.GetStadiumById;
 
-public record GetStadiumByIdQuery(Guid StadiumId) : IRequest<StadiumDto>;
+public record GetStadiumByIdQuery(Guid stadiumId) : IRequest<StadiumDto>;

@@ -4,6 +4,7 @@ using SportsDataService.Domain.Interfaces.Read;
 using SportsDataService.Domain.Interfaces.Write;
 using SportsDataService.Infrastructure.Persistence.Read;
 using SportsDataService.Infrastructure.Persistence.Teams;
+using SportsDataService.Infrastructure.Persistence.Write;
 
 namespace SportsDataService.Infrastructure;
 
@@ -22,6 +23,7 @@ public static class DependencyInjection
 
         // Write repositories
         services.AddTransient<ITeamWriteRepository, TeamWriteRepository>();
+        services.AddTransient<IStadiumWriteRepository, StadiumWriteRepository>();
         
         return services;
     }

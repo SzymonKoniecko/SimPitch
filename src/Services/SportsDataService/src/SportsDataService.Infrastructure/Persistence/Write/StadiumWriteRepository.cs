@@ -13,13 +13,12 @@ public class StadiumWriteRepository : IStadiumWriteRepository
     {
         _connectionFactory = connectionFactory;
     }
-    public async Task<Guid> CreateStadiumAsync(Stadium stadium, CancellationToken cancellationToken)
+    public async Task CreateStadiumAsync(Stadium stadium, CancellationToken cancellationToken)
     {
         using var connection = _connectionFactory.CreateConnection();
         const string sql = @"
-            INSERT INTO Stadium (Id, Name, Capacity, Location)
-            VALUES (@Id, @Name, @Capacity, @CreatedAt, @UpdatedAt)
-            OUTPUT INSERTED.*;
+            INSERT INTO Stadium (Id, Name, Capacity, CreatedAt, UpdatedAt)
+            VALUES (@Id, @Name, @Capacity, @CreatedAt, @UpdatedAt);
         ";
 
         // Upewniamy się, że Id jest ustawione
@@ -39,11 +38,9 @@ public class StadiumWriteRepository : IStadiumWriteRepository
             cancellationToken: cancellationToken
         );
 
-        var createdStadium = await connection.QueryFirstOrDefaultAsync<Stadium>(command);
-        if (createdStadium == null)
-            throw new Exception("Failed to create stadium.");
+        await connection.QueryFirstOrDefaultAsync<string>(command);
 
-        return createdStadium.Id;
+        return ;
     }
 
 }

@@ -7,4 +7,5 @@ public interface ITeamReadRepository
 {
     Task<Team?> GetTeamByIdAsync(Guid teamId, CancellationToken cancellationToken);
     Task<IEnumerable<Team>> GetAllTeamsAsync(CancellationToken cancellationToken);
+    Task<bool> TeamExistsAsync(Guid teamId, CancellationToken cancellationToken);
 }

@@ -13,14 +13,13 @@ public class TeamWriteRepository : ITeamWriteRepository
     {
         _connectionFactory = connectionFactory;
     }
-    public async Task<Guid> CreateTeamAsync(Team team, CancellationToken cancellationToken)
+    public async Task CreateTeamAsync(Team team, CancellationToken cancellationToken)
     {
         using var connection = _connectionFactory.CreateConnection();
         const string sql = @"
             INSERT INTO SportsDataDb.dbo.Team
-                (Id, Name, CountryId, StadiumId, LeagueId, LogoUrl, ShortName)
+                (Id, Name, CountryId, StadiumId, LeagueId, LogoUrl, ShortName, Sport)
                 VALUES(@Id, @Name, @CountryId, @StadiumId, @LeagueId, @LogoUrl, @ShortName, @Sport);
-            OUTPUT INSERTED.*;
         ";
 
         // Upewniamy się, że Id jest ustawione
@@ -43,11 +42,9 @@ public class TeamWriteRepository : ITeamWriteRepository
             cancellationToken: cancellationToken
         );
 
-        var createdTeam= await connection.QueryFirstOrDefaultAsync<Team>(command);
-        if (createdTeam == null)
-            throw new Exception("Failed to create stadium.");
+        await connection.QueryFirstOrDefaultAsync<string>(command);
 
-        return createdTeam.Id;
+        return;
     }
 
     public async Task UpdateTeamAsync(Team team, CancellationToken cancellationToken)

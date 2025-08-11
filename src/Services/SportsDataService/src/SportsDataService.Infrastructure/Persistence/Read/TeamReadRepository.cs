@@ -2,6 +2,7 @@ using Dapper;
 using SportsDataService.Domain.Entities;
 using SportsDataService.Domain.Interfaces.Read;
 namespace SportsDataService.Infrastructure.Persistence.Read;
+
 public class TeamReadRepository : ITeamReadRepository
 {
     private readonly IDbConnectionFactory _connectionFactory;
@@ -15,7 +16,7 @@ public class TeamReadRepository : ITeamReadRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         const string sql = "SELECT * FROM Team WHERE Id = @Id";
-        
+
         var command = new CommandDefinition(
             commandText: sql,
             parameters: new { Id = teamId },
@@ -43,5 +44,19 @@ public class TeamReadRepository : ITeamReadRepository
         );
 
         return await connection.QueryAsync<Team>(command);
+    }
+    public async Task<bool> TeamExistsAsync(Guid teamId, CancellationToken cancellationToken)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+        const string sql = "SELECT COUNT(1) FROM Team WHERE Id = @Id";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { Id = teamId },
+            cancellationToken: cancellationToken
+        );
+
+        var count = await connection.ExecuteScalarAsync<int>(command);
+        return count > 0;
     }
 }
