@@ -1,5 +1,10 @@
-git clone --recurse-submodules https://github.com/SzymonKoniecko/SimPitchProtos.git
+dir:SimPitch 
+  - git submodule add https://github.com/SzymonKoniecko/SimPitchProtos.git src/Services/SimulationService/src/SimPitchProtos
+  - git submodule update --init --recursive
 
+
+mkdir -p SimulationService
+cd SimulationService
 
 # Create the solution
 dotnet new sln -n SimulationService
