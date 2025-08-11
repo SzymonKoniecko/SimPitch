@@ -8,10 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-// Czyścimy wbudowanych providerów
 builder.Logging.ClearProviders();
 
-// Dodajemy gRPC loggera
 builder.Logging.AddGrpcLogger("SportsDataService");
 builder.Logging.AddConsole();
 

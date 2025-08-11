@@ -26,6 +26,22 @@ services:
       - mssql
       - logging-service
 
+  simulation-service:
+    ports:
+      - "${SIMULATION_SERVICE_HOST_PORT}:${SIMULATION_SERVICE_CONTAINER_PORT}"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${SIMULATION_SERVICE_CONTAINER_PORT}
+      - ConnectionStrings__SimulationDb=Server=mssql;Database=SimulationDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
+      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - GrpcLogging__SourceName=SimulationService
+    networks:
+      - backend_network
+    depends_on:
+      - mssql
+      - logging-service
+
+
   mssql:
     environment:
       SA_PASSWORD: ${DB_PASSWORD}
