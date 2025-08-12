@@ -9,6 +9,8 @@
   <ItemGroup>
     <Protobuf Include="..\SimPitchProtos\SportsDataService\Team\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SportsDataService" />
     <Protobuf Include="..\SimPitchProtos\SportsDataService\Stadium\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SportsDataService" />
+    <Protobuf Include="..\SimPitchProtos\SportsDataService\LeagueRound\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SportsDataService" />
+    <Protobuf Include="..\SimPitchProtos\SportsDataService\RealMatchResult\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SportsDataService" />
     <Protobuf Include="..\SimPitchProtos\SportsDataService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos\SportsDataService" />
     <Protobuf Include="..\SimPitchProtos\logging.proto" GrpcServices="Client"  ProtoRoot="..\SimPitchProtos" />
   </ItemGroup>

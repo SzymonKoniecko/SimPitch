@@ -20,6 +20,8 @@ public static class DependencyInjection
         services.AddTransient<ILeagueReadRepository, LeagueReadRepository>();
         services.AddTransient<IStadiumReadRepository, StadiumReadRepository>();
         services.AddTransient<ITeamReadRepository, TeamReadRepository>();
+        services.AddTransient<IRealMatchResultReadRepository, RealMatchResultReadRepository>();
+        services.AddTransient<ILeagueRoundReadRepository, LeagueRoundReadRepository>();
 
         // Write repositories
         services.AddTransient<ITeamWriteRepository, TeamWriteRepository>();

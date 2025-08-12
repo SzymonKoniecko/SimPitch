@@ -4,6 +4,10 @@ using MediatR;
 using SportsDataService.Infrastructure.Logging;
 using SportsDataService.Infrastructure.Middlewares;
 using SportsDataService.Application.Features;
+using FluentValidation;
+using SportsDataService.Application.Features.LeagueRound.Queries.GetAllLeagueRoundsByParams;
+using SportsDataService.Application.Features.Teams.Commands.CreateTeam;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -18,6 +22,7 @@ builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
 builder.Services.AddMediatRServices();
 
 builder.Services.AddScoped<GrpcExceptionInterceptor>();

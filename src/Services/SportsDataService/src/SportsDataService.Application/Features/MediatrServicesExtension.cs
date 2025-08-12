@@ -6,6 +6,8 @@ using SportsDataService.Application.Features.Country.Queries.GetCountryById;
 using SportsDataService.Application.Features.FootballSeasonStats.Queries.GetFootballSeasonStatsById;
 using SportsDataService.Application.Features.League.Queries.GetAllLeagues;
 using SportsDataService.Application.Features.League.Queries.GetLeagueById;
+using SportsDataService.Application.Features.LeagueRound.Queries.GetAllLeagueRoundsByParams;
+using SportsDataService.Application.Features.RealMatchResult.Queries.GetRealMatchResultsByRoundId;
 using SportsDataService.Application.Features.Stadium.Commands.CreateStadium;
 using SportsDataService.Application.Features.Stadium.Queries.GetAllStadiums;
 using SportsDataService.Application.Features.Stadium.Queries.GetStadiumById;
@@ -37,6 +39,8 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(GetStadiumByIdQuery).Assembly);
         services.AddMediatR(typeof(GetAllTeamsQuery).Assembly);
         services.AddMediatR(typeof(GetTeamByIdQuery).Assembly);
+        services.AddMediatR(typeof(GetAllLeagueRoundsByParamsQuery).Assembly);
+        services.AddMediatR(typeof(GetRealMatchResultsByRoundIdQuery).Assembly);
 
 
         // Query Handlers
@@ -49,9 +53,12 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(GetStadiumByIdHandler).Assembly);
         services.AddMediatR(typeof(GetAllTeamsHandler).Assembly);
         services.AddMediatR(typeof(GetTeamByIdHandler).Assembly);
+        services.AddMediatR(typeof(GetAllLeagueRoundsByParamsHandler).Assembly);
+        services.AddMediatR(typeof(GetRealMatchResultsByRoundIdHandler).Assembly);
 
         // Validators
         services.AddTransient<CreateTeamCommandValidator>();
+        services.AddTransient<GetAllLeagueRoundsByParamsValidator>();
 
         return services;
     }

@@ -99,3 +99,27 @@ BEGIN
         UpdatedAt DATETIME2 NOT NULL
     );
 END
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='LeagueRound' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.LeagueRound
+    (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        LeagueId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES League(Id),
+        SeasonYear NVARCHAR(255) NOT NULL,
+        Round INT NOT NULL,
+        MaxRound INT NOT NULL,
+    );
+END
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RealMatchResult' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.RealMatchResult
+    (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        RoundId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES LeagueRound(Id),
+        HomeTeamId UNIQUEIDENTIFIER NOT NULL,
+        AwayTeamId UNIQUEIDENTIFIER NOT NULL,
+        HomeGoals INT NOT NULL,
+        AwayGoals INT NOT NULL,
+        IsDraw BIT NOT NULL
+    );
+END
