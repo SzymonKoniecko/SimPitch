@@ -52,6 +52,7 @@ BEGIN
         [Name] NVARCHAR(255) NOT NULL,
         CountryId UNIQUEIDENTIFIER NOT NULL,
         [Sport] NVARCHAR(255) NOT NULL,
+        MaxRound INT NOT NULL,
         CreatedAt DATETIME2 NOT NULL,
         UpdatedAt DATETIME2 NOT NULL,
     );
@@ -106,20 +107,20 @@ BEGIN
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         LeagueId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES League(Id),
         SeasonYear NVARCHAR(255) NOT NULL,
-        Round INT NOT NULL,
-        MaxRound INT NOT NULL,
+        Round INT NOT NULL
     );
 END
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RealMatchResult' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MatchRound' AND xtype='U')
 BEGIN
-    CREATE TABLE dbo.RealMatchResult
+    CREATE TABLE dbo.MatchRound
     (
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         RoundId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES LeagueRound(Id),
         HomeTeamId UNIQUEIDENTIFIER NOT NULL,
         AwayTeamId UNIQUEIDENTIFIER NOT NULL,
-        HomeGoals INT NOT NULL,
-        AwayGoals INT NOT NULL,
-        IsDraw BIT NOT NULL
+        HomeGoals INT NULL,
+        AwayGoals INT NULL,
+        IsDraw BIT NULL,
+        IsPlayed BIT NOT NULL
     );
 END
