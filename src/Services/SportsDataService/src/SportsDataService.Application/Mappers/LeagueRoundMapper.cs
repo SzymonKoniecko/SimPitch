@@ -15,7 +15,6 @@ public static class LeagueRoundMapper
         dto.LeagueId = enitiy.LeagueId;
         dto.SeasonYear = enitiy.SeasonYear;
         dto.Round = enitiy.Round;
-        dto.MaxRound = enitiy.MaxRound;
 
         return dto;
     }

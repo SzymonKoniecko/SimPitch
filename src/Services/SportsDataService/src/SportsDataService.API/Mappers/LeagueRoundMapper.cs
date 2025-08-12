@@ -16,7 +16,6 @@ public static class LeagueRoundMapper
         grpc.LeagueId = dto.LeagueId.ToString();
         grpc.SeasonYear = dto.SeasonYear;
         grpc.Round = dto.Round;
-        grpc.MaxRound = dto.MaxRound;
 
         return grpc;
     }

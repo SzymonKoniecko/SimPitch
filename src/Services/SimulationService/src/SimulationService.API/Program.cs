@@ -1,6 +1,8 @@
 using SimulationService.Infrastructure;
 using SimulationService.Infrastructure.Middlewares;
 using SimulationService.Infrastructure.Logging;
+using SimPitchProtos.SportsDataService.LeagueRound;
+using SimulationService.Application.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +17,7 @@ builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
 builder.Services.AddInfrastructure(builder.Configuration);
-//builder.Services.AddMediatRServices();
+builder.Services.AddMediatRServices();
 
 builder.Services.AddScoped<GrpcExceptionInterceptor>();
 
@@ -23,7 +25,10 @@ builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<GrpcExceptionInterceptor>();
 });
-
+builder.Services.AddGrpcClient<LeagueRoundService.LeagueRoundServiceClient>(options =>
+{
+    options.Address = new Uri(Environment.GetEnvironmentVariable("SportsDataService__Address"));
+});
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

@@ -7,6 +7,9 @@
 
   <ItemGroup>
     <Protobuf Include="..\SimPitchProtos\logging.proto" GrpcServices="Client" ProtoRoot="..\SimPitchProtos" />
+    <Protobuf Include="..\SimPitchProtos\SportsDataService\LeagueRound\*.proto" GrpcServices="Client" ProtoRoot="..\SimPitchProtos\SportsDataService" />
+    <Protobuf Include="..\SimPitchProtos\SportsDataService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos\SportsDataService" />
+
   </ItemGroup>
 
   <ItemGroup>
