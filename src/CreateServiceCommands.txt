@@ -43,6 +43,7 @@ dotnet add tests/SimulationService.Tests/SimulationService.Tests.csproj referenc
   src/SimulationService.Domain/SimulationService.Domain.csproj
 
 ###Infrastructure###
+##  ClientFactory can download the newest version
 dotnet add package dapper
 dotnet add package Microsoft.Extensions.Logging --version 9.0.4
 dotnet add package Microsoft.Data.SqlClient --version 6.1.0
@@ -55,6 +56,10 @@ dotnet add package Google.Protobuf
 dotnet add package Microsoft.Extensions.Logging.Abstractions --version 9.0.4
 dotnet add package Microsoft.Extensions.Configuration.Binder --version 9.0.4
 dotnet add package Newtonsoft.Json --version 13.0.3
+dotnet add package Grpc.Net.ClientFactory --version 2.60.0
+
+
+
 ###API###
 dotnet add package Grpc.AspNetCore.Server.Reflection --version 2.60.0
 dotnet add package Grpc.Net.Client --version 2.60.0

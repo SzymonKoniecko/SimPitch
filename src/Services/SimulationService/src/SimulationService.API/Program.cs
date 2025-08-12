@@ -25,10 +25,7 @@ builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<GrpcExceptionInterceptor>();
 });
-builder.Services.AddGrpcClient<LeagueRoundService.LeagueRoundServiceClient>(options =>
-{
-    options.Address = new Uri(Environment.GetEnvironmentVariable("SportsDataService__Address"));
-});
+builder.Services.AddSportsDataGrpcClient();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
