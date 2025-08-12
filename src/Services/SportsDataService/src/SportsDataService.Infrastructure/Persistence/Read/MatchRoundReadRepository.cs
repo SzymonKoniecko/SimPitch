@@ -5,11 +5,11 @@ using SportsDataService.Domain.Interfaces.Read;
 
 namespace SportsDataService.Infrastructure.Persistence.Read;
 
-public class RealMatchResultReadRepository : IRealMatchResultReadRepository
+public class MatchRoundReadRepository : IMatchRoundReadRepository
 {
     private readonly IDbConnectionFactory _DbConnectionFactory;
 
-    public RealMatchResultReadRepository(IDbConnectionFactory dbConnectionFactory)
+    public MatchRoundReadRepository(IDbConnectionFactory dbConnectionFactory)
     {
         if (dbConnectionFactory == null)
         {
@@ -19,23 +19,23 @@ public class RealMatchResultReadRepository : IRealMatchResultReadRepository
         _DbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<List<RealMatchResult>> GetRealMatchResultsByRoundIdAsync(Guid roundId, CancellationToken cancellationToken)
+    public async Task<List<MatchRound>> GetMatchRoundsByRoundIdAsync(Guid roundId, CancellationToken cancellationToken)
     {
         using var connection = _DbConnectionFactory.CreateConnection();
-        const string sql = "SELECT * FROM RealMatchResult WHERE RoundId = @roundId";
+        const string sql = "SELECT * FROM MatchRound WHERE RoundId = @roundId";
 
         var command = new CommandDefinition(
             commandText: sql,
             parameters: new { RoundId = roundId }
         );
 
-        var realMatchResults = await connection.ExecuteScalarAsync<List<RealMatchResult>>(command);
+        var MatchRounds = await connection.ExecuteScalarAsync<List<MatchRound>>(command);
 
-        if (realMatchResults == null)
+        if (MatchRounds == null)
         {
-            throw new KeyNotFoundException($"RealMatchResults with roundId '{roundId}' was not found.");
+            throw new KeyNotFoundException($"MatchRounds with roundId '{roundId}' was not found.");
         }
 
-        return realMatchResults;
+        return MatchRounds;
     }
 }

@@ -1,11 +1,8 @@
 using System;
 
-namespace SportsDataService.Domain.Entities;
-/// <summary>
-/// Represents the real match resuls of rounds in given league
-/// Used to predict power of team
-/// </summary>
-public class RealMatchResult
+namespace SportsDataService.Application.DTOs;
+
+public class MatchRoundDto
 {
     public Guid Id { get; set; }
     public Guid RoundId { get; set; }
@@ -14,4 +11,5 @@ public class RealMatchResult
     public int HomeGoals { get; set; }
     public int AwayGoals { get; set; }
     public bool IsDraw { get; set; }
+    public bool IsPlayed { get; set; }
 }

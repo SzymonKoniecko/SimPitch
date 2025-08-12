@@ -5,11 +5,11 @@ using SportsDataService.Domain.Entities;
 
 namespace SportsDataService.API.Mappers;
 
-public static class RealMatchResultMapper
+public static class MatchRoundMapper
 {
-    public static RealMatchResultGrpc ToProto(RealMatchResultDto dto)
+    public static MatchRoundGrpc ToProto(MatchRoundDto dto)
     {
-        var grpc = new RealMatchResultGrpc();
+        var grpc = new MatchRoundGrpc();
         dto.Id = dto.Id;
         dto.RoundId = dto.RoundId;
         dto.HomeTeamId = dto.HomeTeamId;

@@ -4,11 +4,11 @@ using SportsDataService.Domain.Entities;
 
 namespace SportsDataService.Application.Mappers;
 
-public static class RealMatchResultMapper
+public static class MatchRoundMapper
 {
-    public static RealMatchResultDto ToDto(RealMatchResult entity)
+    public static MatchRoundDto ToDto(MatchRound entity)
     {
-        var dto = new RealMatchResultDto();
+        var dto = new MatchRoundDto();
         dto.Id = entity.Id;
         dto.RoundId = entity.RoundId;
         dto.HomeTeamId = entity.HomeTeamId;
@@ -16,10 +16,11 @@ public static class RealMatchResultMapper
         dto.HomeGoals = entity.HomeGoals;
         dto.AwayGoals = entity.AwayGoals;
         dto.IsDraw = entity.IsDraw;
+        dto.IsPlayed = entity.IsPlayed;
 
         return dto;
     }
-    public static IEnumerable<RealMatchResultDto> ListToDtos(List<RealMatchResult> entityList)
+    public static IEnumerable<MatchRoundDto> ListToDtos(List<MatchRound> entityList)
     {
         return entityList.Select(x => ToDto(x));
     }
