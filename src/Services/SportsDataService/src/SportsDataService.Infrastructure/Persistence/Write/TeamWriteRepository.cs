@@ -18,8 +18,8 @@ public class TeamWriteRepository : ITeamWriteRepository
         using var connection = _connectionFactory.CreateConnection();
         const string sql = @"
             INSERT INTO SportsDataDb.dbo.Team
-                (Id, Name, CountryId, StadiumId, LeagueId, LogoUrl, ShortName, Sport)
-                VALUES(@Id, @Name, @CountryId, @StadiumId, @LeagueId, @LogoUrl, @ShortName, @Sport);
+                (Id, Name, CountryId, StadiumId, LeagueId, LogoUrl, ShortName)
+                VALUES(@Id, @Name, @CountryId, @StadiumId, @LeagueId, @LogoUrl, @ShortName);
         ";
 
         // Upewniamy się, że Id jest ustawione
@@ -36,8 +36,7 @@ public class TeamWriteRepository : ITeamWriteRepository
                 team.StadiumId,
                 team.LeagueId,
                 team.LogoUrl,
-                team.ShortName,
-                team.Sport
+                team.ShortName
             },
             cancellationToken: cancellationToken
         );

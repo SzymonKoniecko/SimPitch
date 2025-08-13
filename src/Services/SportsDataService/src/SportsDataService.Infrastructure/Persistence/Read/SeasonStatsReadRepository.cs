@@ -5,11 +5,11 @@ using SportsDataService.Domain.Interfaces.Read;
 
 namespace SportsDataService.Infrastructure.Persistence.Read;
 
-public class FootballSeasonStatsReadRepository : IFootballSeasonStatsReadRepository
+public class SeasonStatsReadRepository : ISeasonStatsReadRepository
 {
     private readonly IDbConnectionFactory _DbConnectionFactory;
 
-    public FootballSeasonStatsReadRepository(IDbConnectionFactory dbConnectionFactory)
+    public SeasonStatsReadRepository(IDbConnectionFactory dbConnectionFactory)
     {
         if (dbConnectionFactory == null)
         {
@@ -18,10 +18,10 @@ public class FootballSeasonStatsReadRepository : IFootballSeasonStatsReadReposit
 
         _DbConnectionFactory = dbConnectionFactory;
     }
-    public async Task<FootballSeasonStats> GetSeasonStatsByIdAsync(Guid seasonStatsId, CancellationToken cancellationToken)
+    public async Task<SeasonStats> GetSeasonStatsByIdAsync(Guid seasonStatsId, CancellationToken cancellationToken)
     {
         using var connection = _DbConnectionFactory.CreateConnection();
-        const string sql = "SELECT * FROM FootballSeasonStats WHERE Id = @Id";
+        const string sql = "SELECT * FROM SeasonStats WHERE Id = @Id";
 
         var command = new CommandDefinition(
             commandText: sql,
@@ -30,25 +30,25 @@ public class FootballSeasonStatsReadRepository : IFootballSeasonStatsReadReposit
 
         );
 
-        var stats = await connection.QueryFirstOrDefaultAsync<FootballSeasonStats>(command);
+        var stats = await connection.QueryFirstOrDefaultAsync<SeasonStats>(command);
 
         if (stats == null)
         {
-            throw new KeyNotFoundException($"FootballSeasonStats with Id '{seasonStatsId}' was not found.");
+            throw new KeyNotFoundException($"SeasonStats with Id '{seasonStatsId}' was not found.");
         }
 
         return stats;
     }
-    public async Task<IEnumerable<FootballSeasonStats>> GetAllSeasonStatsAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<SeasonStats>> GetAllSeasonStatsAsync(CancellationToken cancellationToken)
     {
         using var connection = _DbConnectionFactory.CreateConnection();
-        const string sql = "SELECT * FROM FootballSeasonStats ORDER BY Season";
+        const string sql = "SELECT * FROM SeasonStats ORDER BY Season";
 
         var command = new CommandDefinition(
             commandText: sql,
             cancellationToken: cancellationToken
         );
 
-        return await connection.QueryAsync<FootballSeasonStats>(command);
+        return await connection.QueryAsync<SeasonStats>(command);
     }
 }

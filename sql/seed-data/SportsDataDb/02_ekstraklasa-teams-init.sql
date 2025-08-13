@@ -78,26 +78,26 @@ BEGIN TRY
         (@StadiumId17, 'Stadion Sportowy BRUK-BET Termalica Nieciecza', 2262, @CurrentDateTime, @CurrentDateTime),
         (@StadiumId18, 'Stadion Miejski w Gdyni', 15139, @CurrentDateTime, @CurrentDateTime);
 
-    INSERT INTO dbo.Team (Id, [Name], CountryId, StadiumId, LeagueId, LogoUrl, ShortName, Sport)
+    INSERT INTO dbo.Team (Id, [Name], CountryId, StadiumId, LeagueId, LogoUrl, ShortName)
     VALUES
-        (@TeamId1, 'Jagiellonia Białystok', @CountryId, @StadiumId1, @LeagueId, '/wikipedia/commons/thumb/e/e8/Jagiellonia_Białystok_Logo_1.png/250px-Jagiellonia_Białystok_Logo_1.png', 'JAG', 'Football'),
-        (@TeamId2, 'Legia Warsaw', @CountryId, @StadiumId2, @LeagueId, '/wikipedia/commons/thumb/f/fa/Legia_Warszawa.png/250px-Legia_Warszawa.png', 'LEG', 'Football'),
-        (@TeamId3, 'Lech Poznań', @CountryId, @StadiumId3, @LeagueId, '/wikipedia/commons/thumb/f/ff/Lech_Poznań_logo.png/250px-Lech_Poznań_logo.png', 'LEC', 'Football'),
-        (@TeamId4, 'Widzew Łódź', @CountryId, @StadiumId4, @LeagueId, '/wikipedia/commons/thumb/f/fd/Herb_Widzew_Łódź.png/250px-Herb_Widzew_Łódź.png', 'WID', 'Football'),
-        (@TeamId5, 'Raków Częstochowa', @CountryId, @StadiumId5, @LeagueId, '/wikipedia/commons/thumb/a/af/Rks_rakow_crest_ai.svg/250px-Rks_rakow_crest_ai.svg.png', 'RAK', 'Football'),
-        (@TeamId6, 'Pogoń Szczecin', @CountryId, @StadiumId6, @LeagueId, 'http://example.com/pogon.png', 'POG', 'Football'),
-        (@TeamId7, 'Cracovia', @CountryId, @StadiumId7, @LeagueId, 'arka.png', 'CRA', 'Football'),
-        (@TeamId8, 'Górnik Zabrze', @CountryId, @StadiumId8, @LeagueId, '/wikipedia/commons/thumb/d/d9/Gornik_Zabrze.png/250px-Gornik_Zabrze.png', 'GOR', 'Football'),
-        (@TeamId9, 'Wisła Płock', @CountryId, @StadiumId9, @LeagueId, '/wikipedia/commons/0/0e/Wisla_P%C5%82ock.png', 'WPŁ', 'Football'),
-        (@TeamId10, 'Lechia Gdańsk', @CountryId, @StadiumId10, @LeagueId, '/wikipedia/commons/thumb/2/2b/LechiaGdanskBadge2001.jpg/250px-LechiaGdanskBadge2001.jpg', 'LEH', 'Football'),
-        (@TeamId11, 'Radomiak Radom', @CountryId, @StadiumId11, @LeagueId, '/wikipedia/commons/thumb/2/2b/Herb_radomiaka_300dpi.png/250px-Herb_radomiaka_300dpi.png', 'RAD', 'Football'),
-        (@TeamId12, 'Motor Lublin', @CountryId, @StadiumId12, @LeagueId, '/wikipedia/commons/thumb/3/3d/Motor_Lublin_S.A._Oficjalny_Herb.png/250px-Motor_Lublin_S.A._Oficjalny_Herb.png', 'MOT', 'Football'),
-        (@TeamId13, 'GKS Katowice', @CountryId, @StadiumId13, @LeagueId, 'http://example.com/gks.png', 'GKS', 'Football'),
-        (@TeamId14, 'Zagłębie Lubin', @CountryId, @StadiumId14, @LeagueId, '/wikipedia/commons/thumb/e/e5/Staion_Zaglebie_Lubin.jpg/250px-Staion_Zaglebie_Lubin.jpg', 'ZAG', 'Football'),
-        (@TeamId15, 'Korona Kielce', @CountryId, @StadiumId15, @LeagueId, '/wikipedia/commons/thumb/2/2b/Stadion_Kielce_przed_meczem_Polska_-_Armenia.jpg/250px-Stadion_Kielce_przed_meczem_Polska_-_Armenia.jpg', 'KOR', 'Football'),
-        (@TeamId16, 'Piast Gliwice', @CountryId, @StadiumId16, @LeagueId, '/wikipedia/commons/thumb/f/f5/Stadion_Piasta_Gliwice_05.JPG/250px-Stadion_Piasta_Gliwice_05.JPG', 'PIA', 'Football'),
-        (@TeamId17, 'Bruk-Bet Termalica Nieciecza', @CountryId, @StadiumId17, @LeagueId, '/wikipedia/commons/thumb/8/84/KS_Nieciecza_herb.jpg/250px-KS_Nieciecza_herb.jpg', 'BBT', 'Football'),
-        (@TeamId18, 'Arka Gdynia', @CountryId, @StadiumId18, @LeagueId, 'http://example.com/arka.png', 'ARK', 'Football');
+        (@TeamId1, 'Jagiellonia Białystok', @CountryId, @StadiumId1, @LeagueId, '/wikipedia/commons/thumb/e/e8/Jagiellonia_Białystok_Logo_1.png/250px-Jagiellonia_Białystok_Logo_1.png', 'JAG'),
+        (@TeamId2, 'Legia Warsaw', @CountryId, @StadiumId2, @LeagueId, '/wikipedia/commons/thumb/f/fa/Legia_Warszawa.png/250px-Legia_Warszawa.png', 'LEG'),
+        (@TeamId3, 'Lech Poznań', @CountryId, @StadiumId3, @LeagueId, '/wikipedia/commons/thumb/f/ff/Lech_Poznań_logo.png/250px-Lech_Poznań_logo.png', 'LEC'),
+        (@TeamId4, 'Widzew Łódź', @CountryId, @StadiumId4, @LeagueId, '/wikipedia/commons/thumb/f/fd/Herb_Widzew_Łódź.png/250px-Herb_Widzew_Łódź.png', 'WID'),
+        (@TeamId5, 'Raków Częstochowa', @CountryId, @StadiumId5, @LeagueId, '/wikipedia/commons/thumb/a/af/Rks_rakow_crest_ai.svg/250px-Rks_rakow_crest_ai.svg.png', 'RAK'),
+        (@TeamId6, 'Pogoń Szczecin', @CountryId, @StadiumId6, @LeagueId, 'http://example.com/pogon.png', 'POG'),
+        (@TeamId7, 'Cracovia', @CountryId, @StadiumId7, @LeagueId, 'arka.png', 'CRA'),
+        (@TeamId8, 'Górnik Zabrze', @CountryId, @StadiumId8, @LeagueId, '/wikipedia/commons/thumb/d/d9/Gornik_Zabrze.png/250px-Gornik_Zabrze.png', 'GOR'),
+        (@TeamId9, 'Wisła Płock', @CountryId, @StadiumId9, @LeagueId, '/wikipedia/commons/0/0e/Wisla_P%C5%82ock.png', 'WPŁ'),
+        (@TeamId10, 'Lechia Gdańsk', @CountryId, @StadiumId10, @LeagueId, '/wikipedia/commons/thumb/2/2b/LechiaGdanskBadge2001.jpg/250px-LechiaGdanskBadge2001.jpg', 'LEH'),
+        (@TeamId11, 'Radomiak Radom', @CountryId, @StadiumId11, @LeagueId, '/wikipedia/commons/thumb/2/2b/Herb_radomiaka_300dpi.png/250px-Herb_radomiaka_300dpi.png', 'RAD'),
+        (@TeamId12, 'Motor Lublin', @CountryId, @StadiumId12, @LeagueId, '/wikipedia/commons/thumb/3/3d/Motor_Lublin_S.A._Oficjalny_Herb.png/250px-Motor_Lublin_S.A._Oficjalny_Herb.png', 'MOT'),
+        (@TeamId13, 'GKS Katowice', @CountryId, @StadiumId13, @LeagueId, 'http://example.com/gks.png', 'GKS'),
+        (@TeamId14, 'Zagłębie Lubin', @CountryId, @StadiumId14, @LeagueId, '/wikipedia/commons/thumb/e/e5/Staion_Zaglebie_Lubin.jpg/250px-Staion_Zaglebie_Lubin.jpg', 'ZAG'),
+        (@TeamId15, 'Korona Kielce', @CountryId, @StadiumId15, @LeagueId, '/wikipedia/commons/thumb/2/2b/Stadion_Kielce_przed_meczem_Polska_-_Armenia.jpg/250px-Stadion_Kielce_przed_meczem_Polska_-_Armenia.jpg', 'KOR'),
+        (@TeamId16, 'Piast Gliwice', @CountryId, @StadiumId16, @LeagueId, '/wikipedia/commons/thumb/f/f5/Stadion_Piasta_Gliwice_05.JPG/250px-Stadion_Piasta_Gliwice_05.JPG', 'PIA'),
+        (@TeamId17, 'Bruk-Bet Termalica Nieciecza', @CountryId, @StadiumId17, @LeagueId, '/wikipedia/commons/thumb/8/84/KS_Nieciecza_herb.jpg/250px-KS_Nieciecza_herb.jpg', 'BBT'),
+        (@TeamId18, 'Arka Gdynia', @CountryId, @StadiumId18, @LeagueId, 'http://example.com/arka.png', 'ARK');
 
     COMMIT TRANSACTION
     PRINT 'Ekstraklasa stadiums and teams for 2025/2026 season inserted successfully.'

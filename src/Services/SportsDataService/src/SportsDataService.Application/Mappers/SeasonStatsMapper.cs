@@ -4,7 +4,7 @@ namespace SportsDataService.Application.Mappers;
 
 public static class FootballSeasonStatsMapper
 {
-    public static Domain.Entities.FootballSeasonStats ToDomain(this Application.DTOs.FootballSeasonStatsDto dto)
+    public static Domain.Entities.FootballSeasonStats ToDomain(this Application.DTOs.SeasonStatsDto dto)
     {
         if (dto == null) return null;
 
@@ -25,11 +25,11 @@ public static class FootballSeasonStatsMapper
         };
     }
 
-    public static Application.DTOs.FootballSeasonStatsDto ToDto(this Domain.Entities.FootballSeasonStats entity)
+    public static Application.DTOs.SeasonStatsDto ToDto(this Domain.Entities.FootballSeasonStats entity)
     {
         if (entity == null) return null;
 
-        return new Application.DTOs.FootballSeasonStatsDto
+        return new Application.DTOs.SeasonStatsDto
         {
             Id = entity.Id,
             TeamId = entity.TeamId,

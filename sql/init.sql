@@ -78,8 +78,7 @@ BEGIN
         StadiumId UNIQUEIDENTIFIER NULL FOREIGN KEY REFERENCES Stadium(Id),
         LeagueId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES League(Id),
         LogoUrl NVARCHAR(1024) NULL,
-        ShortName NVARCHAR(100) NULL,
-        Sport NVARCHAR(100) NULL
+        ShortName NVARCHAR(100) NULL
     );
 END
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FootballSeasonStats' AND xtype='U')

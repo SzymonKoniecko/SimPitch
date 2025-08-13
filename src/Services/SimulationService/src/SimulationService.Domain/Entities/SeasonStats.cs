@@ -1,9 +1,9 @@
 using System;
-using SportsDataService.Domain.Enums;
+using SimulationService.Domain.Enums;
 
-namespace SportsDataService.Domain.Entities;
+namespace SimulationService.Domain.Entities;
 
-public class FootballSeasonStats
+public class SeasonStats
 {
     public Guid Id { get; set; }
     public Guid TeamId { get; set; }
@@ -19,4 +19,6 @@ public class FootballSeasonStats
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public override string ToString() => $"Team ID: {TeamId}, Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, Goals For: {GoalsFor}, Goals Against: {GoalsAgainst}";
+
+    public int GetGoalsDifference() => GoalsFor - GoalsAgainst;
 }

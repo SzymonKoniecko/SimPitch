@@ -2,7 +2,7 @@ using System;
 
 namespace SportsDataService.Application.DTOs;
 
-public class FootballSeasonStatsDto
+public class SeasonStatsDto
 {
     public Guid Id { get; set; }
     public Guid TeamId { get; set; }

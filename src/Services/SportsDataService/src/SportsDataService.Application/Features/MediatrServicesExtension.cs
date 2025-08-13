@@ -32,7 +32,7 @@ public static class MediatrServicesExtension
         // Queries
         services.AddMediatR(typeof(GetAllCountriesQuery).Assembly);
         services.AddMediatR(typeof(GetCountryByIdQuery).Assembly);
-        services.AddMediatR(typeof(GetFootballSeasonStatsByIdQuery).Assembly);
+        services.AddMediatR(typeof(GetSeasonStatsByIdQuery).Assembly);
         services.AddMediatR(typeof(GetAllLeaguesQuery).Assembly);
         services.AddMediatR(typeof(GetLeagueByIdQuery).Assembly);
         services.AddMediatR(typeof(GetAllStadiumsQuery).Assembly);

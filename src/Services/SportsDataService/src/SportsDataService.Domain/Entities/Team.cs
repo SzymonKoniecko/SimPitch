@@ -11,5 +11,4 @@ public class Team
     public Guid LeagueId { get; set; }
     public string LogoUrl { get; set; } = string.Empty;
     public string ShortName { get; set; } = string.Empty;
-    public SportEnum Sport { get; set; }
 }
