@@ -3,11 +3,11 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SportsDataService.Application.Features.Country.Queries.GetAllCountries;
 using SportsDataService.Application.Features.Country.Queries.GetCountryById;
-using SportsDataService.Application.Features.FootballSeasonStats.Queries.GetFootballSeasonStatsById;
 using SportsDataService.Application.Features.League.Queries.GetAllLeagues;
 using SportsDataService.Application.Features.League.Queries.GetLeagueById;
 using SportsDataService.Application.Features.LeagueRound.Queries.GetAllLeagueRoundsByParams;
 using SportsDataService.Application.Features.MatchRound.Queries.GetMatchRoundsByRoundId;
+using SportsDataService.Application.Features.SeasonStats.Queries.GetSeasonStatsById;
 using SportsDataService.Application.Features.Stadium.Commands.CreateStadium;
 using SportsDataService.Application.Features.Stadium.Queries.GetAllStadiums;
 using SportsDataService.Application.Features.Stadium.Queries.GetStadiumById;
@@ -46,7 +46,7 @@ public static class MediatrServicesExtension
         // Query Handlers
         services.AddMediatR(typeof(GetAllCountriesHandler).Assembly);
         services.AddMediatR(typeof(GetCountryByIdHandler).Assembly);
-        services.AddMediatR(typeof(GetFootballSeasonStatsByIdHandler).Assembly);
+        services.AddMediatR(typeof(GetSeasonStatsByIdHandler).Assembly);
         services.AddMediatR(typeof(GetAllLeaguesHandler).Assembly);
         services.AddMediatR(typeof(GetLeagueByIdHandler).Assembly);
         services.AddMediatR(typeof(GetAllStadiumsHandler).Assembly);

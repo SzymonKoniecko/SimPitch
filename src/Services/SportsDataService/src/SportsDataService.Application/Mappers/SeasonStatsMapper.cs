@@ -2,13 +2,13 @@ using System;
 
 namespace SportsDataService.Application.Mappers;
 
-public static class FootballSeasonStatsMapper
+public static class SeasonStatsMapper
 {
-    public static Domain.Entities.FootballSeasonStats ToDomain(this Application.DTOs.SeasonStatsDto dto)
+    public static Domain.Entities.SeasonStats ToDomain(this Application.DTOs.SeasonStatsDto dto)
     {
         if (dto == null) return null;
 
-        return new Domain.Entities.FootballSeasonStats
+        return new Domain.Entities.SeasonStats
         {
             Id = dto.Id,
             TeamId = dto.TeamId,
@@ -25,7 +25,7 @@ public static class FootballSeasonStatsMapper
         };
     }
 
-    public static Application.DTOs.SeasonStatsDto ToDto(this Domain.Entities.FootballSeasonStats entity)
+    public static Application.DTOs.SeasonStatsDto ToDto(this Domain.Entities.SeasonStats entity)
     {
         if (entity == null) return null;
 

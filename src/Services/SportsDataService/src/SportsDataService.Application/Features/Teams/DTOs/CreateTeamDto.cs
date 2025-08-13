@@ -1,6 +1,6 @@
 using SportsDataService.Domain.Enums;
 
-namespace SportsDataService.Application.DTOs.Feature
+namespace SportsDataService.Application.Teams.DTOs
 {
     public class CreateTeamDto
     {

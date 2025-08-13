@@ -6,8 +6,8 @@ public class LeagueDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string Sport { get; set; } = string.Empty;
     public Guid CountryId { get; set; } = Guid.Empty;
+    public int MaxRound { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

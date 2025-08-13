@@ -1,5 +1,5 @@
 using System;
-using SportsDataService.Application.DTOs.Feature;
+using SportsDataService.Application.DTOs;
 using SportsDataService.Application.Features.Stadium.Commands.CreateStadium;
 using SportsDataService.Domain.Entities;
 
@@ -7,11 +7,11 @@ namespace SportsDataService.Application.Mappers;
 
 public static class StadiumMapper
 {
-    public static Domain.Entities.Stadium ToDomain(this Application.DTOs.StadiumDto dto)
+    public static Stadium ToDomain(this StadiumDto dto)
     {
         if (dto == null) return null;
 
-        return new Domain.Entities.Stadium
+        return new Stadium
         {
             Id = dto.Id,
             Name = dto.Name,
@@ -21,11 +21,11 @@ public static class StadiumMapper
         };
     }
 
-    public static Application.DTOs.StadiumDto ToDto(this Domain.Entities.Stadium entity)
+    public static StadiumDto ToDto(this Stadium entity)
     {
         if (entity == null) return null;
 
-        return new Application.DTOs.StadiumDto
+        return new StadiumDto
         {
             Id = entity.Id,
             Name = entity.Name,

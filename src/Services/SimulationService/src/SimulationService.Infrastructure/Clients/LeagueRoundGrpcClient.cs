@@ -15,14 +15,14 @@ public class LeagueRoundGrpcClient : ILeagueRoundGrpcClient
         _leagueRoundClient = leagueRoundClient;
     }
 
-    public async Task<List<LeagueRoundDto>> GetAllLeagueRoundsByParams(string seasonYear, int? round, Guid? leagueRoundId, CancellationToken cancellationToken)
+    public async Task<List<LeagueRoundDto>> GetAllLeagueRoundsByParams(LeagueRoundDtoRequest request, CancellationToken cancellationToken)
     {
-        var request = new LeagueRoundsByParamsRequest();
-        request.SeasonYear = seasonYear;
-        request.Round = round ?? 0;
-        request.LeagueRoundId = leagueRoundId.ToString() ?? "";
+        var grpcRequest = new LeagueRoundsByParamsRequest();
+        grpcRequest.SeasonYear = request.SeasonYear;
+        grpcRequest.Round = request.Round;
+        grpcRequest.LeagueRoundId = request.LeagueRoundId.ToString() ?? "";
 
-        var response = await _leagueRoundClient.GetAllLeagueRoundsByParamsAsync(request, cancellationToken: cancellationToken);
+        var response = await _leagueRoundClient.GetAllLeagueRoundsByParamsAsync(grpcRequest, cancellationToken: cancellationToken);
 
         var result = new List<LeagueRoundDto>();
         result.AddRange(response.LeagueRounds?.Select(lr => ProtoToDto(lr)));

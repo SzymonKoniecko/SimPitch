@@ -15,11 +15,11 @@ public class GetAllLeagueRoundsByParamsHandler : IRequestHandler<GetAllLeagueRou
     }
     public async Task<IEnumerable<LeagueRoundDto>> Handle(GetAllLeagueRoundsByParamsQuery request, CancellationToken cancellationToken)
     {
-        IEnumerable<LeagueRoundDto> leagueRoundDtos = LeagueRoundMapper.ListToDtos(await _leagueRoundReadRepository.GetLeagueRoundsBySeasonYearAsync(request.seasonYear, cancellationToken));
+        IEnumerable<LeagueRoundDto> leagueRoundDtos = LeagueRoundMapper.ListToDtos(await _leagueRoundReadRepository.GetLeagueRoundsBySeasonYearAsync(request.leagueRoundFilterDto.SeasonYear, cancellationToken));
 
         return leagueRoundDtos.Where(r =>
-            (!request.round.HasValue || r.Round == request.round) &&
-            (!request.leagueRoundId.HasValue || r.LeagueId == request.leagueRoundId)
+            (request.leagueRoundFilterDto.Round > 0 || r.Round == request.leagueRoundFilterDto.Round) &&
+            (request.leagueRoundFilterDto.LeagueRoundId != Guid.Empty || r.LeagueId == request.leagueRoundFilterDto.LeagueRoundId)
         );
     }
 }

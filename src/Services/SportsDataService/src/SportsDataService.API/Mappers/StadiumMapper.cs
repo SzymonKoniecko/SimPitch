@@ -3,7 +3,7 @@ using SportsDataService.Domain.Entities;
 using SimPitchProtos.SportsDataService.Team;
 using SimPitchProtos.SportsDataService.Stadium;
 using SimPitchProtos.SportsDataService;
-using SportsDataService.Application.DTOs.Feature;
+using SportsDataService.Application.Stadiums.DTOs;
 public static class StadiumMapper
 {
     public static StadiumDto ToDto(this Stadium stadium)

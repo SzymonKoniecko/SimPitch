@@ -1,6 +1,6 @@
 using System;
 
-namespace SportsDataService.Application.DTOs.Feature;
+namespace SportsDataService.Application.Stadiums.DTOs;
 
 public class CreateStadiumDto
 {

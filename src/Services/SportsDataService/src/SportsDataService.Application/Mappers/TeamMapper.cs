@@ -1,5 +1,5 @@
 using SportsDataService.Application.DTOs;
-using SportsDataService.Application.DTOs.Feature;
+using SportsDataService.Application.Teams.DTOs;
 using SportsDataService.Domain.Entities;
 namespace SportsDataService.Application.Mappers;
 
@@ -17,8 +17,7 @@ public static class TeamMapper
             StadiumId = dto.Stadium.Id,
             LeagueId = dto.League.Id,
             LogoUrl = dto.LogoUrl,
-            ShortName = dto.ShortName,
-            Sport = dto.Sport
+            ShortName = dto.ShortName
         };
     }
 

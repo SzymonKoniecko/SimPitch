@@ -4,5 +4,5 @@ namespace SimulationService.Application.Interfaces;
 
 public interface ILeagueRoundGrpcClient
 {
-    public Task<List<LeagueRoundDto>> GetAllLeagueRoundsByParams(string seasonYear, int? round, Guid? leagueRoundId, CancellationToken cancellationToken);
+    public Task<List<LeagueRoundDto>> GetAllLeagueRoundsByParams(LeagueRoundDtoRequest request, CancellationToken cancellationToken);
 }

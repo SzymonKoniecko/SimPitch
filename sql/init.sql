@@ -51,7 +51,6 @@ BEGIN
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         [Name] NVARCHAR(255) NOT NULL,
         CountryId UNIQUEIDENTIFIER NOT NULL,
-        [Sport] NVARCHAR(255) NOT NULL,
         MaxRound INT NOT NULL,
         CreatedAt DATETIME2 NOT NULL,
         UpdatedAt DATETIME2 NOT NULL,
@@ -81,7 +80,7 @@ BEGIN
         ShortName NVARCHAR(100) NULL
     );
 END
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FootballSeasonStats' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SeasonStats' AND xtype='U')
 BEGIN
     CREATE TABLE dbo.FootballSeasonStats
     (

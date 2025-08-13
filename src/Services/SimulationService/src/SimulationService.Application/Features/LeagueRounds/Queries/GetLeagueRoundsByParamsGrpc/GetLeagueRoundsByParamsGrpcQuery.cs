@@ -4,4 +4,4 @@ using SimulationService.Application.Features.LeagueRounds.DTOs;
 
 namespace SimulationService.Application.Features.LeagueRounds.Queries.GetLeagueRoundsByParamsGrpc;
 
-public record GetLeagueRoundsByParamsGrpcQuery(string seasonYear, int? round, Guid? leagueRoundId) : IRequest<List<LeagueRoundDto>>;
+public record GetLeagueRoundsByParamsGrpcQuery(LeagueRoundDtoRequest leagueRoundDtoRequest) : IRequest<List<LeagueRoundDto>>;

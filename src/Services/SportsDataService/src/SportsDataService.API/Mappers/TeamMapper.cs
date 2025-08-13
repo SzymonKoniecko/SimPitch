@@ -1,7 +1,7 @@
 using SportsDataService.Application.DTOs;
 using SimPitchProtos.SportsDataService.Team;
 using SimPitchProtos.SportsDataService;
-using SportsDataService.Application.DTOs.Feature;
+using SportsDataService.Application.Teams.DTOs;
 
 namespace SportsDataService.API.Mappers;
 

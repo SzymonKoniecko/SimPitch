@@ -9,6 +9,6 @@ public class SeasonStatsService : ISeasonStatsService
 {
     public async Task<SeasonStats> CalculateSeasonStatsForCurrentSeasonAsync(SeasonEnum seasonEnum)
     {
-
+        return null;
     }
 }

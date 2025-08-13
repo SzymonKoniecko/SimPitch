@@ -21,6 +21,6 @@ public class GetLeagueRoundsByParamsGrpcHandler : IRequestHandler<GetLeagueRound
     )
     {
         return await _leagueRoundGrpcClient
-            .GetAllLeagueRoundsByParams(request.seasonYear, request.round, request.leagueRoundId, cancellationToken);
+            .GetAllLeagueRoundsByParams(request.leagueRoundDtoRequest, cancellationToken);
     }
 }
