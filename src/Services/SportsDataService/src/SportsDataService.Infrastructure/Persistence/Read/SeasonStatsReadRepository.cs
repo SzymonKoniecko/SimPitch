@@ -18,26 +18,27 @@ public class SeasonStatsReadRepository : ISeasonStatsReadRepository
 
         _DbConnectionFactory = dbConnectionFactory;
     }
-    public async Task<SeasonStats> GetSeasonStatsByIdAsync(Guid seasonStatsId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<SeasonStats>> GetSeasonsStatsByTeamIdAsync(Guid teamId, CancellationToken cancellationToken)
     {
         using var connection = _DbConnectionFactory.CreateConnection();
-        const string sql = "SELECT * FROM SeasonStats WHERE Id = @Id";
+        const string sql = "SELECT * FROM SeasonStats WHERE TeamId = @teamId";
 
         var command = new CommandDefinition(
             commandText: sql,
-            parameters: new { Id = seasonStatsId },
+            parameters: new { TeamId = teamId },
             cancellationToken: cancellationToken
 
         );
 
-        var stats = await connection.QueryFirstOrDefaultAsync<SeasonStats>(command);
+        var stats = await connection.QueryAsync<SeasonStats>(command);
 
-        if (stats == null)
+        if (stats == null || !stats.Any())
         {
-            throw new KeyNotFoundException($"SeasonStats with Id '{seasonStatsId}' was not found.");
+            throw new KeyNotFoundException($"SeasonStats with TeamId '{teamId}' was not found.");
         }
 
         return stats;
+
     }
     public async Task<IEnumerable<SeasonStats>> GetAllSeasonStatsAsync(CancellationToken cancellationToken)
     {

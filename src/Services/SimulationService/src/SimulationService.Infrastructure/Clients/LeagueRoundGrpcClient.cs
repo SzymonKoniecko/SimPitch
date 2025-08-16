@@ -17,10 +17,15 @@ public class LeagueRoundGrpcClient : ILeagueRoundGrpcClient
 
     public async Task<List<LeagueRoundDto>> GetAllLeagueRoundsByParams(LeagueRoundDtoRequest request, CancellationToken cancellationToken)
     {
-        var grpcRequest = new LeagueRoundsByParamsRequest();
-        grpcRequest.SeasonYear = request.SeasonYear;
-        grpcRequest.Round = request.Round;
-        grpcRequest.LeagueRoundId = request.LeagueRoundId.ToString() ?? "";
+    var grpcRequest = new LeagueRoundsByParamsRequest
+    {
+        SeasonYear = request.SeasonYear
+    };
+    
+    if (request.Round != 0)
+            grpcRequest.Round = request.Round;
+    if (request.LeagueRoundId != Guid.Empty)
+        grpcRequest.LeagueRoundId = request.LeagueRoundId.ToString();
 
         var response = await _leagueRoundClient.GetAllLeagueRoundsByParamsAsync(grpcRequest, cancellationToken: cancellationToken);
 

@@ -37,10 +37,10 @@ public class GetTeamByIdHandler : IRequestHandler<GetTeamByIdQuery, TeamDto>
         if (stadium is null)
             throw new KeyNotFoundException($"Stadium with Id '{team.StadiumId}' was not found.");
 
-        var league = await leagueRepository.GetLeagueByIdAsync(team.LeagueId, cancellationToken);
-        if (league is null)
+        var leagues = await leagueRepository.GetAllLeaguesAsync(cancellationToken);
+        if (leagues is null)
             throw new KeyNotFoundException($"League with Id '{team.LeagueId}' was not found.");
         
-        return TeamMapper.ToDto(team, country, stadium, league);
+        return TeamMapper.ToDto(team, country, stadium, leagues?.FirstOrDefault(l => l.Id == team.Id));
     }
 }

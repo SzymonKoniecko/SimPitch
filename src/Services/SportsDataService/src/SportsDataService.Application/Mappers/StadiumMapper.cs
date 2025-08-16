@@ -15,9 +15,7 @@ public static class StadiumMapper
         {
             Id = dto.Id,
             Name = dto.Name,
-            Capacity = dto.Capacity,
-            CreatedAt = dto.CreatedAt,
-            UpdatedAt = dto.UpdatedAt
+            Capacity = dto.Capacity
         };
     }
 
@@ -29,9 +27,7 @@ public static class StadiumMapper
         {
             Id = entity.Id,
             Name = entity.Name,
-            Capacity = entity.Capacity,
-            CreatedAt = entity.CreatedAt,
-            UpdatedAt = entity.UpdatedAt
+            Capacity = entity.Capacity
         };
     }
 }

@@ -15,8 +15,6 @@ public class SeasonStats
     public int Draws { get; set; }
     public int GoalsFor { get; set; }
     public int GoalsAgainst { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public override string ToString() => $"Team ID: {TeamId}, Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, Goals For: {GoalsFor}, Goals Against: {GoalsAgainst}";
 

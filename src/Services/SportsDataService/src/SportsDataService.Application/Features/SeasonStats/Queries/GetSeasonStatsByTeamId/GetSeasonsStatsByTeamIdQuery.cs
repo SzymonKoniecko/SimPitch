@@ -4,4 +4,4 @@ using SportsDataService.Application.DTOs;
 
 namespace SportsDataService.Application.Features.SeasonStats.Queries.GetSeasonStatsById;
 
-public record GetSeasonStatsByIdQuery(Guid seasonStatsId) : IRequest<SeasonStatsDto>;
+public record GetSeasonsStatsByTeamIdQuery(Guid teamId) : IRequest<IEnumerable<SeasonStatsDto>>;

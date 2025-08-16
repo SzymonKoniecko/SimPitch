@@ -12,16 +12,14 @@ public static class SeasonStatsMapper
         {
             Id = dto.Id,
             TeamId = dto.TeamId,
-            SeasonYear = (Domain.Enums.SeasonEnum)dto.SeasonYear,
+            SeasonYear = EnumMapper.SeasonEnumToString(dto.SeasonYear),
             LeagueId = dto.LeagueId,
             MatchesPlayed = dto.MatchesPlayed,
             Wins = dto.Wins,
             Losses = dto.Losses,
             Draws = dto.Draws,
             GoalsFor = dto.GoalsFor,
-            GoalsAgainst = dto.GoalsAgainst,
-            CreatedAt = dto.CreatedAt,
-            UpdatedAt = dto.UpdatedAt
+            GoalsAgainst = dto.GoalsAgainst
         };
     }
 
@@ -33,16 +31,14 @@ public static class SeasonStatsMapper
         {
             Id = entity.Id,
             TeamId = entity.TeamId,
-            SeasonYear = (int)entity.SeasonYear,
+            SeasonYear = EnumMapper.StringtoSeasonEnum(entity.SeasonYear),
             LeagueId = entity.LeagueId,
             MatchesPlayed = entity.MatchesPlayed,
             Wins = entity.Wins,
             Losses = entity.Losses,
             Draws = entity.Draws,
             GoalsFor = entity.GoalsFor,
-            GoalsAgainst = entity.GoalsAgainst,
-            CreatedAt = entity.CreatedAt,
-            UpdatedAt = entity.UpdatedAt
+            GoalsAgainst = entity.GoalsAgainst
         };
     }
 }

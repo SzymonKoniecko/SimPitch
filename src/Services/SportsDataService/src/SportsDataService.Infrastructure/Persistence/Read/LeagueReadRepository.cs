@@ -17,22 +17,22 @@ public class LeagueReadRepository : ILeagueReadRepository
 
         _DbConnectionFactory = dbConnectionFactory;
     }
-    public async Task<League> GetLeagueByIdAsync(Guid leagueId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<League>> GetLeaguesByCountryIdAsync(Guid countryId, CancellationToken cancellationToken)
     {
         using var connection = _DbConnectionFactory.CreateConnection();
-        const string sql = "SELECT * FROM League WHERE Id = @Id";
+        const string sql = "SELECT * FROM League WHERE CountryId = @CountryId";
 
         var command = new CommandDefinition(
             commandText: sql,
-            parameters: new { Id = leagueId },
+            parameters: new { CountryId = countryId },
             cancellationToken: cancellationToken
         );
 
-        var league = await connection.QueryFirstOrDefaultAsync<League>(command);
+        var league = await connection.QueryAsync<League>(command);
 
         if (league == null)
         {
-            throw new KeyNotFoundException($"League with Id '{leagueId}' was not found.");
+            throw new KeyNotFoundException($"League with CountryId '{countryId}' was not found.");
         }
 
         return league;

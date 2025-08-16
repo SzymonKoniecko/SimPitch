@@ -14,9 +14,8 @@ public class GrpcLoggingClient : IGrpcLoggingClient
 
     public GrpcLoggingClient(IConfiguration configuration)
     {
-        var address = Environment.GetEnvironmentVariable("GrpcLogging__Address");
-        var addressFromConfig = configuration["GrpcLogging:Address"];
-        if (string.IsNullOrWhiteSpace(address) && string.IsNullOrWhiteSpace(addressFromConfig))
+        var address = Environment.GetEnvironmentVariable("GrpcLogging__Address") ?? configuration["GrpcLogging:Address"];
+        if (string.IsNullOrWhiteSpace(address))
         {
             throw new InvalidOperationException(
                 "No cfg for gRPC Logging — check env variable 'GrpcLogging__Address' or 'GrpcLogging:Address'."

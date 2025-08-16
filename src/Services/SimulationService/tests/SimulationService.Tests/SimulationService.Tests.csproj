@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\src\SimulationService.Domain\SimulationService.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Consts/" />
+  </ItemGroup>
+
 </Project>

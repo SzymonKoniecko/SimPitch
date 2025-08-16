@@ -14,10 +14,12 @@ namespace SportsDataService.API.Services;
 public class StadiumGrpcService : StadiumService.StadiumServiceBase
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<StadiumGrpcService> _logger;
 
-    public StadiumGrpcService(IMediator mediator)
+    public StadiumGrpcService(IMediator mediator, ILogger<StadiumGrpcService> logger)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
     public override async Task<StadiumListResponse> GetAllStadiums(Empty request, ServerCallContext context)
     {

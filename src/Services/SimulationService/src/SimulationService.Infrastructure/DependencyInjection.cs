@@ -1,8 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimulationService.Application.Interfaces;
+using SimulationService.Domain.Interfaces;
+using SimulationService.Domain.Services;
 using SimulationService.Infrastructure.Clients;
-using SimulationService.Infrastructure.Services;
 namespace SimulationService.Infrastructure;
 
 public static class DependencyInjection
@@ -21,7 +22,10 @@ public static class DependencyInjection
         //  Write repositories
 
         // Services
-        services.AddTransient<ISeasonStatsService, SeasonStatsService>();
+        services.AddTransient<SeasonStatsService>();
+        services.AddTransient<MatchSimulationService>();
+
+        
         return services;
     }
 }

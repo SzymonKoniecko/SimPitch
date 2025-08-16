@@ -8,12 +8,14 @@
 
   <ItemGroup>
     <Protobuf Include="..\SimPitchProtos\logging.proto" GrpcServices="Client" ProtoRoot="..\SimPitchProtos" />
+    <Protobuf Include="..\SimPitchProtos\SimulationService\SimulationEngine\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SimulationService" />
+    <Protobuf Include="..\SimPitchProtos\SimulationService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos\SimulationService" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.31.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.71.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.60.0" />
     <PackageReference Include="Grpc.Tools" Version="2.60.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

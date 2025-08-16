@@ -32,9 +32,9 @@ public static class MediatrServicesExtension
         // Queries
         services.AddMediatR(typeof(GetAllCountriesQuery).Assembly);
         services.AddMediatR(typeof(GetCountryByIdQuery).Assembly);
-        services.AddMediatR(typeof(GetSeasonStatsByIdQuery).Assembly);
+        services.AddMediatR(typeof(GetSeasonsStatsByTeamIdQuery).Assembly);
         services.AddMediatR(typeof(GetAllLeaguesQuery).Assembly);
-        services.AddMediatR(typeof(GetLeagueByIdQuery).Assembly);
+        services.AddMediatR(typeof(GetLeaguesByCountryIdQuery).Assembly);
         services.AddMediatR(typeof(GetAllStadiumsQuery).Assembly);
         services.AddMediatR(typeof(GetStadiumByIdQuery).Assembly);
         services.AddMediatR(typeof(GetAllTeamsQuery).Assembly);
@@ -46,9 +46,9 @@ public static class MediatrServicesExtension
         // Query Handlers
         services.AddMediatR(typeof(GetAllCountriesHandler).Assembly);
         services.AddMediatR(typeof(GetCountryByIdHandler).Assembly);
-        services.AddMediatR(typeof(GetSeasonStatsByIdHandler).Assembly);
+        services.AddMediatR(typeof(GetSeasonsStatsByTeamIdHandler).Assembly);
         services.AddMediatR(typeof(GetAllLeaguesHandler).Assembly);
-        services.AddMediatR(typeof(GetLeagueByIdHandler).Assembly);
+        services.AddMediatR(typeof(GetLeaguesByCountryIdHandler).Assembly);
         services.AddMediatR(typeof(GetAllStadiumsHandler).Assembly);
         services.AddMediatR(typeof(GetStadiumByIdHandler).Assembly);
         services.AddMediatR(typeof(GetAllTeamsHandler).Assembly);

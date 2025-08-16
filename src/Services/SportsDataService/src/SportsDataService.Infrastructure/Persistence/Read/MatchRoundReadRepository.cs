@@ -19,7 +19,7 @@ public class MatchRoundReadRepository : IMatchRoundReadRepository
         _DbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<List<MatchRound>> GetMatchRoundsByRoundIdAsync(Guid roundId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<MatchRound>> GetMatchRoundsByRoundIdAsync(Guid roundId, CancellationToken cancellationToken)
     {
         using var connection = _DbConnectionFactory.CreateConnection();
         const string sql = "SELECT * FROM MatchRound WHERE RoundId = @roundId";
@@ -29,7 +29,7 @@ public class MatchRoundReadRepository : IMatchRoundReadRepository
             parameters: new { RoundId = roundId }
         );
 
-        var MatchRounds = await connection.ExecuteScalarAsync<List<MatchRound>>(command);
+        var MatchRounds = await connection.QueryAsync<MatchRound>(command);
 
         if (MatchRounds == null)
         {

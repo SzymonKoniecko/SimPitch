@@ -44,11 +44,11 @@ public class GetAllTeamsHandler : IRequestHandler<GetAllTeamsQuery, IEnumerable<
             if (stadium is null)
                 throw new KeyNotFoundException($"Stadium with Id '{item.StadiumId}' was not found.");
 
-            var league = await leagueRepository.GetLeagueByIdAsync(item.LeagueId, cancellationToken);
-            if (league is null)
+            var leagues = await leagueRepository.GetAllLeaguesAsync(cancellationToken);
+            if (leagues is null)
                 throw new KeyNotFoundException($"League with Id '{item.LeagueId}' was not found.");
 
-            teamDtos.Add(TeamMapper.ToDto(item, country, stadium, league));
+            teamDtos.Add(TeamMapper.ToDto(item, country, stadium, leagues?.FirstOrDefault(l => l.Id == item.LeagueId)));
         }
 
         return teamDtos;

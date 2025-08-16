@@ -3,6 +3,7 @@ USE SportsDataDb;
 DECLARE 
     @CountryId UNIQUEIDENTIFIER, 
     @LeagueId UNIQUEIDENTIFIER,
+    @LeagueId1 UNIQUEIDENTIFIER,
     @CurrentDateTime DATETIME2 = GETDATE(),
 
     @TeamId1 UNIQUEIDENTIFIER = 'e4b7d5c8-9f6a-4d2e-8a3c-1b0f8c0f4d2a',   -- Jaga
@@ -24,9 +25,13 @@ DECLARE
     @TeamId17 UNIQUEIDENTIFIER = 'c0d7f8a1-4b2e-4c9f-8a5d-1e3b6f0c7d9a',  -- Termalika
     @TeamId18 UNIQUEIDENTIFIER = 'e1b9c3d7-6f0a-4d2e-9b5c-3a7f8e1d0b6c',  -- Arka
 
+    @TeamId19 UNIQUEIDENTIFIER = '8a46089c-f7aa-4270-9742-21a84ec92460',  -- Stal Mielec
+    @TeamId20 UNIQUEIDENTIFIER = '4138333e-69dd-41fb-ad30-47bf2b0e4c31',  -- Slask Wroclaw
+    @TeamId21 UNIQUEIDENTIFIER = '0bc33659-7471-4fae-945f-f24f60a38ae0',   -- Puszcza Niepolomice
+
     @RoundId1 UNIQUEIDENTIFIER = NEWID(),
     @RoundId2 UNIQUEIDENTIFIER = NEWID(),
-    @RoundId3 UNIQUEIDENTIFIER = NEWID()
+    @RoundId3 UNIQUEIDENTIFIER = NEWID();
 
 SELECT 
     @CountryId = Id
@@ -38,6 +43,10 @@ SELECT
 FROM dbo.League
 WHERE [Name] = 'PKO BP Ekstraklasa' AND CountryId = @CountryId
 
+SELECT
+    @LeagueId1 = Id
+FROM dbo.League
+WHERE [Name] = 'Betclic 1 Liga' AND CountryId = @CountryId
 BEGIN TRANSACTION
 
 BEGIN TRY
@@ -48,7 +57,8 @@ BEGIN TRY
             (@RoundId3, @LeagueId, '2025/2026', 3)
 
     INSERT INTO dbo.MatchRound (Id, RoundId, HomeTeamId, AwayTeamId, HomeGoals, AwayGoals, IsDraw, IsPlayed)
-        VALUES  (NEWID(), @RoundId1, @TeamId1, @TeamId17, 0, 4, 0, 1),
+        VALUES  
+        (NEWID(), @RoundId1, @TeamId1, @TeamId17, 0, 4, 0, 1),
         (NEWID(), @RoundId1, @TeamId3, @TeamId7, 1, 4, 0, 1),
         (NEWID(), @RoundId1, @TeamId4, @TeamId14, 1, 0, 0, 1),
         (NEWID(), @RoundId1, @TeamId9, @TeamId15, 2, 0, 0, 1),
@@ -76,10 +86,35 @@ BEGIN TRY
         (NEWID(), @RoundId3, @TeamId7, @TeamId10, 2, 2, 1, 1),
         (NEWID(), @RoundId3, @TeamId11, @TeamId5, 3, 1, 0, 1),
         (NEWID(), @RoundId3, @TeamId12, @TeamId1, null, null, null, 0), -- Motor vs Jaga
-        (NEWID(), @RoundId3, @TeamId2, @TeamId18, 0, 0, 1, 1)
+        (NEWID(), @RoundId3, @TeamId2, @TeamId18, 0, 0, 1, 1);
 
+    INSERT INTO dbo.SeasonStats (Id, TeamId, SeasonYear, LeagueId, MatchesPlayed, Wins, Losses, Draws, GoalsFor, GoalsAgainst)
+        VALUES
+    	 (NEWID(), @TeamId3, '2024/2025', @LeagueId, 34, 22, 8, 4, 68, 31),
+         (NEWID(), @TeamId5, '2024/2025', @LeagueId, 34, 20, 5, 9, 51, 23),
+         (NEWID(), @TeamId1, '2024/2025', @LeagueId, 34, 17, 7, 10, 56, 42),
+         (NEWID(), @TeamId6, '2024/2025', @LeagueId, 34, 17, 10, 7, 59, 40),
+         (NEWID(), @TeamId2, '2024/2025', @LeagueId, 34, 15, 10, 9, 60, 45),
+         (NEWID(), @TeamId7, '2024/2025', @LeagueId, 34, 14, 11, 9, 58, 53),
+         (NEWID(), @TeamId12, '2024/2025', @LeagueId, 34, 14, 13, 7, 48, 59),
+         (NEWID(), @TeamId13, '2024/2025', @LeagueId, 34, 14, 13, 7, 49, 47),
+         (NEWID(), @TeamId8, '2024/2025', @LeagueId, 34, 13, 13, 8, 43, 39),
+         (NEWID(), @TeamId16, '2024/2025', @LeagueId, 34, 11, 11, 12, 37, 36),
+         (NEWID(), @TeamId15, '2024/2025', @LeagueId, 34, 11, 11, 12, 37, 45),
+         (NEWID(), @TeamId11, '2024/2025', @LeagueId, 34, 11, 15, 8, 48, 52),
+         (NEWID(), @TeamId4, '2024/2025', @LeagueId, 34, 11, 16, 7, 38, 49),
+         (NEWID(), @TeamId10, '2024/2025', @LeagueId, 34, 10, 17, 7, 44, 59),
+         (NEWID(), @TeamId14, '2024/2025', @LeagueId, 34, 10, 18, 6, 33, 51),
+        -- downgraded
+         (NEWID(), @TeamId19, '2024/2025', @LeagueId, 34, 7, 17, 10, 39, 56),
+         (NEWID(), @TeamId20, '2024/2025', @LeagueId, 34, 6, 16, 12, 38, 53),
+         (NEWID(), @TeamId21, '2024/2025', @LeagueId, 34, 6, 18, 10, 37, 63),
+        -- promoted to @League
+         (NEWID(), @TeamId18, '2024/2025', @LeagueId1, 34, 21, 4, 9, 63, 24),
+         (NEWID(), @TeamId17, '2024/2025', @LeagueId1, 34, 21, 5, 8, 70, 39),
+         (NEWID(), @TeamId9, '2024/2025', @LeagueId1, 34, 18, 6, 10, 58, 38);
     COMMIT TRANSACTION
-    PRINT 'Results for the first 3 rounds of PKO BP Ekstraklasa (2025/2026) inserted successfully.'
+    PRINT 'Results for the first 3 rounds of PKO BP Ekstraklasa (2025/2026) inserted successfully with season stats'
 END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION

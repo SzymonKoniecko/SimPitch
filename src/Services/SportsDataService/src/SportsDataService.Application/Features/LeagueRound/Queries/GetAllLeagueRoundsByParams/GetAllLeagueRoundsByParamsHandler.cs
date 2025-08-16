@@ -18,8 +18,8 @@ public class GetAllLeagueRoundsByParamsHandler : IRequestHandler<GetAllLeagueRou
         IEnumerable<LeagueRoundDto> leagueRoundDtos = LeagueRoundMapper.ListToDtos(await _leagueRoundReadRepository.GetLeagueRoundsBySeasonYearAsync(request.leagueRoundFilterDto.SeasonYear, cancellationToken));
 
         return leagueRoundDtos.Where(r =>
-            (request.leagueRoundFilterDto.Round > 0 || r.Round == request.leagueRoundFilterDto.Round) &&
-            (request.leagueRoundFilterDto.LeagueRoundId != Guid.Empty || r.LeagueId == request.leagueRoundFilterDto.LeagueRoundId)
+            (request.leagueRoundFilterDto.Round == 0 || r.Round == request.leagueRoundFilterDto.Round) &&
+            (request.leagueRoundFilterDto.LeagueRoundId == Guid.Empty || r.LeagueId == request.leagueRoundFilterDto.LeagueRoundId)
         );
     }
 }

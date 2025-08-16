@@ -2,6 +2,8 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SimulationService.Application.Features.LeagueRounds.Queries.GetLeagueRoundsByParamsGrpc;
 using SimulationService.Application.Features.MatchRounds.Queries.GetMatchRoundsByIdQuery;
+using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
+using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 namespace SimulationService.Application.Features;
 
 public static class MediatrServicesExtension
@@ -9,8 +11,12 @@ public static class MediatrServicesExtension
     public static IServiceCollection AddMediatRServices(this IServiceCollection services)
     {
         // Commands
+        services.AddMediatR(typeof(InitSimulationContentCommand).Assembly);
+        services.AddMediatR(typeof(RunSimulationCommandHandler).Assembly);
         
         // Commands handlers
+        services.AddMediatR(typeof(InitSimulationContentCommandHandler).Assembly);
+        services.AddMediatR(typeof(RunSimulationCommandHandler).Assembly);
 
         // Queries
         services.AddMediatR(typeof(GetLeagueRoundsByParamsGrpcQuery).Assembly);

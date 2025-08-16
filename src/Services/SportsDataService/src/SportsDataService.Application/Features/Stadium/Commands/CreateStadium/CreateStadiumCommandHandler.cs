@@ -25,8 +25,6 @@ public class CreateStadiumCommandHandler : IRequestHandler<CreateStadiumCommand,
             Id = Guid.NewGuid(),
             Name = request.Stadium.Name,
             Capacity = request.Stadium.Capacity,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
         };
 
         await stadiumRepository.CreateStadiumAsync(stadium, cancellationToken);

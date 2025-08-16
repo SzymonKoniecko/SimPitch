@@ -2,7 +2,7 @@ using System;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
 
-namespace SimulationService.Application.Interfaces;
+namespace SimulationService.Domain.Interfaces;
 
 public interface ISeasonStatsService
 {

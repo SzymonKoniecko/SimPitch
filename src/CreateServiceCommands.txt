@@ -57,6 +57,8 @@ dotnet add package Microsoft.Extensions.Logging.Abstractions --version 9.0.4
 dotnet add package Microsoft.Extensions.Configuration.Binder --version 9.0.4
 dotnet add package Newtonsoft.Json --version 13.0.3
 dotnet add package Grpc.Net.ClientFactory --version 2.60.0
+dotnet add package Microsoft.AspNetCore.App --framework net9.0
+
 
 
 
@@ -73,4 +75,26 @@ dotnet add package MediatR --version 11.1.0
 dotnet add package MediatR.Extensions.Microsoft.DependencyInjection  --version 11.1.0
 dotnet add package FluentValidation.DependencyInjectionExtensions
 
+
+##Test##
+dotnet add package xunit
+dotnet add package xunit.runner.visualstudio
+dotnet add package Microsoft.NET.Test.Sdk
+dotnet add package Moq
+dotnet add package AutoFixture
+dotnet add package AutoFixture.AutoMoq
+
+dotnet add package Dapper
+dotnet add package Microsoft.Data.Sqlite
+dotnet add package System.Data.Common
+
+dotnet add package MediatR  --version 11.1.0
+dotnet add package MediatR.Extensions.Microsoft.DependencyInjection  --version 11.1.0
+
+dotnet add package Grpc.Net.Client --version 2.60.0
+dotnet add package Grpc.AspNetCore --version 2.60.0
+dotnet add package Grpc.Tools --version 2.60.0
+dotnet add package Grpc.Core.Testing
+
+dotnet add package Microsoft.AspNetCore.TestHost
 

@@ -3,6 +3,7 @@ USE SportsDataDb
 DECLARE 
     @CountryId UNIQUEIDENTIFIER, 
     @LeagueId UNIQUEIDENTIFIER,
+    @LeagueId1 UNIQUEIDENTIFIER,
     @CurrentDateTime DATETIME2 = GETDATE(),
 
     @StadiumId1 UNIQUEIDENTIFIER = NEWID(),
@@ -23,6 +24,10 @@ DECLARE
     @StadiumId16 UNIQUEIDENTIFIER = NEWID(),
     @StadiumId17 UNIQUEIDENTIFIER = NEWID(),
     @StadiumId18 UNIQUEIDENTIFIER = NEWID(),
+
+    @StadiumId19 UNIQUEIDENTIFIER = NEWID(),
+    @StadiumId20 UNIQUEIDENTIFIER = NEWID(),
+    @StadiumId21 UNIQUEIDENTIFIER = NEWID(),
     
     @TeamId1 UNIQUEIDENTIFIER = 'e4b7d5c8-9f6a-4d2e-8a3c-1b0f8c0f4d2a',   -- Jaga
     @TeamId2 UNIQUEIDENTIFIER = 'a6c9f7d1-2b34-4e9c-8f13-0d7a2e5b1c9f',   -- Legia
@@ -41,9 +46,12 @@ DECLARE
     @TeamId15 UNIQUEIDENTIFIER = 'f4c1b7a9-8d0e-4a3f-9c5b-2e7d1f6a0c3b',  -- Korona
     @TeamId16 UNIQUEIDENTIFIER = 'a9e2d5f7-1b3c-4e0a-8f6d-7c0b9a1e3d5f',  -- Piast
     @TeamId17 UNIQUEIDENTIFIER = 'c0d7f8a1-4b2e-4c9f-8a5d-1e3b6f0c7d9a',  -- Termalika
-    @TeamId18 UNIQUEIDENTIFIER = 'e1b9c3d7-6f0a-4d2e-9b5c-3a7f8e1d0b6c'   -- Arka
+    @TeamId18 UNIQUEIDENTIFIER = 'e1b9c3d7-6f0a-4d2e-9b5c-3a7f8e1d0b6c',   -- Arka
 
 
+    @TeamId19 UNIQUEIDENTIFIER = '8a46089c-f7aa-4270-9742-21a84ec92460',  -- Stal Mielec
+    @TeamId20 UNIQUEIDENTIFIER = '4138333e-69dd-41fb-ad30-47bf2b0e4c31',  -- Slask Wroclaw
+    @TeamId21 UNIQUEIDENTIFIER = '0bc33659-7471-4fae-945f-f24f60a38ae0';   -- Puszcza Niepolomice
 SELECT 
     @CountryId = Id
 FROM dbo.Country
@@ -54,29 +62,37 @@ SELECT
 FROM dbo.League
 WHERE [Name] = 'PKO BP Ekstraklasa' AND CountryId = @CountryId
 
+SELECT
+    @LeagueId1 = Id
+FROM dbo.League
+WHERE [Name] = 'Betclic 1 Liga' AND CountryId = @CountryId
+
 BEGIN TRANSACTION
 
 BEGIN TRY
-    INSERT INTO dbo.Stadium (Id, [Name], Capacity, CreatedAt, UpdatedAt)
+    INSERT INTO dbo.Stadium (Id, [Name], Capacity)
     VALUES
-        (@StadiumId1, 'Municipal Stadium in Białystok', 22372, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId2, 'Marshal Józef Piłsudski Municipal Stadium of Legia Warsaw', 31103, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId3, 'Stadion Miejski Poznań (Municipal Stadium in Poznań)', 42717, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId4, 'Serce Łodzi - Stadion Widzewa Łódź', 18018, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId5, 'Raków Stadium in Częstochowa', 5000, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId6, 'Stadion Miejski im. Floriana Krygiera (Municipal Stadium in Szczecin)', 20915, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId7, 'Stadion Cracovii im. Józefa Piłsudskiego (Cracovia Stadium)', 15000, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId8, 'Arena Zabrze', 29444, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId9, 'Stadion Wisły Płock im. Kazimierza Górskiego', 15004, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId10, 'Stadion Energa Gdańsk (Energa Stadium)', 41715, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId11, 'Radom City Stadium', 15000, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId12, 'Motor Lublin Arena', 15247, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId13, 'Stadion Miejski w Katowicach', 15048, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId14, 'Lubin City Stadium', 16500, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId15, 'Korona Kielce Municipal Stadium', 15000, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId16, 'Stadion Miejski im. Piotra Wieczorka w Gliwicach', 9736, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId17, 'Stadion Sportowy BRUK-BET Termalica Nieciecza', 2262, @CurrentDateTime, @CurrentDateTime),
-        (@StadiumId18, 'Stadion Miejski w Gdyni', 15139, @CurrentDateTime, @CurrentDateTime);
+        (@StadiumId1, 'Municipal Stadium in Białystok', 22372),
+        (@StadiumId2, 'Marshal Józef Piłsudski Municipal Stadium of Legia Warsaw', 31103),
+        (@StadiumId3, 'Stadion Miejski Poznań (Municipal Stadium in Poznań)', 42717),
+        (@StadiumId4, 'Serce Łodzi - Stadion Widzewa Łódź', 18018),
+        (@StadiumId5, 'Raków Stadium in Częstochowa', 5000),
+        (@StadiumId6, 'Stadion Miejski im. Floriana Krygiera (Municipal Stadium in Szczecin)', 20915),
+        (@StadiumId7, 'Stadion Cracovii im. Józefa Piłsudskiego (Cracovia Stadium)', 15000),
+        (@StadiumId8, 'Arena Zabrze', 29444),
+        (@StadiumId9, 'Stadion Wisły Płock im. Kazimierza Górskiego', 15004),
+        (@StadiumId10, 'Stadion Energa Gdańsk (Energa Stadium)', 41715),
+        (@StadiumId11, 'Radom City Stadium', 15000),
+        (@StadiumId12, 'Motor Lublin Arena', 15247),
+        (@StadiumId13, 'Stadion Miejski w Katowicach', 15048),
+        (@StadiumId14, 'Lubin City Stadium', 16500),
+        (@StadiumId15, 'Korona Kielce Municipal Stadium', 15000),
+        (@StadiumId16, 'Stadion Miejski im. Piotra Wieczorka w Gliwicach', 9736),
+        (@StadiumId17, 'Stadion Sportowy BRUK-BET Termalica Nieciecza', 2262),
+        (@StadiumId18, 'Stadion Miejski w Gdyni', 15139),
+        (@StadiumId19, 'Stadion Miejski im. Grzegorza Lato', 6864),
+        (@StadiumId20, 'Tarczyński Arena', 42771),
+        (@StadiumId21, 'Stadion Miejski w Niepołomicach', 2118)
 
     INSERT INTO dbo.Team (Id, [Name], CountryId, StadiumId, LeagueId, LogoUrl, ShortName)
     VALUES
@@ -97,7 +113,11 @@ BEGIN TRY
         (@TeamId15, 'Korona Kielce', @CountryId, @StadiumId15, @LeagueId, '/wikipedia/commons/thumb/2/2b/Stadion_Kielce_przed_meczem_Polska_-_Armenia.jpg/250px-Stadion_Kielce_przed_meczem_Polska_-_Armenia.jpg', 'KOR'),
         (@TeamId16, 'Piast Gliwice', @CountryId, @StadiumId16, @LeagueId, '/wikipedia/commons/thumb/f/f5/Stadion_Piasta_Gliwice_05.JPG/250px-Stadion_Piasta_Gliwice_05.JPG', 'PIA'),
         (@TeamId17, 'Bruk-Bet Termalica Nieciecza', @CountryId, @StadiumId17, @LeagueId, '/wikipedia/commons/thumb/8/84/KS_Nieciecza_herb.jpg/250px-KS_Nieciecza_herb.jpg', 'BBT'),
-        (@TeamId18, 'Arka Gdynia', @CountryId, @StadiumId18, @LeagueId, 'http://example.com/arka.png', 'ARK');
+        (@TeamId18, 'Arka Gdynia', @CountryId, @StadiumId18, @LeagueId, 'http://example.com/arka.png', 'ARK'),
+
+        (@TeamId19, 'Stal Mielec', @CountryId, @StadiumId19, @LeagueId1, 'http://example.com/stalmielec.png', 'STM'),
+        (@TeamId20, 'Śląsk Wrocław', @CountryId, @StadiumId20, @LeagueId1, 'http://example.com/sla.png', 'SLA'),
+        (@TeamId21, 'Puszcza Niepołomice', @CountryId, @StadiumId21, @LeagueId1, 'http://example.com/puszcza.png', 'PUN')
 
     COMMIT TRANSACTION
     PRINT 'Ekstraklasa stadiums and teams for 2025/2026 season inserted successfully.'
@@ -105,4 +125,5 @@ END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION
     PRINT 'Error occurred while inserting ekstraklasa stadiums and teams.'
+    PRINT ERROR_MESSAGE()
 END CATCH

@@ -5,35 +5,32 @@ DECLARE
     @CountryId5 UNIQUEIDENTIFIER = NEWID(),
     @LeagueId1 UNIQUEIDENTIFIER = NEWID(), @LeagueId2 UNIQUEIDENTIFIER = NEWID(),
     @LeagueId3 UNIQUEIDENTIFIER = NEWID(), @LeagueId4 UNIQUEIDENTIFIER = NEWID(),
-    @LeagueId5 UNIQUEIDENTIFIER = NEWID(),
-    @StadiumId2 UNIQUEIDENTIFIER = NEWID(),
-    @StadiumId3 UNIQUEIDENTIFIER = NEWID(), @StadiumId4 UNIQUEIDENTIFIER = NEWID(),
-    @StadiumId5 UNIQUEIDENTIFIER = NEWID(),
-    @TeamId2 UNIQUEIDENTIFIER = NEWID(),
-    @TeamId3 UNIQUEIDENTIFIER = NEWID(), @TeamId4 UNIQUEIDENTIFIER = NEWID(),
-    @TeamId5 UNIQUEIDENTIFIER = NEWID(),
+    @LeagueId5 UNIQUEIDENTIFIER = NEWID(), @LeagueId6 UNIQUEIDENTIFIER = NEWID(),
+
+
     @CurrentDateTime DATETIME2 = GETDATE()
 
 BEGIN TRANSACTION
 
 BEGIN TRY
     -- Insert into Country
-    INSERT INTO SportsDataDb.dbo.Country (Id, [Name], [Code], CreatedAt, UpdatedAt)
+    INSERT INTO SportsDataDb.dbo.Country (Id, [Name], [Code])
     VALUES
-        (@CountryId1, 'Poland', 'PL', @CurrentDateTime, @CurrentDateTime),
-        (@CountryId2, 'Germany', 'DE', @CurrentDateTime, @CurrentDateTime),
-        (@CountryId3, 'Spain', 'ES', @CurrentDateTime, @CurrentDateTime),
-        (@CountryId4, 'England', 'EN', @CurrentDateTime, @CurrentDateTime),
-        (@CountryId5, 'Italy', 'IT', @CurrentDateTime, @CurrentDateTime)
+        (@CountryId1, 'Poland', 'PL'),
+        (@CountryId2, 'Germany', 'DE'),
+        (@CountryId3, 'Spain', 'ES'),
+        (@CountryId4, 'England', 'EN'),
+        (@CountryId5, 'Italy', 'IT');
 
     -- Insert into League
-    INSERT INTO SportsDataDb.dbo.League (Id, [Name], CountryId, [Sport], MaxRound, CreatedAt, UpdatedAt)
+    INSERT INTO SportsDataDb.dbo.League (Id, [Name], CountryId, MaxRound, Strength)
     VALUES
-        (@LeagueId1, 'PKO BP Ekstraklasa', @CountryId1, 'Football', 34, @CurrentDateTime, @CurrentDateTime),
-        (@LeagueId2, 'Bundesliga', @CountryId2, 'Football', 34, @CurrentDateTime, @CurrentDateTime),
-        (@LeagueId3, 'La Liga', @CountryId3, 'Football', 38, @CurrentDateTime, @CurrentDateTime),
-        (@LeagueId4, 'Premier League', @CountryId4, 'Football', 38, @CurrentDateTime, @CurrentDateTime),
-        (@LeagueId5, 'Serie A', @CountryId5, 'Football', 38, @CurrentDateTime, @CurrentDateTime)
+        (@LeagueId1, 'PKO BP Ekstraklasa', @CountryId1, 34, 1),
+        (@LeagueId2, 'Bundesliga', @CountryId2, 34, 1),
+        (@LeagueId3, 'La Liga', @CountryId3, 38, 1),
+        (@LeagueId4, 'Premier League', @CountryId4, 38, 1),
+        (@LeagueId5, 'Serie A', @CountryId5, 38, 1),
+        (@LeagueId6, 'Betclic 1 Liga', @CountryId1, 34, 0.75);
 
     COMMIT TRANSACTION
     PRINT 'Data has been successfully inserted into all tables.'

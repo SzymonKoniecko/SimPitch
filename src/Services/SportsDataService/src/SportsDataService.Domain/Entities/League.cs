@@ -9,6 +9,5 @@ public class League
     public string Name { get; set; }
     public Guid CountryId { get; set; }
     public int MaxRound { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public float Strength { get; set; }
 }

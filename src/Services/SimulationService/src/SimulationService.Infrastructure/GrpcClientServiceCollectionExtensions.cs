@@ -7,13 +7,8 @@ namespace SimulationService.Infrastructure;
 
 public static class GrpcClientServiceCollectionExtensions
 {
-    public static IServiceCollection AddSportsDataGrpcClient(this IServiceCollection services)
+    public static IServiceCollection AddSportsDataGrpcClient(this IServiceCollection services, string sportsDataServiceAddress)
     {
-        var sportsDataServiceAddress = Environment.GetEnvironmentVariable("SportsDataService__Address");
-        if (string.IsNullOrEmpty(sportsDataServiceAddress))
-        {
-            throw new InvalidOperationException("Environment variable 'SportsDataService__Address' is not set.");
-        }
 
         services.AddGrpcClient<LeagueRoundService.LeagueRoundServiceClient>(options =>
         {

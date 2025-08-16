@@ -11,9 +11,11 @@ namespace SportsDataService.API.Services;
 public class MatchRoundGrpcService : MatchRoundService.MatchRoundServiceBase
 {
     private readonly IMediator _mediator;
-    public MatchRoundGrpcService(IMediator mediator)
+    private readonly ILogger<MatchRoundGrpcService> _logger;
+    public MatchRoundGrpcService(IMediator mediator, ILogger<MatchRoundGrpcService> logger)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
     public override async Task<MatchRoundsByRoundIdResponse> GetMatchRoundsByRoundId(MatchRoundsByRoundIdRequest request, ServerCallContext context)
     {

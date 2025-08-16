@@ -11,19 +11,16 @@ namespace SportsDataService.API.Services;
 public class LeagueRoundGrpcService : LeagueRoundService.LeagueRoundServiceBase
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<LeagueRoundGrpcService> _logger;
 
-    public LeagueRoundGrpcService(IMediator mediator)
+    public LeagueRoundGrpcService(IMediator mediator, ILogger<LeagueRoundGrpcService> logger)
     {
-        _mediator = mediator;
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
     public override async Task<LeagueRoundsByParamsResponse> GetAllLeagueRoundsByParams(LeagueRoundsByParamsRequest request, ServerCallContext context)
     {
-        var leagueRoundFilterDto = new LeagueRoundFilterDto();
-        leagueRoundFilterDto.SeasonYear = request.SeasonYear;
-        leagueRoundFilterDto.Round = request.Round;
-        leagueRoundFilterDto.LeagueRoundId = Guid.Parse(request.LeagueRoundId);
-
-        var query = new GetAllLeagueRoundsByParamsQuery(leagueRoundFilterDto);
+        var query = new GetAllLeagueRoundsByParamsQuery(LeagueRoundMapper.LeagueRoundProtoRequestToDto(request));
         var leagueRoundsDtos = await _mediator.Send(query, context.CancellationToken);
 
         return new LeagueRoundsByParamsResponse

@@ -18,7 +18,7 @@ public static class LeagueRoundMapper
 
         return dto;
     }
-    public static IEnumerable<LeagueRoundDto> ListToDtos(this List<LeagueRound> entityList)
+    public static IEnumerable<LeagueRoundDto> ListToDtos(this IEnumerable<LeagueRound> entityList)
     {
         if (entityList == null) return null;
 

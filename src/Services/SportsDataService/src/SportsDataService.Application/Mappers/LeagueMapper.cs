@@ -14,8 +14,7 @@ public static class LeagueMapper
             Name = dto.Name,
             MaxRound = dto.MaxRound,
             CountryId = dto.CountryId,
-            CreatedAt = dto.CreatedAt,
-            UpdatedAt = dto.UpdatedAt
+            Strength = dto.Strength
         };
     }
 
@@ -29,8 +28,7 @@ public static class LeagueMapper
             Name = entity.Name,
             MaxRound = entity.MaxRound,
             CountryId = entity.CountryId,
-            CreatedAt = entity.CreatedAt,
-            UpdatedAt = entity.UpdatedAt
+            Strength = entity.Strength
         };
     }
 }

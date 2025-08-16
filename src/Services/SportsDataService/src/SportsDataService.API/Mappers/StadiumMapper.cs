@@ -12,9 +12,7 @@ public static class StadiumMapper
         {
             Id = stadium.Id,
             Name = stadium.Name,
-            Capacity = stadium.Capacity,
-            CreatedAt = stadium.CreatedAt,
-            UpdatedAt = stadium.UpdatedAt
+            Capacity = stadium.Capacity
         };
     }
     public static StadiumDto ToDto(this StadiumGrpc stadium)
@@ -23,9 +21,7 @@ public static class StadiumMapper
         {
             Id = Guid.Parse(stadium.Id),
             Name = stadium.Name,
-            Capacity = stadium.Capacity,
-            CreatedAt = DateTime.Parse(stadium.CreatedAt),
-            UpdatedAt = DateTime.Parse(stadium.UpdatedAt)
+            Capacity = (int)stadium.Capacity
         };
     }
 
@@ -44,9 +40,7 @@ public static class StadiumMapper
         {
             Id = stadium.Id.ToString(),
             Name = stadium.Name,
-            Capacity = stadium.Capacity,
-            CreatedAt = stadium.CreatedAt.ToString("o"),
-            UpdatedAt = stadium.UpdatedAt.ToString("o")
+            Capacity = stadium.Capacity
         };
     }
 
@@ -55,9 +49,7 @@ public static class StadiumMapper
         return new CreateStadiumDto
         {
             Name = request.Name,
-            Capacity = request.Capacity,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            Capacity = request.Capacity
         };
     }
 }

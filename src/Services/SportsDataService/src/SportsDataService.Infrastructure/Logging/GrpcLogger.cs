@@ -33,7 +33,6 @@ public class GrpcLogger : ILogger
 
         var message = formatter(state, exception);
 
-        // Wysyłamy async ale nie blokujemy wątku startowego
         _ = SendLogAsync(logLevel, message, exception);
     }
 

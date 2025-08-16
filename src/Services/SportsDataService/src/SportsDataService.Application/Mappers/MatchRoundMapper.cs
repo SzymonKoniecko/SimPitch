@@ -20,7 +20,7 @@ public static class MatchRoundMapper
 
         return dto;
     }
-    public static IEnumerable<MatchRoundDto> ListToDtos(List<MatchRound> entityList)
+    public static IEnumerable<MatchRoundDto> ListToDtos(IEnumerable<MatchRound> entityList)
     {
         return entityList.Select(x => ToDto(x));
     }

@@ -11,8 +11,7 @@ public static class LeagueMapper
             Name = league.Name,
             CountryId = league.CountryId,
             MaxRound = league.MaxRound,
-            CreatedAt = league.CreatedAt,
-            UpdatedAt = league.UpdatedAt
+            Strength = league.Strength
         };
     }
     public static LeagueDto ToDto(this LeagueGrpc league)
@@ -21,10 +20,9 @@ public static class LeagueMapper
         {
             Id = Guid.Parse(league.Id),
             Name = league.Name,
-            MaxRound = league.MaxRound,
+            MaxRound = (int)league.MaxRound,
             CountryId = Guid.Parse(league.CountryId),
-            CreatedAt = DateTime.Parse(league.CreatedAt),
-            UpdatedAt = DateTime.Parse(league.UpdatedAt)
+            Strength = league.Strength
         };
     }
     public static LeagueGrpc ToProto(this LeagueDto league)
@@ -35,8 +33,7 @@ public static class LeagueMapper
             Name = league.Name,
             MaxRound = league.MaxRound,
             CountryId = league.CountryId.ToString(),
-            CreatedAt = league.CreatedAt.ToString("o"),
-            UpdatedAt = league.UpdatedAt.ToString("o")
+            Strength = league.Strength
         };
     }
 }

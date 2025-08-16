@@ -7,7 +7,7 @@ if [ "$SEED_DATA" = "true" ]; then
 
   for sql_file in /seed/*.sql; do
     if [ -f "$sql_file" ]; then
-      echo "Running seed file: $sql_file \n"
+      echo "  **Running seed file: $sql_file**"
       /opt/mssql-tools/bin/sqlcmd \
         -S "mssql,1433" \
         -U "${DB_ADMIN}" \

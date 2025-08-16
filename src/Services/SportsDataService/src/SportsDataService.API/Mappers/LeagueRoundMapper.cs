@@ -1,6 +1,8 @@
 using System;
 using SimPitchProtos.SportsDataService;
+using SimPitchProtos.SportsDataService.LeagueRound;
 using SportsDataService.Application.DTOs;
+using SportsDataService.Application.Features.LeagueRound.DTOs;
 using SportsDataService.Domain.Entities;
 
 namespace SportsDataService.API.Mappers;
@@ -18,5 +20,15 @@ public static class LeagueRoundMapper
         grpc.Round = dto.Round;
 
         return grpc;
+    }
+
+    public static LeagueRoundFilterDto LeagueRoundProtoRequestToDto(LeagueRoundsByParamsRequest request)
+    {
+        var dto = new LeagueRoundFilterDto();
+        dto.SeasonYear = request.SeasonYear;
+        dto.Round = request.HasRound ? request.Round : 0;
+        dto.LeagueRoundId = request.HasLeagueRoundId ? Guid.Parse(request.LeagueRoundId) : Guid.Empty;
+
+        return dto;
     }
 }
