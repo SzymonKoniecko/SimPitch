@@ -15,6 +15,7 @@ public static class DependencyInjection
     
         //  Clients DI
         services.AddTransient<ILeagueRoundGrpcClient, LeagueRoundGrpcClient>();
+        services.AddTransient<ILeagueGrpcClient, LeagueGrpcClient>();
         services.AddTransient<IMatchRoundGrpcClient, MatchRoundGrpcClient>();
 
         //  Read repositories

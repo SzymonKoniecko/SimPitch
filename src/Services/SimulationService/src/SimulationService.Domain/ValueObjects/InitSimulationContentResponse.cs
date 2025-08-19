@@ -5,6 +5,11 @@ namespace SimulationService.Domain.ValueObjects;
 
 public class InitSimulationContentResponse
 {
-    public Dictionary<Guid, SeasonStats> SeasonStatsDictionary { get; set; } = new();
+    public Dictionary<Guid, TeamStrength> TeamsStrengthDictionary { get; set; } = new();
     public List<MatchRound> MatchRoundsToSimulate { get; set; } = new();
+    /// <summary>
+    /// Averange team calc by all_goals / all_matches
+    /// </summary>
+    public float PriorLeagueStrength { get; set; } = 0;
+    public float LeagueStrength { get; set; } = 0.0000f;
 }

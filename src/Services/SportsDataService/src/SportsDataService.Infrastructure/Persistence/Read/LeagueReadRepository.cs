@@ -63,4 +63,25 @@ public class LeagueReadRepository : ILeagueReadRepository
         var count = await connection.ExecuteScalarAsync<int>(command);
         return count > 0;
     }
+
+    public async Task<League> GetByIdAsync(Guid leagueId, CancellationToken cancellationToken)
+    {
+        using var connection = _DbConnectionFactory.CreateConnection();
+        const string sql = "SELECT * FROM League WHERE Id = @Id";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { Id = leagueId },
+            cancellationToken: cancellationToken
+        );
+
+        var league = await connection.QuerySingleOrDefaultAsync<League>(command);
+
+        if (league == null)
+        {
+            throw new KeyNotFoundException($"League with Id '{leagueId}' was not found.");
+        }
+
+        return league;
+    }
 }
