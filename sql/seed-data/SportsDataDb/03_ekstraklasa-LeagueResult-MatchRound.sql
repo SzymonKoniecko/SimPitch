@@ -31,7 +31,10 @@ DECLARE
 
     @RoundId1 UNIQUEIDENTIFIER = NEWID(),
     @RoundId2 UNIQUEIDENTIFIER = NEWID(),
-    @RoundId3 UNIQUEIDENTIFIER = NEWID();
+    @RoundId3 UNIQUEIDENTIFIER = NEWID(),
+    @RoundId4 UNIQUEIDENTIFIER = NEWID(),
+    @RoundId5 UNIQUEIDENTIFIER = NEWID(),
+    @RoundId6 UNIQUEIDENTIFIER = NEWID();
 
 SELECT 
     @CountryId = Id
@@ -54,7 +57,8 @@ BEGIN TRY
     INSERT INTO dbo.LeagueRound (Id, LeagueId, SeasonYear, Round)
         VALUES (@RoundId1, @LeagueId, '2025/2026', 1),
             (@RoundId2, @LeagueId, '2025/2026', 2),
-            (@RoundId3, @LeagueId, '2025/2026', 3)
+            (@RoundId3, @LeagueId, '2025/2026', 3),
+            (@RoundId4, @LeagueId, '2025/2026', 4)
 
     INSERT INTO dbo.MatchRound (Id, RoundId, HomeTeamId, AwayTeamId, HomeGoals, AwayGoals, IsDraw, IsPlayed)
         VALUES  
@@ -86,7 +90,37 @@ BEGIN TRY
         (NEWID(), @RoundId3, @TeamId7, @TeamId10, 2, 2, 1, 1),
         (NEWID(), @RoundId3, @TeamId11, @TeamId5, 3, 1, 0, 1),
         (NEWID(), @RoundId3, @TeamId12, @TeamId1, null, null, null, 0), -- Motor vs Jaga
-        (NEWID(), @RoundId3, @TeamId2, @TeamId18, 0, 0, 1, 1);
+        (NEWID(), @RoundId3, @TeamId2, @TeamId18, 0, 0, 1, 1),
+
+        (NEWID(), @RoundId4, @TeamId15, @TeamId11, 3, 0, 0, 1),
+        (NEWID(), @RoundId4, @TeamId8, @TeamId17, 0, 1, 0, 1),
+        (NEWID(), @RoundId4, @TeamId18, @TeamId6, 2, 1, 0, 1),
+        (NEWID(), @RoundId4, @TeamId16, @TeamId3, null, null, null, 0), -- Piast vs Lech
+        (NEWID(), @RoundId4, @TeamId4, @TeamId9, 1, 1, 1, 1),
+        (NEWID(), @RoundId4, @TeamId5, @TeamId14, null, null, null, 0), -- Rakow vs Zaglebie
+        (NEWID(), @RoundId4, @TeamId1, @TeamId7, 5, 2, 0, 1),
+        (NEWID(), @RoundId4, @TeamId2, @TeamId13, 3, 1, 0, 1),
+        (NEWID(), @RoundId4, @TeamId10, @TeamId12, 3, 3, 1, 1),
+
+        (NEWID(), @RoundId5, @TeamId14, @TeamId10, 6, 2, 0, 1),
+        (NEWID(), @RoundId5, @TeamId7, @TeamId4, 1, 0, 0, 1),
+        (NEWID(), @RoundId5, @TeamId12, @TeamId16, 0, 0, 1, 1),
+        (NEWID(), @RoundId5, @TeamId13, @TeamId18, 4, 1, 0, 1),
+        (NEWID(), @RoundId5, @TeamId3, @TeamId15, 1, 1, 0, 1),
+        (NEWID(), @RoundId5, @TeamId11, @TeamId1, 1, 2, 0, 1),
+        (NEWID(), @RoundId5, @TeamId6, @TeamId8, 0, 3, 0, 1),
+        (NEWID(), @RoundId5, @TeamId9, @TeamId2, 1, 0, 0, 1),
+        (NEWID(), @RoundId5, @TeamId17, @TeamId5, 2, 3, 0, 1),
+
+        (NEWID(), @RoundId6, @TeamId11, @TeamId17, null, null, null, 0), -- Radomiak vs Termalica
+        (NEWID(), @RoundId6, @TeamId4, @TeamId6, null, null, null, 0), -- Widzew vs Pogon
+        (NEWID(), @RoundId6, @TeamId15, @TeamId12, null, null, null, 0), -- Korona vs Motor
+        (NEWID(), @RoundId6, @TeamId5, @TeamId3, null, null, null, 0), -- Rakow vs Lech
+        (NEWID(), @RoundId6, @TeamId8, @TeamId13, null, null, null, 0), -- Gornik vs GKS
+        (NEWID(), @RoundId6, @TeamId16, @TeamId7, null, null, null, 0), -- Piast vs Cracovia
+        (NEWID(), @RoundId6, @TeamId10, @TeamId18, null, null, null, 0), -- Lechia vs Arka
+        (NEWID(), @RoundId6, @TeamId2, @TeamId1, null, null, null, 0), -- Legia vs Jaga
+        (NEWID(), @RoundId6, @TeamId9, @TeamId14, null, null, null, 0); -- Wisla vs Zaglebie
 
     INSERT INTO dbo.SeasonStats (Id, TeamId, SeasonYear, LeagueId, MatchesPlayed, Wins, Losses, Draws, GoalsFor, GoalsAgainst)
         VALUES

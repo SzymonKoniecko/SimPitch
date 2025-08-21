@@ -18,7 +18,7 @@ public class GetMatchRoundsByIdHandler : IRequestHandler<GetMatchRoundsByIdQuery
 
     public async Task<List<MatchRound>> Handle(GetMatchRoundsByIdQuery query, CancellationToken cancellationToken)
     {
-        var result = await _matchRoundGrpcClient.GetMatchRoundsByRoundId(query.RoundId, cancellationToken);
+        var result = await _matchRoundGrpcClient.GetMatchRoundsByRoundIdAsync(query.RoundId, cancellationToken);
         return result.Select(x => MatchRoundMapper.ToDomain(x)).ToList();
     }
 }

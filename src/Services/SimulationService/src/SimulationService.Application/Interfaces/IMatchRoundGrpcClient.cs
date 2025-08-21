@@ -5,5 +5,5 @@ namespace SimulationService.Application.Interfaces;
 
 public interface IMatchRoundGrpcClient
 {
-    Task<List<MatchRoundDto>> GetMatchRoundsByRoundId(Guid roundId, CancellationToken cancellationToken);
+    Task<List<MatchRoundDto>> GetMatchRoundsByRoundIdAsync(Guid roundId, CancellationToken cancellationToken);
 }

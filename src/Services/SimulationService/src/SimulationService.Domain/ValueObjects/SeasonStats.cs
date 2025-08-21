@@ -6,7 +6,6 @@ namespace SimulationService.Domain.ValueObjects;
 
 public record SeasonStats
 {
-    public Guid Id { get; init; } = Guid.NewGuid();
     public Guid TeamId { get; init; }
     public SeasonEnum SeasonYear { get; init; }
     public Guid LeagueId { get; init; }
@@ -18,9 +17,8 @@ public record SeasonStats
     public int GoalsAgainst { get; init; }
 
     // Konstruktor ułatwiający mapowanie z encji
-    public SeasonStats(Guid id, Guid teamId, SeasonEnum seasonYear, Guid leagueId, int matchesPlayed, int wins, int losses, int draws, int goalsFor, int goalsAgainst)
+    public SeasonStats(Guid teamId, SeasonEnum seasonYear, Guid leagueId, int matchesPlayed, int wins, int losses, int draws, int goalsFor, int goalsAgainst)
     {
-        Id = id;
         TeamId = teamId;
         SeasonYear = seasonYear;
         LeagueId = leagueId;
@@ -34,7 +32,7 @@ public record SeasonStats
 
     // Factory dla nowych obiektów
     public static SeasonStats CreateNew(Guid teamId, SeasonEnum seasonYear, Guid leagueId)
-        => new SeasonStats(Guid.NewGuid(), teamId, seasonYear, leagueId, 0, 0, 0, 0, 0, 0);
+        => new SeasonStats(teamId, seasonYear, leagueId, 0, 0, 0, 0, 0, 0);
 
     public override string ToString() => $"Team ID: {TeamId}, Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, Goals For: {GoalsFor}, Goals Against: {GoalsAgainst}";
 
@@ -75,5 +73,10 @@ public record SeasonStats
             GoalsFor = goalsFor,
             GoalsAgainst = goalsAgainst
         };
+    }
+
+    public SeasonStats Merge(SeasonStats currentSeasonStats, SeasonStats newSeasonStats)
+    {
+        throw new NotImplementedException();
     }
 }
