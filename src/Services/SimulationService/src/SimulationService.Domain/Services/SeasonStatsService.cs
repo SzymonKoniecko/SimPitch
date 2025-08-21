@@ -1,40 +1,23 @@
 using System;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
+using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Domain.Services;
 
 public class SeasonStatsService
 {
-    /// <summary>
-    /// Calculates the season statistics for the current season based on the provided match rounds.
-    /// </summary>
-    public SeasonStats CalculateSeasonStatsForCurrentSeasonAsync(MatchRound matchRound, SeasonStats seasonStats, bool isHomeTeam)
+    public SeasonStats CalculateSeasonStats(MatchRound matchRound, SeasonStats seasonStats, SeasonEnum season, Guid leagueId, bool isHomeTeam)
     {
-        seasonStats.MatchesPlayed++;
-        if (isHomeTeam)
+        if (seasonStats == null)
         {
-            if (matchRound.HomeGoals > matchRound.AwayGoals)
-                seasonStats.Wins++;
-            else if (matchRound.HomeGoals < matchRound.AwayGoals)
-                seasonStats.Losses++;
-            else
-                seasonStats.Draws++;
-            seasonStats.GoalsFor += matchRound.HomeGoals;
-            seasonStats.GoalsAgainst += matchRound.AwayGoals;
+            seasonStats = SeasonStats.CreateNew(
+                teamId: isHomeTeam ? matchRound.HomeTeamId : matchRound.AwayTeamId,
+                seasonYear: season,
+                leagueId: leagueId
+            );
         }
-        else
-        {
-            if (!isHomeTeam && matchRound.HomeGoals > matchRound.AwayGoals)
-                seasonStats.Losses++;
-            else if (!isHomeTeam && matchRound.HomeGoals < matchRound.AwayGoals)
-                seasonStats.Wins++;
-            else
-                seasonStats.Draws++;
-            seasonStats.GoalsAgainst += matchRound.HomeGoals;
-            seasonStats.GoalsFor += matchRound.AwayGoals;
-        }
-        
-        return seasonStats;
+
+        return seasonStats.Increment(matchRound, isHomeTeam);
     }
 }
