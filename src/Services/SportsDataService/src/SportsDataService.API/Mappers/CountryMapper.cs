@@ -9,9 +9,7 @@ public static class CountryMapper
         {
             Id = country.Id,
             Name = country.Name,
-            Code = country.Code,
-            CreatedAt = country.CreatedAt,
-            UpdatedAt = country.UpdatedAt
+            Code = country.Code
         };
     }
 
@@ -21,9 +19,7 @@ public static class CountryMapper
         {
             Id = Guid.Parse(country.Id),
             Name = country.Name,
-            Code = country.Code,
-            CreatedAt = DateTime.Parse(country.CreatedAt),
-            UpdatedAt = DateTime.Parse(country.UpdatedAt)
+            Code = country.Code
         };
     }
     public static CountryGrpc ToProto(this CountryDto country)
@@ -32,9 +28,7 @@ public static class CountryMapper
         {
             Id = country.Id.ToString(),
             Name = country.Name,
-            Code = country.Code,
-            CreatedAt = country.CreatedAt.ToString("o"),
-            UpdatedAt = country.UpdatedAt.ToString("o")
+            Code = country.Code
         };
     }
 }

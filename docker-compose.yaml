@@ -17,11 +17,13 @@ services:
 
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
+
+     
   mssql-init:
     image: mcr.microsoft.com/mssql-tools
   seed-data:
     build:
-      context: sql/seed-data/SportsDataDb/
+      context: sql/seed-data/
       dockerfile: Dockerfile.seed
 
 

@@ -1,0 +1,8 @@
+FROM mcr.microsoft.com/mssql-tools:latest
+
+COPY SportsDataDb/*.sql /seed/
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

@@ -11,11 +11,6 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Behaviors/ Validations/" />
-    <Folder Include="Clients/" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

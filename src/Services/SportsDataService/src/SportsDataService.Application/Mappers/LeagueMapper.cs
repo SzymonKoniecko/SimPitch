@@ -12,14 +12,9 @@ public static class LeagueMapper
         {
             Id = dto.Id,
             Name = dto.Name,
-            Sport = dto.Sport switch
-            {
-                "Football" => Domain.Enums.SportEnum.Football,
-                _ => throw new ArgumentException("Invalid sport type")
-            },
+            MaxRound = dto.MaxRound,
             CountryId = dto.CountryId,
-            CreatedAt = dto.CreatedAt,
-            UpdatedAt = dto.UpdatedAt
+            Strength = dto.Strength
         };
     }
 
@@ -31,10 +26,9 @@ public static class LeagueMapper
         {
             Id = entity.Id,
             Name = entity.Name,
-            Sport = entity.Sport.ToString(),
+            MaxRound = entity.MaxRound,
             CountryId = entity.CountryId,
-            CreatedAt = entity.CreatedAt,
-            UpdatedAt = entity.UpdatedAt
+            Strength = entity.Strength
         };
     }
 }

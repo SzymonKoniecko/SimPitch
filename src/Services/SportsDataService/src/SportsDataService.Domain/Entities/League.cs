@@ -7,8 +7,7 @@ public class League
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public SportEnum Sport { get; set; }
     public Guid CountryId { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public int MaxRound { get; set; }
+    public float Strength { get; set; }
 }

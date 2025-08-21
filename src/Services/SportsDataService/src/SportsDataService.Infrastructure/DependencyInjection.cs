@@ -16,10 +16,12 @@ public static class DependencyInjection
 
         // Read repositories
         services.AddTransient<ICountryReadRepository, CountryReadRepository>();
-        services.AddTransient<IFootballSeasonStatsReadRepository, FootballSeasonStatsReadRepository>();
+        services.AddTransient<ISeasonStatsReadRepository, SeasonStatsReadRepository>();
         services.AddTransient<ILeagueReadRepository, LeagueReadRepository>();
         services.AddTransient<IStadiumReadRepository, StadiumReadRepository>();
         services.AddTransient<ITeamReadRepository, TeamReadRepository>();
+        services.AddTransient<IMatchRoundReadRepository, MatchRoundReadRepository>();
+        services.AddTransient<ILeagueRoundReadRepository, LeagueRoundReadRepository>();
 
         // Write repositories
         services.AddTransient<ITeamWriteRepository, TeamWriteRepository>();

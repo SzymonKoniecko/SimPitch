@@ -15,10 +15,12 @@ namespace SportsDataService.API.Services
     public class TeamGrpcService : TeamService.TeamServiceBase
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<TeamGrpcService> _logger;
 
-        public TeamGrpcService(IMediator mediator)
+        public TeamGrpcService(IMediator mediator, ILogger<TeamGrpcService> logger)
         {
-            _mediator = mediator;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public override async Task<TeamListResponse> GetAllTeams(Empty request, ServerCallContext context)

@@ -1,5 +1,5 @@
 using SportsDataService.Application.DTOs;
-using SportsDataService.Application.DTOs.Feature;
+using SportsDataService.Application.Teams.DTOs;
 using SportsDataService.Domain.Entities;
 namespace SportsDataService.Application.Mappers;
 
@@ -17,8 +17,7 @@ public static class TeamMapper
             StadiumId = dto.Stadium.Id,
             LeagueId = dto.League.Id,
             LogoUrl = dto.LogoUrl,
-            ShortName = dto.ShortName,
-            Sport = dto.Sport
+            ShortName = dto.ShortName
         };
     }
 
@@ -33,8 +32,7 @@ public static class TeamMapper
             StadiumId = dto.StadiumId,
             LeagueId = dto.LeagueId,
             LogoUrl = dto.LogoUrl,
-            ShortName = dto.ShortName,
-            Sport = dto.Sport
+            ShortName = dto.ShortName
         };
     }
     public static TeamDto ToDto(Team team, Country country, Stadium stadium, League league)
@@ -49,8 +47,7 @@ public static class TeamMapper
             Stadium = stadium?.ToDto(),
             League = league?.ToDto(),
             LogoUrl = team.LogoUrl,
-            ShortName = team.ShortName,
-            Sport = team.Sport
+            ShortName = team.ShortName
         };
     }
     

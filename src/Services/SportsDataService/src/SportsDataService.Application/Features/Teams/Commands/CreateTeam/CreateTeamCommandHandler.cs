@@ -1,7 +1,6 @@
 using MediatR;
 using SportsDataService.Domain.Interfaces.Read;
 using SportsDataService.Domain.Interfaces.Write;
-using SportsDataService.Application.DTOs.Feature;
 using SportsDataService.Application.Mappers;
 namespace SportsDataService.Application.Features.Teams.Commands.CreateTeam;
 public class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, Guid>

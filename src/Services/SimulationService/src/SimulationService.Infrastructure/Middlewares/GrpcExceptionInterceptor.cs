@@ -1,17 +1,20 @@
-
 using System.ComponentModel.DataAnnotations;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
+
 namespace SimulationService.Infrastructure.Middlewares;
 
 public class GrpcExceptionInterceptor : Interceptor
 {
     private readonly ILogger<GrpcExceptionInterceptor> _logger;
+    private readonly IHostEnvironment _env;
 
-    public GrpcExceptionInterceptor(ILogger<GrpcExceptionInterceptor> logger)
+    public GrpcExceptionInterceptor(ILogger<GrpcExceptionInterceptor> logger, IHostEnvironment env)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _env = env ?? throw new ArgumentNullException(nameof(env));
     }
 
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(
@@ -19,6 +22,14 @@ public class GrpcExceptionInterceptor : Interceptor
         ServerCallContext context,
         UnaryServerMethod<TRequest, TResponse> continuation)
     {
+        if (_env.IsDevelopment())
+        {
+            _logger.LogInformation(
+                "GRPC client: method {Method} executed",
+                context.Method
+            );
+        }
+
         try
         {
             return await continuation(request, context);
@@ -45,6 +56,18 @@ public class GrpcExceptionInterceptor : Interceptor
             ),
             UnauthorizedAccessException => new RpcException(
                 new Status(StatusCode.PermissionDenied, ex.Message)
+            ),
+            NotSupportedException => new RpcException(
+                new Status(StatusCode.Unimplemented, ex.Message)
+            ),
+            TimeoutException => new RpcException(
+                new Status(StatusCode.DeadlineExceeded, ex.Message)
+            ),
+            InvalidOperationException => new RpcException(
+                new Status(StatusCode.FailedPrecondition, ex.Message)
+            ),
+            IOException => new RpcException(
+                new Status(StatusCode.Unavailable, ex.Message)
             ),
             _ => new RpcException(
                 new Status(StatusCode.Unknown, "An unexpected error occurred.")

@@ -1,7 +1,7 @@
 using SportsDataService.Application.DTOs;
 using SimPitchProtos.SportsDataService.Team;
 using SimPitchProtos.SportsDataService;
-using SportsDataService.Application.DTOs.Feature;
+using SportsDataService.Application.Teams.DTOs;
 
 namespace SportsDataService.API.Mappers;
 
@@ -17,8 +17,7 @@ public static class TeamMapper
             Stadium = StadiumMapper.ToProto(team.Stadium),
             League = LeagueMapper.ToProto(team.League),
             LogoUrl = team.LogoUrl,
-            ShortName = team.ShortName,
-            Sport = team.Sport.ToString()
+            ShortName = team.ShortName
         };
     }
     public static CreateTeamDto ToDto(this CreateTeamRequest request)
@@ -30,12 +29,7 @@ public static class TeamMapper
             StadiumId = Guid.Parse(request.StadiumId),
             LeagueId = Guid.Parse(request.LeagueId),
             LogoUrl = request.LogoUrl,
-            ShortName = request.ShortName,
-            Sport = request.Sport switch
-            {
-                "Football" => Domain.Enums.SportEnum.Football,
-                _ => throw new ArgumentException("Invalid sport type")
-            }
+            ShortName = request.ShortName
         };
     }
     // Lists

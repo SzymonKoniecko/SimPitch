@@ -1,11 +1,12 @@
 using System;
+using MediatR;
 using SportsDataService.Application.DTOs;
 using SportsDataService.Application.Mappers;
 using SportsDataService.Domain.Interfaces.Read;
 
 namespace SportsDataService.Application.Features.League.Queries.GetLeagueById;
 
-public class GetLeagueByIdHandler
+public class GetLeagueByIdHandler : IRequestHandler<GetLeagueByIdQuery, LeagueDto>
 {
     private readonly ILeagueReadRepository _leagueRepository;
 
@@ -16,11 +17,7 @@ public class GetLeagueByIdHandler
 
     public async Task<LeagueDto> Handle(GetLeagueByIdQuery request, CancellationToken cancellationToken)
     {
-        var league = await _leagueRepository.GetLeagueByIdAsync(request.LeagueId, cancellationToken);
-        if (league is null)
-        {
-            throw new KeyNotFoundException($"League with Id '{request.LeagueId}' was not found.");
-        }
+        var league = await _leagueRepository.GetByIdAsync(request.leagueId, cancellationToken);
         return LeagueMapper.ToDto(league);
     }
 }

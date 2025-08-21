@@ -35,6 +35,7 @@ services:
       - ConnectionStrings__SimulationDb=Server=mssql;Database=SimulationDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
       - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
       - GrpcLogging__SourceName=SimulationService
+      - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT}
     networks:
       - backend_network
     depends_on:

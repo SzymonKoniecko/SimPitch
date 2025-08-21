@@ -12,9 +12,7 @@ public static class CountryMapper
         {
             Id = dto.Id,
             Name = dto.Name,
-            Code = dto.Code,
-            CreatedAt = dto.CreatedAt,
-            UpdatedAt = dto.UpdatedAt
+            Code = dto.Code
         };
     }
 
@@ -26,9 +24,7 @@ public static class CountryMapper
         {
             Id = entity.Id,
             Name = entity.Name,
-            Code = entity.Code,
-            CreatedAt = entity.CreatedAt,
-            UpdatedAt = entity.UpdatedAt
+            Code = entity.Code
         };
     }
 

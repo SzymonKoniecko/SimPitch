@@ -17,8 +17,8 @@ public class StadiumWriteRepository : IStadiumWriteRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         const string sql = @"
-            INSERT INTO Stadium (Id, Name, Capacity, CreatedAt, UpdatedAt)
-            VALUES (@Id, @Name, @Capacity, @CreatedAt, @UpdatedAt);
+            INSERT INTO Stadium (Id, Name, Capacity)
+            VALUES (@Id, @Name, @Capacity);
         ";
 
         // Upewniamy się, że Id jest ustawione
@@ -31,9 +31,7 @@ public class StadiumWriteRepository : IStadiumWriteRepository
             {
                 stadium.Id,
                 stadium.Name,
-                stadium.Capacity,
-                stadium.CreatedAt,
-                stadium.UpdatedAt
+                stadium.Capacity
             },
             cancellationToken: cancellationToken
         );
