@@ -7,14 +7,15 @@ namespace SimulationService.Domain.Services;
 
 public class SeasonStatsService
 {
-    public SeasonStats CalculateSeasonStats(MatchRound matchRound, SeasonStats seasonStats, SeasonEnum season, Guid leagueId, bool isHomeTeam)
+    public SeasonStats CalculateSeasonStats(MatchRound matchRound, SeasonStats seasonStats, SeasonEnum season, Guid leagueId, float leagueStrength, bool isHomeTeam)
     {
         if (seasonStats == null)
         {
             seasonStats = SeasonStats.CreateNew(
                 teamId: isHomeTeam ? matchRound.HomeTeamId : matchRound.AwayTeamId,
                 seasonYear: season,
-                leagueId: leagueId
+                leagueId: leagueId,
+                leagueStrength: leagueStrength
             );
         }
 

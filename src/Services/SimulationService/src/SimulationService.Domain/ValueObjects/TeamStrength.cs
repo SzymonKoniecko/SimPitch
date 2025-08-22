@@ -29,9 +29,9 @@ public record TeamStrength
     /// <summary>
     /// Factory method to create TeamStrength with SeasonStats.
     /// </summary>
-    public static TeamStrength Create(Guid teamId, SeasonEnum seasonYear, Guid leagueId)
+    public static TeamStrength Create(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength)
     {
-        var seasonStats = SeasonStats.CreateNew(teamId, seasonYear, leagueId);
+        var seasonStats = SeasonStats.CreateNew(teamId, seasonYear, leagueId, leagueStrength);
         return new TeamStrength(teamId, seasonStats);
     }
 

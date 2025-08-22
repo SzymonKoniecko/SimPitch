@@ -6,8 +6,8 @@ namespace SimulationService.Application.Mappers;
 
 public static class SeasonStatsMapper
 {
-    public static SeasonStats DtoToValueObject(SeasonStatsDto dto)
+    public static SeasonStats DtoToValueObject(SeasonStatsDto dto, float leagueStrength)
     {
-        return new SeasonStats(dto.TeamId, dto.SeasonYear, dto.LeagueId, dto.MatchesPlayed, dto.Wins, dto.Losses, dto.Draws, dto.GoalsFor, dto.GoalsAgainst);
+        return new SeasonStats(dto.TeamId, dto.SeasonYear, dto.LeagueId, leagueStrength, dto.MatchesPlayed, dto.Wins, dto.Losses, dto.Draws, dto.GoalsFor, dto.GoalsAgainst);
     }
 }

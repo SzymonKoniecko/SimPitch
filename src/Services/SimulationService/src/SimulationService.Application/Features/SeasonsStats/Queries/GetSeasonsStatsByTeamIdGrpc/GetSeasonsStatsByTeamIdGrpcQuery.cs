@@ -4,4 +4,4 @@ using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Application.Features.SeasonsStats.Queries.GetSeasonsStatsByTeamIdGrpc;
 
-public record  GetSeasonsStatsByTeamIdGrpcQuery(Guid teamId) : IRequest<IEnumerable<SeasonStats>>;
+public record  GetSeasonsStatsByTeamIdGrpcQuery(Guid teamId) : IRequest<List<SeasonStats>>;

@@ -40,8 +40,8 @@ namespace SimulationService.Tests.Application.Features.Simulations
 
             var command = new InitSimulationContentCommand(new SimulationParamsDto
             {
-                SeasonYear = seasonYear,
-                RoundId = roundId
+                SeasonYears = new List<string>(){ seasonYear},
+                LeagueRoundId = roundId
             });
 
             var leagueRounds = new List<LeagueRound>
@@ -99,8 +99,8 @@ namespace SimulationService.Tests.Application.Features.Simulations
 
             var command = new InitSimulationContentCommand(new SimulationParamsDto
             {
-                SeasonYear = seasonYear,
-                RoundId = roundId
+                SeasonYears = new() {seasonYear},
+                LeagueRoundId = roundId
             });
 
             var leagueRounds = new List<LeagueRound>

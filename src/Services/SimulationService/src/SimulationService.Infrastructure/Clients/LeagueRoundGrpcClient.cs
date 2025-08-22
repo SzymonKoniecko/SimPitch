@@ -1,4 +1,6 @@
 using System;
+using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using SimPitchProtos.SportsDataService;
 using SimPitchProtos.SportsDataService.LeagueRound;
 using SimulationService.Application.Features.LeagueRounds.DTOs;
@@ -9,29 +11,40 @@ namespace SimulationService.Infrastructure.Clients;
 public class LeagueRoundGrpcClient : ILeagueRoundGrpcClient
 {
     private readonly LeagueRoundService.LeagueRoundServiceClient _leagueRoundClient;
+    private readonly ILogger<LeagueRoundGrpcClient> _logger;
 
-    public LeagueRoundGrpcClient(LeagueRoundService.LeagueRoundServiceClient leagueRoundClient)
+    public LeagueRoundGrpcClient(LeagueRoundService.LeagueRoundServiceClient leagueRoundClient, ILogger<LeagueRoundGrpcClient> logger)
     {
         _leagueRoundClient = leagueRoundClient;
+        _logger = logger;
     }
 
     public async Task<List<LeagueRoundDto>> GetAllLeagueRoundsByParams(LeagueRoundDtoRequest request, CancellationToken cancellationToken)
     {
-    var grpcRequest = new LeagueRoundsByParamsRequest
-    {
-        SeasonYear = request.SeasonYear
-    };
-    
-    if (request.Round != 0)
-            grpcRequest.Round = request.Round;
-    if (request.LeagueRoundId != Guid.Empty)
-        grpcRequest.LeagueRoundId = request.LeagueRoundId.ToString();
-
-        var response = await _leagueRoundClient.GetAllLeagueRoundsByParamsAsync(grpcRequest, cancellationToken: cancellationToken);
-
         var result = new List<LeagueRoundDto>();
-        result.AddRange(response.LeagueRounds?.Select(lr => ProtoToDto(lr)));
+        foreach (var seasonYear in request.SeasonYears)
+        {
+            LeagueRoundsByParamsResponse response = new();
+            var grpcRequest = new LeagueRoundsByParamsRequest
+            {
+                SeasonYear = seasonYear,
+                LeagueId = request.LeagueId.ToString()
+            };
+            
+            if (request.LeagueRoundId != Guid.Empty)
+                grpcRequest.LeagueRoundId = request.LeagueRoundId.ToString();
 
+            try
+            {
+                response = await _leagueRoundClient.GetAllLeagueRoundsByParamsAsync(grpcRequest, cancellationToken: cancellationToken);
+            }
+            catch (RpcException rpc) when (rpc.StatusCode == StatusCode.NotFound)
+            {
+                _logger.LogWarning($"LeagueRounds not found for SeasonYear={seasonYear}, LeagueId={request.LeagueId}", 
+                        grpcRequest.SeasonYear, grpcRequest.LeagueId);
+            }
+            result.AddRange(response.LeagueRounds?.Select(lr => ProtoToDto(lr)));
+        }
         return result;
     }
 

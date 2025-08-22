@@ -25,6 +25,7 @@ public class RunSimulationCommandHandlerTests
         var homeTeamId = Guid.NewGuid();
         var awayTeamId = Guid.NewGuid();
         var leagueId = Guid.NewGuid();
+        float leagueStrength = 0.75f;
         var matchRound1 = new MatchRound
         {
             Id = Guid.NewGuid(),
@@ -37,9 +38,9 @@ public class RunSimulationCommandHandlerTests
 
         var teamStrengthDict = new Dictionary<Guid, TeamStrength>
         {
-            [homeTeamId] = TeamStrength.Create(homeTeamId, SeasonEnum.Season2022_2023, leagueId)
+            [homeTeamId] = TeamStrength.Create(homeTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
                 .WithExpectedGoals(1.0f),
-            [awayTeamId] = TeamStrength.Create(awayTeamId, SeasonEnum.Season2022_2023, leagueId)
+            [awayTeamId] = TeamStrength.Create(awayTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
                 .WithExpectedGoals(1.0f)
         };
 
@@ -58,7 +59,7 @@ public class RunSimulationCommandHandlerTests
 
         var command = new RunSimulationCommand(new SimulationParamsDto
         {
-            SeasonYear = "2023/2024"
+            SeasonYears = new() {"2023/2024"}
         });
 
         // Act
