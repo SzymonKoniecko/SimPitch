@@ -12,8 +12,8 @@ public class GetAllLeagueRoundsByParamsValidator : AbstractValidator<GetAllLeagu
             .NotEmpty().WithMessage("SeasonYear is required.")
              .Matches(@"^\d{4}/\d{4}$").WithMessage("SeasonYear must be in format YYYY/YYYY");
 
-        RuleFor(x => x.leagueRoundFilterDto.Round)
-                .Must(round => round > 0)
-                .WithMessage("If provided, Round must be greater than zero.");
+        RuleFor(x => x.leagueRoundFilterDto.LeagueId)
+                .Must(league => league != null)
+                .WithMessage("If provided, LeagueId must be filled in!");
     }
 }

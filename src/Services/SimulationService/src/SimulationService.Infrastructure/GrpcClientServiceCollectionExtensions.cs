@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using SimPitchProtos.SportsDataService.League;
 using SimPitchProtos.SportsDataService.LeagueRound;
 using SimPitchProtos.SportsDataService.MatchRound;
+using SimPitchProtos.SportsDataService.SeasonStats;
+using SimulationService.Domain.Services;
+using SeasonStatsService = SimPitchProtos.SportsDataService.SeasonStats.SeasonStatsService;
 
 namespace SimulationService.Infrastructure;
 
@@ -20,6 +23,10 @@ public static class GrpcClientServiceCollectionExtensions
             options.Address = new Uri(sportsDataServiceAddress);
         });
         services.AddGrpcClient<MatchRoundService.MatchRoundServiceClient>(options =>
+        {
+            options.Address = new Uri(sportsDataServiceAddress);
+        });
+        services.AddGrpcClient<SeasonStatsService.SeasonStatsServiceClient>(options =>
         {
             options.Address = new Uri(sportsDataServiceAddress);
         });

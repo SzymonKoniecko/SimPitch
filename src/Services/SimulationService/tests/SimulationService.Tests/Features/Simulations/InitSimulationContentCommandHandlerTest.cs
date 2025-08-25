@@ -15,6 +15,10 @@ using SimulationService.Domain.Services;
 using SimulationService.Domain.ValueObjects;
 using Xunit;
 using SimulationService.Application.Features.Simulations.DTOs;
+using SimulationService.Application.Features.SeasonsStats.Queries.GetSeasonsStatsByTeamIdGrpc;
+using SimulationService.Domain.Enums;
+using SimulationService.Application.Mappers;
+using SimulationService.Application.Features.SeasonsStats.DTOs;
 
 namespace SimulationService.Tests.Application.Features.Simulations
 {
@@ -40,8 +44,8 @@ namespace SimulationService.Tests.Application.Features.Simulations
 
             var command = new InitSimulationContentCommand(new SimulationParamsDto
             {
-                SeasonYear = seasonYear,
-                RoundId = roundId
+                SeasonYears = new List<string>() { seasonYear },
+                LeagueRoundId = roundId
             });
 
             var leagueRounds = new List<LeagueRound>
@@ -99,8 +103,8 @@ namespace SimulationService.Tests.Application.Features.Simulations
 
             var command = new InitSimulationContentCommand(new SimulationParamsDto
             {
-                SeasonYear = seasonYear,
-                RoundId = roundId
+                SeasonYears = new() { seasonYear },
+                LeagueRoundId = roundId
             });
 
             var leagueRounds = new List<LeagueRound>
@@ -136,6 +140,106 @@ namespace SimulationService.Tests.Application.Features.Simulations
             Assert.Equal(0f, result.PriorLeagueStrength);
             Assert.Single(result.MatchRoundsToSimulate);
             Assert.Equal(unplayedMatch.Id, result.MatchRoundsToSimulate[0].Id);
+        }
+
+        [Fact]
+        public async Task Handle_ShouldNotModifyTeamStrength_WhenNoSeasonStatsReturned()
+        {
+            var leagueId = Guid.NewGuid();
+            var teamId = Guid.NewGuid();
+            var seasonYear = "2023/2024";
+
+            var command = new InitSimulationContentCommand(new SimulationParamsDto
+            {
+                SeasonYears = new() { seasonYear },
+                LeagueRoundId = Guid.NewGuid()
+            });
+
+            var leagueRounds = new List<LeagueRound>
+            {
+                new LeagueRound { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = seasonYear }
+            };
+
+            var league = new League { Id = leagueId, Strength = 1.5f };
+
+            var match = new MatchRound
+            {
+                Id = Guid.NewGuid(),
+                HomeTeamId = teamId,
+                AwayTeamId = Guid.NewGuid(),
+                HomeGoals = 1,
+                AwayGoals = 0,
+                IsPlayed = true
+            };
+
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetLeagueRoundsByParamsGrpcQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(leagueRounds);
+
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetLeagueByIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(league);
+
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetMatchRoundsByIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<MatchRound> { match });
+
+            _mediatorMock.Setup(m => m.Send(It.Is<GetSeasonsStatsByTeamIdGrpcQuery>(q => q.teamId == teamId), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<SeasonStats>());
+
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            Assert.True(result.TeamsStrengthDictionary.ContainsKey(teamId));
+            var stats = result.TeamsStrengthDictionary[teamId].SeasonStats;
+            Assert.Equal(1, stats.GoalsFor);
+        }
+
+        [Fact]
+        public async Task Handle_ShouldSkipSeasonStats_WhenSeasonYearNotInParams()
+        {
+            var leagueId = Guid.NewGuid();
+            var teamId = Guid.NewGuid();
+            var seasonYear = "2023/2024";
+
+            var command = new InitSimulationContentCommand(new SimulationParamsDto
+            {
+                SeasonYears = new() { seasonYear },
+                LeagueRoundId = Guid.NewGuid()
+            });
+
+            var leagueRounds = new List<LeagueRound>
+            {
+                new LeagueRound { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = seasonYear }
+            };
+
+            var league = new League { Id = leagueId, Strength = 1.5f };
+
+            var match = new MatchRound
+            {
+                Id = Guid.NewGuid(),
+                HomeTeamId = teamId,
+                AwayTeamId = Guid.NewGuid(),
+                HomeGoals = 2,
+                AwayGoals = 1,
+                IsPlayed = true
+            };
+
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetLeagueRoundsByParamsGrpcQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(leagueRounds);
+
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetLeagueByIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(league);
+
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetMatchRoundsByIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<MatchRound> { match });
+
+            _mediatorMock.Setup(m => m.Send(It.Is<GetSeasonsStatsByTeamIdGrpcQuery>(q => q.teamId == teamId), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<SeasonStats>
+                {
+                    new SeasonStats(teamId, SeasonEnum.Season2022_2023, leagueId, 1.0f, 10, 5, 3, 2, 20, 15)
+                });
+
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            var stats = result.TeamsStrengthDictionary[teamId].SeasonStats;
+            Assert.Equal(2, stats.GoalsFor);
         }
     }
 }

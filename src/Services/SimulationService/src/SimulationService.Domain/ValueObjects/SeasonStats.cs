@@ -6,10 +6,10 @@ namespace SimulationService.Domain.ValueObjects;
 
 public record SeasonStats
 {
-    public Guid Id { get; init; } = Guid.NewGuid();
     public Guid TeamId { get; init; }
     public SeasonEnum SeasonYear { get; init; }
     public Guid LeagueId { get; init; }
+    public float LeagueStrength { get; set; }
     public int MatchesPlayed { get; init; }
     public int Wins { get; init; }
     public int Losses { get; init; }
@@ -18,12 +18,12 @@ public record SeasonStats
     public int GoalsAgainst { get; init; }
 
     // Konstruktor ułatwiający mapowanie z encji
-    public SeasonStats(Guid id, Guid teamId, SeasonEnum seasonYear, Guid leagueId, int matchesPlayed, int wins, int losses, int draws, int goalsFor, int goalsAgainst)
+    public SeasonStats(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength, int matchesPlayed, int wins, int losses, int draws, int goalsFor, int goalsAgainst)
     {
-        Id = id;
         TeamId = teamId;
         SeasonYear = seasonYear;
         LeagueId = leagueId;
+        LeagueStrength = leagueStrength;
         MatchesPlayed = matchesPlayed;
         Wins = wins;
         Losses = losses;
@@ -33,8 +33,8 @@ public record SeasonStats
     }
 
     // Factory dla nowych obiektów
-    public static SeasonStats CreateNew(Guid teamId, SeasonEnum seasonYear, Guid leagueId)
-        => new SeasonStats(Guid.NewGuid(), teamId, seasonYear, leagueId, 0, 0, 0, 0, 0, 0);
+    public static SeasonStats CreateNew(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength)
+        => new SeasonStats(teamId, seasonYear, leagueId, leagueStrength, 0, 0, 0, 0, 0, 0);
 
     public override string ToString() => $"Team ID: {TeamId}, Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, Goals For: {GoalsFor}, Goals Against: {GoalsAgainst}";
 
@@ -74,6 +74,38 @@ public record SeasonStats
             Draws = draws,
             GoalsFor = goalsFor,
             GoalsAgainst = goalsAgainst
+        };
+    }
+
+    /// <summary>
+    /// Merge both season stats
+    /// </summary>
+    /// <returns>currentSeasonStats with scaled data by LeagueStrength</returns>
+    /// <exception cref="Exception"></exception>
+    public SeasonStats Merge(SeasonStats currentSeasonStats, SeasonStats newSeasonStats)
+    {
+        if (currentSeasonStats.TeamId != newSeasonStats.TeamId)
+            throw new Exception($"CANNOT MERGE DIFFERENT SEASON STATS IN {nameof(SeasonStats)}");
+
+        float strengthFactor = newSeasonStats.LeagueStrength / currentSeasonStats.LeagueStrength;
+
+        int matchesPlayed = currentSeasonStats.MatchesPlayed + newSeasonStats.MatchesPlayed;
+        int wins = currentSeasonStats.Wins + newSeasonStats.Wins; 
+        int losses = currentSeasonStats.Losses + newSeasonStats.Losses;
+        int draws = currentSeasonStats.Draws + newSeasonStats.Draws;
+
+        int goalsFor = currentSeasonStats.GoalsFor + (int)Math.Round(newSeasonStats.GoalsFor * strengthFactor);
+        int goalsAgainst = currentSeasonStats.GoalsAgainst + (int)Math.Round(newSeasonStats.GoalsAgainst * strengthFactor);
+
+        return currentSeasonStats with
+        {
+            MatchesPlayed = matchesPlayed,
+            Wins = wins,
+            Losses = losses,
+            Draws = draws,
+            GoalsFor = goalsFor,
+            GoalsAgainst = goalsAgainst,
+            LeagueStrength = currentSeasonStats.LeagueStrength
         };
     }
 }

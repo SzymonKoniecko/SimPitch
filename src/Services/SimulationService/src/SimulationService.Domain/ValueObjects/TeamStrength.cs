@@ -29,9 +29,9 @@ public record TeamStrength
     /// <summary>
     /// Factory method to create TeamStrength with SeasonStats.
     /// </summary>
-    public static TeamStrength Create(Guid teamId, SeasonEnum seasonYear, Guid leagueId)
+    public static TeamStrength Create(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength)
     {
-        var seasonStats = SeasonStats.CreateNew(teamId, seasonYear, leagueId);
+        var seasonStats = SeasonStats.CreateNew(teamId, seasonYear, leagueId, leagueStrength);
         return new TeamStrength(teamId, seasonStats);
     }
 
@@ -77,4 +77,12 @@ public record TeamStrength
 
     public TeamStrength WithExpectedGoals(float expectedGoals)
         => this with { ExpectedGoals = expectedGoals };
+    
+    public TeamStrength WithSeasonStats(SeasonStats newSeasonStats)
+    {
+        if (newSeasonStats == null)
+            throw new ArgumentNullException(nameof(newSeasonStats));
+
+        return this with { SeasonStats = newSeasonStats };
+    }
 }

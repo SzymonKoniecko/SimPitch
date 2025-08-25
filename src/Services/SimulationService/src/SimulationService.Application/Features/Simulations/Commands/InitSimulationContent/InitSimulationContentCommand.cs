@@ -6,4 +6,4 @@ using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
 
-public record InitSimulationContentCommand(SimulationParamsDto SimulationParamsDto) : IRequest<InitSimulationContentResponse>;
+public record InitSimulationContentCommand(SimulationParamsDto SimulationParamsDto) : IRequest<SimulationContent>;

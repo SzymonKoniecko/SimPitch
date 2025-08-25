@@ -9,8 +9,10 @@ using SimulationService.Domain.ValueObjects;
 using SimulationService.Application.Mappers;
 using SimulationService.Domain.Enums;
 using SimulationService.Application.Features.LeagueRounds.DTOs;
+using SimulationService.Application.Interfaces;
+using SimulationService.Application.Features.SeasonsStats.Queries.GetSeasonsStatsByTeamIdGrpc;
 
-public partial class InitSimulationContentCommandHandler : IRequestHandler<InitSimulationContentCommand, InitSimulationContentResponse>
+public partial class InitSimulationContentCommandHandler : IRequestHandler<InitSimulationContentCommand, SimulationContent>
 {
     private readonly SeasonStatsService _seasonStatsService;
     private readonly IMediator _mediator;
@@ -21,14 +23,15 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    public async Task<InitSimulationContentResponse> Handle(InitSimulationContentCommand query, CancellationToken cancellationToken)
+    public async Task<SimulationContent> Handle(InitSimulationContentCommand query, CancellationToken cancellationToken)
     {
-        InitSimulationContentResponse contentResponse = new();
+        SimulationContent contentResponse = new();
 
         var leagueRoundDtoRequest = new LeagueRoundDtoRequest
         {
-            SeasonYear = query.SimulationParamsDto.SeasonYear,
-            LeagueRoundId = query.SimulationParamsDto.RoundId
+            SeasonYears = query.SimulationParamsDto.SeasonYears,
+            LeagueId = query.SimulationParamsDto.LeagueId,
+            LeagueRoundId = query.SimulationParamsDto.LeagueRoundId,
         };
 
         var leagueRounds = await _mediator.Send(new GetLeagueRoundsByParamsGrpcQuery(leagueRoundDtoRequest));
@@ -52,10 +55,48 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                 contentResponse,
                 matchRounds,
                 leagueRound,
+                league.Strength,
                 ref totalGoals,
                 ref totalMatches
             );
         }
+
+        if (query.SimulationParamsDto.SeasonYears.Count() > 1)
+        {
+            foreach (var (key, value) in contentResponse.TeamsStrengthDictionary)
+            {
+                var seasonStatsList = await _mediator.Send(new GetSeasonsStatsByTeamIdGrpcQuery(key));
+
+                foreach (var singleSeasonStats in seasonStatsList)
+                {
+                    if (query.SimulationParamsDto.SeasonYears.Contains(EnumMapper.SeasonEnumToString(singleSeasonStats.SeasonYear)) == false)
+                    {
+                        continue;
+                    }
+                    if (singleSeasonStats.LeagueStrength != 1)
+                    {
+                        int x = 0;
+                    }
+                    var merged = value.SeasonStats.Merge(
+                        value.SeasonStats,
+                        new SeasonStats(
+                            key,
+                            singleSeasonStats.SeasonYear,
+                            singleSeasonStats.LeagueId,
+                            singleSeasonStats.LeagueStrength,
+                            singleSeasonStats.MatchesPlayed,
+                            singleSeasonStats.Wins,
+                            singleSeasonStats.Losses,
+                            singleSeasonStats.Draws,
+                            singleSeasonStats.GoalsFor,
+                            singleSeasonStats.GoalsAgainst)
+                    );
+                    contentResponse.TeamsStrengthDictionary[key] =
+                        contentResponse.TeamsStrengthDictionary[key].WithSeasonStats(merged);
+                }
+            }
+        }
+
 
         contentResponse.PriorLeagueStrength = totalMatches > 0 ? (float)totalGoals / totalMatches : 0f;
 
@@ -68,10 +109,11 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         return contentResponse;
     }
 
-    private InitSimulationContentResponse CalculateSeasonStatsByMatchRounds(
-        InitSimulationContentResponse contentResponse,
+    private SimulationContent CalculateSeasonStatsByMatchRounds(
+        SimulationContent contentResponse,
         IEnumerable<MatchRound> matchRounds,
         LeagueRound leagueRound,
+        float leagueStrength,
         ref int totalGoals,
         ref int totalMatches)
     {
@@ -79,8 +121,8 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
 
         foreach (var matchRound in matchRounds)
         {
-            UpdateTeamStats(contentResponse, matchRound.HomeTeamId, matchRound, seasonEnum, leagueRound.LeagueId, true);
-            UpdateTeamStats(contentResponse, matchRound.AwayTeamId, matchRound, seasonEnum, leagueRound.LeagueId, false);
+            UpdateTeamStats(contentResponse, matchRound.HomeTeamId, matchRound, seasonEnum, leagueRound.LeagueId, leagueStrength, true);
+            UpdateTeamStats(contentResponse, matchRound.AwayTeamId, matchRound, seasonEnum, leagueRound.LeagueId, leagueStrength, false);
 
             totalGoals += matchRound.HomeGoals + matchRound.AwayGoals;
             totalMatches += 2;
@@ -90,22 +132,23 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
     }
 
     private void UpdateTeamStats(
-        InitSimulationContentResponse response,
+        SimulationContent response,
         Guid teamId,
         MatchRound matchRound,
         SeasonEnum seasonEnum,
         Guid leagueId,
+        float leagueStrength,
         bool isHomeTeam)
     {
         if (response.TeamsStrengthDictionary.TryGetValue(teamId, out var existingTeamStrength))
         {
-            var updatedStats = _seasonStatsService.CalculateSeasonStats(matchRound, existingTeamStrength.SeasonStats, seasonEnum, leagueId, isHomeTeam);
+            var updatedStats = _seasonStatsService.CalculateSeasonStats(matchRound, existingTeamStrength.SeasonStats, seasonEnum, leagueId, leagueStrength, isHomeTeam);
             response.TeamsStrengthDictionary[teamId] = existingTeamStrength with { SeasonStats = updatedStats };
         }
         else
         {
-            var newTeamStrength = TeamStrength.Create(teamId, seasonEnum, leagueId);
-            var updatedStats = _seasonStatsService.CalculateSeasonStats(matchRound, newTeamStrength.SeasonStats, seasonEnum, leagueId, isHomeTeam);
+            var newTeamStrength = TeamStrength.Create(teamId, seasonEnum, leagueId, leagueStrength);
+            var updatedStats = _seasonStatsService.CalculateSeasonStats(matchRound, newTeamStrength.SeasonStats, seasonEnum, leagueId, leagueStrength, isHomeTeam);
             newTeamStrength = newTeamStrength with { SeasonStats = updatedStats };
             response.TeamsStrengthDictionary.Add(teamId, newTeamStrength);
         }

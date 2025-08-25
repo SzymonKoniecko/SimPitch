@@ -16,7 +16,7 @@ public class MatchRoundGrpcClient : IMatchRoundGrpcClient
         _matchRoundServiceClient = matchRoundServiceClient;
     }
 
-    public async Task<List<MatchRoundDto>> GetMatchRoundsByRoundId(Guid roundId, CancellationToken cancellationToken)
+    public async Task<List<MatchRoundDto>> GetMatchRoundsByRoundIdAsync(Guid roundId, CancellationToken cancellationToken)
     {
         var grpcRequest = new MatchRoundsByRoundIdRequest();
         grpcRequest.RoundId = roundId.ToString();
