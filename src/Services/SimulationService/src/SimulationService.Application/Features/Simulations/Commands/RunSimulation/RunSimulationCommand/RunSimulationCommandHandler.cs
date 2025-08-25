@@ -2,6 +2,7 @@ using MediatR;
 using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 using SimulationService.Domain.Services;
+using SimulationService.Domain.ValueObjects;
 
 public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand, string>
 {
@@ -11,20 +12,20 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
     public RunSimulationCommandHandler(IMediator mediator)
     {
         _mediator = mediator;
-        _matchSimulator = new MatchSimulatorService(); // Seed opcjonalny dla powtarzalności
+        _matchSimulator = new MatchSimulatorService();
     }
 
     public async Task<string> Handle(RunSimulationCommand command, CancellationToken cancellationToken)
     {
-        var initResponse = await _mediator.Send(
+        var simulationContent = await _mediator.Send(
             new InitSimulationContentCommand(command.SimulationParamsDto),
             cancellationToken
         );
 
-        foreach (var match in initResponse.MatchRoundsToSimulate)
+        foreach (var match in simulationContent.MatchRoundsToSimulate)
         {
-            var homeTeam = initResponse.TeamsStrengthDictionary[match.HomeTeamId];
-            var awayTeam = initResponse.TeamsStrengthDictionary[match.AwayTeamId];
+            var homeTeam = simulationContent.TeamsStrengthDictionary[match.HomeTeamId];
+            var awayTeam = simulationContent.TeamsStrengthDictionary[match.AwayTeamId];
 
             var (homeGoals, awayGoals) = _matchSimulator.SimulateMatch(
                 homeTeam,
@@ -42,17 +43,23 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             homeTeam = homeTeam with { SeasonStats = homeStatsUpdated };
             awayTeam = awayTeam with { SeasonStats = awayStatsUpdated };
 
-            homeTeam = homeTeam.WithLikelihood().WithPosterior(initResponse.PriorLeagueStrength);
-            awayTeam = awayTeam.WithLikelihood().WithPosterior(initResponse.PriorLeagueStrength);
+            homeTeam = homeTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength);
+            awayTeam = awayTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength);
 
-            initResponse.TeamsStrengthDictionary[homeTeam.TeamId] = homeTeam;
-            initResponse.TeamsStrengthDictionary[awayTeam.TeamId] = awayTeam;
+            simulationContent.TeamsStrengthDictionary[homeTeam.TeamId] = homeTeam;
+            simulationContent.TeamsStrengthDictionary[awayTeam.TeamId] = awayTeam;
         }
 
-        var reportLines = initResponse.MatchRoundsToSimulate.Select(m =>
+        return GenerateReport(simulationContent);
+    }
+
+    private string GenerateReport(SimulationContent simulationContent)
+    {
+        
+        var reportLines = simulationContent.MatchRoundsToSimulate.Select(m =>
         {
-            var homeTeam = initResponse.TeamsStrengthDictionary[m.HomeTeamId];
-            var awayTeam = initResponse.TeamsStrengthDictionary[m.AwayTeamId];
+            var homeTeam = simulationContent.TeamsStrengthDictionary[m.HomeTeamId];
+            var awayTeam = simulationContent.TeamsStrengthDictionary[m.AwayTeamId];
 
             return $"Mecz {m.HomeTeamId} vs {m.AwayTeamId}: {m.HomeGoals}-{m.AwayGoals} | " +
                 $"Home Posterior Off: {homeTeam.Posterior.Offensive:F2}, Def: {homeTeam.Posterior.Defensive:F2} | " +

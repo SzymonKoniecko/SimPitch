@@ -127,7 +127,7 @@ namespace SimulationService.Tests.Domain.ValueObjects
             var teamId = Guid.NewGuid();
             var leagueId = Guid.NewGuid();
 
-            var season1 = SeasonStats.CreateNew(teamId, SeasonEnum.Season2023_2024, leagueId, 1.15f) with
+            var season1 = SeasonStats.CreateNew(teamId, SeasonEnum.Season2022_2023, leagueId, 1.15f) with
             {
                 MatchesPlayed = 2,
                 GoalsFor = 10,

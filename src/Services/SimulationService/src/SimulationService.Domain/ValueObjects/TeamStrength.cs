@@ -77,4 +77,12 @@ public record TeamStrength
 
     public TeamStrength WithExpectedGoals(float expectedGoals)
         => this with { ExpectedGoals = expectedGoals };
+    
+    public TeamStrength WithSeasonStats(SeasonStats newSeasonStats)
+    {
+        if (newSeasonStats == null)
+            throw new ArgumentNullException(nameof(newSeasonStats));
+
+        return this with { SeasonStats = newSeasonStats };
+    }
 }

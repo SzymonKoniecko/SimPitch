@@ -44,7 +44,7 @@ public class RunSimulationCommandHandlerTests
                 .WithExpectedGoals(1.0f)
         };
 
-        var initResponse = new InitSimulationContentResponse
+        var initResponse = new SimulationContent
         {
             MatchRoundsToSimulate = new List<MatchRound> { matchRound1 },
             TeamsStrengthDictionary = teamStrengthDict,

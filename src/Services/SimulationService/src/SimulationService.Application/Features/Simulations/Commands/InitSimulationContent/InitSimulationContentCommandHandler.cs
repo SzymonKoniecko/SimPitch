@@ -9,8 +9,10 @@ using SimulationService.Domain.ValueObjects;
 using SimulationService.Application.Mappers;
 using SimulationService.Domain.Enums;
 using SimulationService.Application.Features.LeagueRounds.DTOs;
+using SimulationService.Application.Interfaces;
+using SimulationService.Application.Features.SeasonsStats.Queries.GetSeasonsStatsByTeamIdGrpc;
 
-public partial class InitSimulationContentCommandHandler : IRequestHandler<InitSimulationContentCommand, InitSimulationContentResponse>
+public partial class InitSimulationContentCommandHandler : IRequestHandler<InitSimulationContentCommand, SimulationContent>
 {
     private readonly SeasonStatsService _seasonStatsService;
     private readonly IMediator _mediator;
@@ -21,9 +23,9 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    public async Task<InitSimulationContentResponse> Handle(InitSimulationContentCommand query, CancellationToken cancellationToken)
+    public async Task<SimulationContent> Handle(InitSimulationContentCommand query, CancellationToken cancellationToken)
     {
-        InitSimulationContentResponse contentResponse = new();
+        SimulationContent contentResponse = new();
 
         var leagueRoundDtoRequest = new LeagueRoundDtoRequest
         {
@@ -59,6 +61,43 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             );
         }
 
+        if (query.SimulationParamsDto.SeasonYears.Count() > 1)
+        {
+            foreach (var (key, value) in contentResponse.TeamsStrengthDictionary)
+            {
+                var seasonStatsList = await _mediator.Send(new GetSeasonsStatsByTeamIdGrpcQuery(key));
+
+                foreach (var singleSeasonStats in seasonStatsList)
+                {
+                    if (query.SimulationParamsDto.SeasonYears.Contains(EnumMapper.SeasonEnumToString(singleSeasonStats.SeasonYear)) == false)
+                    {
+                        continue;
+                    }
+                    if (singleSeasonStats.LeagueStrength != 1)
+                    {
+                        int x = 0;
+                    }
+                    var merged = value.SeasonStats.Merge(
+                        value.SeasonStats,
+                        new SeasonStats(
+                            key,
+                            singleSeasonStats.SeasonYear,
+                            singleSeasonStats.LeagueId,
+                            singleSeasonStats.LeagueStrength,
+                            singleSeasonStats.MatchesPlayed,
+                            singleSeasonStats.Wins,
+                            singleSeasonStats.Losses,
+                            singleSeasonStats.Draws,
+                            singleSeasonStats.GoalsFor,
+                            singleSeasonStats.GoalsAgainst)
+                    );
+                    contentResponse.TeamsStrengthDictionary[key] =
+                        contentResponse.TeamsStrengthDictionary[key].WithSeasonStats(merged);
+                }
+            }
+        }
+
+
         contentResponse.PriorLeagueStrength = totalMatches > 0 ? (float)totalGoals / totalMatches : 0f;
 
         contentResponse.TeamsStrengthDictionary = contentResponse.TeamsStrengthDictionary
@@ -70,8 +109,8 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         return contentResponse;
     }
 
-    private InitSimulationContentResponse CalculateSeasonStatsByMatchRounds(
-        InitSimulationContentResponse contentResponse,
+    private SimulationContent CalculateSeasonStatsByMatchRounds(
+        SimulationContent contentResponse,
         IEnumerable<MatchRound> matchRounds,
         LeagueRound leagueRound,
         float leagueStrength,
@@ -93,7 +132,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
     }
 
     private void UpdateTeamStats(
-        InitSimulationContentResponse response,
+        SimulationContent response,
         Guid teamId,
         MatchRound matchRound,
         SeasonEnum seasonEnum,

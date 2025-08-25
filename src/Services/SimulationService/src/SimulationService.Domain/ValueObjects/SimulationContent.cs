@@ -3,8 +3,12 @@ using SimulationService.Domain.Entities;
 
 namespace SimulationService.Domain.ValueObjects;
 
-public class InitSimulationContentResponse
+public class SimulationContent
 {
+    /// <summary>
+    /// Key: TeamId;
+    /// Value: TeamStrength;
+    /// </summary>
     public Dictionary<Guid, TeamStrength> TeamsStrengthDictionary { get; set; } = new();
     public List<MatchRound> MatchRoundsToSimulate { get; set; } = new();
     /// <summary>
