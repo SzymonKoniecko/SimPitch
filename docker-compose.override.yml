@@ -42,6 +42,21 @@ services:
       - mssql
       - logging-service
 
+  statistics-service:
+    ports:
+      - "${STATISTICS_SERVICE_HOST_PORT}:${STATISTICS_SERVICE_CONTAINER_PORT}"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${STATISTICS_SERVICE_CONTAINER_PORT}
+      - ConnectionStrings__StatisticsDb=Server=mssql;Database=StatisticsDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
+      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - GrpcLogging__SourceName=StatisticsService
+      - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT}
+    networks:
+      - backend_network
+    depends_on:
+      - mssql
+      - logging-service
 
   mssql:
     environment:

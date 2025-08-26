@@ -58,7 +58,9 @@ BEGIN TRY
         VALUES (@RoundId1, @LeagueId, '2025/2026', 1),
             (@RoundId2, @LeagueId, '2025/2026', 2),
             (@RoundId3, @LeagueId, '2025/2026', 3),
-            (@RoundId4, @LeagueId, '2025/2026', 4)
+            (@RoundId4, @LeagueId, '2025/2026', 4),
+            (@RoundId5, @LeagueId, '2025/2026', 5),
+            (@RoundId6, @LeagueId, '2025/2026', 6)
 
     INSERT INTO dbo.MatchRound (Id, RoundId, HomeTeamId, AwayTeamId, HomeGoals, AwayGoals, IsDraw, IsPlayed)
         VALUES  

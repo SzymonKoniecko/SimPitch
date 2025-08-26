@@ -12,6 +12,10 @@ services:
     build:
       context: src/Services/SimulationService/
       dockerfile: src/SimulationService.API/Dockerfile
+  statistics-service:
+    build:
+      context: src/Services/StatisticsService/
+      dockerfile: src/StatisticsService.API/Dockerfile
 
 
 

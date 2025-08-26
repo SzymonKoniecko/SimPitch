@@ -7,6 +7,7 @@ services=(
   "src/Services/LoggingService/src/SimPitchProtos"
   "src/Services/SportsDataService/src/SimPitchProtos"
   "src/Services/SimulationService/src/SimPitchProtos"
+  "src/Services/StatisticsService/src/SimPitchProtos"
 )
 
 cd ..

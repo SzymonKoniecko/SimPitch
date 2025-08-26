@@ -115,3 +115,14 @@ BEGIN
         IsPlayed BIT NOT NULL
     );
 END
+
+----StatisticsDb Initialization Script----
+--DATABASES
+IF DB_ID('StatisticsDb') IS NULL
+BEGIN
+    CREATE DATABASE StatisticsDb;
+END
+GO
+
+USE StatisticsDb;
+GO
