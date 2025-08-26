@@ -12,7 +12,39 @@ namespace SimulationService.Domain.Services
             _rng = seed.HasValue ? new Random(seed.Value) : new Random();
         }
 
-        public (int HomeGoals, int AwayGoals) SimulateMatch(
+        public SimulationContent SimulationWorkflow(SimulationContent simulationContent)
+        {
+            foreach (var match in simulationContent.MatchRoundsToSimulate)
+            {
+                var homeTeam = simulationContent.TeamsStrengthDictionary[match.HomeTeamId];
+                var awayTeam = simulationContent.TeamsStrengthDictionary[match.AwayTeamId];
+
+                var (homeGoals, awayGoals) = SimulateMatch(
+                    homeTeam,
+                    awayTeam,
+                    homeAdvantage: 1.05
+                );
+
+                match.HomeGoals = homeGoals;
+                match.AwayGoals = awayGoals;
+                match.IsPlayed = true;
+
+                var homeStatsUpdated = homeTeam.SeasonStats.Increment(match, isHomeTeam: true);
+                var awayStatsUpdated = awayTeam.SeasonStats.Increment(match, isHomeTeam: false);
+
+                homeTeam = homeTeam with { SeasonStats = homeStatsUpdated };
+                awayTeam = awayTeam with { SeasonStats = awayStatsUpdated };
+
+                homeTeam = homeTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength);
+                awayTeam = awayTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength);
+
+                simulationContent.TeamsStrengthDictionary[homeTeam.TeamId] = homeTeam;
+                simulationContent.TeamsStrengthDictionary[awayTeam.TeamId] = awayTeam;
+            }
+            return simulationContent;
+        }
+
+        private (int HomeGoals, int AwayGoals) SimulateMatch(
             TeamStrength homeTeam,
             TeamStrength awayTeam,
             double homeAdvantage = 1.05)

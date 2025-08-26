@@ -22,7 +22,6 @@ public class TeamWriteRepository : ITeamWriteRepository
                 VALUES(@Id, @Name, @CountryId, @StadiumId, @LeagueId, @LogoUrl, @ShortName);
         ";
 
-        // Upewniamy się, że Id jest ustawione
         if (team.Id == Guid.Empty)
             team.Id = Guid.NewGuid();
 

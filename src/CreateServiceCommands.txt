@@ -74,6 +74,8 @@ dotnet add package FluentValidation
 dotnet add package MediatR --version 11.1.0
 dotnet add package MediatR.Extensions.Microsoft.DependencyInjection  --version 11.1.0
 dotnet add package FluentValidation.DependencyInjectionExtensions
+dotnet add package Newtonsoft.Json --version 13.0.3
+
 
 
 ##Test##

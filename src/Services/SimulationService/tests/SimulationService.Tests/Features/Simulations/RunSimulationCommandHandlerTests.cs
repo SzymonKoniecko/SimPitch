@@ -59,16 +59,16 @@ public class RunSimulationCommandHandlerTests
 
         var command = new RunSimulationCommand(new SimulationParamsDto
         {
-            SeasonYears = new() {"2023/2024"}
+            SeasonYears = new() { "2023/2024" },
+            LeagueId = leagueId,
+            Iterations = 1,
         });
 
         // Act
-        var report = await handler.Handle(command, CancellationToken.None);
+        var simulationId = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(report);
-        Assert.Contains(homeTeamId.ToString(), report);
-        Assert.Contains(awayTeamId.ToString(), report);
+        Assert.NotNull(simulationId);
         Assert.True(initResponse.MatchRoundsToSimulate[0].IsPlayed);
         Assert.InRange(initResponse.MatchRoundsToSimulate[0].HomeGoals, 0, 10); // spodziewany zakres
         Assert.InRange(initResponse.MatchRoundsToSimulate[0].AwayGoals, 0, 10);
