@@ -21,7 +21,6 @@ public class StadiumWriteRepository : IStadiumWriteRepository
             VALUES (@Id, @Name, @Capacity);
         ";
 
-        // Upewniamy się, że Id jest ustawione
         if (stadium.Id == Guid.Empty)
             stadium.Id = Guid.NewGuid();
 

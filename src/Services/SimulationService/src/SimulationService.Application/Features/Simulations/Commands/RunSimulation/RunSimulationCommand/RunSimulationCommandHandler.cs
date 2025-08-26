@@ -1,13 +1,18 @@
 using MediatR;
+using SimulationService.Application.DomainValidators;
+using SimulationService.Application.Features.SimulationResults.Commands.CreateSimulationResultCommand;
 using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
+using SimulationService.Application.Mappers;
+using SimulationService.Domain.Entities;
 using SimulationService.Domain.Services;
 using SimulationService.Domain.ValueObjects;
 
-public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand, string>
+public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand, Guid>
 {
     private readonly IMediator _mediator;
     private readonly MatchSimulatorService _matchSimulator;
+    
 
     public RunSimulationCommandHandler(IMediator mediator)
     {
@@ -15,47 +20,54 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         _matchSimulator = new MatchSimulatorService();
     }
 
-    public async Task<string> Handle(RunSimulationCommand command, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(RunSimulationCommand command, CancellationToken cancellationToken)
     {
         var simulationContent = await _mediator.Send(
             new InitSimulationContentCommand(command.SimulationParamsDto),
             cancellationToken
         );
 
-        foreach (var match in simulationContent.MatchRoundsToSimulate)
+        var validator = new SimulationContentValidator();
+        var validationResult = validator.Validate(simulationContent);
+
+        if (!validationResult.IsValid)
         {
-            var homeTeam = simulationContent.TeamsStrengthDictionary[match.HomeTeamId];
-            var awayTeam = simulationContent.TeamsStrengthDictionary[match.AwayTeamId];
+            throw new FluentValidation.ValidationException(validationResult.Errors);
+        }
+        Guid simulationId = Guid.NewGuid();
+        int simulationIndex = 0;
+        List<MatchRound> matchRoundsToSimulateBackup = simulationContent.MatchRoundsToSimulate;
 
-            var (homeGoals, awayGoals) = _matchSimulator.SimulateMatch(
-                homeTeam,
-                awayTeam,
-                homeAdvantage: 1.05
-            );
+        for (int i = 0; i < command.SimulationParamsDto.Iterations; i++)
+        {
+            DateTime startTime = DateTime.Now;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            if (i > 0)
+                simulationContent.MatchRoundsToSimulate = matchRoundsToSimulateBackup;
 
-            match.HomeGoals = homeGoals;
-            match.AwayGoals = awayGoals;
-            match.IsPlayed = true;
-
-            var homeStatsUpdated = homeTeam.SeasonStats.Increment(match, isHomeTeam: true);
-            var awayStatsUpdated = awayTeam.SeasonStats.Increment(match, isHomeTeam: false);
-
-            homeTeam = homeTeam with { SeasonStats = homeStatsUpdated };
-            awayTeam = awayTeam with { SeasonStats = awayStatsUpdated };
-
-            homeTeam = homeTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength);
-            awayTeam = awayTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength);
-
-            simulationContent.TeamsStrengthDictionary[homeTeam.TeamId] = homeTeam;
-            simulationContent.TeamsStrengthDictionary[awayTeam.TeamId] = awayTeam;
+            simulationContent = _matchSimulator.SimulationWorkflow(simulationContent);
+            watch.Stop();
+            simulationIndex++;
+            
+            await _mediator.Send(new CreateSimulationResultCommand(
+                SimulationResultMapper.SimulationToDto(
+                    simulationId,
+                    simulationIndex,
+                    startTime,
+                    watch.Elapsed,
+                    simulationContent.MatchRoundsToSimulate,
+                    simulationContent.LeagueStrength,
+                    simulationContent.PriorLeagueStrength,
+                    GenerateReport(simulationContent)
+                )), cancellationToken);
         }
 
-        return GenerateReport(simulationContent);
+        return simulationId;
     }
 
     private string GenerateReport(SimulationContent simulationContent)
     {
-        
+
         var reportLines = simulationContent.MatchRoundsToSimulate.Select(m =>
         {
             var homeTeam = simulationContent.TeamsStrengthDictionary[m.HomeTeamId];

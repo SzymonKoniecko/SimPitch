@@ -21,11 +21,11 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
     {
         var command = new RunSimulationCommand(SimulationEngineMapper.SimulationEngineReqestToDto(request));
 
-        string response = await _mediator.Send(command, cancellationToken: context.CancellationToken);
+        Guid response = await _mediator.Send(command, cancellationToken: context.CancellationToken);
 
         return new RunSimulationEngineResponse
         {
-            SimulationId = response
+            SimulationId = response.ToString()
         };
     }
 }

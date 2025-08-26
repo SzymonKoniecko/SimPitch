@@ -23,6 +23,15 @@ public class GetLeagueRoundsByParamsGrpcHandler : IRequestHandler<GetLeagueRound
     )
     {
         var result = await _leagueRoundGrpcClient.GetAllLeagueRoundsByParams(request.leagueRoundDtoRequest, cancellationToken);
-        return result.Select(x => LeagueRoundMapper.ToDomain(x)).ToList();
+        if (result != null)
+        {
+            return result.Select(x => LeagueRoundMapper.ToDomain(x)).OrderBy(r => r.Round).ToList();
+        }
+        else if (result == null || result.Count() == 0)
+        {
+            throw new KeyNotFoundException("Not found any league rounds for simualtion purpose");
+        }
+        else
+            throw new Exception($"Someting went wrong with GetAllLeagueRoundsByParams  - {nameof(GetLeagueRoundsByParamsGrpcHandler)}");
     }
 }
