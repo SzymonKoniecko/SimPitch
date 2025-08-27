@@ -2,7 +2,7 @@ using System;
 
 namespace StatisticsService.Domain.Entities;
 
-public class ScoreboardTeam
+public class ScoreboardTeamStats
 {
     public Guid Id { get; private set; }
     public Guid ScoreboardId { get; private set; }
@@ -16,9 +16,9 @@ public class ScoreboardTeam
     public int GoalsFor { get; private set; }
     public int GoalsAgainst { get; private set; }
 
-    private ScoreboardTeam() { }
+    private ScoreboardTeamStats() { }
 
-    public ScoreboardTeam(Guid id, Guid scoreboardId, Guid teamId, int rank, int points,
+    public ScoreboardTeamStats(Guid id, Guid scoreboardId, Guid teamId, int rank, int points,
                           int matchPlayed, int wins, int losses, int draws,
                           int goalsFor, int goalsAgainst)
     {

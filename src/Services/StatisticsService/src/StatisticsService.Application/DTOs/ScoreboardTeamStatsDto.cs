@@ -2,7 +2,7 @@ using System;
 
 namespace StatisticsService.Application.DTOs;
 
-public class ScoreboardTeamDto
+public class ScoreboardTeamStatsDto
 {
     public Guid Id { get; set; }
     public Guid ScoreboardId { get; set; }

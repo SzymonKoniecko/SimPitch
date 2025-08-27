@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StatisticsService.Application.Interfaces;
 using StatisticsService.Domain.Interfaces;
+using StatisticsService.Infrastructure.Clients;
 using StatisticsService.Infrastructure.Persistence.Read;
 using StatisticsService.Infrastructure.Persistence.Write;
 
@@ -14,11 +16,14 @@ public static class DependencyInjection
         services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
     
         //  Clients DI
+        services.AddTransient<ISimulationResultGrpcClient, SimulationResultGrpcClient>();
 
         //  Read repositories
         services.AddScoped<IScoreboardReadRepository, ScoreboardReadRepository>();
+        services.AddScoped<IScoreboardTeamStatsReadRepository, ScoreboardTeamStatsReadRepository>();
         //  Write repositories
         services.AddScoped<IScoreboardWriteRepository, ScoreboardWriteRepository>();
+        services.AddScoped<IScoreboardTeamStatsWriteRepository, ScoreboardTeamStatsWriteRepository>();
 
         // Services
 

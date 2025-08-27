@@ -1,8 +1,6 @@
 using System;
-using SimulationService.Application.Features.MatchRounds.DTOs;
-using SimulationService.Domain.Entities;
 
-namespace SimulationService.Application.Features.SimulationResults.DTOs;
+namespace StatisticsService.Application.DTOs;
 
 public class SimulationResultDto
 {

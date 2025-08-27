@@ -24,4 +24,24 @@ public static class ConfigHelper
         }
         return serviceName;
     }
+
+    internal static string GetSimulationServiceAddress()
+    {
+        string simulationServiceAddress = Environment.GetEnvironmentVariable("SimulationService__Address");
+
+        if (string.IsNullOrEmpty(simulationServiceAddress)) {
+            if (!File.Exists("/.dockerenv"))
+            {
+                var config = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
+                    .Build();
+
+                simulationServiceAddress = config["GrpcSimulationService:Address"];
+            }
+            else
+                throw new SystemException("SimulationService address is not declared!");
+        }
+        return simulationServiceAddress;
+    }
 }

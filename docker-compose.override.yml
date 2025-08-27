@@ -52,6 +52,7 @@ services:
       - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
       - GrpcLogging__SourceName=StatisticsService
       - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT}
+      - SimulationService__Address=http://${SIMULATION_SERVICE_NAME}:${SIMULATION_SERVICE_CONTAINER_PORT}
     networks:
       - backend_network
     depends_on:

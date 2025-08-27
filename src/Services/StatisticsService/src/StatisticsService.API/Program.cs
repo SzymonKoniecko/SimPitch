@@ -26,6 +26,8 @@ builder.Services.AddGrpc(options =>
     options.Interceptors.Add<GrpcExceptionInterceptor>();
 });
 
+builder.Services.AddSimulationGrpcClient(ConfigHelper.GetSimulationServiceAddress());
+
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {

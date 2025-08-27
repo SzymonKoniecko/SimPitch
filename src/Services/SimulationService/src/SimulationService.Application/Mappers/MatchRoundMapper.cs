@@ -21,4 +21,28 @@ public static class MatchRoundMapper
         return entity;
     }
 
+    public static IEnumerable<MatchRound> ToDomainBulk(IEnumerable<MatchRoundDto> dtos)
+    {
+        return dtos.Select(ToDomain).ToList();
+    }
+
+    public static MatchRoundDto ToDto(MatchRound entity)
+    {
+        var dto = new MatchRoundDto();
+        dto.Id = entity.Id;
+        dto.RoundId = entity.RoundId;
+        dto.HomeTeamId = entity.HomeTeamId;
+        dto.AwayTeamId = entity.AwayTeamId;
+        dto.HomeGoals = entity.HomeGoals;
+        dto.AwayGoals = entity.AwayGoals;
+        dto.IsDraw = entity.IsDraw;
+        dto.IsPlayed = entity.IsPlayed;
+
+        return dto;
+    }
+
+    public static IEnumerable<MatchRoundDto> ToDtoBulk(IEnumerable<MatchRound> entities)
+    {
+        return entities.Select(ToDto).ToList();
+    }
 }

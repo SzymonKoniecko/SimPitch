@@ -6,7 +6,8 @@ public class ScoreboardDto
 {
     public Guid Id { get; set; }
     public Guid SimulationId { get; set; }
-    public List<ScoreboardTeamDto> ScoreboardTeams { get; set; } = new();
+    public Guid SimulationResultId { get; set; }
+    public List<ScoreboardTeamStatsDto> ScoreboardTeams { get; set; } = new();
     public float LeagueStrength { get; set; }
     public float PriorLeagueStrength { get; set; }
 }

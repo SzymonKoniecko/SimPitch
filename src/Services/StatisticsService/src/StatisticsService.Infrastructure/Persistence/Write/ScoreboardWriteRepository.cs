@@ -19,7 +19,7 @@ public class ScoreboardWriteRepository : IScoreboardWriteRepository
         using var connection = _dbConnectionFactory.CreateConnection();
         
         const string sql = @"
-            INSERT INTO Scoreboards (Id, SimulationId, LeagueStrength, PriorLeagueStrength)
+            INSERT INTO Scoreboard (Id, SimulationId, SimualtionResultId, LeagueStrength, PriorLeagueStrength)
             VALUES (@Id, @SimulationId, @LeagueStrength, @PriorLeagueStrength)";
 
         var command = new CommandDefinition(

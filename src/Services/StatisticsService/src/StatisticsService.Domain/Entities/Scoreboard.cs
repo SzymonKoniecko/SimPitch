@@ -1,5 +1,4 @@
 using System;
-using StatisticsService.Domain.ValueObjects;
 
 namespace StatisticsService.Domain.Entities;
 
@@ -7,25 +6,26 @@ public class Scoreboard
 {
     public Guid Id { get; private set; }
     public Guid SimulationId { get; private set; }
+    public Guid SimulationResultId { get; private set; }
     
-    private readonly List<ScoreboardTeam> _teams = new();
-    public IReadOnlyCollection<ScoreboardTeam> ScoreboardTeams => _teams.AsReadOnly();
+    private readonly List<ScoreboardTeamStats> _teams = new();
+    public IReadOnlyCollection<ScoreboardTeamStats> ScoreboardTeams => _teams.AsReadOnly();
 
     public float LeagueStrength { get; private set; }
     public float PriorLeagueStrength { get; private set; }
 
-    // Konstruktor dla ORM / Dapper
     private Scoreboard() { }
 
-    public Scoreboard(Guid id, Guid simulationId, float leagueStrength, float priorLeagueStrength)
+    public Scoreboard(Guid id, Guid simulationId, Guid simulationResultId, float leagueStrength, float priorLeagueStrength)
     {
         Id = id;
         SimulationId = simulationId;
+        SimulationResultId = simulationResultId;
         LeagueStrength = leagueStrength;
         PriorLeagueStrength = priorLeagueStrength;
     }
 
-    public void AddTeam(ScoreboardTeam team)
+    public void AddTeam(ScoreboardTeamStats team)
     {
         _teams.Add(team);
     }
