@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StatisticsService.Application.Interfaces;
 using StatisticsService.Domain.Interfaces;
+using StatisticsService.Domain.Services;
 using StatisticsService.Infrastructure.Clients;
 using StatisticsService.Infrastructure.Persistence.Read;
 using StatisticsService.Infrastructure.Persistence.Write;
@@ -26,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<IScoreboardTeamStatsWriteRepository, ScoreboardTeamStatsWriteRepository>();
 
         // Services
+        services.AddTransient<ScoreboardService>();
 
         return services;
     }

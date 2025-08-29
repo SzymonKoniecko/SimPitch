@@ -22,7 +22,7 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
         var simulationResultsQuery = new GetSimulationResultsBySimulationIdQuery(request.simulationimulationResultDto.SimulationId);
         var simulationResults = await _mediator.Send(simulationResultsQuery, cancellationToken);
 
-
+        
 
         // await _scoreboardWriteRepository.CreateScoreboardAsync(scoreboard, cancellationToken: cancellationToken);
 
