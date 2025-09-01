@@ -12,6 +12,6 @@ public class ScoreboardService
 
     public Scoreboard CalcucalteScoreboard(Guid simulationId)
     { 
-        
+        return new Scoreboard();
     }
 }
