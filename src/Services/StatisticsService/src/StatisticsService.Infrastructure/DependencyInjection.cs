@@ -28,6 +28,7 @@ public static class DependencyInjection
 
         // Services
         services.AddTransient<ScoreboardService>();
+        services.AddTransient<ScoreboardTeamStatsService>();
 
         return services;
     }

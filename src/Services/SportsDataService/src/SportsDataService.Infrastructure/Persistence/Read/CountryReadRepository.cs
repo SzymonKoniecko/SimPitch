@@ -50,6 +50,7 @@ public class CountryReadRepository : ICountryReadRepository
 
         return await connection.QueryAsync<Country>(command);
     }
+    
     public async Task<bool> CountryExistsAsync(Guid countryId, CancellationToken cancellationToken)
     {
         using var connection = _DbConnectionFactory.CreateConnection();

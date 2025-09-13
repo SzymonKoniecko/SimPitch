@@ -15,9 +15,9 @@ public class GetSimulationResultsBySimulationIdQueryHandler : IRequestHandler<Ge
         _simulationResultReadRepository = simulationResultReadRepository;
     }
 
-    public async Task<List<SimulationResultDto>> Handle(GetSimulationResultsBySimulationIdQuery request, CancellationToken cancellationToken)
+    public async Task<List<SimulationResultDto>> Handle(GetSimulationResultsBySimulationIdQuery query, CancellationToken cancellationToken)
     {
-        var simulationResults = await _simulationResultReadRepository.GetSimulationResultsBySimulationIdAsync(request.SimulationId, cancellationToken);
+        var simulationResults = await _simulationResultReadRepository.GetSimulationResultsBySimulationIdAsync(query.SimulationId, cancellationToken);
 
         return simulationResults.Select(sr => SimulationResultMapper.ToDto(sr)).ToList();
     }

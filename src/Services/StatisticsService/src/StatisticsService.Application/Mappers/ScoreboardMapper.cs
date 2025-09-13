@@ -17,4 +17,19 @@ public static class ScoreboardMapper
         // return scoreboard;
         throw new NotImplementedException();
     }
+
+    public static ScoreboardDto ToDto(Scoreboard domain)
+    {
+        var dto = new ScoreboardDto
+        {
+            Id = domain.Id,
+            SimulationId = domain.SimulationId,
+            SimulationResultId = domain.SimulationResultId,
+            ScoreboardTeams = domain.ScoreboardTeams.Select(team => ScoreboardTeamStatsMapper.ToDto(team)).ToList(),
+            LeagueStrength = domain.LeagueStrength,
+            PriorLeagueStrength = domain.PriorLeagueStrength
+        };
+        
+        return dto;
+    }
 }

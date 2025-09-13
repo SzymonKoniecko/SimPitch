@@ -27,4 +27,16 @@ public class Scoreboard
     {
         _teams.Add(team);
     }
+
+    public void AddTeamRange(IEnumerable<ScoreboardTeamStats> teams)
+    {
+        _teams.AddRange(teams);
+    }
+
+    public void SortByCriteria()
+    {
+        _teams
+            .OrderByDescending(x => x.Points)
+            .ThenBy(x => x.Wins);
+    }
 }
