@@ -19,7 +19,7 @@ public class SimulationResultReadRepository : ISimulationResultReadRepository
         
         const string sql = @"
             SELECT Id, SimulationId, SimulationIndex, StartDate, ExecutionTime, 
-                SimulatedMatchRounds, LeagueStrength, PriorLeagueStrength, Raport
+                SimulatedMatchRounds, LeagueStrength, PriorLeagueStrength, SimulationParams, Raport
             FROM SimulationResult
             WHERE SimulationId = @SimulationId;
         ";

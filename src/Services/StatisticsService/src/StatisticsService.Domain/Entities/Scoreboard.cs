@@ -23,20 +23,39 @@ public class Scoreboard
         PriorLeagueStrength = priorLeagueStrength;
     }
 
-    public void AddTeam(ScoreboardTeamStats team)
+    public void AddTeam(ScoreboardTeamStats team) => _teams.Add(team);
+    public void AddTeamRange(IEnumerable<ScoreboardTeamStats> teams) => _teams.AddRange(teams);
+
+    public void SetRankings()
     {
-        _teams.Add(team);
+        // najpierw posortuj poprawnie
+        SortByCriteria();
+
+        int rank = 1;
+        foreach (var team in _teams)
+        {
+            team.SetRanking(rank);
+            rank++;
+        }
     }
 
-    public void AddTeamRange(IEnumerable<ScoreboardTeamStats> teams)
-    {
-        _teams.AddRange(teams);
-    }
-
+    // sortowanie w miejscu (in-place) — NIE tworzy nowej listy
     public void SortByCriteria()
     {
-        _teams
-            .OrderByDescending(x => x.Points)
-            .ThenBy(x => x.Wins);
+        _teams.Sort((a, b) =>
+        {
+            // po punktach malejąco
+            int cmp = b.Points.CompareTo(a.Points);
+            if (cmp != 0) return cmp;
+
+            // przy remisie po punktach — zwykle więcej wygranych jest lepsze => malejąco
+            cmp = b.Wins.CompareTo(a.Wins);
+            return cmp;
+        });
+    }
+
+    public void SortByRank()
+    {
+        _teams.Sort((a, b) => a.Rank.CompareTo(b.Rank));
     }
 }

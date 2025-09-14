@@ -34,4 +34,20 @@ public class ScoreboardTeamStats
         GoalsFor = goalsFor;
         GoalsAgainst = goalsAgainst;
     }
+
+    internal void SetRanking(int rank)
+    {
+        this.Rank = rank;
+    }
+
+    internal void MergeMatchStats(ScoreboardTeamStats item)
+    {
+        Points += item.Points;
+        MatchPlayed += item.MatchPlayed;
+        Wins += item.Wins;
+        Losses += item.Losses;
+        Draws += item.Draws;
+        GoalsFor += item.GoalsFor;
+        GoalsAgainst += item.GoalsAgainst;
+    }
 }

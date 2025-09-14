@@ -138,6 +138,7 @@ BEGIN
         SimulatedMatchRounds NVARCHAR(MAX) NULL,
         LeagueStrength FLOAT NOT NULL,
         PriorLeagueStrength FLOAT NOT NULL,
+        SimulationParams NVARCHAR(MAX) NULL,
         Raport NVARCHAR(MAX) NULL
     );
 END
@@ -166,7 +167,7 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ScoreboardTeamStats' AND xty
 BEGIN
     CREATE TABLE ScoreboardTeamStats (
         Id UNIQUEIDENTIFIER PRIMARY KEY,
-        ScoreboardId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES Scoreboards(Id),
+        ScoreboardId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES Scoreboard(Id),
         TeamId UNIQUEIDENTIFIER NOT NULL,
         Rank INT NOT NULL,
         Points INT NOT NULL,

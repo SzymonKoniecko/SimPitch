@@ -1,9 +1,6 @@
-using System;
 using MediatR;
 using StatisticsService.Application.DTOs;
-using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
 using StatisticsService.Application.Mappers;
-using StatisticsService.Domain.Entities;
 using StatisticsService.Domain.Interfaces;
 
 namespace StatisticsService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
@@ -26,14 +23,17 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
         if (await _scoreboardReadRepository.ScoreboardBySimulationIdExistsAsync(query.simulationId, cancellationToken: cancellationToken))
         {
             var scoreboards = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(query.simulationId, withTeamStats: true, cancellationToken: cancellationToken);
+            
+            foreach (var scoreboard in scoreboards)
+                scoreboard.SortByRank();
+                
+            if (query.simulationResultId != Guid.Empty)
+            {
+                scoreboards = scoreboards.Where(x => x.SimulationResultId == query.simulationResultId).ToList();
+            }
 
-            return (List<ScoreboardDto>)scoreboards.Select(x => ScoreboardMapper.ToDto(x));
+            return scoreboards.Select(x => ScoreboardMapper.ToDto(x)).ToList();
         }
-
-        var command = new CreateScoreboardCommand(query.simulationId);
-
-        var createdScoreboards = await _mediator.Send(command);
-
-        return createdScoreboards;
+        return null;
     }
 }

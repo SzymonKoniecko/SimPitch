@@ -2,6 +2,7 @@ using System;
 using Microsoft.IdentityModel.Tokens;
 
 namespace StatisticsService.API;
+
 public static class ConfigHelper
 {
     internal static string GetLoggerSourceName()
@@ -29,7 +30,8 @@ public static class ConfigHelper
     {
         string simulationServiceAddress = Environment.GetEnvironmentVariable("SimulationService__Address");
 
-        if (string.IsNullOrEmpty(simulationServiceAddress)) {
+        if (string.IsNullOrEmpty(simulationServiceAddress))
+        {
             if (!File.Exists("/.dockerenv"))
             {
                 var config = new ConfigurationBuilder()
@@ -43,5 +45,25 @@ public static class ConfigHelper
                 throw new SystemException("SimulationService address is not declared!");
         }
         return simulationServiceAddress;
+    }
+    
+    public static string GetSportsDataAddress()
+    {
+        string sportsDataAddress = Environment.GetEnvironmentVariable("SportsDataService__Address");
+
+        if (string.IsNullOrEmpty(sportsDataAddress)) {
+            if (!File.Exists("/.dockerenv"))
+            {
+                var config = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
+                    .Build();
+
+                sportsDataAddress = config["GrpcSportsDataService:Address"];
+            }
+            else
+                throw new SystemException("SportsDataService address is not declared!");
+        }
+        return sportsDataAddress;
     }
 }

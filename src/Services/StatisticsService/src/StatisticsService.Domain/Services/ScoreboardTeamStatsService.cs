@@ -11,66 +11,81 @@ public class ScoreboardTeamStatsService
 
     }
 
-    public ScoreboardTeamStats CalculateScoreboardTeamStatsForSingleTeam(Guid scoreboardId, Guid teamId, List<MatchRound> matchRounds)
+    public List<ScoreboardTeamStats> CalculateScoreboardTeamStats(Guid scoreboardId, List<MatchRound> matchRounds)
     {
-        IEnumerable<MatchRound> homeMatches = matchRounds.Where(x => x.HomeTeamId == teamId);
-        IEnumerable<MatchRound> awayMatches = matchRounds.Where(x => x.AwayTeamId == teamId);
+        Dictionary<Guid, ScoreboardTeamStats> teamStatsDict = new Dictionary<Guid, ScoreboardTeamStats>();
 
-        int rank = 0;
-        int points = 0;
-        int matchPlayed = 0;
-        int wins = 0;
-        int losses = 0;
-        int draws = 0;
-        int goalsFor = 0;
-        int goalsAgainst = 0;
-
-        foreach (var homeMatch in homeMatches)
+        foreach (var match in matchRounds)
         {
-            matchPlayed++;
-            goalsFor += homeMatch.HomeGoals;
-            goalsAgainst += homeMatch.AwayGoals;
-
-            if (homeMatch.IsDraw)
+            (ScoreboardTeamStats, ScoreboardTeamStats) stats = CalculateScoreboardTeamStatsForMatch(scoreboardId, match);
+            if (teamStatsDict.ContainsKey(stats.Item1.TeamId))
             {
-                draws++;
-                points++;
+                teamStatsDict[stats.Item1.TeamId].MergeMatchStats(stats.Item1);
+            }
+            else
+            {
+                teamStatsDict.Add(stats.Item1.TeamId, stats.Item1);
             }
 
-            if (homeMatch.HomeGoals > homeMatch.AwayGoals)
+
+            if (teamStatsDict.ContainsKey(stats.Item2.TeamId))
             {
-                wins++;
-                points += 3;
+                teamStatsDict[stats.Item2.TeamId].MergeMatchStats(stats.Item2);
             }
-
-            if (homeMatch.HomeGoals < homeMatch.AwayGoals)
-                losses++;
-        }
-
-        foreach (var awayMatch in awayMatches)
-        {
-            matchPlayed++;
-            goalsFor += awayMatch.AwayGoals;
-            goalsAgainst += awayMatch.HomeGoals;
-
-            if (awayMatch.IsDraw)
+            else
             {
-                draws++;
-                points++;
-            }
-
-            if (awayMatch.HomeGoals > awayMatch.AwayGoals)
-            {
-                losses++;
-            }
-
-            if (awayMatch.HomeGoals < awayMatch.AwayGoals)
-            {
-                wins++;
-                points += 3;
+                teamStatsDict.Add(stats.Item2.TeamId, stats.Item2);
             }
         }
 
-        return new ScoreboardTeamStats(Guid.NewGuid(), scoreboardId, teamId, rank, points, matchPlayed, wins, losses, draws, goalsFor, goalsAgainst);
+        List<ScoreboardTeamStats> result = new List<ScoreboardTeamStats>();
+
+        foreach (var (key, value) in teamStatsDict)
+        {
+            result.Add(value);
+        }
+
+        return result;
+    }
+
+    public (ScoreboardTeamStats, ScoreboardTeamStats) CalculateScoreboardTeamStatsForMatch(Guid scoreboardId, MatchRound match)
+    {
+        int rank = 0; // Rank will be set later
+
+        (int, int) points = (0, 0);
+        (int, int) win = (0, 0);
+        (int, int) loss = (0, 0);
+        int draw = 0;
+        (int, int) goalsFor = (0, 0);
+        (int, int) goalsAgainst = (0, 0);
+
+        goalsFor = (match.HomeGoals, match.AwayGoals);
+        goalsAgainst = (match.AwayGoals, match.HomeGoals);
+
+        if(match.HomeTeamId == Guid.Parse("a6c9f7d1-2b34-4e9c-8f13-0d7a2e5b1c9f") || match.AwayTeamId == Guid.Parse("a6c9f7d1-2b34-4e9c-8f13-0d7a2e5b1c9f"))
+        {
+            Console.WriteLine("HERE");
+        }
+
+        if (match.IsDraw)
+        {
+            draw++;
+            points = (1, 1);
+        }
+        else if (match.HomeGoals > match.AwayGoals)
+        {
+            win = (1, 0);
+            loss = (0, 1);
+            points = (3, 0);
+        }
+        else if (match.HomeGoals < match.AwayGoals)
+        {
+            win = (0, 1);
+            loss = (1, 0);
+            points = (0, 3);
+        }
+
+        return (new ScoreboardTeamStats(Guid.NewGuid(), scoreboardId, match.HomeTeamId, rank, points.Item1, 1, win.Item1, loss.Item1, draw, goalsFor.Item1, goalsAgainst.Item1),
+            new ScoreboardTeamStats(Guid.NewGuid(), scoreboardId, match.AwayTeamId, rank, points.Item2, 1, win.Item2, loss.Item2, draw, goalsFor.Item2, goalsAgainst.Item2));
     }
 }

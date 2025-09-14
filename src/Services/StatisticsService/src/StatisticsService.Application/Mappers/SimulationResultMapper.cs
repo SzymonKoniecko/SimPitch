@@ -15,7 +15,9 @@ public static class SimulationResultMapper
         valueObject.SimulationIndex = dto.SimulationIndex;
         valueObject.StartDate = dto.StartDate;
         valueObject.ExecutionTime = dto.ExecutionTime;
-        valueObject.SimulatedMatchRounds = (List<MatchRound>)dto.SimulatedMatchRounds.Select(x => MatchRoundMapper.ToValueObject(x));
+        valueObject.SimulatedMatchRounds = dto.SimulatedMatchRounds
+            .Select(x => MatchRoundMapper.ToValueObject(x))
+            .ToList();
         valueObject.LeagueStrength = dto.LeagueStrength;
         valueObject.PriorLeagueStrength = dto.PriorLeagueStrength;
         valueObject.Raport = dto.Raport;

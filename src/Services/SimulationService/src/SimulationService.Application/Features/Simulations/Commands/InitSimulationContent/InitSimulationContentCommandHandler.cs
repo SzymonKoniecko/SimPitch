@@ -26,6 +26,11 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
     public async Task<SimulationContent> Handle(InitSimulationContentCommand query, CancellationToken cancellationToken)
     {
         SimulationContent contentResponse = new();
+        contentResponse.SimulationParams = new SimulationParams();
+        contentResponse.SimulationParams.SeasonYears = query.SimulationParamsDto.SeasonYears.ToList();
+        contentResponse.SimulationParams.LeagueId = query.SimulationParamsDto.LeagueId;
+        contentResponse.SimulationParams.Iterations = query.SimulationParamsDto.Iterations;
+        contentResponse.SimulationParams.LeagueRoundId = query.SimulationParamsDto.LeagueRoundId;
 
         var leagueRoundDtoRequest = new LeagueRoundDtoRequest
         {

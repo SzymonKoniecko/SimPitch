@@ -3,4 +3,4 @@ using StatisticsService.Application.DTOs;
 
 namespace StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
 
-public record CreateScoreboardCommand(Guid simulationId) : IRequest<List<ScoreboardDto>>;
+public record CreateScoreboardCommand(Guid simulationId, Guid simulationResultId) : IRequest<IEnumerable<ScoreboardDto>>;

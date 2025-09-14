@@ -13,7 +13,7 @@ public class ScoreboardService
         this._scoreboardTeamStatsService = scoreboardTeamStatsService;
     }
 
-    public Scoreboard CalculateSingleScoreboard(SimulationResult simulationResult)
+    public Scoreboard CalculateSingleScoreboard(SimulationResult simulationResult, List<MatchRound> playedMatchRounds)
     {
         Scoreboard scoreboard = new Scoreboard(
             Guid.NewGuid(),
@@ -22,21 +22,14 @@ public class ScoreboardService
             simulationResult.LeagueStrength,
             simulationResult.PriorLeagueStrength
         );
-        List<Guid> teamIds = simulationResult.SimulatedMatchRounds.Select(x => x.HomeTeamId).ToList();
-        teamIds.AddRange(simulationResult.SimulatedMatchRounds.Select(x => x.AwayTeamId));
-        teamIds.Distinct().ToList();
-
+        List<MatchRound> matches = playedMatchRounds.Where(x => simulationResult.SimulatedMatchRounds.Any(smr => smr.Id != x.Id)).ToList();
         scoreboard.AddTeamRange(
-            teamIds.Select(teamId =>
-                _scoreboardTeamStatsService.CalculateScoreboardTeamStatsForSingleTeam(
-                    simulationResult.SimulationId,
-                    teamId,
-                    simulationResult.SimulatedMatchRounds.Where(
-                        x => x.HomeTeamId == teamId || x.AwayTeamId == teamId
-                    ).ToList()
-                )
+            _scoreboardTeamStatsService.CalculateScoreboardTeamStats(
+                scoreboard.Id,
+                matches
             )
         );
+        
         return scoreboard;
     }
 }

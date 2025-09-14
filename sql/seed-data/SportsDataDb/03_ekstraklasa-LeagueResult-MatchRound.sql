@@ -54,6 +54,7 @@ BEGIN TRANSACTION
 
 BEGIN TRY
 
+    IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.LeagueRound)
     INSERT INTO dbo.LeagueRound (Id, LeagueId, SeasonYear, Round)
         VALUES (@RoundId1, @LeagueId, '2025/2026', 1),
             (@RoundId2, @LeagueId, '2025/2026', 2),
@@ -62,6 +63,7 @@ BEGIN TRY
             (@RoundId5, @LeagueId, '2025/2026', 5),
             (@RoundId6, @LeagueId, '2025/2026', 6)
 
+    IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.MatchRound)
     INSERT INTO dbo.MatchRound (Id, RoundId, HomeTeamId, AwayTeamId, HomeGoals, AwayGoals, IsDraw, IsPlayed)
         VALUES  
         (NEWID(), @RoundId1, @TeamId1, @TeamId17, 0, 4, 0, 1),
@@ -124,6 +126,7 @@ BEGIN TRY
         (NEWID(), @RoundId6, @TeamId2, @TeamId1, null, null, null, 0), -- Legia vs Jaga
         (NEWID(), @RoundId6, @TeamId9, @TeamId14, null, null, null, 0); -- Wisla vs Zaglebie
 
+    IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.SeasonStats)
     INSERT INTO dbo.SeasonStats (Id, TeamId, SeasonYear, LeagueId, MatchesPlayed, Wins, Losses, Draws, GoalsFor, GoalsAgainst)
         VALUES
     	 (NEWID(), @TeamId3, '2024/2025', @LeagueId, 34, 22, 8, 4, 68, 31),

@@ -5,6 +5,7 @@ namespace SimulationService.Domain.ValueObjects;
 
 public class SimulationContent
 {
+    public SimulationParams SimulationParams { get; set; }
     /// <summary>
     /// Key: TeamId;
     /// Value: TeamStrength;

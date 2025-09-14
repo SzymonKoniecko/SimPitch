@@ -44,7 +44,7 @@ public class ScoreboardReadRepository : IScoreboardReadRepository
     public async Task<bool> ScoreboardBySimulationIdExistsAsync(Guid simulationId, CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        const string sql = "SELECT COUNT(1) FROM Scoreboard WHERE Id = @Id";
+        const string sql = "SELECT COUNT(1) FROM Scoreboard WHERE SimulationId = @SimulationId";
 
         var command = new CommandDefinition(
             commandText: sql,

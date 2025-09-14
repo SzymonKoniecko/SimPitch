@@ -3,6 +3,7 @@ using StatisticsService.Infrastructure;
 using StatisticsService.Application.Features;
 using StatisticsService.Infrastructure.Logging;
 using StatisticsService.Infrastructure.Middlewares;
+using StatisticsService.API.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -26,7 +27,7 @@ builder.Services.AddGrpc(options =>
     options.Interceptors.Add<GrpcExceptionInterceptor>();
 });
 
-builder.Services.AddSimulationGrpcClient(ConfigHelper.GetSimulationServiceAddress());
+builder.Services.AddSimulationGrpcClient(ConfigHelper.GetSimulationServiceAddress(), ConfigHelper.GetSportsDataServiceAddress());
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -34,6 +35,7 @@ if (app.Environment.IsDevelopment())
     app.MapGrpcReflectionService();
 }
 
+app.MapGrpcService<ScoreboardGrpcService>();
 
 app.MapGet("/", () => "Use gRPC clients for communication");
 

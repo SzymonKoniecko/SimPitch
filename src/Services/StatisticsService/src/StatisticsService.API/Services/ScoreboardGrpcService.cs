@@ -5,6 +5,7 @@ using MediatR;
 using SimPitchProtos.StatisticsService;
 using SimPitchProtos.StatisticsService.Scoreboard;
 using StatisticsService.Application.DTOs;
+using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
 using StatisticsService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 
 namespace StatisticsService.API.Services;
@@ -20,19 +21,41 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public override async Task<ScoreboardsBySimulationIdResponse> GetScoreboardsBySimulationId(ScoreboardsBySimulationIdRequest request, ServerCallContext context)
+    public override async Task<ScoreboardsResponse> CreateScoreboards(CreateScoreboardsRequest request, ServerCallContext context)
     {
-        var command = new GetScoreboardsBySimulationIdQuery(Guid.Parse(request.SimulationId));
+        var command = new CreateScoreboardCommand(Guid.Parse(request.SimulationId), request.HasSimulationResultId ? Guid.Parse(request.SimulationResultId): Guid.Empty);
 
         var results = await _mediator.Send(command, cancellationToken: context.CancellationToken);
 
-        return new ScoreboardsBySimulationIdResponse
+        return new ScoreboardsResponse
         {
             Scoreboards = { results.Select(x => ScoreboardToGrpc(x)) }
         };
     }
 
-    private static ScoreboardGrpc ScoreboardToGrpc(ScoreboardDto dto) {
+    public override async Task<ScoreboardsResponse> GetScoreboardsBySimulationId(ScoreboardsBySimulationIdRequest request, ServerCallContext context)
+    {
+        var command = new GetScoreboardsBySimulationIdQuery(
+            Guid.Parse(request.SimulationId),
+            request.HasSimulationResultId ? Guid.Parse(request.SimulationResultId): Guid.Empty,
+            request.WithTeamStats
+        );
+
+        var results = await _mediator.Send(command, cancellationToken: context.CancellationToken);
+
+        if (results == null)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, $"No scoreboards found for simulation ID {request.SimulationId}"));
+        }
+        
+        return new ScoreboardsResponse
+        {
+            Scoreboards = { results.Select(x => ScoreboardToGrpc(x)) }
+        };
+    }
+
+    private static ScoreboardGrpc ScoreboardToGrpc(ScoreboardDto dto)
+    {
         var grpc = new ScoreboardGrpc
         {
             Id = dto.Id.ToString(),
