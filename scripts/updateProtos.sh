@@ -3,7 +3,6 @@
 set -e
 BRANCH="${1:-main}"
 
-# Lista: NAZWA|ŚCIEŻKA
 services=(
   "LoggingService|src/Services/LoggingService/src/SimPitchProtos"
   "SportsDataService|src/Services/SportsDataService/src/SimPitchProtos"
@@ -13,8 +12,8 @@ services=(
 
 cd ..
 for entry in "${services[@]}"; do
-  service="${entry%%|*}"   # część przed |
-  proto_path="${entry##*|}" # część po |
+  service="${entry%%|*}"
+  proto_path="${entry##*|}"
 
   if [ -d "$proto_path" ]; then
     echo "--------------------------------------------"
