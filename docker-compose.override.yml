@@ -10,6 +10,14 @@ services:
       - backend_network
     depends_on:
       - mssql
+  frontend:
+    container_name: vue_frontend
+    environment:
+      API_URL: http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
+    ports:
+      - "8080:80"
+    depends_on:
+      - logging-service
 
   sportsdata-service:
     ports:
