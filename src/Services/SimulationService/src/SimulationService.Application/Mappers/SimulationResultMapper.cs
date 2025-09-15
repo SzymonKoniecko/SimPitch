@@ -1,8 +1,12 @@
 using System;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using SimulationService.Application.Features.MatchRounds.DTOs;
 using SimulationService.Application.Features.SimulationResults.DTOs;
+using SimulationService.Application.Features.Simulations.DTOs;
 using SimulationService.Domain.Entities;
+using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Application.Mappers;
 
@@ -16,6 +20,7 @@ public static class SimulationResultMapper
         List<MatchRound> simulatedMatchRounds,
         float leagueStrength,
         float priorLeagueStrength,
+        SimulationParams simulationParams,
         string raport)
     {
         var dto = new SimulationResultDto();
@@ -24,9 +29,16 @@ public static class SimulationResultMapper
         dto.SimulationIndex = simulationIndex;
         dto.StartDate = simulationDate;
         dto.ExecutionTime = executionTime;
-        dto.SimulatedMatchRounds = simulatedMatchRounds;
+        dto.SimulatedMatchRounds = (List<MatchRoundDto>)MatchRoundMapper.ToDtoBulk(simulatedMatchRounds);
         dto.LeagueStrength = leagueStrength;
         dto.PriorLeagueStrength = priorLeagueStrength;
+        dto.SimulationParams = new SimulationParamsDto
+        {
+            SeasonYears = simulationParams.SeasonYears,
+            LeagueId = simulationParams.LeagueId,
+            Iterations = simulationParams.Iterations,
+            LeagueRoundId = simulationParams.LeagueRoundId
+        };
         dto.Raport = raport;
 
         return dto;
@@ -43,9 +55,15 @@ public static class SimulationResultMapper
         entity.SimulatedMatchRounds = JsonConvert.SerializeObject(dto.SimulatedMatchRounds);
         entity.LeagueStrength = dto.LeagueStrength;
         entity.PriorLeagueStrength = dto.PriorLeagueStrength;
+        entity.SimulationParams = dto.SimulationParams != null ? JsonConvert.SerializeObject(dto.SimulationParams) : null;
         entity.Raport = dto.Raport;
 
         return entity;
+    }
+
+    public static IEnumerable<SimulationResult> ToDomainBulk(IEnumerable<SimulationResultDto> dtos)
+    {
+        return dtos.Select(ToDomain).ToList();
     }
 
     public static SimulationResultDto ToDto(SimulationResult entity)
@@ -56,11 +74,21 @@ public static class SimulationResultMapper
         dto.SimulationIndex = entity.SimulationIndex;
         dto.StartDate = entity.StartDate;
         dto.ExecutionTime = entity.ExecutionTime;
-        dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRound>>(entity.SimulatedMatchRounds) ?? new List<MatchRound>();
+        dto.SimulatedMatchRounds = (List<MatchRoundDto>)MatchRoundMapper.ToDtoBulk(entity.SimulatedMatchRounds != null
+            ? JsonConvert.DeserializeObject<List<MatchRound>>(entity.SimulatedMatchRounds)
+            : new List<MatchRound>());
         dto.LeagueStrength = entity.LeagueStrength;
         dto.PriorLeagueStrength = entity.PriorLeagueStrength;
+        dto.SimulationParams = entity.SimulationParams != null
+            ? JsonConvert.DeserializeObject<SimulationParamsDto>(entity.SimulationParams)
+            : null;
         dto.Raport = entity.Raport;
 
         return dto;
+    }
+
+    public static IEnumerable<SimulationResultDto> ToDtoBulk(IEnumerable<SimulationResult> entities)
+    {
+        return entities.Select(ToDto).ToList();
     }
 }

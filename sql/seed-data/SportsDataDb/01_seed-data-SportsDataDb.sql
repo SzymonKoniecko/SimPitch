@@ -14,6 +14,7 @@ BEGIN TRANSACTION
 
 BEGIN TRY
     -- Insert into Country
+    IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.Country)
     INSERT INTO SportsDataDb.dbo.Country (Id, [Name], [Code])
     VALUES
         (@CountryId1, 'Poland', 'PL'),
@@ -23,6 +24,7 @@ BEGIN TRY
         (@CountryId5, 'Italy', 'IT');
 
     -- Insert into League
+    IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.League)
     INSERT INTO SportsDataDb.dbo.League (Id, [Name], CountryId, MaxRound, Strength)
     VALUES
         (@LeagueId1, 'PKO BP Ekstraklasa', @CountryId1, 34, 1),

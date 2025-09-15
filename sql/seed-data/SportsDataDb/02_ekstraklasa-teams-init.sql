@@ -70,6 +70,7 @@ WHERE [Name] = 'Betclic 1 Liga' AND CountryId = @CountryId
 BEGIN TRANSACTION
 
 BEGIN TRY
+    IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.Stadium)
     INSERT INTO dbo.Stadium (Id, [Name], Capacity)
     VALUES
         (@StadiumId1, 'Municipal Stadium in Białystok', 22372),
@@ -94,6 +95,7 @@ BEGIN TRY
         (@StadiumId20, 'Tarczyński Arena', 42771),
         (@StadiumId21, 'Stadion Miejski w Niepołomicach', 2118)
 
+    IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.Team)
     INSERT INTO dbo.Team (Id, [Name], CountryId, StadiumId, LeagueId, LogoUrl, ShortName)
     VALUES
         (@TeamId1, 'Jagiellonia Białystok', @CountryId, @StadiumId1, @LeagueId, '/wikipedia/commons/thumb/e/e8/Jagiellonia_Białystok_Logo_1.png/250px-Jagiellonia_Białystok_Logo_1.png', 'JAG'),

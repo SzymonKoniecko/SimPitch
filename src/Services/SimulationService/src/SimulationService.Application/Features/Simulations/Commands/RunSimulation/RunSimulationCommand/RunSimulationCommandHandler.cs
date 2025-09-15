@@ -58,6 +58,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
                     simulationContent.MatchRoundsToSimulate,
                     simulationContent.LeagueStrength,
                     simulationContent.PriorLeagueStrength,
+                    simulationContent.SimulationParams,
                     GenerateReport(simulationContent)
                 )), cancellationToken);
         }
