@@ -20,9 +20,13 @@ public class ScoreboardService
             simulationResult.SimulationId,
             simulationResult.Id,
             simulationResult.LeagueStrength,
-            simulationResult.PriorLeagueStrength
+            simulationResult.PriorLeagueStrength,
+            DateTime.Now
         );
-        List<MatchRound> matches = playedMatchRounds.Where(x => simulationResult.SimulatedMatchRounds.Any(smr => smr.Id != x.Id)).ToList();
+        List<MatchRound> matches = playedMatchRounds
+            .Concat(simulationResult.SimulatedMatchRounds)
+            .DistinctBy(x => x.Id)
+            .ToList();
         scoreboard.AddTeamRange(
             _scoreboardTeamStatsService.CalculateScoreboardTeamStats(
                 scoreboard.Id,

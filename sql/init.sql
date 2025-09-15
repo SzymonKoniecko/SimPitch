@@ -160,7 +160,8 @@ BEGIN
         SimulationId UNIQUEIDENTIFIER NOT NULL,
         SimulationResultId UNIQUEIDENTIFIER NOT NULL,
         LeagueStrength FLOAT NOT NULL,
-        PriorLeagueStrength FLOAT NOT NULL
+        PriorLeagueStrength FLOAT NOT NULL,
+        CreatedAt DATETIME2 NOT NULL
     );
 END
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ScoreboardTeamStats' AND xtype='U')

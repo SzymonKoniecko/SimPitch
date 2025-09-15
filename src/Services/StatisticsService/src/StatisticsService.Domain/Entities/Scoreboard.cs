@@ -11,16 +11,18 @@ public class Scoreboard
     public IReadOnlyCollection<ScoreboardTeamStats> ScoreboardTeams => _teams.AsReadOnly();
     public float LeagueStrength { get; private set; }
     public float PriorLeagueStrength { get; private set; }
+    public DateTime CreatedAt { get; set; }
 
     private Scoreboard() { }
 
-    public Scoreboard(Guid id, Guid simulationId, Guid simulationResultId, float leagueStrength, float priorLeagueStrength)
+    public Scoreboard(Guid id, Guid simulationId, Guid simulationResultId, float leagueStrength, float priorLeagueStrength, DateTime createdAt)
     {
         Id = id;
         SimulationId = simulationId;
         SimulationResultId = simulationResultId;
         LeagueStrength = leagueStrength;
         PriorLeagueStrength = priorLeagueStrength;
+        CreatedAt = createdAt;
     }
 
     public void AddTeam(ScoreboardTeamStats team) => _teams.Add(team);

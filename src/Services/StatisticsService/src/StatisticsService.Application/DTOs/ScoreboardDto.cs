@@ -10,4 +10,5 @@ public class ScoreboardDto
     public List<ScoreboardTeamStatsDto> ScoreboardTeams { get; set; } = new();
     public float LeagueStrength { get; set; }
     public float PriorLeagueStrength { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

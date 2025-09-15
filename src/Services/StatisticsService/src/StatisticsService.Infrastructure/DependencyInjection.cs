@@ -18,6 +18,8 @@ public static class DependencyInjection
     
         //  Clients DI
         services.AddTransient<ISimulationResultGrpcClient, SimulationResultGrpcClient>();
+        services.AddTransient<ILeagueRoundGrpcClient, LeagueRoundGrpcClient>();
+        services.AddTransient<IMatchRoundGrpcClient, MatchRoundGrpcClient>();
 
         //  Read repositories
         services.AddScoped<IScoreboardReadRepository, ScoreboardReadRepository>();

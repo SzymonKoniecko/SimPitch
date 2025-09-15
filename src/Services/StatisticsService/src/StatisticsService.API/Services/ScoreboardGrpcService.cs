@@ -63,7 +63,8 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
             SimulationResultId = dto.SimulationResultId.ToString(),
             ScoreboardTeams = { dto.ScoreboardTeams.Select(team => ScoreboardTeamStatsToGrpc(team)).ToList() },
             LeagueStrength = dto.LeagueStrength,
-            PriorLeagueStrength = dto.PriorLeagueStrength
+            PriorLeagueStrength = dto.PriorLeagueStrength,
+            CreatedAt = dto.CreatedAt.ToString()
         };
         
         return grpc;

@@ -47,7 +47,7 @@ public static class ConfigHelper
         return simulationServiceAddress;
     }
     
-    public static string GetSportsDataAddress()
+    public static string GetSportsDataServiceAddress()
     {
         string sportsDataAddress = Environment.GetEnvironmentVariable("SportsDataService__Address");
 

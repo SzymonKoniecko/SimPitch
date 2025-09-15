@@ -62,11 +62,6 @@ public class ScoreboardTeamStatsService
         goalsFor = (match.HomeGoals, match.AwayGoals);
         goalsAgainst = (match.AwayGoals, match.HomeGoals);
 
-        if(match.HomeTeamId == Guid.Parse("a6c9f7d1-2b34-4e9c-8f13-0d7a2e5b1c9f") || match.AwayTeamId == Guid.Parse("a6c9f7d1-2b34-4e9c-8f13-0d7a2e5b1c9f"))
-        {
-            Console.WriteLine("HERE");
-        }
-
         if (match.IsDraw)
         {
             draw++;
