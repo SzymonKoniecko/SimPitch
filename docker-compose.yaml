@@ -16,6 +16,11 @@ services:
     build:
       context: src/Services/StatisticsService/
       dockerfile: src/StatisticsService.API/Dockerfile
+  frontend:
+    build:
+      context: src/Frontend/sim-pitch-web
+      dockerfile: Dockerfile
+
 
 
 
