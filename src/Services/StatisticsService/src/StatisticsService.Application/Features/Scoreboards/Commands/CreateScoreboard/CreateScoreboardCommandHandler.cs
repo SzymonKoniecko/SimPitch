@@ -36,14 +36,21 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
     public async Task<IEnumerable<ScoreboardDto>> Handle(CreateScoreboardCommand request, CancellationToken cancellationToken)
     {
         var simulationResultsQuery = new GetSimulationResultsBySimulationIdQuery(request.simulationId);
-
-
         var simulationResults = await _mediator.Send(simulationResultsQuery, cancellationToken);
+        
+        if (simulationResults == null || !simulationResults.Any())
+        {
+            throw new Exception("No simulation results found for the given simulation ID");
+        }
 
-        var leagueRoundRequest = new LeagueRoundDtoRequest();
-        leagueRoundRequest.LeagueId = simulationResults.First().SimulationParams.LeagueId;
-        leagueRoundRequest.SeasonYears = simulationResults.First().SimulationParams.SeasonYears;
-        leagueRoundRequest.LeagueRoundId = simulationResults.First().SimulationParams.LeagueRoundId;
+        var firstResult = simulationResults.First(); // needs to be corrected #25
+        var leagueRoundRequest = new LeagueRoundDtoRequest
+        {
+            LeagueId = firstResult.SimulationParams.LeagueId,
+            SeasonYears = firstResult.SimulationParams.SeasonYears,
+            LeagueRoundId = firstResult.SimulationParams.LeagueRoundId
+        };
+
         var leagueRounds = await _leagueRoundGrpcClient.GetAllLeagueRoundsByParams(leagueRoundRequest, cancellationToken);
         if (leagueRounds == null || leagueRounds.Count == 0)
         {
