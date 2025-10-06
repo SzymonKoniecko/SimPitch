@@ -11,13 +11,27 @@ services:
     depends_on:
       - mssql
   frontend:
-    container_name: vue_frontend
-    environment:
-      API_URL: http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
     ports:
-      - "8080:80"
+      - "${WEB_DEV_PORT}:${WEB_DEV_PORT}"
+    environment:
+      - NODE_ENV=development
+    command: npm run dev -- --host
+    restart: unless-stopped
+    networks:
+      - backend_network
     depends_on:
       - logging-service
+
+  gateway:
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src/Frontend/sim-pitch-web:/usr/share/nginx/html:ro
+      - ./src/Frontend/sim-pitch-web:/etc/nginx/conf.d:ro
+    depends_on:
+      - sportsdata-service
+    networks:
+      - backend_network
 
   sportsdata-service:
     ports:
