@@ -17,9 +17,16 @@ services:
       context: src/Services/StatisticsService/
       dockerfile: src/StatisticsService.API/Dockerfile
   frontend:
+    #profiles:
+    #  - donotstart
+    container_name: simpitchweb
     build:
-      context: src/Frontend/sim-pitch-web
-      dockerfile: Dockerfile
+      context: ./src/Frontend/sim-pitch-web
+      dockerfile: Dockerfile.dev
+
+  gateway:
+    container_name: nginx-gateway
+    image: nginx:1.25-alpine
 
 
 
