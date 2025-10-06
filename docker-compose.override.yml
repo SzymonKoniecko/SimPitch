@@ -48,6 +48,22 @@ services:
       - mssql
       - logging-service
 
+  engine-service:
+    ports:
+      - "${ENGINE_SERVICE_HOST_PORT}:${ENGINE_SERVICE_CONTAINER_PORT}"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${ENGINE_SERVICE_CONTAINER_PORT}
+      - ConnectionStrings__EngineDb=Server=mssql;Database=EngineDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
+      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - GrpcLogging__SourceName=EngineService
+      - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT}
+    networks:
+      - backend_network
+    depends_on:
+      - mssql
+      - logging-service
+
   simulation-service:
     ports:
       - "${SIMULATION_SERVICE_HOST_PORT}:${SIMULATION_SERVICE_CONTAINER_PORT}"

@@ -1,46 +1,46 @@
 dir:SimPitch 
-  - git submodule add https://github.com/SzymonKoniecko/SimPitchProtos.git src/Services/SimulationService/src/SimPitchProtos
+  - git submodule add https://github.com/SzymonKoniecko/SimPitchProtos.git src/Services/EngineService/src/SimPitchProtos
   - git submodule update --init --recursive
 
 
-mkdir -p SimulationService
-cd SimulationService
+mkdir -p EngineService
+cd EngineService
 
 # Create the solution
-dotnet new sln -n SimulationService
+dotnet new sln -n EngineService
 
 # Create directories
 mkdir -p src tests
 
 # Create projects
-dotnet new grpc -n SimulationService.API -o src/SimulationService.API
-dotnet new classlib -n SimulationService.Application -o src/SimulationService.Application
-dotnet new classlib -n SimulationService.Domain -o src/SimulationService.Domain
-dotnet new classlib -n SimulationService.Infrastructure -o src/SimulationService.Infrastructure
-dotnet new xunit -n SimulationService.Tests -o tests/SimulationService.Tests
+dotnet new grpc -n EngineService.API -o src/EngineService.API
+dotnet new classlib -n EngineService.Application -o src/EngineService.Application
+dotnet new classlib -n EngineService.Domain -o src/EngineService.Domain
+dotnet new classlib -n EngineService.Infrastructure -o src/EngineService.Infrastructure
+dotnet new xunit -n EngineService.Tests -o tests/EngineService.Tests
 
 # Add projects to solution
-dotnet sln add src/SimulationService.API/SimulationService.API.csproj
-dotnet sln add src/SimulationService.Application/SimulationService.Application.csproj
-dotnet sln add src/SimulationService.Domain/SimulationService.Domain.csproj
-dotnet sln add src/SimulationService.Infrastructure/SimulationService.Infrastructure.csproj
-dotnet sln add tests/SimulationService.Tests/SimulationService.Tests.csproj
+dotnet sln add src/EngineService.API/EngineService.API.csproj
+dotnet sln add src/EngineService.Application/EngineService.Application.csproj
+dotnet sln add src/EngineService.Domain/EngineService.Domain.csproj
+dotnet sln add src/EngineService.Infrastructure/EngineService.Infrastructure.csproj
+dotnet sln add tests/EngineService.Tests/EngineService.Tests.csproj
 
 # Add project references
-dotnet add src/SimulationService.API/SimulationService.API.csproj reference \
-  src/SimulationService.Application/SimulationService.Application.csproj \
-  src/SimulationService.Infrastructure/SimulationService.Infrastructure.csproj
+dotnet add src/EngineService.API/EngineService.API.csproj reference \
+  src/EngineService.Application/EngineService.Application.csproj \
+  src/EngineService.Infrastructure/EngineService.Infrastructure.csproj
 
-dotnet add src/SimulationService.Application/SimulationService.Application.csproj reference \
-  src/SimulationService.Domain/SimulationService.Domain.csproj
+dotnet add src/EngineService.Application/EngineService.Application.csproj reference \
+  src/EngineService.Domain/EngineService.Domain.csproj
 
-dotnet add src/SimulationService.Infrastructure/SimulationService.Infrastructure.csproj reference \
-  src/SimulationService.Application/SimulationService.Application.csproj \
-  src/SimulationService.Domain/SimulationService.Domain.csproj
+dotnet add src/EngineService.Infrastructure/EngineService.Infrastructure.csproj reference \
+  src/EngineService.Application/EngineService.Application.csproj \
+  src/EngineService.Domain/EngineService.Domain.csproj
 
-dotnet add tests/SimulationService.Tests/SimulationService.Tests.csproj reference \
-  src/SimulationService.Application/SimulationService.Application.csproj \
-  src/SimulationService.Domain/SimulationService.Domain.csproj
+dotnet add tests/EngineService.Tests/EngineService.Tests.csproj reference \
+  src/EngineService.Application/EngineService.Application.csproj \
+  src/EngineService.Domain/EngineService.Domain.csproj
 
 ###Infrastructure###
 ##  ClientFactory can download the newest version
@@ -49,7 +49,6 @@ dotnet add package Microsoft.Extensions.Logging --version 9.0.4
 dotnet add package Microsoft.Data.SqlClient --version 6.1.0
 dotnet add package Microsoft.Extensions.Configuration.Abstractions --version 9.0.4
 dotnet add package Microsoft.Extensions.DependencyInjection.Abstractions
-dotnet add package Grpc.Net.ClientFactory ##obsolete?
 dotnet add package Grpc.Net.Client --version 2.60.0
 dotnet add package Grpc.Tools --version 2.60.0
 dotnet add package Google.Protobuf
@@ -58,6 +57,7 @@ dotnet add package Microsoft.Extensions.Configuration.Binder --version 9.0.4
 dotnet add package Newtonsoft.Json --version 13.0.3
 dotnet add package Grpc.Net.ClientFactory --version 2.60.0
 dotnet add package Microsoft.AspNetCore.App --framework net9.0
+dotnet add package Grpc.Net.ClientFactory --version 2.60.0
 
 
 

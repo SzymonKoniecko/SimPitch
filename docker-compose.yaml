@@ -4,6 +4,10 @@ services:
     build:
       context: src/Services/LoggingService/
       dockerfile: src/LoggingService.API/Dockerfile
+  engine-service:
+    build:
+      context: src/Services/EngineService/
+      dockerfile: src/EngineService.API/Dockerfile
   sportsdata-service:
     build:
       context: src/Services/SportsDataService/
