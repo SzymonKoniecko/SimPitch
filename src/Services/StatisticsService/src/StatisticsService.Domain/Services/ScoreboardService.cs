@@ -13,18 +13,18 @@ public class ScoreboardService
         this._scoreboardTeamStatsService = scoreboardTeamStatsService;
     }
 
-    public Scoreboard CalculateSingleScoreboard(SimulationResult simulationResult, List<MatchRound> playedMatchRounds)
+    public Scoreboard CalculateSingleScoreboard(IterationResult IterationResult, List<MatchRound> playedMatchRounds)
     {
         Scoreboard scoreboard = new Scoreboard(
             Guid.NewGuid(),
-            simulationResult.SimulationId,
-            simulationResult.Id,
-            simulationResult.LeagueStrength,
-            simulationResult.PriorLeagueStrength,
+            IterationResult.SimulationId,
+            IterationResult.Id,
+            IterationResult.LeagueStrength,
+            IterationResult.PriorLeagueStrength,
             DateTime.Now
         );
         List<MatchRound> matches = playedMatchRounds
-            .Concat(simulationResult.SimulatedMatchRounds)
+            .Concat(IterationResult.SimulatedMatchRounds)
             .DistinctBy(x => x.Id)
             .ToList();
         scoreboard.AddTeamRange(

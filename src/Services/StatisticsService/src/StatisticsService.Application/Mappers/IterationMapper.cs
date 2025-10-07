@@ -4,15 +4,15 @@ using StatisticsService.Domain.ValueObjects;
 
 namespace StatisticsService.Application.Mappers;
 
-public static class SimulationResultMapper
+public static class IterationResultMapper
 {
-    public static SimulationResult ToValueObject(SimulationResultDto dto)
+    public static IterationResult ToValueObject(IterationResultDto dto)
     {
-        var valueObject = new SimulationResult();
+        var valueObject = new IterationResult();
 
         valueObject.Id = dto.Id;
         valueObject.SimulationId = dto.SimulationId;
-        valueObject.SimulationIndex = dto.SimulationIndex;
+        valueObject.SimulationIndex = dto.IterationIndex;
         valueObject.StartDate = dto.StartDate;
         valueObject.ExecutionTime = dto.ExecutionTime;
         valueObject.SimulatedMatchRounds = dto.SimulatedMatchRounds

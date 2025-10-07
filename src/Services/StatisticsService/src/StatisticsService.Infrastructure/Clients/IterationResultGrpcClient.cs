@@ -1,41 +1,41 @@
 using Newtonsoft.Json;
 using SimPitchProtos.SimulationService;
-using SimPitchProtos.SimulationService.SimulationResult;
+using SimPitchProtos.SimulationService.IterationResult;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Application.Interfaces;
 
 namespace StatisticsService.Infrastructure.Clients;
 
-public class SimulationResultGrpcClient : ISimulationResultGrpcClient
+public class IterationResultGrpcClient : IIterationResultGrpcClient
 {
-    private readonly SimulationResultService.SimulationResultServiceClient _client;
-    public SimulationResultGrpcClient(SimulationResultService.SimulationResultServiceClient client)
+    private readonly IterationResultService.IterationResultServiceClient _client;
+    public IterationResultGrpcClient(IterationResultService.IterationResultServiceClient client)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
-    public async Task<List<SimulationResultDto>> GetSimulationResultsBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    public async Task<List<IterationResultDto>> GetIterationResultsBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
     {
-        var request = new SimulationResultsBySimulationIdRequest
+        var request = new IterationResultsBySimulationIdRequest
         {
             SimulationId = simulationId.ToString()
         };
 
-        var response = await _client.GetSimulationResultsBySimulationIdAsync(request, cancellationToken: cancellationToken);
+        var response = await _client.GetIterationResultsBySimulationIdAsync(request, cancellationToken: cancellationToken);
 
         return MapToDto(response);
     }
 
-    private static List<SimulationResultDto> MapToDto(SimulationResultsBySimulationIdResponse response)
+    private static List<IterationResultDto> MapToDto(IterationResultsBySimulationIdResponse response)
     {
-        List<SimulationResultDto> dtos = new List<SimulationResultDto>();
-        foreach (var result in response.SimulationResults)
+        List<IterationResultDto> dtos = new List<IterationResultDto>();
+        foreach (var result in response.IterationResults)
         {
-            var dto = new SimulationResultDto();
+            var dto = new IterationResultDto();
 
             dto.Id = Guid.Parse(result.Id);
             dto.SimulationId = Guid.Parse(result.SimulationId);
-            dto.SimulationIndex = result.SimulationIndex;
+            dto.IterationIndex = result.IterationIndex;
             dto.StartDate = DateTime.Parse(result.StartDate);
             dto.ExecutionTime = TimeSpan.Parse(result.ExecutionTime);
             dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundDto>>(result.SimulatedMatchRounds);

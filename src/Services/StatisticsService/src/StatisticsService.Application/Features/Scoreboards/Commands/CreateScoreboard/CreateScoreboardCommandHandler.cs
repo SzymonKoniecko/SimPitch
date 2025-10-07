@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Application.Features.LeagueRounds.DTOs;
-using StatisticsService.Application.Features.SimulationResults.Queries.GetSimulationResultsBySimulationId;
+using StatisticsService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 using StatisticsService.Application.Interfaces;
 using StatisticsService.Application.Mappers;
 using StatisticsService.Domain.Entities;
@@ -35,15 +35,15 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
 
     public async Task<IEnumerable<ScoreboardDto>> Handle(CreateScoreboardCommand request, CancellationToken cancellationToken)
     {
-        var simulationResultsQuery = new GetSimulationResultsBySimulationIdQuery(request.simulationId);
-        var simulationResults = await _mediator.Send(simulationResultsQuery, cancellationToken);
+        var IterationResultQuery = new GetIterationResultsBySimulationIdQuery(request.simulationId);
+        var IterationResult = await _mediator.Send(IterationResultQuery, cancellationToken);
         
-        if (simulationResults == null || !simulationResults.Any())
+        if (IterationResult == null || !IterationResult.Any())
         {
             throw new Exception("No simulation results found for the given simulation ID");
         }
 
-        var firstResult = simulationResults.First(); // needs to be corrected #25
+        var firstResult = IterationResult.First(); // needs to be corrected #25
         var leagueRoundRequest = new LeagueRoundDtoRequest
         {
             LeagueId = firstResult.SimulationParams.LeagueId,
@@ -68,18 +68,18 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
 
         if (request.simulationResultId != Guid.Empty)
         {
-            simulationResults = simulationResults.Where(x => x.Id == request.simulationResultId).ToList();
+            IterationResult = IterationResult.Where(x => x.Id == request.simulationResultId).ToList();
         }
-        if (simulationResults == null || simulationResults.Count == 0)
+        if (IterationResult == null || IterationResult.Count == 0)
         {
             throw new Exception("No simulation results found for the given simulation ID");
         }
         
         var scoreboardList = new List<Scoreboard>();
-        foreach (var simulationResult in simulationResults)
+        foreach (var simulationResult in IterationResult)
         {
             var scoreboard = _scoreboardService.CalculateSingleScoreboard(
-                SimulationResultMapper.ToValueObject(simulationResult),
+                IterationResultMapper.ToValueObject(simulationResult),
                 playedMatchRounds.Select(x => MatchRoundMapper.ToValueObject(x)).ToList()
             );
             scoreboard.SetRankings();
