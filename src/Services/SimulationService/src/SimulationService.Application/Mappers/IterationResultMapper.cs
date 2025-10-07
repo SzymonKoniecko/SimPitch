@@ -3,18 +3,18 @@ using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using SimulationService.Application.Features.MatchRounds.DTOs;
-using SimulationService.Application.Features.SimulationResults.DTOs;
+using SimulationService.Application.Features.IterationResults.DTOs;
 using SimulationService.Application.Features.Simulations.DTOs;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Application.Mappers;
 
-public static class SimulationResultMapper
+public static class IterationResultMapper
 {
-    public static SimulationResultDto SimulationToDto(
+    public static IterationResultDto SimulationToDto(
         Guid simulationId,
-        int simulationIndex,
+        int iterationIndex,
         DateTime simulationDate,
         TimeSpan executionTime,
         List<MatchRound> simulatedMatchRounds,
@@ -23,10 +23,10 @@ public static class SimulationResultMapper
         SimulationParams simulationParams,
         string raport)
     {
-        var dto = new SimulationResultDto();
+        var dto = new IterationResultDto();
         dto.Id = Guid.NewGuid();
         dto.SimulationId = simulationId;
-        dto.SimulationIndex = simulationIndex;
+        dto.IterationIndex = iterationIndex;
         dto.StartDate = simulationDate;
         dto.ExecutionTime = executionTime;
         dto.SimulatedMatchRounds = (List<MatchRoundDto>)MatchRoundMapper.ToDtoBulk(simulatedMatchRounds);
@@ -44,12 +44,12 @@ public static class SimulationResultMapper
         return dto;
     }
 
-    public static SimulationResult ToDomain(SimulationResultDto dto)
+    public static IterationResult ToDomain(IterationResultDto dto)
     {
-        var entity = new SimulationResult();
+        var entity = new IterationResult();
         entity.Id = dto.Id;
         entity.SimulationId = dto.SimulationId;
-        entity.SimulationIndex = dto.SimulationIndex;
+        entity.IterationIndex = dto.IterationIndex;
         entity.StartDate = dto.StartDate;
         entity.ExecutionTime = dto.ExecutionTime;
         entity.SimulatedMatchRounds = JsonConvert.SerializeObject(dto.SimulatedMatchRounds);
@@ -61,17 +61,17 @@ public static class SimulationResultMapper
         return entity;
     }
 
-    public static IEnumerable<SimulationResult> ToDomainBulk(IEnumerable<SimulationResultDto> dtos)
+    public static IEnumerable<IterationResult> ToDomainBulk(IEnumerable<IterationResultDto> dtos)
     {
         return dtos.Select(ToDomain).ToList();
     }
 
-    public static SimulationResultDto ToDto(SimulationResult entity)
+    public static IterationResultDto ToDto(IterationResult entity)
     {
-        var dto = new SimulationResultDto();
+        var dto = new IterationResultDto();
         dto.Id = entity.Id;
         dto.SimulationId = entity.SimulationId;
-        dto.SimulationIndex = entity.SimulationIndex;
+        dto.IterationIndex = entity.IterationIndex;
         dto.StartDate = entity.StartDate;
         dto.ExecutionTime = entity.ExecutionTime;
         dto.SimulatedMatchRounds = (List<MatchRoundDto>)MatchRoundMapper.ToDtoBulk(entity.SimulatedMatchRounds != null
@@ -87,7 +87,7 @@ public static class SimulationResultMapper
         return dto;
     }
 
-    public static IEnumerable<SimulationResultDto> ToDtoBulk(IEnumerable<SimulationResult> entities)
+    public static IEnumerable<IterationResultDto> ToDtoBulk(IEnumerable<IterationResult> entities)
     {
         return entities.Select(ToDto).ToList();
     }

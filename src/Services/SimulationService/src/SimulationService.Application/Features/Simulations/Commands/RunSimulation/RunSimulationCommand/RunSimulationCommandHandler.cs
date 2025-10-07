@@ -1,6 +1,6 @@
 using MediatR;
 using SimulationService.Application.DomainValidators;
-using SimulationService.Application.Features.SimulationResults.Commands.CreateSimulationResultCommand;
+using SimulationService.Application.Features.IterationResults.Commands.CreateIterationResultCommand;
 using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 using SimulationService.Application.Mappers;
@@ -49,8 +49,8 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             watch.Stop();
             simulationIndex++;
             
-            await _mediator.Send(new CreateSimulationResultCommand(
-                SimulationResultMapper.SimulationToDto(
+            await _mediator.Send(new CreateIterationResultCommand(
+                IterationResultMapper.SimulationToDto(
                     simulationId,
                     simulationIndex,
                     startTime,

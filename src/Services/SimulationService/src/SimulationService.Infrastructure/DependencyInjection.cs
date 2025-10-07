@@ -23,10 +23,10 @@ public static class DependencyInjection
         services.AddTransient<ISeasonStatsGrpcClient, SeasonStatsGrpcClient>();
 
         //  Read repositories
-        services.AddTransient<ISimulationResultReadRepository, SimulationResultReadRepository>();
+        services.AddTransient<IIterationResultReadRepository, IterationResultReadRepository>();
 
         //  Write repositories
-        services.AddTransient<ISimulationResultWriteRepository, SimulationResultWriteRepository>();
+        services.AddTransient<IIterationResultWriteRepository, IterationResultWriteRepository>();
 
         // Services
         services.AddTransient<SeasonStatsService>();

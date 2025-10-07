@@ -3,13 +3,13 @@ using SimulationService.Application.Features.MatchRounds.DTOs;
 using SimulationService.Application.Features.Simulations.DTOs;
 using SimulationService.Domain.Entities;
 
-namespace SimulationService.Application.Features.SimulationResults.DTOs;
+namespace SimulationService.Application.Features.IterationResults.DTOs;
 
-public class SimulationResultDto
+public class IterationResultDto
 {
     public Guid Id { get; set; }
     public Guid SimulationId { get; set; }
-    public int SimulationIndex { get; set; }
+    public int IterationIndex { get; set; }
     public DateTime StartDate { get; set; }
     public TimeSpan ExecutionTime { get; set; }
     public List<MatchRoundDto> SimulatedMatchRounds { get; set; }

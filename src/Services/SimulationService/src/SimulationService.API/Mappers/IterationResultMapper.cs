@@ -1,19 +1,19 @@
 using Newtonsoft.Json;
 using SimPitchProtos.SimulationService;
-using SimulationService.Application.Features.SimulationResults.DTOs;
+using SimulationService.Application.Features.IterationResults.DTOs;
 using SimulationService.Application.Features.Simulations.DTOs;
 
 namespace SimulationService.API.Mappers;
 
-public static class SimulationResultMapper
+public static class IterationResultMapper
 {
-    public static SimulationResultGrpc ToProto(SimulationResultDto dto)
+    public static IterationResultGrpc ToProto(IterationResultDto dto)
     {
-        return new SimulationResultGrpc
+        return new IterationResultGrpc
         {
             Id = dto.Id.ToString(),
             SimulationId = dto.SimulationId.ToString(),
-            SimulationIndex = dto.SimulationIndex,
+            IterationIndex = dto.IterationIndex,
             StartDate = dto.StartDate.ToString("o"),
             ExecutionTime = dto.ExecutionTime.ToString(),
             SimulatedMatchRounds = JsonConvert.SerializeObject(dto.SimulatedMatchRounds),

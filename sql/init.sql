@@ -126,13 +126,13 @@ GO
 
 USE SimulationDb;
 GO
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SimulationResult' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='IterationResult' AND xtype='U')
 BEGIN
-    CREATE TABLE dbo.SimulationResult
+    CREATE TABLE dbo.IterationResult
     (
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         SimulationId UNIQUEIDENTIFIER NOT NULL,
-        SimulationIndex INT NOT NULL,
+        IterationIndex INT NOT NULL,
         StartDate DATETIME2 NOT NULL,
         ExecutionTime TIME NOT NULL,
         SimulatedMatchRounds NVARCHAR(MAX) NULL,

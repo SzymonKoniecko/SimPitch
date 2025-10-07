@@ -3,11 +3,11 @@ using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Domain.Entities;
 
-public class SimulationResult
+public class IterationResult
 {
     public Guid Id { get; set; }
     public Guid SimulationId { get; set; }
-    public int SimulationIndex { get; set; }
+    public int IterationIndex { get; set; }
     public DateTime StartDate { get; set; }
     public TimeSpan ExecutionTime { get; set; }
     public string SimulatedMatchRounds { get; set; }

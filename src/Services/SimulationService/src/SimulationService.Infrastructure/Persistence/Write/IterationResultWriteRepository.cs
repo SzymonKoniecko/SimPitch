@@ -5,20 +5,20 @@ using SimulationService.Domain.Interfaces.Write;
 
 namespace SimulationService.Infrastructure.Persistence.Write;
 
-public class SimulationResultWriteRepository : ISimulationResultWriteRepository
+public class IterationResultWriteRepository : IIterationResultWriteRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
-    public SimulationResultWriteRepository(IDbConnectionFactory dbConnectionFactory)
+    public IterationResultWriteRepository(IDbConnectionFactory dbConnectionFactory)
     {
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task CreateSimulationResultAsync(SimulationResult simulationResult, CancellationToken cancellationToken)
+    public async Task CreateIterationResultAsync(IterationResult IterationResult, CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
         const string sql = @"
-            INSERT INTO SimulationResult 
+            INSERT INTO IterationResult 
             (Id, SimulationId, SimulationIndex, StartDate, ExecutionTime, SimulatedMatchRounds, LeagueStrength, PriorLeagueStrength, SimulationParams, Raport)
             VALUES 
             (@Id, @SimulationId, @SimulationIndex, @StartDate, @ExecutionTime, @SimulatedMatchRounds, @LeagueStrength, @PriorLeagueStrength, @SimulationParams, @Raport);
@@ -28,16 +28,16 @@ public class SimulationResultWriteRepository : ISimulationResultWriteRepository
             commandText: sql,
             parameters: new
             {
-                simulationResult.Id,
-                simulationResult.SimulationId,
-                simulationResult.SimulationIndex,
-                simulationResult.StartDate,
-                simulationResult.ExecutionTime,
-                simulationResult.SimulatedMatchRounds,
-                simulationResult.LeagueStrength,
-                simulationResult.PriorLeagueStrength,
-                simulationResult.SimulationParams,
-                simulationResult.Raport
+                IterationResult.Id,
+                IterationResult.SimulationId,
+                IterationResult.IterationIndex,
+                IterationResult.StartDate,
+                IterationResult.ExecutionTime,
+                IterationResult.SimulatedMatchRounds,
+                IterationResult.LeagueStrength,
+                IterationResult.PriorLeagueStrength,
+                IterationResult.SimulationParams,
+                IterationResult.Raport
             },
             cancellationToken: cancellationToken
         );
