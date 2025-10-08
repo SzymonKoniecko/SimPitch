@@ -19,9 +19,9 @@ public class IterationResultWriteRepository : IIterationResultWriteRepository
 
         const string sql = @"
             INSERT INTO IterationResult 
-            (Id, SimulationId, SimulationIndex, StartDate, ExecutionTime, SimulatedMatchRounds, LeagueStrength, PriorLeagueStrength, SimulationParams, Raport)
+            (Id, SimulationId, IterationIndex, StartDate, ExecutionTime, SimulatedMatchRounds, LeagueStrength, PriorLeagueStrength, SimulationParams, Raport)
             VALUES 
-            (@Id, @SimulationId, @SimulationIndex, @StartDate, @ExecutionTime, @SimulatedMatchRounds, @LeagueStrength, @PriorLeagueStrength, @SimulationParams, @Raport);
+            (@Id, @SimulationId, @IterationIndex, @StartDate, @ExecutionTime, @SimulatedMatchRounds, @LeagueStrength, @PriorLeagueStrength, @SimulationParams, @Raport);
         ";
 
         var command = new CommandDefinition(

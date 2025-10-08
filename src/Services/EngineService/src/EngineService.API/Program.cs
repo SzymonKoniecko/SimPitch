@@ -29,7 +29,8 @@ builder.Services.AddGrpc(options =>
     options.Interceptors.Add<GrpcExceptionInterceptor>();
 });
 
-builder.Services.AddSportsDataGrpcClient(ConfigHelper.GetSportsDataAddress());
+builder.Services.AddSimulationGrpcClient(ConfigHelper.GetSimulationAddress());
+builder.Services.AddStatisticsGrpcClient(ConfigHelper.GetStatisticsAddress());
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

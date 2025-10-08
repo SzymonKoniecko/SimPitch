@@ -158,7 +158,7 @@ BEGIN
     CREATE TABLE Scoreboard (
         Id UNIQUEIDENTIFIER PRIMARY KEY,
         SimulationId UNIQUEIDENTIFIER NOT NULL,
-        SimulationResultId UNIQUEIDENTIFIER NOT NULL,
+        IterationResultId UNIQUEIDENTIFIER NOT NULL,
         LeagueStrength FLOAT NOT NULL,
         PriorLeagueStrength FLOAT NOT NULL,
         CreatedAt DATETIME2 NOT NULL

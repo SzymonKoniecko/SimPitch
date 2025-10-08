@@ -24,7 +24,7 @@ public static class ScoreboardMapper
         {
             Id = domain.Id,
             SimulationId = domain.SimulationId,
-            SimulationResultId = domain.SimulationResultId,
+            IterationResultId = domain.IterationResultId,
             ScoreboardTeams = domain.ScoreboardTeams.Select(team => ScoreboardTeamStatsMapper.ToDto(team)).ToList(),
             LeagueStrength = domain.LeagueStrength,
             PriorLeagueStrength = domain.PriorLeagueStrength,

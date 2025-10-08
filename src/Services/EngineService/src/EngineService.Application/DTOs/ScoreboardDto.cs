@@ -1,6 +1,6 @@
 using System;
 
-namespace StatisticsService.Application.DTOs;
+namespace EngineService.Application.DTOs;
 
 public class ScoreboardDto
 {

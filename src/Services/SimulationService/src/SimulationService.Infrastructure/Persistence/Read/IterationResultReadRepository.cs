@@ -18,7 +18,7 @@ public class IterationResultReadRepository : IIterationResultReadRepository
         using var connection = _dbConnectionFactory.CreateConnection();
         
         const string sql = @"
-            SELECT Id, SimulationId, SimulationIndex, StartDate, ExecutionTime, 
+            SELECT Id, SimulationId, IterationIndex, StartDate, ExecutionTime, 
                 SimulatedMatchRounds, LeagueStrength, PriorLeagueStrength, SimulationParams, Raport
             FROM IterationResult
             WHERE SimulationId = @SimulationId;

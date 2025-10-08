@@ -36,14 +36,14 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
     public async Task<IEnumerable<ScoreboardDto>> Handle(CreateScoreboardCommand request, CancellationToken cancellationToken)
     {
         var IterationResultQuery = new GetIterationResultsBySimulationIdQuery(request.simulationId);
-        var IterationResult = await _mediator.Send(IterationResultQuery, cancellationToken);
+        var IterationResults = await _mediator.Send(IterationResultQuery, cancellationToken);
         
-        if (IterationResult == null || !IterationResult.Any())
+        if (IterationResults == null || !IterationResults.Any())
         {
             throw new Exception("No simulation results found for the given simulation ID");
         }
 
-        var firstResult = IterationResult.First(); // needs to be corrected #25
+        var firstResult = IterationResults.First(); // needs to be corrected #25
         var leagueRoundRequest = new LeagueRoundDtoRequest
         {
             LeagueId = firstResult.SimulationParams.LeagueId,
@@ -66,20 +66,20 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
             }
         }
 
-        if (request.simulationResultId != Guid.Empty)
+        if (request.iterationResultId != Guid.Empty)
         {
-            IterationResult = IterationResult.Where(x => x.Id == request.simulationResultId).ToList();
+            IterationResults = IterationResults.Where(x => x.Id == request.iterationResultId).ToList();
         }
-        if (IterationResult == null || IterationResult.Count == 0)
+        if (IterationResults == null || IterationResults.Count == 0)
         {
             throw new Exception("No simulation results found for the given simulation ID");
         }
         
         var scoreboardList = new List<Scoreboard>();
-        foreach (var simulationResult in IterationResult)
+        foreach (var iterationResult in IterationResults)
         {
             var scoreboard = _scoreboardService.CalculateSingleScoreboard(
-                IterationResultMapper.ToValueObject(simulationResult),
+                IterationResultMapper.ToValueObject(iterationResult),
                 playedMatchRounds.Select(x => MatchRoundMapper.ToValueObject(x)).ToList()
             );
             scoreboard.SetRankings();

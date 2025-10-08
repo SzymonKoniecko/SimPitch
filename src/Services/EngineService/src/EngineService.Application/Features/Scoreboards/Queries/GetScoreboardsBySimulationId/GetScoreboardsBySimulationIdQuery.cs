@@ -1,7 +1,7 @@
 using System;
 using MediatR;
-using StatisticsService.Application.DTOs;
+using EngineService.Application.DTOs;
 
-namespace StatisticsService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
+namespace EngineService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 
 public record GetScoreboardsBySimulationIdQuery(Guid simulationId, Guid iterationResultId, bool withTeamStats) : IRequest<List<ScoreboardDto>>;
