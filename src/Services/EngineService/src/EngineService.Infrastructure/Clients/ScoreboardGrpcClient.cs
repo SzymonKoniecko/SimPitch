@@ -33,7 +33,7 @@ public class ScoreboardGrpcClient : IScoreboardGrpcClient
         }
 
         var response = await _client.GetScoreboardsByQueryAsync(request, cancellationToken: cancellationToken);
-        return (List<ScoreboardDto>)response.Scoreboards.Select(x => ProtoToDto(x));
+        return response.Scoreboards.Select(x => ProtoToDto(x)).ToList();
     }
 
     private static ScoreboardDto ProtoToDto(ScoreboardGrpc grpc)
@@ -42,7 +42,7 @@ public class ScoreboardGrpcClient : IScoreboardGrpcClient
         dto.Id =  Guid.Parse(grpc.Id);
         dto.SimulationId =  Guid.Parse(grpc.SimulationId);
         dto.IterationResultId =  Guid.Parse(grpc.IterationResultId);
-        dto.ScoreboardTeams = (List<ScoreboardTeamStatsDto>)grpc.ScoreboardTeams.Select(x => ProtoToDto(x));
+        dto.ScoreboardTeams = grpc.ScoreboardTeams.Select(x => ProtoToDto(x)).ToList();
         dto.LeagueStrength = grpc.LeagueStrength;
         dto.PriorLeagueStrength = grpc.PriorLeagueStrength;
         dto.CreatedAt = DateTime.Parse(grpc.CreatedAt);

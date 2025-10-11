@@ -17,12 +17,12 @@ namespace EngineService.API.Controllers
             this.mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<SimulationDto> GetSimulationByIdAsync([FromRoute] Guid simulationId)
+        [HttpGet("{simulationId}")]
+        public async Task<ActionResult<SimulationDto>> GetById([FromRoute] Guid simulationId)
         {
-            var query = new GetSimulationByIdQuery(simulationId);
-
-            return await mediator.Send(query);
+            var result = await mediator.Send(new GetSimulationByIdQuery(simulationId));
+            if (result is null) return NotFound();
+            return Ok(result);
         }
     }
 }

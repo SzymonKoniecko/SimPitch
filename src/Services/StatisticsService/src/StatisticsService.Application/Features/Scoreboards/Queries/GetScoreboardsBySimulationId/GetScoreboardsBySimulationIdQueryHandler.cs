@@ -27,7 +27,7 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
             foreach (var scoreboard in scoreboards)
                 scoreboard.SortByRank();
                 
-            if (query.iterationResultId != Guid.Empty)
+            if (query.iterationResultId != Guid.Empty) // filter for requested iteration result
             {
                 scoreboards = scoreboards.Where(x => x.IterationResultId == query.iterationResultId).ToList();
             }

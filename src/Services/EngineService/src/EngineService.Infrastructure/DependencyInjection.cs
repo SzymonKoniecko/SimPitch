@@ -1,3 +1,4 @@
+using EngineService.Application;
 using EngineService.Application.Interfaces;
 using EngineService.Infrastructure.Clients;
 using Microsoft.Extensions.Configuration;
@@ -12,14 +13,14 @@ public static class DependencyInjection
         services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
 
         //  Clients DI
-        services.AddScoped<IScoreboardGrpcClient, ScoreboardGrpcClient>();
+        services.AddTransient<IScoreboardGrpcClient, ScoreboardGrpcClient>();
+        services.AddTransient<IIterationResultGrpcClient, IterationResultGrpcClient>();
         
         //  Read repositories
 
         //  Write repositories
 
         // Services
-
 
         return services;
     }

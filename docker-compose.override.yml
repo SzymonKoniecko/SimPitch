@@ -57,8 +57,8 @@ services:
       - ConnectionStrings__EngineDb=Server=mssql;Database=EngineDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
       - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
       - GrpcLogging__SourceName=EngineService
-      - Simulation__Address=http://${SIMULATION_SERVICE_NAME}:${SIMULATION_SERVICE_CONTAINER_PORT}
-      - Statistics__Address=http://${STATISTICS_SERVICE_NAME}:${STATISTICS_SERVICE_CONTAINER_PORT}
+      - SimulationService__Address=http://${SIMULATION_SERVICE_NAME}:${SIMULATION_SERVICE_CONTAINER_PORT}
+      - StatisticsService__Address=http://${STATISTICS_SERVICE_NAME}:${STATISTICS_SERVICE_CONTAINER_PORT}
     networks:
       - backend_network
     depends_on:

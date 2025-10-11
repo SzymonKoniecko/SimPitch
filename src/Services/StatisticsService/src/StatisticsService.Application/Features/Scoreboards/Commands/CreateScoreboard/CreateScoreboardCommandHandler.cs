@@ -17,17 +17,27 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
     private readonly ILogger<CreateScoreboardCommandHandler> _logger;
     private readonly IScoreboardWriteRepository _scoreboardWriteRepository;
     private readonly IScoreboardTeamStatsWriteRepository _scoreboardTeamStatsWriteRepository;
+    private readonly IScoreboardReadRepository _scoreboardReadRepository;
     private readonly IMediator _mediator;
     private readonly ScoreboardService _scoreboardService;
     private readonly ILeagueRoundGrpcClient _leagueRoundGrpcClient;
     private readonly IMatchRoundGrpcClient _matchRoundGrpcClient;
 
-    public CreateScoreboardCommandHandler(IScoreboardWriteRepository repository, IMediator mediator, ScoreboardService scoreboardService, IScoreboardTeamStatsWriteRepository scoreboardTeamStatsWriteRepository, ILogger<CreateScoreboardCommandHandler> logger, ILeagueRoundGrpcClient leagueRoundGrpcClient, IMatchRoundGrpcClient matchRoundGrpcClient)
+    public CreateScoreboardCommandHandler(
+        IScoreboardWriteRepository repository,
+        IMediator mediator,
+        ScoreboardService scoreboardService,
+        IScoreboardTeamStatsWriteRepository scoreboardTeamStatsWriteRepository,
+        IScoreboardReadRepository scoreboardReadRepository,
+        ILogger<CreateScoreboardCommandHandler> logger,
+        ILeagueRoundGrpcClient leagueRoundGrpcClient,
+        IMatchRoundGrpcClient matchRoundGrpcClient)
     {
         _scoreboardWriteRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _scoreboardService = scoreboardService ?? throw new ArgumentNullException(nameof(scoreboardService));
         _scoreboardTeamStatsWriteRepository = scoreboardTeamStatsWriteRepository ?? throw new ArgumentNullException(nameof(scoreboardTeamStatsWriteRepository));
+        _scoreboardReadRepository = scoreboardReadRepository ?? throw new ArgumentNullException(nameof(scoreboardReadRepository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this._leagueRoundGrpcClient = leagueRoundGrpcClient ?? throw new ArgumentNullException(nameof(leagueRoundGrpcClient));
         this._matchRoundGrpcClient = matchRoundGrpcClient ?? throw new ArgumentNullException(nameof(matchRoundGrpcClient));
@@ -75,18 +85,22 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
             throw new Exception("No simulation results found for the given simulation ID");
         }
         
+        
         var scoreboardList = new List<Scoreboard>();
         foreach (var iterationResult in IterationResults)
         {
-            var scoreboard = _scoreboardService.CalculateSingleScoreboard(
-                IterationResultMapper.ToValueObject(iterationResult),
-                playedMatchRounds.Select(x => MatchRoundMapper.ToValueObject(x)).ToList()
-            );
-            scoreboard.SetRankings();
-            scoreboardList.Add(scoreboard);
+            if (await _scoreboardReadRepository.ScoreboardByIterationResultIdExistsAsync(iterationResult.Id, cancellationToken: cancellationToken) == false) // we don't need to create the scoreboard again, and again
+            {
+                var scoreboard = _scoreboardService.CalculateSingleScoreboard(
+                    IterationResultMapper.ToValueObject(iterationResult),
+                    playedMatchRounds.Select(x => MatchRoundMapper.ToValueObject(x)).ToList()
+                );
+                scoreboard.SetRankings();
+                scoreboardList.Add(scoreboard);
 
-            await _scoreboardWriteRepository.CreateScoreboardAsync(scoreboard, cancellationToken: cancellationToken);
-            await _scoreboardTeamStatsWriteRepository.CreateScoreboardTeamStatsBulkAsync(scoreboard.ScoreboardTeams, cancellationToken);
+                await _scoreboardWriteRepository.CreateScoreboardAsync(scoreboard, cancellationToken: cancellationToken);
+                await _scoreboardTeamStatsWriteRepository.CreateScoreboardTeamStatsBulkAsync(scoreboard.ScoreboardTeams, cancellationToken);
+            }
         }
 
         return scoreboardList.Count > 0 ? scoreboardList.Select(x => ScoreboardMapper.ToDto(x)) : throw new Exception("Failed to create scoreboard");

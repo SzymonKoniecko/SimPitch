@@ -16,6 +16,6 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
 
     public async Task<List<ScoreboardDto>> Handle(GetScoreboardsBySimulationIdQuery query, CancellationToken cancellationToken)
     {
-        return await scoreboardGrpcClient.GetScoreboardsByQueryAsync(query.simulationId, cancellationToken, query.iterationResultId, query.withTeamStats);
+        return await scoreboardGrpcClient.GetScoreboardsByQueryAsync(query.simulationId, cancellationToken, query.iterationId, query.withTeamStats);
     }
 }

@@ -18,7 +18,7 @@ namespace EngineService.API.Controllers
         }
         
         [HttpGet]
-        public async Task<List<ScoreboardDto>> GetScoreboardDtosAsync([FromQuery] Guid simulationId, [FromQuery] Guid iterationResultId)
+        public async Task<List<ScoreboardDto>> GetByIds([FromQuery] Guid simulationId, [FromQuery] Guid iterationResultId)
         {
             var query = new GetScoreboardsBySimulationIdQuery(simulationId, iterationResultId, withTeamStats: true);
 

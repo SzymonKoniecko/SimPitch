@@ -23,9 +23,4 @@ public static class SimulationMapper
 
         return dto;
     }
-
-    internal static SimulationDto ToSimulationDto(Guid simulationId, int count1, SimulationParamsDto simulationParams, List<IterationPreviewDto> iterationPreviewDtos, int? count2, float priorLeagueStrength)
-    {
-        throw new NotImplementedException();
-    }
 }

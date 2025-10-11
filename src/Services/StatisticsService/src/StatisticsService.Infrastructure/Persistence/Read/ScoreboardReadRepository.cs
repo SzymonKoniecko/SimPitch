@@ -21,7 +21,7 @@ public class ScoreboardReadRepository : IScoreboardReadRepository
         using var connection = _dbConnectionFactory.CreateConnection();
 
         const string sql = @"
-            SELECT Id, SimulationId, LeagueStrength, PriorLeagueStrength
+            SELECT *
             FROM Scoreboard
             WHERE SimulationId = @SimulationId
         ";
@@ -49,6 +49,21 @@ public class ScoreboardReadRepository : IScoreboardReadRepository
         var command = new CommandDefinition(
             commandText: sql,
             parameters: new { SimulationId = simulationId },
+            cancellationToken: cancellationToken
+        );
+
+        var count = await connection.ExecuteScalarAsync<int>(command);
+        return count > 0;
+    }
+
+    public async Task<bool> ScoreboardByIterationResultIdExistsAsync(Guid iterationResultId, CancellationToken cancellationToken)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+        const string sql = "SELECT COUNT(1) FROM Scoreboard WHERE IterationResultId = @iterationResultId";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { IterationResultId = iterationResultId },
             cancellationToken: cancellationToken
         );
 
