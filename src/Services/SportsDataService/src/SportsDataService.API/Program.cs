@@ -34,6 +34,8 @@ if (app.Environment.IsDevelopment())
     app.MapGrpcReflectionService();
 }
 
+app.UseMiddleware<ProblemDetailsExceptionMiddleware>();
+app.MapControllers();
 
 app.MapGrpcService<LeagueGrpcService>();
 app.MapGrpcService<LeagueRoundGrpcService>();
