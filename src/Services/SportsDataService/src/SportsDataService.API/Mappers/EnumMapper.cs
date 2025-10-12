@@ -21,14 +21,18 @@ public static class EnumMapper
     
     public static SeasonEnum StringtoSeasonEnum(this string seasonEnum)
     {
-        if ("2022/2023" == seasonEnum)
+        if (seasonEnum == "2022/2023" || seasonEnum == "2022_2023")
             return SeasonEnum.Season2022_2023;
-        if ("2023/2024" == seasonEnum)
+
+        if (seasonEnum == "2023/2024" || seasonEnum == "2023_2024")
             return SeasonEnum.Season2023_2024;
-        if ("2024/2025" == seasonEnum)
+
+        if (seasonEnum == "2024/2025" || seasonEnum == "2024_2025")
             return SeasonEnum.Season2024_2025;
-        if ("2025/2026" == seasonEnum)
+
+        if (seasonEnum == "2025/2026" || seasonEnum == "2025_2026")
             return SeasonEnum.Season2025_2026;
+
         throw new ArgumentException($"Invalid season string type. Provided {seasonEnum}");
     }
 }

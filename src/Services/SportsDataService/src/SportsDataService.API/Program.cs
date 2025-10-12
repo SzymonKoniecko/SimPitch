@@ -14,6 +14,7 @@ builder.Logging.ClearProviders();
 builder.Logging.AddGrpcLogger(ConfigHelper.GetLoggerSourceName());
 builder.Logging.AddConsole();
 
+builder.Services.AddControllers();
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
@@ -34,6 +35,7 @@ if (app.Environment.IsDevelopment())
     app.MapGrpcReflectionService();
 }
 
+app.UseMiddleware<ProblemDetailsExceptionMiddleware>();
 
 app.MapGrpcService<LeagueGrpcService>();
 app.MapGrpcService<LeagueRoundGrpcService>();
@@ -42,6 +44,7 @@ app.MapGrpcService<SeasonStatsGrpcService>();
 app.MapGrpcService<StadiumGrpcService>();
 app.MapGrpcService<TeamGrpcService>();
 
+app.MapControllers();
 app.MapGet("/", () => "Use gRPC clients for communication");
 
 

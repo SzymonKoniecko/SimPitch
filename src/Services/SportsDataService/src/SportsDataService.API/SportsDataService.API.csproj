@@ -14,7 +14,7 @@
     <Protobuf Include="..\SimPitchProtos\SportsDataService\SeasonStats\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SportsDataService" />
     <Protobuf Include="..\SimPitchProtos\SportsDataService\League\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SportsDataService" />
     <Protobuf Include="..\SimPitchProtos\SportsDataService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos\SportsDataService" />
-    <Protobuf Include="..\SimPitchProtos\logging.proto" GrpcServices="Client"  ProtoRoot="..\SimPitchProtos" />
+    <Protobuf Include="..\SimPitchProtos\logging.proto" GrpcServices="Client" ProtoRoot="..\SimPitchProtos" />
   </ItemGroup>
 
 
