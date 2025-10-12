@@ -13,7 +13,7 @@ public class ScoreboardServiceTests
         // Arrange
         var service = new ScoreboardService(new ScoreboardTeamStatsService());
 
-        var simulationResult = new SimulationResult
+        var IterationResult = new IterationResult
         {
             Id = Guid.NewGuid(),
             SimulationId = Guid.NewGuid(),
@@ -36,7 +36,7 @@ public class ScoreboardServiceTests
         var playedRounds = new List<MatchRound>();
 
         // Act
-        var result = service.CalculateSingleScoreboard(simulationResult, playedRounds);
+        var result = service.CalculateSingleScoreboard(IterationResult, playedRounds);
 
         // Assert
         Assert.NotNull(result);

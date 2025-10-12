@@ -23,7 +23,7 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
 
     public override async Task<ScoreboardsResponse> CreateScoreboards(CreateScoreboardsRequest request, ServerCallContext context)
     {
-        var command = new CreateScoreboardCommand(Guid.Parse(request.SimulationId), request.HasSimulationResultId ? Guid.Parse(request.SimulationResultId): Guid.Empty);
+        var command = new CreateScoreboardCommand(Guid.Parse(request.SimulationId), request.HasIterationResultId ? Guid.Parse(request.IterationResultId): Guid.Empty);
 
         var results = await _mediator.Send(command, cancellationToken: context.CancellationToken);
 
@@ -33,11 +33,11 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
         };
     }
 
-    public override async Task<ScoreboardsResponse> GetScoreboardsBySimulationId(ScoreboardsBySimulationIdRequest request, ServerCallContext context)
+    public override async Task<ScoreboardsResponse> GetScoreboardsByQuery(ScoreboardsByQueryRequest request, ServerCallContext context)
     {
         var command = new GetScoreboardsBySimulationIdQuery(
             Guid.Parse(request.SimulationId),
-            request.HasSimulationResultId ? Guid.Parse(request.SimulationResultId): Guid.Empty,
+            request.HasIterationResultId ? Guid.Parse(request.IterationResultId): Guid.Empty,
             request.WithTeamStats
         );
 
@@ -60,7 +60,7 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
         {
             Id = dto.Id.ToString(),
             SimulationId = dto.SimulationId.ToString(),
-            SimulationResultId = dto.SimulationResultId.ToString(),
+            IterationResultId = dto.IterationResultId.ToString(),
             ScoreboardTeams = { dto.ScoreboardTeams.Select(team => ScoreboardTeamStatsToGrpc(team)).ToList() },
             LeagueStrength = dto.LeagueStrength,
             PriorLeagueStrength = dto.PriorLeagueStrength,

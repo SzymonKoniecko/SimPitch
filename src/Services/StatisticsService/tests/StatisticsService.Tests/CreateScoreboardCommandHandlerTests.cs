@@ -9,7 +9,7 @@ using Moq;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Application.Features.LeagueRounds.DTOs;
 using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
-using StatisticsService.Application.Features.SimulationResults.Queries.GetSimulationResultsBySimulationId;
+using StatisticsService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 using StatisticsService.Application.Interfaces;
 using StatisticsService.Domain.Entities;
 using StatisticsService.Domain.Interfaces;
@@ -37,7 +37,7 @@ public class CreateScoreboardCommandHandlerTests
     public async Task Handle_ShouldCreateScoreboard_WhenValidData()
     {
         // Arrange
-        var simulationResultDto = new SimulationResultDto
+        var IterationResultDto = new IterationResultDto
         {
             Id = Guid.NewGuid(),
             SimulationId = Guid.NewGuid(),
@@ -67,8 +67,8 @@ public class CreateScoreboardCommandHandlerTests
         };
 
         _mediatorMock
-            .Setup(m => m.Send(It.IsAny<GetSimulationResultsBySimulationIdQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new List<SimulationResultDto> { simulationResultDto });
+            .Setup(m => m.Send(It.IsAny<GetIterationResultsBySimulationIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<IterationResultDto> { IterationResultDto });
 
         _leagueRoundClientMock
             .Setup(c => c.GetAllLeagueRoundsByParams(It.IsAny<LeagueRoundDtoRequest>(), It.IsAny<CancellationToken>()))
@@ -101,7 +101,7 @@ public class CreateScoreboardCommandHandlerTests
             _matchRoundClientMock.Object
         );
 
-        var command = new CreateScoreboardCommand(simulationResultDto.SimulationId, Guid.Empty);
+        var command = new CreateScoreboardCommand(IterationResultDto.SimulationId, Guid.Empty);
 
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -118,7 +118,7 @@ public class CreateScoreboardCommandHandlerTests
     public async Task Handle_ShouldThrow_WhenNoLeagueRounds()
     {
         // Arrange
-        var simulationResultDto = new SimulationResultDto
+        var IterationResultDto = new IterationResultDto
         {
             Id = Guid.NewGuid(),
             SimulationId = Guid.NewGuid(),
@@ -135,8 +135,8 @@ public class CreateScoreboardCommandHandlerTests
         };
 
         _mediatorMock
-            .Setup(m => m.Send(It.IsAny<GetSimulationResultsBySimulationIdQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new List<SimulationResultDto> { simulationResultDto });
+            .Setup(m => m.Send(It.IsAny<GetIterationResultsBySimulationIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<IterationResultDto> { IterationResultDto });
 
         _leagueRoundClientMock
             .Setup(c => c.GetAllLeagueRoundsByParams(It.IsAny<LeagueRoundDtoRequest>(), It.IsAny<CancellationToken>()))
@@ -152,18 +152,18 @@ public class CreateScoreboardCommandHandlerTests
             _matchRoundClientMock.Object
         );
 
-        var command = new CreateScoreboardCommand(simulationResultDto.SimulationId, Guid.Empty);
+        var command = new CreateScoreboardCommand(IterationResultDto.SimulationId, Guid.Empty);
 
         // Act & Assert
         await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, CancellationToken.None));
     }
     [Fact]
-    public async Task Handle_ShouldThrow_WhenNoSimulationResults()
+    public async Task Handle_ShouldThrow_WhenNoIterationResults()
     {
         // Arrange
         _mediatorMock
-            .Setup(m => m.Send(It.IsAny<GetSimulationResultsBySimulationIdQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new List<SimulationResultDto>()); // brak wyników
+            .Setup(m => m.Send(It.IsAny<GetIterationResultsBySimulationIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<IterationResultDto>()); // brak wyników
 
         var handler = new CreateScoreboardCommandHandler(
             _scoreboardRepoMock.Object,
@@ -181,16 +181,16 @@ public class CreateScoreboardCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldFilterResultsBySimulationResultId()
+    public async Task Handle_ShouldFilterResultsByIterationResultId()
     {
         // Arrange
         var simId = Guid.NewGuid();
-        var result1 = new SimulationResultDto { Id = Guid.NewGuid(), SimulationId = simId, SimulationParams = new SimulationParamsDto { LeagueId = Guid.NewGuid(), SeasonYears = new List<string>(), LeagueRoundId = Guid.NewGuid() }, SimulatedMatchRounds = new List<MatchRoundDto>(), LeagueStrength = 1, PriorLeagueStrength = 1 };
-        var result2 = new SimulationResultDto { Id = Guid.NewGuid(), SimulationId = simId, SimulationParams = result1.SimulationParams, SimulatedMatchRounds = new List<MatchRoundDto>(), LeagueStrength = 1, PriorLeagueStrength = 1 };
+        var result1 = new IterationResultDto { Id = Guid.NewGuid(), SimulationId = simId, SimulationParams = new SimulationParamsDto { LeagueId = Guid.NewGuid(), SeasonYears = new List<string>(), LeagueRoundId = Guid.NewGuid() }, SimulatedMatchRounds = new List<MatchRoundDto>(), LeagueStrength = 1, PriorLeagueStrength = 1 };
+        var result2 = new IterationResultDto { Id = Guid.NewGuid(), SimulationId = simId, SimulationParams = result1.SimulationParams, SimulatedMatchRounds = new List<MatchRoundDto>(), LeagueStrength = 1, PriorLeagueStrength = 1 };
 
         _mediatorMock
-            .Setup(m => m.Send(It.IsAny<GetSimulationResultsBySimulationIdQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new List<SimulationResultDto> { result1, result2 });
+            .Setup(m => m.Send(It.IsAny<GetIterationResultsBySimulationIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<IterationResultDto> { result1, result2 });
 
         _leagueRoundClientMock
             .Setup(c => c.GetAllLeagueRoundsByParams(It.IsAny<LeagueRoundDtoRequest>(), It.IsAny<CancellationToken>()))
@@ -224,7 +224,7 @@ public class CreateScoreboardCommandHandlerTests
         // Arrange
         var service = new ScoreboardService(new ScoreboardTeamStatsService());
 
-        var simulationResult = new SimulationResult
+        var IterationResult = new IterationResult
         {
             Id = Guid.NewGuid(),
             SimulationId = Guid.NewGuid(),
@@ -258,7 +258,7 @@ public class CreateScoreboardCommandHandlerTests
         };
 
         // Act
-        var scoreboard = service.CalculateSingleScoreboard(simulationResult, playedRounds);
+        var scoreboard = service.CalculateSingleScoreboard(IterationResult, playedRounds);
 
         // Assert
         Assert.Equal(4, scoreboard.ScoreboardTeams.Count);
@@ -269,7 +269,7 @@ public class CreateScoreboardCommandHandlerTests
     {
         // Arrange
         var service = new ScoreboardService(new ScoreboardTeamStatsService());
-        var sim = new SimulationResult
+        var sim = new IterationResult
         {
             Id = Guid.NewGuid(),
             SimulationId = Guid.NewGuid(),

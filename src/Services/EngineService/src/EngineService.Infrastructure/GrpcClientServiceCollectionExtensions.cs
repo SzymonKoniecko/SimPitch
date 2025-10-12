@@ -1,31 +1,33 @@
 
 using Microsoft.Extensions.DependencyInjection;
+using SimPitchProtos.SimulationService.IterationResult;
+using SimPitchProtos.StatisticsService.Scoreboard;
 
 namespace EngineService.Infrastructure;
 
 public static class GrpcClientServiceCollectionExtensions
 {
-    public static IServiceCollection AddSportsDataGrpcClient(this IServiceCollection services, string sportsDataServiceAddress)
+    public static IServiceCollection AddSimulationGrpcClient(this IServiceCollection services, string simulationServiceAddress)
     {
 
-        // services.AddGrpcClient<LeagueRoundService.LeagueRoundServiceClient>(options =>
-        // {
-        //     options.Address = new Uri(sportsDataServiceAddress);
-        // });
-        // services.AddGrpcClient<LeagueService.LeagueServiceClient>(options =>
-        // {
-        //     options.Address = new Uri(sportsDataServiceAddress);
-        // });
-        // services.AddGrpcClient<MatchRoundService.MatchRoundServiceClient>(options =>
-        // {
-        //     options.Address = new Uri(sportsDataServiceAddress);
-        // });
-        // services.AddGrpcClient<SeasonStatsService.SeasonStatsServiceClient>(options =>
-        // {
-        //     options.Address = new Uri(sportsDataServiceAddress);
-        // });
+        services.AddGrpcClient<IterationResultService.IterationResultServiceClient>(options =>
+        {
+            options.Address = new Uri(simulationServiceAddress);
+        });
 
         
+        return services;
+    }
+    
+    public static IServiceCollection AddStatisticsGrpcClient(this IServiceCollection services, string statisticsServiceAddress)
+    {
+
+        services.AddGrpcClient<ScoreboardService.ScoreboardServiceClient>(options =>
+        {
+            options.Address = new Uri(statisticsServiceAddress);
+        });
+
+
         return services;
     }
 }

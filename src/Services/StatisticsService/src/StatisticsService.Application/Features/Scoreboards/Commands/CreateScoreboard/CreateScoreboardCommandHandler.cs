@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Application.Features.LeagueRounds.DTOs;
-using StatisticsService.Application.Features.SimulationResults.Queries.GetSimulationResultsBySimulationId;
+using StatisticsService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 using StatisticsService.Application.Interfaces;
 using StatisticsService.Application.Mappers;
 using StatisticsService.Domain.Entities;
@@ -17,17 +17,27 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
     private readonly ILogger<CreateScoreboardCommandHandler> _logger;
     private readonly IScoreboardWriteRepository _scoreboardWriteRepository;
     private readonly IScoreboardTeamStatsWriteRepository _scoreboardTeamStatsWriteRepository;
+    private readonly IScoreboardReadRepository _scoreboardReadRepository;
     private readonly IMediator _mediator;
     private readonly ScoreboardService _scoreboardService;
     private readonly ILeagueRoundGrpcClient _leagueRoundGrpcClient;
     private readonly IMatchRoundGrpcClient _matchRoundGrpcClient;
 
-    public CreateScoreboardCommandHandler(IScoreboardWriteRepository repository, IMediator mediator, ScoreboardService scoreboardService, IScoreboardTeamStatsWriteRepository scoreboardTeamStatsWriteRepository, ILogger<CreateScoreboardCommandHandler> logger, ILeagueRoundGrpcClient leagueRoundGrpcClient, IMatchRoundGrpcClient matchRoundGrpcClient)
+    public CreateScoreboardCommandHandler(
+        IScoreboardWriteRepository repository,
+        IMediator mediator,
+        ScoreboardService scoreboardService,
+        IScoreboardTeamStatsWriteRepository scoreboardTeamStatsWriteRepository,
+        IScoreboardReadRepository scoreboardReadRepository,
+        ILogger<CreateScoreboardCommandHandler> logger,
+        ILeagueRoundGrpcClient leagueRoundGrpcClient,
+        IMatchRoundGrpcClient matchRoundGrpcClient)
     {
         _scoreboardWriteRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _scoreboardService = scoreboardService ?? throw new ArgumentNullException(nameof(scoreboardService));
         _scoreboardTeamStatsWriteRepository = scoreboardTeamStatsWriteRepository ?? throw new ArgumentNullException(nameof(scoreboardTeamStatsWriteRepository));
+        _scoreboardReadRepository = scoreboardReadRepository ?? throw new ArgumentNullException(nameof(scoreboardReadRepository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this._leagueRoundGrpcClient = leagueRoundGrpcClient ?? throw new ArgumentNullException(nameof(leagueRoundGrpcClient));
         this._matchRoundGrpcClient = matchRoundGrpcClient ?? throw new ArgumentNullException(nameof(matchRoundGrpcClient));
@@ -35,15 +45,15 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
 
     public async Task<IEnumerable<ScoreboardDto>> Handle(CreateScoreboardCommand request, CancellationToken cancellationToken)
     {
-        var simulationResultsQuery = new GetSimulationResultsBySimulationIdQuery(request.simulationId);
-        var simulationResults = await _mediator.Send(simulationResultsQuery, cancellationToken);
+        var IterationResultQuery = new GetIterationResultsBySimulationIdQuery(request.simulationId);
+        var IterationResults = await _mediator.Send(IterationResultQuery, cancellationToken);
         
-        if (simulationResults == null || !simulationResults.Any())
+        if (IterationResults == null || !IterationResults.Any())
         {
             throw new Exception("No simulation results found for the given simulation ID");
         }
 
-        var firstResult = simulationResults.First(); // needs to be corrected #25
+        var firstResult = IterationResults.First(); // needs to be corrected #25
         var leagueRoundRequest = new LeagueRoundDtoRequest
         {
             LeagueId = firstResult.SimulationParams.LeagueId,
@@ -66,27 +76,31 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
             }
         }
 
-        if (request.simulationResultId != Guid.Empty)
+        if (request.iterationResultId != Guid.Empty)
         {
-            simulationResults = simulationResults.Where(x => x.Id == request.simulationResultId).ToList();
+            IterationResults = IterationResults.Where(x => x.Id == request.iterationResultId).ToList();
         }
-        if (simulationResults == null || simulationResults.Count == 0)
+        if (IterationResults == null || IterationResults.Count == 0)
         {
             throw new Exception("No simulation results found for the given simulation ID");
         }
         
+        
         var scoreboardList = new List<Scoreboard>();
-        foreach (var simulationResult in simulationResults)
+        foreach (var iterationResult in IterationResults)
         {
-            var scoreboard = _scoreboardService.CalculateSingleScoreboard(
-                SimulationResultMapper.ToValueObject(simulationResult),
-                playedMatchRounds.Select(x => MatchRoundMapper.ToValueObject(x)).ToList()
-            );
-            scoreboard.SetRankings();
-            scoreboardList.Add(scoreboard);
+            if (await _scoreboardReadRepository.ScoreboardByIterationResultIdExistsAsync(iterationResult.Id, cancellationToken: cancellationToken) == false) // we don't need to create the scoreboard again, and again
+            {
+                var scoreboard = _scoreboardService.CalculateSingleScoreboard(
+                    IterationResultMapper.ToValueObject(iterationResult),
+                    playedMatchRounds.Select(x => MatchRoundMapper.ToValueObject(x)).ToList()
+                );
+                scoreboard.SetRankings();
+                scoreboardList.Add(scoreboard);
 
-            await _scoreboardWriteRepository.CreateScoreboardAsync(scoreboard, cancellationToken: cancellationToken);
-            await _scoreboardTeamStatsWriteRepository.CreateScoreboardTeamStatsBulkAsync(scoreboard.ScoreboardTeams, cancellationToken);
+                await _scoreboardWriteRepository.CreateScoreboardAsync(scoreboard, cancellationToken: cancellationToken);
+                await _scoreboardTeamStatsWriteRepository.CreateScoreboardTeamStatsBulkAsync(scoreboard.ScoreboardTeams, cancellationToken);
+            }
         }
 
         return scoreboardList.Count > 0 ? scoreboardList.Select(x => ScoreboardMapper.ToDto(x)) : throw new Exception("Failed to create scoreboard");

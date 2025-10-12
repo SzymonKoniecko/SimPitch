@@ -17,7 +17,7 @@ public static class DependencyInjection
         services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
     
         //  Clients DI
-        services.AddTransient<ISimulationResultGrpcClient, SimulationResultGrpcClient>();
+        services.AddTransient<IIterationResultGrpcClient, IterationResultGrpcClient>();
         services.AddTransient<ILeagueRoundGrpcClient, LeagueRoundGrpcClient>();
         services.AddTransient<IMatchRoundGrpcClient, MatchRoundGrpcClient>();
 

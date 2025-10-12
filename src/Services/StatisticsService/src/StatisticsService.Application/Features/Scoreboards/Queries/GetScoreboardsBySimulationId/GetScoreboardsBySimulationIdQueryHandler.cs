@@ -22,14 +22,14 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
 
         if (await _scoreboardReadRepository.ScoreboardBySimulationIdExistsAsync(query.simulationId, cancellationToken: cancellationToken))
         {
-            var scoreboards = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(query.simulationId, withTeamStats: true, cancellationToken: cancellationToken);
+            var scoreboards = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(query.simulationId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);
             
             foreach (var scoreboard in scoreboards)
                 scoreboard.SortByRank();
                 
-            if (query.simulationResultId != Guid.Empty)
+            if (query.iterationResultId != Guid.Empty) // filter for requested iteration result
             {
-                scoreboards = scoreboards.Where(x => x.SimulationResultId == query.simulationResultId).ToList();
+                scoreboards = scoreboards.Where(x => x.IterationResultId == query.iterationResultId).ToList();
             }
 
             return scoreboards.Select(x => ScoreboardMapper.ToDto(x)).ToList();

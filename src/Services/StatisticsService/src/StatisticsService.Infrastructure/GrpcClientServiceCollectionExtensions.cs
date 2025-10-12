@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using SimPitchProtos.SimulationService.SimulationResult;
+using SimPitchProtos.SimulationService.IterationResult;
 using SimPitchProtos.SportsDataService.LeagueRound;
 using SimPitchProtos.SportsDataService.MatchRound;
 
@@ -11,7 +11,7 @@ public static class GrpcClientServiceCollectionExtensions
     public static IServiceCollection AddSimulationGrpcClient(this IServiceCollection services, string simulationServiceAddress)
     {
 
-        services.AddGrpcClient<SimulationResultService.SimulationResultServiceClient>(options =>
+        services.AddGrpcClient<IterationResultService.IterationResultServiceClient>(options =>
         {
             options.Address = new Uri(simulationServiceAddress);
         });

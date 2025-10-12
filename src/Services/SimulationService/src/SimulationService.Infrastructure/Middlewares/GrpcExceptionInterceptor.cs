@@ -34,6 +34,17 @@ public class GrpcExceptionInterceptor : Interceptor
         {
             return await continuation(request, context);
         }
+        catch (RpcException rpcEx)
+        {
+            // if RpcException exists, log w/o mapping
+            _logger.LogWarning(
+                rpcEx,
+                "gRPC error in request: StatusCode={StatusCode}, Detail={Detail}",
+                rpcEx.StatusCode,
+                rpcEx.Status.Detail
+            );
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unhandled exception in gRPC request: {Message}", ex.Message);
@@ -45,6 +56,9 @@ public class GrpcExceptionInterceptor : Interceptor
     {
         return ex switch
         {
+            FormatException => new RpcException(
+                new Status(StatusCode.InvalidArgument, ex.Message)
+            ),
             KeyNotFoundException => new RpcException(
                 new Status(StatusCode.NotFound, ex.Message)
             ),

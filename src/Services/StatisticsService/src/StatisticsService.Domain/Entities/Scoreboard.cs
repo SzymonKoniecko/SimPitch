@@ -6,7 +6,7 @@ public class Scoreboard
 {
     public Guid Id { get; private set; }
     public Guid SimulationId { get; private set; }
-    public Guid SimulationResultId { get; private set; }
+    public Guid IterationResultId { get; private set; }
     private readonly List<ScoreboardTeamStats> _teams = new();
     public IReadOnlyCollection<ScoreboardTeamStats> ScoreboardTeams => _teams.AsReadOnly();
     public float LeagueStrength { get; private set; }
@@ -15,11 +15,11 @@ public class Scoreboard
 
     private Scoreboard() { }
 
-    public Scoreboard(Guid id, Guid simulationId, Guid simulationResultId, float leagueStrength, float priorLeagueStrength, DateTime createdAt)
+    public Scoreboard(Guid id, Guid simulationId, Guid iterationResultId, float leagueStrength, float priorLeagueStrength, DateTime createdAt)
     {
         Id = id;
         SimulationId = simulationId;
-        SimulationResultId = simulationResultId;
+        IterationResultId = iterationResultId;
         LeagueStrength = leagueStrength;
         PriorLeagueStrength = priorLeagueStrength;
         CreatedAt = createdAt;

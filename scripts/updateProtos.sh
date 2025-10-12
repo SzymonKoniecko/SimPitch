@@ -8,6 +8,7 @@ services=(
   "SportsDataService|src/Services/SportsDataService/src/SimPitchProtos"
   "SimulationService|src/Services/SimulationService/src/SimPitchProtos"
   "StatisticsService|src/Services/StatisticsService/src/SimPitchProtos"
+  "EngineService|src/Services/EngineService/src/SimPitchProtos"
 )
 
 cd ..
