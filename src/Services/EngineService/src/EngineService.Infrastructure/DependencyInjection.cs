@@ -15,6 +15,7 @@ public static class DependencyInjection
         //  Clients DI
         services.AddTransient<IScoreboardGrpcClient, ScoreboardGrpcClient>();
         services.AddTransient<IIterationResultGrpcClient, IterationResultGrpcClient>();
+        services.AddTransient<ISimulationEngineGrpcClient, SimulationEngineGrpcClient>();
         
         //  Read repositories
 

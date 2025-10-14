@@ -6,6 +6,7 @@ using SportsDataService.Application.DTOs;
 using SportsDataService.Application.Features.LeagueRound.DTOs;
 using SportsDataService.Application.Features.LeagueRound.Queries.GetAllLeagueRoundsByParams;
 using SportsDataService.Domain.Enums;
+using SportsDataService.Infrastructure.Middlewares;
 
 namespace SportsDataService.API.Controllers
 {
@@ -49,7 +50,8 @@ namespace SportsDataService.API.Controllers
 
             var result = await _mediator.Send(new GetAllLeagueRoundsByParamsQuery(leagueRoundFilterDto));
 
-            if (result == null) return NotFound();
+            if (result is null)
+                throw new NotFoundException("No league rounds for given params.");
 
             return Ok(result);
         }

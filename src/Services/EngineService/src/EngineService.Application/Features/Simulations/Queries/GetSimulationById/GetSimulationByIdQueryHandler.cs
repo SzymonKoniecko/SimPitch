@@ -6,7 +6,7 @@ using EngineService.Application.Interfaces;
 using EngineService.Application.Mappers;
 using MediatR;
 
-namespace EngineService.Application.Features.Simulations.GetSimulationById;
+namespace EngineService.Application.Features.Simulations.Queries.GetSimulationById;
 
 public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQuery, SimulationDto>
 {
