@@ -1,5 +1,7 @@
 using EngineService.Application.DTOs;
-using EngineService.Application.Features.Simulations.GetSimulationById;
+using EngineService.Application.Features.Simulations.Commands.CreateSimulation;
+using EngineService.Application.Features.Simulations.Queries.GetSimulationById;
+using EngineService.Infrastructure.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +19,25 @@ namespace EngineService.API.Controllers
             this.mediator = mediator;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<string>> CreateSimulationAsync([FromBody] SimulationParamsDto simulationParamsDto)
+        {
+            if (simulationParamsDto is null)
+                throw new ValidationException("Simulation parameters cannot be null or empty.");
+
+            var result = await mediator.Send(new CreateSimulationCommand(simulationParamsDto));
+            if (result is null)
+                throw new NotFoundException("Simulation result could not be generated.");
+
+            return Ok(result);
+        }
+        
         [HttpGet("{simulationId}")]
-        public async Task<ActionResult<SimulationDto>> GetById([FromRoute] Guid simulationId)
+        public async Task<ActionResult<SimulationDto>> GetByIdAsync([FromRoute] Guid simulationId)
         {
             var result = await mediator.Send(new GetSimulationByIdQuery(simulationId));
-            if (result is null) return NotFound();
+            if (result is null)
+                throw new NotFoundException("No simulations for given Id");
             return Ok(result);
         }
     }

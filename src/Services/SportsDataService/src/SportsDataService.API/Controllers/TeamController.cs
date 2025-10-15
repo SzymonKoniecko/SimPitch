@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SportsDataService.Application.DTOs;
 using SportsDataService.Application.Features.Teams.Queries.GetAllTeams;
+using SportsDataService.Infrastructure.Middlewares;
 
 namespace SportsDataService.API.Controllers
 {
@@ -22,7 +23,8 @@ namespace SportsDataService.API.Controllers
         {
             var result = await _mediator.Send(new GetAllTeamsQuery());
 
-            if (result == null) return NotFound();
+            if (result is null)
+                throw new NotFoundException("No teams.");
 
             return Ok(result);
         }

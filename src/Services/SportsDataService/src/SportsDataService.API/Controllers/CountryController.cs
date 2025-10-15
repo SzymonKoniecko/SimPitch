@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SportsDataService.Application.DTOs;
 using SportsDataService.Application.Features.Country.Queries.GetAllCountries;
 using SportsDataService.Application.Features.Country.Queries.GetCountryById;
+using SportsDataService.Infrastructure.Middlewares;
 
 namespace SportsDataService.API.Controllers
 {
@@ -23,7 +24,8 @@ namespace SportsDataService.API.Controllers
         {
             var result = await _mediator.Send(new GetAllCountriesQuery());
 
-            if (result == null) return NotFound();
+            if (result is null)
+                throw new NotFoundException("No countries.");
 
             return Ok(result);
         }
