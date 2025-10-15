@@ -1,10 +1,10 @@
 services:
   logging-service:
     ports:
-      - "${LOGGING_SERVICE_HOST_PORT}:${LOGGING_SERVICE_CONTAINER_PORT}"
+      - "${LOGGING_SERVICE_HOST_PORT_GRPC}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - ConnectionStrings__LoggingDb=Server=mssql;Database=LoggingDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
     networks:
       - backend_network
@@ -12,11 +12,11 @@ services:
       - mssql
   
   frontend:
-    ports:
-      - "${WEB_DEV_PORT}:${WEB_DEV_PORT}"
+    expose:
+      - "${WEB_DEV_PORT}"
     environment:
       - NODE_ENV=development
-      - VITE_API_TARGET=${VITE_API_TARGET}
+      - VITE_API_TARGET=${VITE_API_URL}
     command: npm run dev -- --host --port ${WEB_DEV_PORT}
     restart: unless-stopped
     networks:
@@ -41,13 +41,15 @@ services:
 
   sportsdata-service:
     ports:
-      - "${SPORTSDATA_SERVICE_HOST_PORT}:${SPORTSDATA_SERVICE_CONTAINER_PORT}"
+      - "${SPORTSDATA_SERVICE_HOST_PORT_REST}:${SPORTSDATA_SERVICE_CONTAINER_PORT_REST}"
+      - "${SPORTSDATA_SERVICE_HOST_PORT_GRPC}:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${SPORTSDATA_SERVICE_CONTAINER_PORT}
       - ConnectionStrings__SportsDataDb=Server=mssql;Database=SportsDataDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
-      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - GrpcLogging__SourceName=SportsDataService
+      #- Kestrel__Endpoints__Grpc__Url=http://0.0.0.0:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
+      #- Kestrel__Endpoints__Rest__Url=http://0.0.0.0:${SPORTSDATA_SERVICE_CONTAINER_PORT_REST}
     networks:
       - backend_network
     depends_on:
@@ -56,15 +58,15 @@ services:
 
   engine-service:
     ports:
-      - "${ENGINE_SERVICE_HOST_PORT}:${ENGINE_SERVICE_CONTAINER_PORT}"
+      - "${ENGINE_SERVICE_HOST_PORT_REST}:${ENGINE_SERVICE_CONTAINER_PORT_REST}"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${ENGINE_SERVICE_CONTAINER_PORT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${ENGINE_SERVICE_CONTAINER_PORT_REST}
       - ConnectionStrings__EngineDb=Server=mssql;Database=EngineDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
-      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - GrpcLogging__SourceName=EngineService
-      - SimulationService__Address=http://${SIMULATION_SERVICE_NAME}:${SIMULATION_SERVICE_CONTAINER_PORT}
-      - StatisticsService__Address=http://${STATISTICS_SERVICE_NAME}:${STATISTICS_SERVICE_CONTAINER_PORT}
+      - SimulationService__Address=http://${SIMULATION_SERVICE_NAME}:${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
+      - StatisticsService__Address=http://${STATISTICS_SERVICE_NAME}:${STATISTICS_SERVICE_CONTAINER_PORT_GRPC}
     networks:
       - backend_network
     depends_on:
@@ -75,14 +77,14 @@ services:
 
   simulation-service:
     ports:
-      - "${SIMULATION_SERVICE_HOST_PORT}:${SIMULATION_SERVICE_CONTAINER_PORT}"
+      - "${SIMULATION_SERVICE_HOST_PORT_GRPC}:${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${SIMULATION_SERVICE_CONTAINER_PORT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
       - ConnectionStrings__SimulationDb=Server=mssql;Database=SimulationDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
-      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - GrpcLogging__SourceName=SimulationService
-      - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT}
+      - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
     networks:
       - backend_network
     depends_on:
@@ -91,15 +93,15 @@ services:
 
   statistics-service:
     ports:
-      - "${STATISTICS_SERVICE_HOST_PORT}:${STATISTICS_SERVICE_CONTAINER_PORT}"
+      - "${STATISTICS_SERVICE_HOST_PORT_GRPC}:${STATISTICS_SERVICE_CONTAINER_PORT_GRPC}"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${STATISTICS_SERVICE_CONTAINER_PORT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URL}:${STATISTICS_SERVICE_CONTAINER_PORT_GRPC}
       - ConnectionStrings__StatisticsDb=Server=mssql;Database=StatisticsDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
-      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT}
+      - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - GrpcLogging__SourceName=StatisticsService
-      - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT}
-      - SimulationService__Address=http://${SIMULATION_SERVICE_NAME}:${SIMULATION_SERVICE_CONTAINER_PORT}
+      - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
+      - SimulationService__Address=http://${SIMULATION_SERVICE_NAME}:${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
     networks:
       - backend_network
     depends_on:
