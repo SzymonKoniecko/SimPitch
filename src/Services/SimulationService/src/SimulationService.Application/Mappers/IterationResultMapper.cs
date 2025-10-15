@@ -32,13 +32,7 @@ public static class IterationResultMapper
         dto.SimulatedMatchRounds = (List<MatchRoundDto>)MatchRoundMapper.ToDtoBulk(simulatedMatchRounds);
         dto.LeagueStrength = leagueStrength;
         dto.PriorLeagueStrength = priorLeagueStrength;
-        dto.SimulationParams = new SimulationParamsDto
-        {
-            SeasonYears = simulationParams.SeasonYears,
-            LeagueId = simulationParams.LeagueId,
-            Iterations = simulationParams.Iterations,
-            LeagueRoundId = simulationParams.LeagueRoundId
-        };
+        dto.SimulationParams = SimulationParamsMapper.ToDto(simulationParams);
         dto.Raport = raport;
 
         return dto;
