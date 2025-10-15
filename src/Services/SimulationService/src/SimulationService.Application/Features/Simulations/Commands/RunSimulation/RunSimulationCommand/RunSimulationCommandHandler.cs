@@ -26,6 +26,8 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             new InitSimulationContentCommand(command.SimulationParamsDto),
             cancellationToken
         );
+        simulationContent.SimulationParams = new();
+        
 
         var validator = new SimulationContentValidator();
         var validationResult = validator.Validate(simulationContent);

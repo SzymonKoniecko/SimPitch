@@ -26,17 +26,13 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
     public async Task<SimulationContent> Handle(InitSimulationContentCommand query, CancellationToken cancellationToken)
     {
         SimulationContent contentResponse = new();
-        contentResponse.SimulationParams = new SimulationParams();
-        contentResponse.SimulationParams.SeasonYears = query.SimulationParamsDto.SeasonYears.ToList();
-        contentResponse.SimulationParams.LeagueId = query.SimulationParamsDto.LeagueId;
-        contentResponse.SimulationParams.Iterations = query.SimulationParamsDto.Iterations;
-        contentResponse.SimulationParams.LeagueRoundId = query.SimulationParamsDto.LeagueRoundId;
+        contentResponse.SimulationParams = SimulationParamsMapper.ToValueObject(query.SimulationParamsDto);
 
         var leagueRoundDtoRequest = new LeagueRoundDtoRequest
         {
-            SeasonYears = query.SimulationParamsDto.SeasonYears,
-            LeagueId = query.SimulationParamsDto.LeagueId,
-            LeagueRoundId = query.SimulationParamsDto.LeagueRoundId,
+            SeasonYears = contentResponse.SimulationParams.SeasonYears,
+            LeagueId = contentResponse.SimulationParams.LeagueId,
+            LeagueRoundId = contentResponse.SimulationParams.LeagueRoundId,
         };
 
         var leagueRounds = await _mediator.Send(new GetLeagueRoundsByParamsGrpcQuery(leagueRoundDtoRequest));
