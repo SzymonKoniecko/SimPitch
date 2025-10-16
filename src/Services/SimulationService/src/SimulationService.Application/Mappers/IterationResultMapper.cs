@@ -32,7 +32,6 @@ public static class IterationResultMapper
         dto.SimulatedMatchRounds = (List<MatchRoundDto>)MatchRoundMapper.ToDtoBulk(simulatedMatchRounds);
         dto.LeagueStrength = leagueStrength;
         dto.PriorLeagueStrength = priorLeagueStrength;
-        dto.SimulationParams = SimulationParamsMapper.ToDto(simulationParams);
         dto.Raport = raport;
 
         return dto;
@@ -49,7 +48,6 @@ public static class IterationResultMapper
         entity.SimulatedMatchRounds = JsonConvert.SerializeObject(dto.SimulatedMatchRounds);
         entity.LeagueStrength = dto.LeagueStrength;
         entity.PriorLeagueStrength = dto.PriorLeagueStrength;
-        entity.SimulationParams = dto.SimulationParams != null ? JsonConvert.SerializeObject(dto.SimulationParams) : null;
         entity.Raport = dto.Raport;
 
         return entity;
@@ -73,9 +71,6 @@ public static class IterationResultMapper
             : new List<MatchRound>());
         dto.LeagueStrength = entity.LeagueStrength;
         dto.PriorLeagueStrength = entity.PriorLeagueStrength;
-        dto.SimulationParams = entity.SimulationParams != null
-            ? JsonConvert.DeserializeObject<SimulationParamsDto>(entity.SimulationParams)
-            : null;
         dto.Raport = entity.Raport;
 
         return dto;

@@ -74,10 +74,6 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                     {
                         continue;
                     }
-                    if (singleSeasonStats.LeagueStrength != 1)
-                    {
-                        int x = 0;
-                    }
                     var merged = value.SeasonStats.Merge(
                         value.SeasonStats,
                         new SeasonStats(

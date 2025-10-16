@@ -55,7 +55,7 @@ public class RunSimulationCommandHandlerTests
             .Setup(m => m.Send(It.IsAny<InitSimulationContentCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(initResponse);
 
-        var handler = new RunSimulationCommandHandler(mediatorMock.Object);
+        var handler = new RunSimulationCommandHandler(mediatorMock.Object, null);
 
         var command = new RunSimulationCommand(new SimulationParamsDto
         {
@@ -68,7 +68,7 @@ public class RunSimulationCommandHandlerTests
         var simulationId = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(simulationId);
+        Assert.NotEqual(simulationId, Guid.Empty);
         Assert.True(initResponse.MatchRoundsToSimulate[0].IsPlayed);
         Assert.InRange(initResponse.MatchRoundsToSimulate[0].HomeGoals, 0, 10); // spodziewany zakres
         Assert.InRange(initResponse.MatchRoundsToSimulate[0].AwayGoals, 0, 10);

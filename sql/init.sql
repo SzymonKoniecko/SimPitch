@@ -126,6 +126,16 @@ GO
 
 USE SimulationDb;
 GO
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SimulationPreview' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.SimulationPreview
+    (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        Title NVARCHAR(MAX) NULL,
+        CreatedDate DATETIME2 NOT NULL,
+        SimulationParams NVARCHAR(MAX) NULL,
+    );
+END
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='IterationResult' AND xtype='U')
 BEGIN
     CREATE TABLE dbo.IterationResult
@@ -138,7 +148,6 @@ BEGIN
         SimulatedMatchRounds NVARCHAR(MAX) NULL,
         LeagueStrength FLOAT NOT NULL,
         PriorLeagueStrength FLOAT NOT NULL,
-        SimulationParams NVARCHAR(MAX) NULL,
         Raport NVARCHAR(MAX) NULL
     );
 END
