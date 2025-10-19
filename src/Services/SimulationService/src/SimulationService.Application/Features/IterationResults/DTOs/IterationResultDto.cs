@@ -15,6 +15,5 @@ public class IterationResultDto
     public List<MatchRoundDto> SimulatedMatchRounds { get; set; }
     public float LeagueStrength { get; set; }
     public float PriorLeagueStrength { get; set; }
-    public SimulationParamsDto SimulationParams { get; set; }
     public string Raport { get; set; }
 }

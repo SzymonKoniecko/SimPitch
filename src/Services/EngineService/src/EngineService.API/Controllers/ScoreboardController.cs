@@ -18,11 +18,13 @@ namespace EngineService.API.Controllers
         }
         
         [HttpGet]
-        public async Task<List<ScoreboardDto>> GetByIds([FromQuery] Guid simulationId, [FromQuery] Guid iterationResultId)
+        public async Task<ActionResult<List<ScoreboardDto>>> GetByIds([FromQuery] Guid simulationId, [FromQuery] Guid iterationResultId)
         {
             var query = new GetScoreboardsBySimulationIdQuery(simulationId, iterationResultId, withTeamStats: true);
 
-            return await mediator.Send(query);
+            var response = await mediator.Send(query);
+            if (response == null) return NotFound();
+            return response;
         }
     }
 }

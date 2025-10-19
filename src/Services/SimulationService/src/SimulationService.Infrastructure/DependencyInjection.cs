@@ -24,9 +24,11 @@ public static class DependencyInjection
 
         //  Read repositories
         services.AddTransient<IIterationResultReadRepository, IterationResultReadRepository>();
+        services.AddTransient<ISimulationOverviewReadRepository, SimulationOverviewReadRepository>();
 
         //  Write repositories
         services.AddTransient<IIterationResultWriteRepository, IterationResultWriteRepository>();
+        services.AddTransient<ISimulationOverviewWriteRepository, SimulationOverviewWriteRepository>();
 
         // Services
         services.AddTransient<SeasonStatsService>();

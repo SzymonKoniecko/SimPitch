@@ -1,6 +1,6 @@
 using System;
 
-namespace StatisticsService.Application.DTOs;
+namespace StatisticsService.Application.DTOs.Clients;
 
 public class SimulationParamsDto
 {

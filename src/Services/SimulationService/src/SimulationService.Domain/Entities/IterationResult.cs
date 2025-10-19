@@ -13,6 +13,5 @@ public class IterationResult
     public string SimulatedMatchRounds { get; set; }
     public float LeagueStrength { get; set; }
     public float PriorLeagueStrength { get; set; }
-    public string SimulationParams { get; set; }
     public string Raport { get; set; }
 }

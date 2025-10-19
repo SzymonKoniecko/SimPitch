@@ -7,6 +7,8 @@ using SimulationService.Application.Features.IterationResults.Commands.CreateIte
 using SimulationService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
+using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
+using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviewById;
 namespace SimulationService.Application.Features;
 
 public static class MediatrServicesExtension
@@ -28,12 +30,16 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(GetLeagueByIdQuery).Assembly);
         services.AddMediatR(typeof(GetMatchRoundsByIdQuery).Assembly);
         services.AddMediatR(typeof(GetIterationResultsBySimulationIdQuery).Assembly);
+        services.AddMediatR(typeof(GetSimulationOverviewByIdQuery).Assembly);
+        services.AddMediatR(typeof(GetAllSimulationOverviewsQuery).Assembly);
 
         // Query Handlers
         services.AddMediatR(typeof(GetLeagueRoundsByParamsGrpcHandler).Assembly);
         services.AddMediatR(typeof(GetLeagueByIdHandler).Assembly);
         services.AddMediatR(typeof(GetMatchRoundsByIdHandler).Assembly);
         services.AddMediatR(typeof(GetIterationResultsBySimulationIdQueryHandler).Assembly);
+        services.AddMediatR(typeof(GetSimulationOverviewByIdQueryHandler).Assembly);
+        services.AddMediatR(typeof(GetAllSimulationOverviewsQueryHandler).Assembly);
 
         // Validators
         services.AddTransient<RunSimulationCommandValidator>();
