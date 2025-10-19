@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddTransient<IIterationResultGrpcClient, IterationResultGrpcClient>();
         services.AddTransient<ILeagueRoundGrpcClient, LeagueRoundGrpcClient>();
         services.AddTransient<IMatchRoundGrpcClient, MatchRoundGrpcClient>();
+        services.AddTransient<ISimulationEngineGrpcClient, SimulationEngineGrpcClient>();
 
         //  Read repositories
         services.AddScoped<IScoreboardReadRepository, ScoreboardReadRepository>();

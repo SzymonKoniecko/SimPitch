@@ -42,7 +42,7 @@ namespace EngineService.API.Controllers
         }
         
         [HttpGet("{simulationId}")]
-        public async Task<ActionResult<SimulationOverviewDto>> GetByIdAsync([FromRoute] Guid simulationId)
+        public async Task<ActionResult<SimulationDto>> GetByIdAsync([FromRoute] Guid simulationId)
         {
             var result = await mediator.Send(new GetSimulationByIdQuery(simulationId));
             if (result is null)

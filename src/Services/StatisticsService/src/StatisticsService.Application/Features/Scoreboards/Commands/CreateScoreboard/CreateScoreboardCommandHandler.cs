@@ -9,6 +9,7 @@ using StatisticsService.Application.Mappers;
 using StatisticsService.Domain.Entities;
 using StatisticsService.Domain.Interfaces;
 using StatisticsService.Domain.Services;
+using StatisticsService.Application.DTOs.Clients;
 
 namespace StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
 
@@ -22,6 +23,7 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
     private readonly ScoreboardService _scoreboardService;
     private readonly ILeagueRoundGrpcClient _leagueRoundGrpcClient;
     private readonly IMatchRoundGrpcClient _matchRoundGrpcClient;
+    private readonly ISimulationEngineGrpcClient simulationEngineGrpcClient;
 
     public CreateScoreboardCommandHandler(
         IScoreboardWriteRepository repository,
@@ -31,7 +33,8 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
         IScoreboardReadRepository scoreboardReadRepository,
         ILogger<CreateScoreboardCommandHandler> logger,
         ILeagueRoundGrpcClient leagueRoundGrpcClient,
-        IMatchRoundGrpcClient matchRoundGrpcClient)
+        IMatchRoundGrpcClient matchRoundGrpcClient,
+        ISimulationEngineGrpcClient simulationEngineGrpcClient)
     {
         _scoreboardWriteRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -41,24 +44,25 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this._leagueRoundGrpcClient = leagueRoundGrpcClient ?? throw new ArgumentNullException(nameof(leagueRoundGrpcClient));
         this._matchRoundGrpcClient = matchRoundGrpcClient ?? throw new ArgumentNullException(nameof(matchRoundGrpcClient));
+        this.simulationEngineGrpcClient = simulationEngineGrpcClient ?? throw new ArgumentNullException(nameof(simulationEngineGrpcClient));
     }
 
     public async Task<IEnumerable<ScoreboardDto>> Handle(CreateScoreboardCommand request, CancellationToken cancellationToken)
     {
         var IterationResultQuery = new GetIterationResultsBySimulationIdQuery(request.simulationId);
         var IterationResults = await _mediator.Send(IterationResultQuery, cancellationToken);
-        
+        SimulationOverview simulationOverview = await simulationEngineGrpcClient.GetSimulationOverviewByIdAsync(request.simulationId, cancellationToken);
+
         if (IterationResults == null || !IterationResults.Any())
         {
             throw new Exception("No simulation results found for the given simulation ID");
         }
 
-        var firstResult = IterationResults.First(); // needs to be corrected #25
         var leagueRoundRequest = new LeagueRoundDtoRequest
         {
-            LeagueId = firstResult.SimulationParams.LeagueId,
-            SeasonYears = firstResult.SimulationParams.SeasonYears,
-            LeagueRoundId = firstResult.SimulationParams.LeagueRoundId
+            LeagueId = simulationOverview.SimulationParams.LeagueId,
+            SeasonYears = simulationOverview.SimulationParams.SeasonYears,
+            LeagueRoundId = simulationOverview.SimulationParams.LeagueRoundId
         };
 
         var leagueRounds = await _leagueRoundGrpcClient.GetAllLeagueRoundsByParams(leagueRoundRequest, cancellationToken);

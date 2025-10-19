@@ -126,9 +126,9 @@ GO
 
 USE SimulationDb;
 GO
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SimulationPreview' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SimulationOverview' AND xtype='U')
 BEGIN
-    CREATE TABLE dbo.SimulationPreview
+    CREATE TABLE dbo.SimulationOverview
     (
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         Title NVARCHAR(MAX) NULL,
