@@ -30,7 +30,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         return response.SimulationId;
     }
 
-    public async Task<List<SimulationOverviewDto>> GetSimulationOverviewAsync(CancellationToken cancellationToken)
+    public async Task<List<SimulationOverviewDto>> GetSimulationOverviewsAsync(CancellationToken cancellationToken)
     {
         var request = new Empty();
         var response = await _client.GetAllSimulationOverviewsAsync(request, cancellationToken: cancellationToken);

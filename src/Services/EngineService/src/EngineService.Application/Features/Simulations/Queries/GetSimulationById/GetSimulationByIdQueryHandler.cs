@@ -11,15 +11,20 @@ namespace EngineService.Application.Features.Simulations.Queries.GetSimulationBy
 public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQuery, SimulationDto>
 {
     private readonly IMediator _mediator;
+    private readonly ISimulationEngineGrpcClient _simulationEngineGrpcClient;
 
-    public GetSimulationByIdQueryHandler(IMediator mediator)
+    public GetSimulationByIdQueryHandler(
+        IMediator mediator,
+        ISimulationEngineGrpcClient simulationEngineGrpcClient)
     {
         _mediator = mediator;
+        _simulationEngineGrpcClient = simulationEngineGrpcClient;
     }
     public async Task<SimulationDto> Handle(GetSimulationByIdQuery query, CancellationToken cancellationToken)
     {
         var iterationsQuery = new GetIterationResultsBySimulationIdQuery(query.simulationId);
         var scoreboardsQuery = new GetScoreboardsBySimulationIdQuery(query.simulationId, withTeamStats: true);
+        var simulationOverviews = await _simulationEngineGrpcClient.GetSimulationOverviewsAsync(cancellationToken);
 
         List<IterationResultDto> iterationResults = await _mediator.Send(iterationsQuery, cancellationToken);
         List<ScoreboardDto> scoreboards = await _mediator.Send(scoreboardsQuery, cancellationToken);
@@ -39,7 +44,7 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
         return SimulationMapper.ToSimulationDto(
                 query.simulationId,
                 iterationResults.Count,
-                iterationResults.First().SimulationParams,
+                simulationOverviews.First(x => x.Id == query.simulationId)?.SimulationParams,
                 iterationPreviewDtos.OrderBy(x => x.Rank).ToList(),
                 (int)(iterationResults.First()?.SimulatedMatchRounds.Count),
                 (float)(iterationResults.First()?.PriorLeagueStrength)

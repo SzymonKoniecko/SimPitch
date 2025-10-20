@@ -41,7 +41,6 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
             dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundDto>>(result.SimulatedMatchRounds);
             dto.LeagueStrength = result.LeagueStrength;
             dto.PriorLeagueStrength = result.PriorLeagueStrength;
-            dto.SimulationParams = MapProtoToDto(result.SimulationParams);
             dto.Raport = result.Raport;
 
             dtos.Add(dto);
