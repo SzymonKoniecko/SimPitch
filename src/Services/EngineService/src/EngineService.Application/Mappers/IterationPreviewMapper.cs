@@ -40,6 +40,7 @@ public static class IterationPreviewMapper
     {
         var dto = new IterationPreviewDto();
 
+        dto.IterationId = iterationResultDto.Id;
         dto.ScoreboardId = scoreboardTeamStatsDto.ScoreboardId;
         dto.IterationIndex = iterationResultDto.IterationIndex;
         dto.TeamId = scoreboardTeamStatsDto.TeamId;
