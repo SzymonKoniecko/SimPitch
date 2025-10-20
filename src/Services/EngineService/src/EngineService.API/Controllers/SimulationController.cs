@@ -1,6 +1,6 @@
 using EngineService.Application.DTOs;
 using EngineService.Application.Features.Simulations.Commands.CreateSimulation;
-using EngineService.Application.Features.Simulations.Queries.GetAllSimulations;
+using EngineService.Application.Features.Simulations.Queries.GetAllSimulationOverviews;
 using EngineService.Application.Features.Simulations.Queries.GetSimulationById;
 using EngineService.Infrastructure.Middlewares;
 using MediatR;
@@ -35,7 +35,7 @@ namespace EngineService.API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SimulationOverviewDto>>> GetAllAsync()
         {
-            var result = await mediator.Send(new GetAllSimulationsQuery());
+            var result = await mediator.Send(new GetAllSimulationOverviewsQuery());
             if (result is null)
                 throw new NotFoundException("No simulations or something went wrong");
             return Ok(result);
