@@ -19,7 +19,7 @@ public class IterationResultReadRepository : IIterationResultReadRepository
         
         const string sql = @"
             SELECT Id, SimulationId, IterationIndex, StartDate, ExecutionTime, 
-                SimulatedMatchRounds, LeagueStrength, PriorLeagueStrength, SimulationParams, Raport
+                SimulatedMatchRounds, LeagueStrength, PriorLeagueStrength, Raport
             FROM IterationResult
             WHERE SimulationId = @SimulationId;
         ";

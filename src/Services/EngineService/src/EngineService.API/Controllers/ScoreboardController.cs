@@ -24,7 +24,7 @@ namespace EngineService.API.Controllers
 
             var response = await mediator.Send(query);
             if (response == null) return NotFound();
-            return response;
+            return Ok(response);
         }
     }
 }

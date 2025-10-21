@@ -84,10 +84,6 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
         {
             IterationResults = IterationResults.Where(x => x.Id == request.iterationResultId).ToList();
         }
-        if (IterationResults == null || IterationResults.Count == 0)
-        {
-            throw new Exception("No simulation results found for the given simulation ID");
-        }
         
         
         var scoreboardList = new List<Scoreboard>();

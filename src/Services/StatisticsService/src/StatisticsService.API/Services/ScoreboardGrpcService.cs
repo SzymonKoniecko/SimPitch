@@ -35,24 +35,32 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
 
     public override async Task<ScoreboardsResponse> GetScoreboardsByQuery(ScoreboardsByQueryRequest request, ServerCallContext context)
     {
-        var command = new GetScoreboardsBySimulationIdQuery(
+        var query = new GetScoreboardsBySimulationIdQuery(
             Guid.Parse(request.SimulationId),
             request.HasIterationResultId ? Guid.Parse(request.IterationResultId): Guid.Empty,
             request.WithTeamStats
         );
 
-        var results = await _mediator.Send(command, cancellationToken: context.CancellationToken);
+        var results = await _mediator.Send(query, cancellationToken: context.CancellationToken);
 
-        if (results == null)
+        if (results != null && results.Count > 0)
         {
-            throw new RpcException(new Status(StatusCode.NotFound, $"No scoreboards found for simulation ID {request.SimulationId}"));
+            return new ScoreboardsResponse
+            {
+                Scoreboards = { results.Select(x => ScoreboardToGrpc(x)) }
+            };
         }
-        
+        // Flow like: CreateScoreboards(CreateScoreboardsRequest request, ServerCallContext context)
+        var command = new CreateScoreboardCommand(Guid.Parse(request.SimulationId), request.HasIterationResultId ? Guid.Parse(request.IterationResultId): Guid.Empty);
+
+        var createdResults = await _mediator.Send(command, cancellationToken: context.CancellationToken);
+
         return new ScoreboardsResponse
         {
-            Scoreboards = { results.Select(x => ScoreboardToGrpc(x)) }
+            Scoreboards = { createdResults.Select(x => ScoreboardToGrpc(x)) }
         };
     }
+
 
     private static ScoreboardGrpc ScoreboardToGrpc(ScoreboardDto dto)
     {
@@ -61,12 +69,12 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
             Id = dto.Id.ToString(),
             SimulationId = dto.SimulationId.ToString(),
             IterationResultId = dto.IterationResultId.ToString(),
-            ScoreboardTeams = { dto.ScoreboardTeams.Select(team => ScoreboardTeamStatsToGrpc(team)).ToList() },
+            ScoreboardTeams = { dto.ScoreboardTeams.Select(team => ScoreboardTeamStatsToGrpc(team)).OrderBy(x => x.Rank).ToList() },
             LeagueStrength = dto.LeagueStrength,
             PriorLeagueStrength = dto.PriorLeagueStrength,
             CreatedAt = dto.CreatedAt.ToString()
         };
-        
+
         return grpc;
     }
 

@@ -30,9 +30,9 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
         List<ScoreboardDto> scoreboards = await _mediator.Send(scoreboardsQuery, cancellationToken);
 
         if (iterationResults == null || iterationResults.Count == 0)
-        {
             return null;
-        }
+        if (scoreboards == null || scoreboards.Count == 0)
+            return null;
 
         List<IterationPreviewDto> iterationPreviewDtos = new();
 
