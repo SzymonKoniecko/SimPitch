@@ -56,13 +56,16 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         {
             DateTime startTime = DateTime.Now;
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            if (i > 0)
+            if (i > 0) // the be sure that matches are not updated in his first iteration
                 simulationContent.MatchRoundsToSimulate = matchRoundsToSimulateBackup;
 
             simulationContent = _matchSimulator.SimulationWorkflow(simulationContent);
             watch.Stop();
+
+
             simulationIndex++;
             
+
             await _mediator.Send(new CreateIterationResultCommand(
                 IterationResultMapper.SimulationToDto(
                     simulationId,
@@ -72,30 +75,10 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
                     simulationContent.MatchRoundsToSimulate,
                     simulationContent.LeagueStrength,
                     simulationContent.PriorLeagueStrength,
-                    simulationContent.SimulationParams,
-                    GenerateReport(simulationContent)
+                    simulationContent.TeamsStrengthDictionary
                 )), cancellationToken);
         }
 
         return simulationId;
-    }
-
-    private string GenerateReport(SimulationContent simulationContent)
-    {
-
-        var reportLines = simulationContent.MatchRoundsToSimulate.Select(m =>
-        {
-            var homeTeam = simulationContent.TeamsStrengthDictionary[m.HomeTeamId];
-            var awayTeam = simulationContent.TeamsStrengthDictionary[m.AwayTeamId];
-
-            return $"Mecz {m.HomeTeamId} vs {m.AwayTeamId}: {m.HomeGoals}-{m.AwayGoals} | " +
-                $"Home Posterior Off: {homeTeam.Posterior.Offensive:F2}, Def: {homeTeam.Posterior.Defensive:F2} | " +
-                $"Away Posterior Off: {awayTeam.Posterior.Offensive:F2}, Def: {awayTeam.Posterior.Defensive:F2}";
-        });
-
-        string report = string.Join(Environment.NewLine, reportLines);
-
-
-        return report;
     }
 }

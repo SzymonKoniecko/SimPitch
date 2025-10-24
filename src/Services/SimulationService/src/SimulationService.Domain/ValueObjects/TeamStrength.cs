@@ -11,6 +11,13 @@ public record TeamStrength
     public (float Offensive, float Defensive) Likelihood { get; init; }
     public (float Offensive, float Defensive) Posterior { get; init; }
     public float ExpectedGoals { get; init; }
+    public DateTime LastUpdate { get; set; } = DateTime.Now;
+    /// <summary>
+    /// Indicate the roundId in which these stats has been updated
+    /// 
+    /// If null, its before the first match
+    /// </summary>
+    public Guid? RoundId { get; set; } = null;
     public SeasonStats SeasonStats { get; set; }
 
     private TeamStrength(Guid teamId,
@@ -77,7 +84,7 @@ public record TeamStrength
 
     public TeamStrength WithExpectedGoals(float expectedGoals)
         => this with { ExpectedGoals = expectedGoals };
-    
+
     public TeamStrength WithSeasonStats(SeasonStats newSeasonStats)
     {
         if (newSeasonStats == null)
@@ -85,4 +92,9 @@ public record TeamStrength
 
         return this with { SeasonStats = newSeasonStats };
     }
+
+    public TeamStrength UpdateTime()
+        => this with { LastUpdate = DateTime.Now };
+    public TeamStrength SetRoundId(Guid roundId)
+        => this with { RoundId = roundId};
 }

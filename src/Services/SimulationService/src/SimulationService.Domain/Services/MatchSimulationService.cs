@@ -16,19 +16,15 @@ namespace SimulationService.Domain.Services
         {
             foreach (var match in simulationContent.MatchRoundsToSimulate)
             {
-                var homeTeam = simulationContent.TeamsStrengthDictionary[match.HomeTeamId];
-                var awayTeam = simulationContent.TeamsStrengthDictionary[match.AwayTeamId];
+                var homeTeam = simulationContent.TeamsStrengthDictionary[match.HomeTeamId].OrderByDescending(x => x.LastUpdate).First();
+                var awayTeam = simulationContent.TeamsStrengthDictionary[match.AwayTeamId].OrderByDescending(x => x.LastUpdate).First();
 
-                var (homeGoals, awayGoals) = SimulateMatch(
-                    homeTeam,
-                    awayTeam,
-                    homeAdvantage: 1.05
-                );
+                var (homeGoals, awayGoals) = SimulateMatch(homeTeam, awayTeam, homeAdvantage: 1.05);
 
                 match.HomeGoals = homeGoals;
                 match.AwayGoals = awayGoals;
 
-                if(match.HomeGoals == match.AwayGoals)
+                if (match.HomeGoals == match.AwayGoals)
                     match.IsDraw = true;
 
                 match.IsPlayed = true;
@@ -39,12 +35,13 @@ namespace SimulationService.Domain.Services
                 homeTeam = homeTeam with { SeasonStats = homeStatsUpdated };
                 awayTeam = awayTeam with { SeasonStats = awayStatsUpdated };
 
-                homeTeam = homeTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength);
-                awayTeam = awayTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength);
+                homeTeam = homeTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength).UpdateTime().SetRoundId(match.RoundId);
+                awayTeam = awayTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength).UpdateTime().SetRoundId(match.RoundId);
 
-                simulationContent.TeamsStrengthDictionary[homeTeam.TeamId] = homeTeam;
-                simulationContent.TeamsStrengthDictionary[awayTeam.TeamId] = awayTeam;
+                simulationContent.TeamsStrengthDictionary[homeTeam.TeamId].Add(homeTeam);
+                simulationContent.TeamsStrengthDictionary[awayTeam.TeamId].Add(awayTeam);
             }
+            
             return simulationContent;
         }
 

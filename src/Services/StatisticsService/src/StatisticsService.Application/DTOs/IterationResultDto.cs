@@ -1,4 +1,5 @@
 using System;
+using StatisticsService.Application.DTOs.Clients;
 
 namespace StatisticsService.Application.DTOs;
 
@@ -9,6 +10,7 @@ public class IterationResultDto
     public int IterationIndex { get; set; }
     public DateTime StartDate { get; set; }
     public TimeSpan ExecutionTime { get; set; }
+    public List<TeamStrengthDto> TeamStrengths { get; set; }
     public List<MatchRoundDto> SimulatedMatchRounds { get; set; }
     public float LeagueStrength { get; set; }
     public float PriorLeagueStrength { get; set; }

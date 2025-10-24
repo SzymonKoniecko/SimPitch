@@ -1,13 +1,11 @@
 using System;
-using SimulationService.Domain.Enums;
 
-namespace SimulationService.Application.Features.SeasonsStats.DTOs;
+namespace StatisticsService.Application.DTOs.Clients;
 
 public class SeasonStatsDto
 {
-    public Guid Id { get; set; }
     public Guid TeamId { get; set; }
-    public SeasonEnum SeasonYear { get; set; }
+    public string SeasonYear { get; set; }
     public Guid LeagueId { get; set; }
     public float LeagueStrength { get; set; }
     public int MatchesPlayed { get; set; }
@@ -16,4 +14,5 @@ public class SeasonStatsDto
     public int Draws { get; set; }
     public int GoalsFor { get; set; }
     public int GoalsAgainst { get; set; }
+
 }

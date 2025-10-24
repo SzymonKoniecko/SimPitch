@@ -40,7 +40,6 @@ public record SeasonStats
 
     public int GetGoalsDifference() => GoalsFor - GoalsAgainst;
 
-    // Aktualizacja po meczu (immutable)
     public SeasonStats Increment(MatchRound matchRound, bool isHomeTeam)
     {
         int matchesPlayed = MatchesPlayed + 1;
