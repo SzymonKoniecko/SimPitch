@@ -36,7 +36,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         );
         SimulationOverview simulationOverview = new();
         simulationOverview.Id = simulationId;
-        simulationOverview.Title = $"Title: {command.SimulationParamsDto.SeasonYears.First()} -- {command.SimulationParamsDto.Iterations}";
+        simulationOverview.Title = $"Title: {DateTime.Now.TimeOfDay} -- {command.SimulationParamsDto.Iterations / simulationContent.PriorLeagueStrength}";
         simulationOverview.CreatedDate = DateTime.Now;
         simulationOverview.SimulationParams = JsonConvert.SerializeObject(command.SimulationParamsDto);
 
