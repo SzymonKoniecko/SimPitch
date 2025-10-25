@@ -1,9 +1,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimulationService.Application.Interfaces;
+using SimulationService.Domain.Background;
+using SimulationService.Domain.Interfaces;
 using SimulationService.Domain.Interfaces.Read;
 using SimulationService.Domain.Interfaces.Write;
 using SimulationService.Domain.Services;
+using SimulationService.Infrastructure.Background;
 using SimulationService.Infrastructure.Clients;
 using SimulationService.Infrastructure.Persistence.Read;
 using SimulationService.Infrastructure.Persistence.Write;
@@ -15,6 +18,11 @@ public static class DependencyInjection
     {
         //  Database
         services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
+        services.AddScoped<IRedisSimulationRegistry, RedisSimulationRegistry>();
+
+        //Worker
+        services.AddSingleton<ISimulationQueue, InMemorySimulationQueue>();
+        services.AddHostedService<SimulationWorker>();
     
         //  Clients DI
         services.AddTransient<ILeagueRoundGrpcClient, LeagueRoundGrpcClient>();
@@ -34,7 +42,6 @@ public static class DependencyInjection
         services.AddTransient<SeasonStatsService>();
         services.AddTransient<MatchSimulatorService>();
 
-        
         return services;
     }
 }

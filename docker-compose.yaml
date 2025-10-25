@@ -31,7 +31,9 @@ services:
   gateway:
     container_name: nginx-gateway
     image: nginx:1.25-alpine
-
+  redis-cache:
+    container_name: redis-service
+    image: redis:6.2-alpine
 
 
 
@@ -52,3 +54,4 @@ networks:
   backend_network:
 volumes:
   mssql_data:
+  cache_data:

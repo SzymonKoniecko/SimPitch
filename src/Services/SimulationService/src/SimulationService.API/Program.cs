@@ -18,7 +18,17 @@ builder.Logging.AddConsole();
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
+
 builder.Services.AddInfrastructure(builder.Configuration);
+
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = ConfigHelper.GetRedisCacheConnectionString();
+    options.InstanceName = "SimulationCache";
+});
+
+
 builder.Services.AddMediatRServices();
 
 builder.Services.AddScoped<GrpcExceptionInterceptor>();

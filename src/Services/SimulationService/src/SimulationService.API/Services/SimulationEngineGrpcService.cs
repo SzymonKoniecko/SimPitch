@@ -5,8 +5,10 @@ using MediatR;
 using SimPitchProtos.SimulationService.SimulationEngine;
 using SimulationService.API.Mappers;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
+using SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviewById;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
+using SimulationService.Application.Features.Simulations.Queries.GetSimulationStateById;
 namespace SimulationService.API.Services;
 
 public class SimulationEngineGrpcService : SimulationEngineService.SimulationEngineServiceBase
@@ -22,7 +24,7 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
 
     public override async Task<RunSimulationEngineResponse> RunSimulation(RunSimulationEngineRequest request, ServerCallContext context)
     {
-        var command = new RunSimulationCommand(SimulationEngineMapper.SimulationEngineReqestToDto(request));
+        var command = new SetSimulationCommand(SimulationEngineMapper.SimulationEngineReqestToDto(request));
 
         Guid response = await _mediator.Send(command, cancellationToken: context.CancellationToken);
 
@@ -53,5 +55,16 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
         var result = new SimulationOverviewsListResponse();
         result.SimulationOverviews.AddRange(response.Select(x => SimulationOverviewMapper.ToProto(x)));
         return result;
+    }
+
+    public override async Task<SimulationStateResponse> GetSimulationStateById(GetSimulationStateByIdRequest request, ServerCallContext context)
+    {
+        var query = new GetSimulationStateByIdQuery(Guid.Parse(request.SimulationId));
+
+        var response = await _mediator.Send(query, context.CancellationToken);
+
+        return new SimulationStateResponse{
+            SimulationState = SimulationEngineMapper.StateToGrpc(response)
+        };
     }
 }

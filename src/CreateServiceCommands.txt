@@ -58,6 +58,7 @@ dotnet add package Newtonsoft.Json --version 13.0.3
 dotnet add package Grpc.Net.ClientFactory --version 2.60.0
 dotnet add package Microsoft.AspNetCore.App --framework net9.0
 dotnet add package Grpc.Net.ClientFactory --version 2.60.0
+dotnet add package Microsoft.Extensions.Caching.StackExchangeRedis --version 9.0.4 //if needed
 
 
 
