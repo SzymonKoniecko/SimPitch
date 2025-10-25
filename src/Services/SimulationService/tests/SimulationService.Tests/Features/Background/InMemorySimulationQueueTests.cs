@@ -1,50 +1,66 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SimulationService.Domain.Background;
 using SimulationService.Domain.ValueObjects;
 using SimulationService.Domain.Enums;
 using Xunit;
 
-namespace SimulationService.Tests.Features.Background;
-
-public class InMemorySimulationQueueTests
+namespace SimulationService.Tests.Features.Background
 {
-    [Fact]
-    public void Enqueue_Dequeue_MaintainsOrder()
+    public class InMemorySimulationQueueTests
     {
-        // Arrange
-        var queue = new InMemorySimulationQueue();
+        [Fact]
+        public async Task EnqueueAsync_DequeueAsync_MaintainsOrder()
+        {
+            // Arrange
+            var queue = new InMemorySimulationQueue();
 
-        var p = new SimulationParams { SeasonYears = new() { "2023/2024" }, LeagueId = Guid.Empty, Iterations = 1, LeagueRoundId = Guid.Empty };
-        var s = new SimulationState(SimulationStatus.Pending, 0f, DateTime.UtcNow);
+            var p = new SimulationParams
+            {
+                SeasonYears = new() { "2023/2024" },
+                LeagueId = Guid.Empty,
+                Iterations = 1,
+                LeagueRoundId = Guid.Empty
+            };
 
-        var job1 = new SimulationJob(Guid.NewGuid(), p, s);
-        var job2 = new SimulationJob(Guid.NewGuid(), p, s);
-        var job3 = new SimulationJob(Guid.NewGuid(), p, s);
+            var s = new SimulationState(SimulationStatus.Pending, 0f, DateTime.UtcNow);
 
-        // Act
-        queue.Enqueue(job1);
-        queue.Enqueue(job2);
-        queue.Enqueue(job3);
+            var job1 = new SimulationJob(Guid.NewGuid(), p, s);
+            var job2 = new SimulationJob(Guid.NewGuid(), p, s);
+            var job3 = new SimulationJob(Guid.NewGuid(), p, s);
 
-        // Assert FIFO order
-        Assert.True(queue.TryDequeue(out var out1));
-        Assert.Equal(job1, out1);
+            // Act
+            await queue.EnqueueAsync(job1);
+            await queue.EnqueueAsync(job2);
+            await queue.EnqueueAsync(job3);
 
-        Assert.True(queue.TryDequeue(out var out2));
-        Assert.Equal(job2, out2);
+            // Assert FIFO order
+            var out1 = await queue.DequeueAsync();
+            Assert.Equal(job1, out1);
 
-        Assert.True(queue.TryDequeue(out var out3));
-        Assert.Equal(job3, out3);
+            var out2 = await queue.DequeueAsync();
+            Assert.Equal(job2, out2);
 
-        // Now empty
-        Assert.False(queue.TryDequeue(out var _));
-    }
+            var out3 = await queue.DequeueAsync();
+            Assert.Equal(job3, out3);
 
-    [Fact]
-    public void TryDequeue_OnEmptyQueue_ReturnsFalse()
-    {
-        var queue = new InMemorySimulationQueue();
-        Assert.False(queue.TryDequeue(out var _));
+            // Now empty
+            var out4 = await queue.DequeueAsync();
+            Assert.Null(out4);
+        }
+
+        [Fact]
+        public async Task DequeueAsync_OnEmptyQueue_ReturnsNull()
+        {
+            // Arrange
+            var queue = new InMemorySimulationQueue();
+
+            // Act
+            var job = await queue.DequeueAsync();
+
+            // Assert
+            Assert.Null(job);
+        }
     }
 }

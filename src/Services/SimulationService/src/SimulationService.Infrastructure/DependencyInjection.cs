@@ -10,6 +10,7 @@ using SimulationService.Infrastructure.Background;
 using SimulationService.Infrastructure.Clients;
 using SimulationService.Infrastructure.Persistence.Read;
 using SimulationService.Infrastructure.Persistence.Write;
+using StackExchange.Redis;
 namespace SimulationService.Infrastructure;
 
 public static class DependencyInjection
@@ -21,9 +22,9 @@ public static class DependencyInjection
         services.AddScoped<IRedisSimulationRegistry, RedisSimulationRegistry>();
 
         //Worker
-        services.AddSingleton<ISimulationQueue, InMemorySimulationQueue>();
+        services.AddSingleton<ISimulationQueue, RedisSimulationQueue>();
         services.AddHostedService<SimulationWorker>();
-    
+
         //  Clients DI
         services.AddTransient<ILeagueRoundGrpcClient, LeagueRoundGrpcClient>();
         services.AddTransient<ILeagueGrpcClient, LeagueGrpcClient>();

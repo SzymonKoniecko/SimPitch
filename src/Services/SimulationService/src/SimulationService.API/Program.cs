@@ -5,6 +5,7 @@ using SimPitchProtos.SportsDataService.LeagueRound;
 using SimulationService.Application.Features;
 using SimulationService.API.Services;
 using SimulationService.API;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,9 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = ConfigHelper.GetRedisCacheConnectionString();
     options.InstanceName = "SimulationCache";
 });
-
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    ConnectionMultiplexer.Connect(ConfigHelper.GetRedisCacheConnectionString())
+);
 
 builder.Services.AddMediatRServices();
 
@@ -36,6 +39,8 @@ builder.Services.AddScoped<GrpcExceptionInterceptor>();
 builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<GrpcExceptionInterceptor>();
+    options.MaxSendMessageSize = int.MaxValue;
+    options.MaxReceiveMessageSize = int.MaxValue;
 });
 
 builder.Services.AddSportsDataGrpcClient(ConfigHelper.GetSportsDataAddress());

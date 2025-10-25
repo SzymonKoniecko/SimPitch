@@ -26,19 +26,30 @@ public class SetSimulationCommandHandler : IRequestHandler<SetSimulationCommand,
 
     public async Task<Guid> Handle(SetSimulationCommand command, CancellationToken cancellationToken)
     {
-        Guid simulationId = Guid.NewGuid();
+        // create new simulation ID
+        var simulationId = Guid.NewGuid();
 
-        var state = new SimulationState(SimulationStatus.Pending, 0, DateTime.UtcNow);
+        // create initial state
+        var state = new SimulationState(
+            SimulationStatus.Pending,
+            progress: 0,
+            dateTime: DateTime.UtcNow
+        );
+
+        // save initial state in Redis
         await _registry.SetStateAsync(simulationId, state, cancellationToken);
 
-        // enqueue background job
-        _queue.Enqueue(
-            new SimulationJob(
-                simulationId,
-                SimulationParamsMapper.ToValueObject(command.SimulationParamsDto),
-                state)
-            );
+        // create job payload
+        var job = new SimulationJob(
+            simulationId,
+            SimulationParamsMapper.ToValueObject(command.SimulationParamsDto),
+            state
+        );
 
+        // enqueue the job for background processing
+        await _queue.EnqueueAsync(job, cancellationToken);
+
+        // return the unique simulation identifier
         return simulationId;
     }
 }

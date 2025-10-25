@@ -8,7 +8,15 @@ public class InMemorySimulationQueue : ISimulationQueue
 {
     private readonly ConcurrentQueue<SimulationJob> _jobs = new();
 
-    public void Enqueue(SimulationJob job) => _jobs.Enqueue(job);
+    public Task EnqueueAsync(SimulationJob job, CancellationToken cancellationToken = default)
+    {
+        _jobs.Enqueue(job);
+        return Task.CompletedTask;
+    }
 
-    public bool TryDequeue(out SimulationJob job) => _jobs.TryDequeue(out job);
+    public Task<SimulationJob?> DequeueAsync(CancellationToken cancellationToken = default)
+    {
+        _jobs.TryDequeue(out var job);
+        return Task.FromResult(job);
+    }
 }

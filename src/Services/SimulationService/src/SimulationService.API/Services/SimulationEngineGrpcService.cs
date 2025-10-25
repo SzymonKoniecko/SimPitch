@@ -1,4 +1,5 @@
 using System;
+using FluentValidation;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
@@ -6,6 +7,7 @@ using SimPitchProtos.SimulationService.SimulationEngine;
 using SimulationService.API.Mappers;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 using SimulationService.Application.Features.Simulations.Commands.SetSimulation;
+using SimulationService.Application.Features.Simulations.Commands.StopSimulation;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviewById;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationStateById;
@@ -63,8 +65,21 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
 
         var response = await _mediator.Send(query, context.CancellationToken);
 
-        return new SimulationStateResponse{
+        return new SimulationStateResponse
+        {
             SimulationState = SimulationEngineMapper.StateToGrpc(response)
+        };
+    }
+    
+    public override async Task<StopSimulationResponse> StopSimulationById(StopSimulationRequest request, ServerCallContext context)
+    {
+        var command = new StopSimulationCommand(Guid.Parse(request.SimulationId));
+
+        var response = await _mediator.Send(command, context.CancellationToken);
+
+        return new StopSimulationResponse
+        {
+            Status = response.ToString()
         };
     }
 }

@@ -5,6 +5,6 @@ namespace SimulationService.Domain.Interfaces;
 
 public interface ISimulationQueue
 {
-    void Enqueue(SimulationService.Domain.Background.SimulationJob job);
-    bool TryDequeue(out SimulationService.Domain.Background.SimulationJob job);
+    Task EnqueueAsync(SimulationJob job, CancellationToken cancellationToken = default);
+    Task<SimulationJob?> DequeueAsync(CancellationToken cancellationToken = default);
 }

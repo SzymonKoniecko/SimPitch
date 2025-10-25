@@ -74,7 +74,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
                     simulationContent.TeamsStrengthDictionary
                 )), cancellationToken);
                 
-            await _registry.SetStateAsync(command.simulationId, command.State.Update((float)i / command.SimulationParamsDto.Iterations));
+            await _registry.SetStateAsync(command.simulationId, command.State.Update((float)i / command.SimulationParamsDto.Iterations * 100));
         }
 
         return command.simulationId;
