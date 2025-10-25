@@ -3,6 +3,7 @@ using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.IterationResult;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
+using Google.Protobuf.Collections;
 
 namespace EngineService.Infrastructure.Clients;
 
@@ -14,6 +15,18 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
+    public async Task<IterationResultDto> GetIterationResultByIdAsync(Guid iterationId, CancellationToken cancellationToken)
+    {
+        var request = new IterationResultByIdRequest
+        {
+            Id = iterationId.ToString()
+        };
+
+        var response = await _client.GetIterationResultByIdAsync(request, cancellationToken: cancellationToken);
+
+        return MapToDto(response.IterationResult);
+    }
+
     public async Task<List<IterationResultDto>> GetIterationResultsBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
     {
         var request = new IterationResultsBySimulationIdRequest
@@ -23,13 +36,13 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
 
         var response = await _client.GetIterationResultsBySimulationIdAsync(request, cancellationToken: cancellationToken);
 
-        return MapToDto(response);
+        return MapToDto(response.IterationResults);
     }
 
-    private static List<IterationResultDto> MapToDto(IterationResultsBySimulationIdResponse response)
+    private List<IterationResultDto> MapToDto(RepeatedField<IterationResultGrpc> iterationResults)
     {
         List<IterationResultDto> dtos = new List<IterationResultDto>();
-        foreach (var result in response.IterationResults)
+        foreach (var result in iterationResults)
         {
             var dto = new IterationResultDto();
 
@@ -38,10 +51,10 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
             dto.IterationIndex = result.IterationIndex;
             dto.StartDate = DateTime.Parse(result.StartDate);
             dto.ExecutionTime = TimeSpan.Parse(result.ExecutionTime);
+            dto.TeamStrengths = JsonConvert.DeserializeObject<List<TeamStrengthDto>>(result.TeamStrengths);
             dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundDto>>(result.SimulatedMatchRounds);
             dto.LeagueStrength = result.LeagueStrength;
             dto.PriorLeagueStrength = result.PriorLeagueStrength;
-            dto.Raport = result.Raport;
 
             dtos.Add(dto);
         }
@@ -49,17 +62,22 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
         return dtos;
     }
 
-    private static SimulationParamsDto MapProtoToDto(SimulationParamsGrpc proto)
+    private static IterationResultDto MapToDto(IterationResultGrpc result)
     {
-        if (proto == null)
+        if (result == null)
             return null;
 
-        var dto = new SimulationParamsDto();
+        var dto = new IterationResultDto();
 
-        dto.SeasonYears = proto.SeasonYears.ToList();
-        dto.LeagueId = Guid.Parse(proto.LeagueId);
-        dto.Iterations = proto.Iterations;
-        dto.LeagueRoundId = proto.HasLeagueRoundId ? Guid.Parse(proto.LeagueRoundId) : Guid.Empty;
+        dto.Id = Guid.Parse(result.Id);
+        dto.SimulationId = Guid.Parse(result.SimulationId);
+        dto.IterationIndex = result.IterationIndex;
+        dto.StartDate = DateTime.Parse(result.StartDate);
+        dto.ExecutionTime = TimeSpan.Parse(result.ExecutionTime);
+        dto.TeamStrengths = JsonConvert.DeserializeObject<List<TeamStrengthDto>>(result.TeamStrengths);
+        dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundDto>>(result.SimulatedMatchRounds);
+        dto.LeagueStrength = result.LeagueStrength;
+        dto.PriorLeagueStrength = result.PriorLeagueStrength;
         
         return dto;
     }

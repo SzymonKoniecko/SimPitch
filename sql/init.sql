@@ -145,10 +145,10 @@ BEGIN
         IterationIndex INT NOT NULL,
         StartDate DATETIME2 NOT NULL,
         ExecutionTime TIME NOT NULL,
+        TeamStrengths NVARCHAR(MAX) NULL,
         SimulatedMatchRounds NVARCHAR(MAX) NULL,
         LeagueStrength FLOAT NOT NULL,
         PriorLeagueStrength FLOAT NOT NULL,
-        Raport NVARCHAR(MAX) NULL
     );
 END
 

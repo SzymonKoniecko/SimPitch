@@ -31,7 +31,7 @@ private readonly IDbConnectionFactory _dbConnectionFactory;
         );
 
         var result = await connection.QuerySingleOrDefaultAsync<SimulationOverview>(command);
-        if (result == null) throw new Exception("No simulation overviews for given ID");
+        if (result == null) throw new KeyNotFoundException("No simulation overviews for given ID");
         return result;
     }
     

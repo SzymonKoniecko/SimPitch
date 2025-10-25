@@ -187,7 +187,7 @@ namespace SimulationService.Tests.Application.Features.Simulations
             var result = await _handler.Handle(command, CancellationToken.None);
 
             Assert.True(result.TeamsStrengthDictionary.ContainsKey(teamId));
-            var stats = result.TeamsStrengthDictionary[teamId].SeasonStats;
+            var stats = result.TeamsStrengthDictionary[teamId].First().SeasonStats;
             Assert.Equal(1, stats.GoalsFor);
         }
 
@@ -238,7 +238,7 @@ namespace SimulationService.Tests.Application.Features.Simulations
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            var stats = result.TeamsStrengthDictionary[teamId].SeasonStats;
+            var stats = result.TeamsStrengthDictionary[teamId].First().SeasonStats;
             Assert.Equal(2, stats.GoalsFor);
         }
     }

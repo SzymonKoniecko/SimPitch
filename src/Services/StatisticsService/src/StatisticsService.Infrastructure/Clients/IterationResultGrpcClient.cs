@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.IterationResult;
 using StatisticsService.Application.DTOs;
+using StatisticsService.Application.DTOs.Clients;
 using StatisticsService.Application.Interfaces;
 
 namespace StatisticsService.Infrastructure.Clients;
@@ -38,10 +39,10 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
             dto.IterationIndex = result.IterationIndex;
             dto.StartDate = DateTime.Parse(result.StartDate);
             dto.ExecutionTime = TimeSpan.Parse(result.ExecutionTime);
+            dto.TeamStrengths = JsonConvert.DeserializeObject<List<TeamStrengthDto>>(result.TeamStrengths);
             dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundDto>>(result.SimulatedMatchRounds);
             dto.LeagueStrength = result.LeagueStrength;
             dto.PriorLeagueStrength = result.PriorLeagueStrength;
-            dto.Raport = result.Raport;
 
             dtos.Add(dto);
         }

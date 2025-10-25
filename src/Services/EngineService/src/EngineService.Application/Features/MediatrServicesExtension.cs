@@ -1,3 +1,4 @@
+using EngineService.Application.Features.IterationResults.Queries.GetIterationResultById;
 using EngineService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 using EngineService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 using EngineService.Application.Features.Simulations.Commands.CreateSimulation;
@@ -18,12 +19,14 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(CreateSimulationCommandHandler).Assembly);
 
         // Queries
+        services.AddMediatR(typeof(GetIterationResultByIdQuery).Assembly);
         services.AddMediatR(typeof(GetIterationResultsBySimulationIdQuery).Assembly);
         services.AddMediatR(typeof(GetAllSimulationOverviewsQuery).Assembly);
         services.AddMediatR(typeof(GetSimulationByIdQuery).Assembly);
         services.AddMediatR(typeof(GetScoreboardsBySimulationIdQuery).Assembly);
 
         // Query Handlers
+        services.AddMediatR(typeof(GetIterationResultByIdQueryHandler).Assembly);
         services.AddMediatR(typeof(GetIterationResultsBySimulationIdQueryHandler).Assembly);
         services.AddMediatR(typeof(GetAllSimulationOverviewsQueryHandler).Assembly);
         services.AddMediatR(typeof(GetSimulationByIdQueryHandler).Assembly);

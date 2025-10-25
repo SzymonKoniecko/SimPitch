@@ -10,7 +10,7 @@ public class SimulationContent
     /// Key: TeamId;
     /// Value: TeamStrength;
     /// </summary>
-    public Dictionary<Guid, TeamStrength> TeamsStrengthDictionary { get; set; } = new();
+    public Dictionary<Guid, List<TeamStrength>> TeamsStrengthDictionary { get; set; } = new();
     public List<MatchRound> MatchRoundsToSimulate { get; set; } = new();
     /// <summary>
     /// Averange team calc by all_goals / all_matches

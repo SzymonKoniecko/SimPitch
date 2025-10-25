@@ -16,10 +16,10 @@ public static class IterationResultMapper
             IterationIndex = dto.IterationIndex,
             StartDate = dto.StartDate.ToString("o"),
             ExecutionTime = dto.ExecutionTime.ToString(),
+            TeamStrengths = JsonConvert.SerializeObject(dto.TeamStrengths),
             SimulatedMatchRounds = JsonConvert.SerializeObject(dto.SimulatedMatchRounds),
             LeagueStrength = dto.LeagueStrength,
             PriorLeagueStrength = dto.PriorLeagueStrength,
-            Raport = dto.Raport
         };
     }
 }

@@ -74,8 +74,8 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                     {
                         continue;
                     }
-                    var merged = value.SeasonStats.Merge(
-                        value.SeasonStats,
+                    var merged = value.First().SeasonStats.Merge(
+                        value.First().SeasonStats,
                         new SeasonStats(
                             key,
                             singleSeasonStats.SeasonYear,
@@ -89,7 +89,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                             singleSeasonStats.GoalsAgainst)
                     );
                     contentResponse.TeamsStrengthDictionary[key] =
-                        contentResponse.TeamsStrengthDictionary[key].WithSeasonStats(merged);
+                        new List<TeamStrength> { contentResponse.TeamsStrengthDictionary[key].First().WithSeasonStats(merged) };
                 }
             }
         }
@@ -100,7 +100,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         contentResponse.TeamsStrengthDictionary = contentResponse.TeamsStrengthDictionary
             .ToDictionary(
                 kvp => kvp.Key,
-                kvp => kvp.Value.WithLikelihood().WithPosterior(contentResponse.PriorLeagueStrength)
+                kvp => kvp.Value.Select(x => x.WithLikelihood().WithPosterior(contentResponse.PriorLeagueStrength)).ToList()
             );
 
         return contentResponse;
@@ -139,15 +139,19 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
     {
         if (response.TeamsStrengthDictionary.TryGetValue(teamId, out var existingTeamStrength))
         {
-            var updatedStats = _seasonStatsService.CalculateSeasonStats(matchRound, existingTeamStrength.SeasonStats, seasonEnum, leagueId, leagueStrength, isHomeTeam);
-            response.TeamsStrengthDictionary[teamId] = existingTeamStrength with { SeasonStats = updatedStats };
+            var updatedStats = _seasonStatsService.CalculateSeasonStats(matchRound, existingTeamStrength.First().SeasonStats, seasonEnum, leagueId, leagueStrength, isHomeTeam);
+            // create a mutable copy of the existing list and replace the first entry with the updated stats
+            var updatedList = existingTeamStrength.ToList();
+            updatedList[0] = updatedList[0] with { SeasonStats = updatedStats };
+            response.TeamsStrengthDictionary[teamId] = updatedList;
         }
         else
         {
             var newTeamStrength = TeamStrength.Create(teamId, seasonEnum, leagueId, leagueStrength);
             var updatedStats = _seasonStatsService.CalculateSeasonStats(matchRound, newTeamStrength.SeasonStats, seasonEnum, leagueId, leagueStrength, isHomeTeam);
             newTeamStrength = newTeamStrength with { SeasonStats = updatedStats };
-            response.TeamsStrengthDictionary.Add(teamId, newTeamStrength);
+            // add a list containing the new team strength
+            response.TeamsStrengthDictionary.Add(teamId, new List<TeamStrength> { newTeamStrength });
         }
     }
 }

@@ -12,6 +12,7 @@ using Xunit;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 using SimulationService.Application.Features.Simulations.DTOs;
 using SimulationService.Domain.Enums;
+using SimulationService.Domain.Interfaces.Write;
 
 namespace SimulationService.Tests.Features.Simulations;
 public class RunSimulationCommandHandlerTests
@@ -21,6 +22,7 @@ public class RunSimulationCommandHandlerTests
     {
         // Arrange
         var mediatorMock = new Mock<IMediator>();
+        var simulationOverviewWriteMock = new Mock<ISimulationOverviewWriteRepository>();
 
         var homeTeamId = Guid.NewGuid();
         var awayTeamId = Guid.NewGuid();
@@ -36,12 +38,12 @@ public class RunSimulationCommandHandlerTests
             IsPlayed = false
         };
 
-        var teamStrengthDict = new Dictionary<Guid, TeamStrength>
+        var teamStrengthDict = new Dictionary<Guid, List<TeamStrength>>
         {
-            [homeTeamId] = TeamStrength.Create(homeTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
-                .WithExpectedGoals(1.0f),
-            [awayTeamId] = TeamStrength.Create(awayTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
-                .WithExpectedGoals(1.0f)
+            [homeTeamId] = new List<TeamStrength>{ TeamStrength.Create(homeTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
+                .WithExpectedGoals(1.0f)},
+            [awayTeamId] = new List<TeamStrength>{TeamStrength.Create(awayTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
+                .WithExpectedGoals(1.0f)}
         };
 
         var initResponse = new SimulationContent
@@ -55,7 +57,7 @@ public class RunSimulationCommandHandlerTests
             .Setup(m => m.Send(It.IsAny<InitSimulationContentCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(initResponse);
 
-        var handler = new RunSimulationCommandHandler(mediatorMock.Object, null);
+        var handler = new RunSimulationCommandHandler(mediatorMock.Object, simulationOverviewWriteMock.Object);
 
         var command = new RunSimulationCommand(new SimulationParamsDto
         {
@@ -73,8 +75,8 @@ public class RunSimulationCommandHandlerTests
         Assert.InRange(initResponse.MatchRoundsToSimulate[0].HomeGoals, 0, 10); // spodziewany zakres
         Assert.InRange(initResponse.MatchRoundsToSimulate[0].AwayGoals, 0, 10);
 
-        var homeTeamPosterior = initResponse.TeamsStrengthDictionary[homeTeamId].Posterior;
-        var awayTeamPosterior = initResponse.TeamsStrengthDictionary[awayTeamId].Posterior;
+        var homeTeamPosterior = initResponse.TeamsStrengthDictionary[homeTeamId].First().Posterior;
+        var awayTeamPosterior = initResponse.TeamsStrengthDictionary[awayTeamId].First().Posterior;
 
         Assert.True(homeTeamPosterior.Offensive >= 0);
         Assert.True(homeTeamPosterior.Defensive >= 0);
