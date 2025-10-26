@@ -18,6 +18,10 @@ public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimul
     {
         var result = await _simulationEngineGrpcClient.GetSimulationOverviewsAsync(cancellationToken);
 
+        foreach (var overview in result)
+        {
+            overview.State = await _simulationEngineGrpcClient.GetSimulationStateAsync(overview.Id, cancellationToken);
+        }
         return result;
     }
 }
