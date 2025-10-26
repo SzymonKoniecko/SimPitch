@@ -53,7 +53,7 @@ public class StopSimulationCommandHandler : IRequestHandler<StopSimulationComman
 
         try
         {
-            var dbState = await _simulationStateReadRepository.GetSimulationStateByIdAsync(request.SimulationId, cancellationToken);
+            var dbState = await _simulationStateReadRepository.GetSimulationStateBySimulationIdAsync(request.SimulationId, cancellationToken);
 
             if (dbState is null)
             {
@@ -81,6 +81,6 @@ public class StopSimulationCommandHandler : IRequestHandler<StopSimulationComman
             _logger.LogError(ex, "Failed to update SQL state for Simulation {SimulationId}", request.SimulationId);
         }
 
-        return _simulationStateReadRepository.GetSimulationStateByIdAsync(request.SimulationId, cancellationToken).Result.State.ToString();
+        return _simulationStateReadRepository.GetSimulationStateBySimulationIdAsync(request.SimulationId, cancellationToken).Result.State.ToString();
     }
 }

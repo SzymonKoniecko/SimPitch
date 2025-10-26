@@ -10,7 +10,7 @@ using SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 using SimulationService.Application.Features.Simulations.Commands.StopSimulation;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviewById;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
-using SimulationService.Application.Features.Simulations.Queries.GetSimulationStateById;
+using SimulationService.Application.Features.Simulations.Queries.GetSimulationStateBySimulationId;
 namespace SimulationService.API.Services;
 
 public class SimulationEngineGrpcService : SimulationEngineService.SimulationEngineServiceBase
@@ -61,7 +61,7 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
 
     public override async Task<SimulationStateResponse> GetSimulationStateById(GetSimulationStateByIdRequest request, ServerCallContext context)
     {
-        var query = new GetSimulationStateByIdQuery(Guid.Parse(request.SimulationId));
+        var query = new GetSimulationStateBySimulationIdQuery(Guid.Parse(request.SimulationId));
 
         var response = await _mediator.Send(query, context.CancellationToken);
 

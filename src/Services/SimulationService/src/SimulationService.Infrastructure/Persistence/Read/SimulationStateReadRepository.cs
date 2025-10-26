@@ -14,7 +14,7 @@ public class SimulationStateReadRepository : ISimulationStateReadRepository
     }
 
 
-    public async Task<SimulationState> GetSimulationStateByIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    public async Task<SimulationState> GetSimulationStateBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
         

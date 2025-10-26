@@ -15,7 +15,6 @@ public class SimulationState
     public SimulationStatus State { get; set; }
 
     public DateTime UpdatedAt { get; set; }
-    public SimulationStatus SimulationStatus { get; set; }
 
     public SimulationState()
     {

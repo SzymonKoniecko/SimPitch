@@ -5,5 +5,5 @@ namespace SimulationService.Domain.Interfaces.Read;
 
 public interface ISimulationStateReadRepository
 {
-    Task<SimulationState> GetSimulationStateByIdAsync(Guid simulationId, CancellationToken cancellationToken);
+    Task<SimulationState> GetSimulationStateBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken);
 }

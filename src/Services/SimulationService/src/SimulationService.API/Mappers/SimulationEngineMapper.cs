@@ -18,32 +18,15 @@ public static class SimulationEngineMapper
         return dto;
     }
 
-    public static SimulationStateGrpc StateToGrpc(Domain.Entities.SimulationState state)
+    public static SimulationStateGrpc StateToGrpc(SimulationStateDto dto)
     {
         var grpc = new SimulationStateGrpc();
 
-        switch (state.SimulationStatus)
-        {
-            case Domain.Enums.SimulationStatus.Pending:
-                grpc.SimulationStatus = "Pending";
-                break;
-            case Domain.Enums.SimulationStatus.Running:
-                grpc.SimulationStatus = "Running";
-                break;
-            case Domain.Enums.SimulationStatus.Completed:
-                grpc.SimulationStatus = "Completed";
-                break;
-            case Domain.Enums.SimulationStatus.Cancelled:
-                grpc.SimulationStatus = "Cancelled";
-                break;
-            case Domain.Enums.SimulationStatus.Failed:
-                grpc.SimulationStatus = "Failed";
-                break;
-            default:
-                throw new KeyNotFoundException("Missing simulation state value");
-        }
-        grpc.Progress = state.ProgressPercent;
-        grpc.UpdatedAt = state.UpdatedAt.ToString();
+        grpc.Id = dto.Id.ToString();
+        grpc.SimulationId = dto.SimulationId.ToString();
+        grpc.LastCompletedIteration = dto.LastCompletedIteration;
+        grpc.State = dto.State;
+        grpc.UpdatedAt = dto.UpdatedAt.ToString();
 
         return grpc;
     }
