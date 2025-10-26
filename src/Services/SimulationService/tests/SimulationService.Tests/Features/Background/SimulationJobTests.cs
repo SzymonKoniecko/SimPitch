@@ -3,6 +3,7 @@ using SimulationService.Domain.Background;
 using SimulationService.Domain.ValueObjects;
 using SimulationService.Domain.Enums;
 using Xunit;
+using SimulationService.Domain.Entities;
 
 namespace SimulationService.Tests.Features.Background;
 
@@ -21,7 +22,7 @@ public class SimulationJobTests
             LeagueRoundId = Guid.Empty
         };
 
-        var state = new SimulationState(SimulationStatus.Pending, 0f, DateTime.UtcNow);
+        var state = new SimulationState(id, 0, 0f, SimulationStatus.Pending, DateTime.UtcNow);
 
         // Act
         var job1 = new SimulationJob(id, @params, state);

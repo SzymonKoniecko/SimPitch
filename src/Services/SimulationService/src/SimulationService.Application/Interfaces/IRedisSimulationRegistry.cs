@@ -1,5 +1,5 @@
 using System;
-using SimulationService.Domain.ValueObjects;
+using SimulationService.Domain.Entities;
 
 namespace SimulationService.Application.Interfaces;
 

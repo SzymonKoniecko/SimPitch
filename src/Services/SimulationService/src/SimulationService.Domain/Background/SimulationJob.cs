@@ -1,4 +1,5 @@
 using System;
+using SimulationService.Domain.Entities;
 using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Domain.Background;

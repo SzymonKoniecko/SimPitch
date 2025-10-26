@@ -1,6 +1,7 @@
 using System;
 using MediatR;
 using SimulationService.Application.Interfaces;
+using SimulationService.Domain.Entities;
 using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Application.Features.Simulations.Queries.GetSimulationStateById;

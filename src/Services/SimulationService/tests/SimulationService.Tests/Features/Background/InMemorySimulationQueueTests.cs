@@ -5,6 +5,7 @@ using SimulationService.Domain.Background;
 using SimulationService.Domain.ValueObjects;
 using SimulationService.Domain.Enums;
 using Xunit;
+using SimulationService.Domain.Entities;
 
 namespace SimulationService.Tests.Features.Background
 {
@@ -16,6 +17,8 @@ namespace SimulationService.Tests.Features.Background
             // Arrange
             var queue = new InMemorySimulationQueue();
 
+            var id = Guid.NewGuid();
+
             var p = new SimulationParams
             {
                 SeasonYears = new() { "2023/2024" },
@@ -24,11 +27,11 @@ namespace SimulationService.Tests.Features.Background
                 LeagueRoundId = Guid.Empty
             };
 
-            var s = new SimulationState(SimulationStatus.Pending, 0f, DateTime.UtcNow);
+            var state = new SimulationState(id, 0, 0f, SimulationStatus.Pending, DateTime.UtcNow);
 
-            var job1 = new SimulationJob(Guid.NewGuid(), p, s);
-            var job2 = new SimulationJob(Guid.NewGuid(), p, s);
-            var job3 = new SimulationJob(Guid.NewGuid(), p, s);
+            var job1 = new SimulationJob(Guid.NewGuid(), p, state);
+            var job2 = new SimulationJob(Guid.NewGuid(), p, state);
+            var job3 = new SimulationJob(Guid.NewGuid(), p, state);
 
             // Act
             await queue.EnqueueAsync(job1);

@@ -7,7 +7,7 @@ namespace SimulationService.Infrastructure.Persistence.Read;
 
 public class SimulationOverviewReadRepository : ISimulationOverviewReadRepository
 {
-private readonly IDbConnectionFactory _dbConnectionFactory;
+    private readonly IDbConnectionFactory _dbConnectionFactory;
     public SimulationOverviewReadRepository(IDbConnectionFactory dbConnectionFactory)
     {
         _dbConnectionFactory = dbConnectionFactory;

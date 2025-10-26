@@ -25,6 +25,7 @@ public class RunSimulationCommandHandlerTests
         // Arrange
         var mediatorMock = new Mock<IMediator>();
         var simulationOverviewWriteMock = new Mock<ISimulationOverviewWriteRepository>();
+        var simulationStateWriteMock = new Mock<ISimulationStateWriteRepository>();
         var registry = new Mock<IRedisSimulationRegistry>();
         var loggerMock = new Mock<ILogger<RunSimulationCommandHandler>>();
 
@@ -61,20 +62,22 @@ public class RunSimulationCommandHandlerTests
             .Setup(m => m.Send(It.IsAny<InitSimulationContentCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(initResponse);
 
-        var handler = new RunSimulationCommandHandler(mediatorMock.Object, registry.Object, loggerMock.Object);
+        var handler = new RunSimulationCommandHandler(mediatorMock.Object, registry.Object, loggerMock.Object, simulationStateWriteMock.Object);
+
+        var simulationId = Guid.NewGuid();
 
         var command = new RunSimulationCommand(
-            Guid.NewGuid(),
+            simulationId,
             new SimulationParamsDto
             {
                 SeasonYears = new() { "2023/2024" },
                 LeagueId = leagueId,
                 Iterations = 1,
             },
-            new SimulationState(SimulationStatus.Pending, 0, DateTime.Now));
+            new SimulationState(simulationId, 0, 0f, SimulationStatus.Pending, DateTime.Now));
 
         // Act
-        var simulationId = await handler.Handle(command, CancellationToken.None);
+        simulationId = await handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.NotEqual(simulationId, Guid.Empty);

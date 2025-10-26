@@ -9,7 +9,7 @@ using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
 using SimulationService.Domain.Interfaces;
 using SimulationService.Domain.Interfaces.Write;
-using SimulationService.Domain.ValueObjects;
+using SimulationService.Domain.Entities;
 
 namespace SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 
@@ -30,11 +30,7 @@ public class SetSimulationCommandHandler : IRequestHandler<SetSimulationCommand,
         var simulationId = Guid.NewGuid();
 
         // create initial state
-        var state = new SimulationState(
-            SimulationStatus.Pending,
-            progress: 0,
-            dateTime: DateTime.UtcNow
-        );
+        var state = new SimulationState(simulationId, 0, progress: 0.00f, SimulationStatus.Pending, DateTime.Now);
 
         // save initial state in Redis
         await _registry.SetStateAsync(simulationId, state, cancellationToken);

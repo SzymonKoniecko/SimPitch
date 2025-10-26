@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SimulationService.Application.Interfaces;
+using SimulationService.Domain.Entities;
 using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Domain.Services;

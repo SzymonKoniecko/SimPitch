@@ -8,6 +8,7 @@ using SimulationService.Application.Features.Simulations.Commands.RunSimulation.
 using SimulationService.Application.Interfaces;
 using SimulationService.Application.Mappers;
 using SimulationService.Domain.Entities;
+using SimulationService.Domain.Interfaces.Write;
 using SimulationService.Domain.Services;
 
 public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand, Guid>
@@ -15,17 +16,20 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
     private readonly IMediator _mediator;
     private readonly IRedisSimulationRegistry _registry;
     private readonly ILogger<RunSimulationCommandHandler> _logger;
+    private readonly ISimulationStateWriteRepository _simulationStateWriteRepository;
     private readonly MatchSimulatorService _matchSimulator;
     
 
     public RunSimulationCommandHandler(
         IMediator mediator,
         IRedisSimulationRegistry registry,
-        ILogger<RunSimulationCommandHandler> logger)
+        ILogger<RunSimulationCommandHandler> logger,
+        ISimulationStateWriteRepository simulationStateWriteRepository)
     {
         _mediator = mediator;
         _registry = registry;
         _logger = logger;
+        _simulationStateWriteRepository = simulationStateWriteRepository;
         _matchSimulator = new MatchSimulatorService();
     }
 
@@ -47,8 +51,9 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
 
         for (int i = 1; i <= command.SimulationParamsDto.Iterations; i++)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            
             _logger.LogInformation($"Started simulation, iteration: {i} -- simulationId: {command.simulationId}");
-            //await Task.Delay(2000, cancellationToken);
 
             DateTime startTime = DateTime.Now;
             var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -73,8 +78,10 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
                     simulationContent.PriorLeagueStrength,
                     simulationContent.TeamsStrengthDictionary
                 )), cancellationToken);
-                
+
+            command.State.LastCompletedIteration = i;
             await _registry.SetStateAsync(command.simulationId, command.State.Update((float)i / command.SimulationParamsDto.Iterations * 100));
+            await _simulationStateWriteRepository.UpdateOrCreateAsync(command.State, cancellationToken: cancellationToken);
         }
 
         return command.simulationId;

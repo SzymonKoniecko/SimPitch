@@ -12,7 +12,6 @@ using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
 using SimulationService.Domain.Interfaces;
 using SimulationService.Domain.Interfaces.Write;
-using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Infrastructure.Background
 {
@@ -47,13 +46,12 @@ namespace SimulationService.Infrastructure.Background
                         continue;
                     }
 
-                    // process simulation in background
+                    // run simulation in background
                     _ = ProcessSimulationAsync(job, stoppingToken);
                 }
                 catch (OperationCanceledException)
                 {
-                    // graceful shutdown
-                    break;
+                    break; // graceful shutdown
                 }
                 catch (Exception ex)
                 {
@@ -72,51 +70,63 @@ namespace SimulationService.Infrastructure.Background
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
             var registry = scope.ServiceProvider.GetRequiredService<IRedisSimulationRegistry>();
             var overviewRepo = scope.ServiceProvider.GetRequiredService<ISimulationOverviewWriteRepository>();
+            var stateRepo = scope.ServiceProvider.GetRequiredService<ISimulationStateWriteRepository>();
 
             try
             {
-                var state = new SimulationState(SimulationStatus.Running, 0, DateTime.UtcNow);
-                await registry.SetStateAsync(job.SimulationId, state, stoppingToken);
+                await registry.SetStateAsync(job.SimulationId, job.State, stoppingToken);
 
                 var overview = new SimulationOverview
                 {
                     Id = job.SimulationId,
-                    Title = $"Title: {DateTime.UtcNow.TimeOfDay}",
+                    Title = $"Title: {DateTime.UtcNow:HH:mm:ss}",
                     CreatedDate = DateTime.UtcNow,
                     SimulationParams = JsonConvert.SerializeObject(job.Params)
                 };
                 await overviewRepo.CreateSimulationOverviewAsync(overview, stoppingToken);
 
-                var cmd = new RunSimulationCommand(job.SimulationId, SimulationParamsMapper.ToDto(job.Params), state);
+                var cmd = new RunSimulationCommand(job.SimulationId, SimulationParamsMapper.ToDto(job.Params), job.State);
 
-                // Forward stop signals from Redis
                 using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
                 var watcher = Task.Run(async () =>
                 {
                     while (!linkedCts.IsCancellationRequested)
                     {
                         var currentState = await registry.GetStateAsync(job.SimulationId);
-                        if (currentState?.SimulationStatus == SimulationStatus.Cancelled)
-                            linkedCts.Cancel(); // stop simulation
-                        await Task.Delay(500, linkedCts.Token);
+                        if (currentState?.State == SimulationStatus.Cancelled)
+                            linkedCts.Cancel();
+                        await Task.Delay(100, linkedCts.Token);
                     }
                 }, linkedCts.Token);
 
                 await mediator.Send(cmd, linkedCts.Token);
 
-                await registry.SetStateAsync(job.SimulationId, state.SetCompleted(), stoppingToken);
-            }
-            catch (OperationCanceledException)
-            {
-                await registry.SetStateAsync(job.SimulationId,
-                    new SimulationState(SimulationStatus.Cancelled, 0, DateTime.UtcNow));
-                _logger.LogInformation("Simulation {SimulationId} stopped by user", job.SimulationId);
+                var completedState = job.State.SetCompleted();
+                await registry.SetStateAsync(job.SimulationId, completedState, stoppingToken);
+
+                await stateRepo.ChangeStatusAsync(job.SimulationId, SimulationStatus.Completed, stoppingToken);
+                _logger.LogInformation("Simulation {SimulationId} completed successfully.", job.SimulationId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Simulation {SimulationId} failed", job.SimulationId);
-                await registry.SetStateAsync(job.SimulationId,
-                    new SimulationState(SimulationStatus.Failed, 0, DateTime.UtcNow));
+                if (ex is OperationCanceledException ||
+                    ex.InnerException is OperationCanceledException ||
+                    (ex is InvalidOperationException && ex.Message.Contains("Operation cancelled by user", StringComparison.OrdinalIgnoreCase)))
+                {
+                    await registry.SetStateAsync(job.SimulationId, job.State.SetCancelled(), stoppingToken);
+                    _logger.LogInformation("Simulation {SimulationId} cancelled by user (SQL cancellation detected)", job.SimulationId);
+                    return;
+                }
+                else
+                {
+                    _logger.LogError(ex, "Simulation {SimulationId} failed", job.SimulationId);
+                    await registry.SetStateAsync(job.SimulationId, job.State.SetFailed(), stoppingToken);
+                }
+
+            }
+            finally
+            {
+                await stateRepo.ChangeStatusAsync(job.SimulationId, job.State.State, stoppingToken);
             }
         }
     }

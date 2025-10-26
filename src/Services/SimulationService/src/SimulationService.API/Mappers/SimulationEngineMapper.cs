@@ -2,7 +2,6 @@ using System;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.SimulationEngine;
 using SimulationService.Application.Features.Simulations.DTOs;
-using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.API.Mappers;
 
@@ -19,7 +18,7 @@ public static class SimulationEngineMapper
         return dto;
     }
 
-    public static SimulationStateGrpc StateToGrpc(SimulationState state)
+    public static SimulationStateGrpc StateToGrpc(Domain.Entities.SimulationState state)
     {
         var grpc = new SimulationStateGrpc();
 
@@ -43,7 +42,7 @@ public static class SimulationEngineMapper
             default:
                 throw new KeyNotFoundException("Missing simulation state value");
         }
-        grpc.Progress = state.Progress;
+        grpc.Progress = state.ProgressPercent;
         grpc.UpdatedAt = state.UpdatedAt.ToString();
 
         return grpc;
