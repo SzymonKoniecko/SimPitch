@@ -67,6 +67,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
 
         dto.Id = Guid.Parse(stateGrpc.Id);
         dto.SimulationId = Guid.Parse(stateGrpc.SimulationId);
+        dto.ProgressPercent = stateGrpc.ProgressPercent;
         dto.LastCompletedIteration = stateGrpc.LastCompletedIteration;
         dto.State = stateGrpc.State;
         dto.UpdatedAt = DateTime.ParseExact(
