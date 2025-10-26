@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
 using SimPitchProtos.StatisticsService;
@@ -45,7 +46,11 @@ public class ScoreboardGrpcClient : IScoreboardGrpcClient
         dto.ScoreboardTeams = grpc.ScoreboardTeams.Select(x => ProtoToDto(x)).ToList();
         dto.LeagueStrength = grpc.LeagueStrength;
         dto.PriorLeagueStrength = grpc.PriorLeagueStrength;
-        dto.CreatedAt = DateTime.Parse(grpc.CreatedAt);
+        dto.CreatedAt = DateTime.ParseExact(
+            grpc.CreatedAt,
+            "MM/dd/yyyy HH:mm:ss",
+            CultureInfo.InvariantCulture
+        );
 
         return dto;
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
 using Google.Protobuf.WellKnownTypes;
@@ -16,7 +17,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
-    public async Task<string> CreateSimulation(SimulationParamsDto simulationParamsDto, CancellationToken cancellationToken)
+    public async Task<string> CreateSimulationAsync(SimulationParamsDto simulationParamsDto, CancellationToken cancellationToken)
     {
         var request = new RunSimulationEngineRequest();
         request.SimulationParams = ToProto(
@@ -38,13 +39,56 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         return response.SimulationOverviews.Select(x => ToDto(x)).ToList();
     }
 
+    public async Task<SimulationStateDto> GetSimulationStateAsync(Guid simulationId, CancellationToken cancellationToken)
+    {
+        var request = new GetSimulationStateByIdRequest();
+        request.SimulationId = simulationId.ToString();
+
+        var response = await _client.GetSimulationStateByIdAsync(request, cancellationToken: cancellationToken);
+
+        return StateGrpcToDto(response.SimulationState);
+    }
+
+    public async Task<string> StopSimulationAsync(Guid simulationId, CancellationToken cancellationToken)
+    {
+        var request = new StopSimulationRequest();
+        request.SimulationId = simulationId.ToString();
+
+        var response = await _client.StopSimulationByIdAsync(request, cancellationToken: cancellationToken);
+
+        return response.Status;
+    }
+
+    /// Mappers
+    
+    private static SimulationStateDto StateGrpcToDto(SimulationStateGrpc stateGrpc)
+    {
+        var dto = new SimulationStateDto();
+
+        dto.Id = Guid.Parse(stateGrpc.Id);
+        dto.SimulationId = Guid.Parse(stateGrpc.SimulationId);
+        dto.LastCompletedIteration = stateGrpc.LastCompletedIteration;
+        dto.State = stateGrpc.State;
+        dto.UpdatedAt = DateTime.ParseExact(
+            stateGrpc.UpdatedAt,
+            "MM/dd/yyyy HH:mm:ss",
+            CultureInfo.InvariantCulture
+        );
+
+        return dto;
+    }
+
     private static SimulationOverviewDto ToDto(SimulationOverviewGrpc grpc)
     {
         var dto = new SimulationOverviewDto();
 
         dto.Id = Guid.Parse(grpc.Id);
         dto.Title = grpc.Title;
-        dto.CreatedDate = DateTime.Parse(grpc.CreatedDate);
+        dto.CreatedDate = DateTime.ParseExact(
+            grpc.CreatedDate,
+            "MM/dd/yyyy HH:mm:ss",
+            CultureInfo.InvariantCulture
+        );
         dto.SimulationParams = SimulationParamsToDto(grpc.SimulationParams);
 
         return dto;

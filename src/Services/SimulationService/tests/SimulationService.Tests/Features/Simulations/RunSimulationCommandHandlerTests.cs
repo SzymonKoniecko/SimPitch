@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Moq;
+using Microsoft.Extensions.Logging;
 using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation;
 using SimulationService.Domain.Entities;
@@ -13,6 +14,7 @@ using SimulationService.Application.Features.Simulations.Commands.RunSimulation.
 using SimulationService.Application.Features.Simulations.DTOs;
 using SimulationService.Domain.Enums;
 using SimulationService.Domain.Interfaces.Write;
+using SimulationService.Application.Interfaces;
 
 namespace SimulationService.Tests.Features.Simulations;
 public class RunSimulationCommandHandlerTests
@@ -23,6 +25,9 @@ public class RunSimulationCommandHandlerTests
         // Arrange
         var mediatorMock = new Mock<IMediator>();
         var simulationOverviewWriteMock = new Mock<ISimulationOverviewWriteRepository>();
+        var simulationStateWriteMock = new Mock<ISimulationStateWriteRepository>();
+        var registry = new Mock<IRedisSimulationRegistry>();
+        var loggerMock = new Mock<ILogger<RunSimulationCommandHandler>>();
 
         var homeTeamId = Guid.NewGuid();
         var awayTeamId = Guid.NewGuid();
@@ -57,17 +62,22 @@ public class RunSimulationCommandHandlerTests
             .Setup(m => m.Send(It.IsAny<InitSimulationContentCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(initResponse);
 
-        var handler = new RunSimulationCommandHandler(mediatorMock.Object, simulationOverviewWriteMock.Object);
+        var handler = new RunSimulationCommandHandler(mediatorMock.Object, registry.Object, loggerMock.Object, simulationStateWriteMock.Object);
 
-        var command = new RunSimulationCommand(new SimulationParamsDto
-        {
-            SeasonYears = new() { "2023/2024" },
-            LeagueId = leagueId,
-            Iterations = 1,
-        });
+        var simulationId = Guid.NewGuid();
+
+        var command = new RunSimulationCommand(
+            simulationId,
+            new SimulationParamsDto
+            {
+                SeasonYears = new() { "2023/2024" },
+                LeagueId = leagueId,
+                Iterations = 1,
+            },
+            new SimulationState(simulationId, 0, 0f, SimulationStatus.Pending, DateTime.Now));
 
         // Act
-        var simulationId = await handler.Handle(command, CancellationToken.None);
+        simulationId = await handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.NotEqual(simulationId, Guid.Empty);

@@ -1,5 +1,6 @@
 using EngineService.Application.DTOs;
 using EngineService.Application.Features.Simulations.Commands.CreateSimulation;
+using EngineService.Application.Features.Simulations.Commands.StopSimulation;
 using EngineService.Application.Features.Simulations.Queries.GetAllSimulationOverviews;
 using EngineService.Application.Features.Simulations.Queries.GetSimulationById;
 using EngineService.Infrastructure.Middlewares;
@@ -40,13 +41,22 @@ namespace EngineService.API.Controllers
                 throw new NotFoundException("No simulations or something went wrong");
             return Ok(result);
         }
-        
+
         [HttpGet("{simulationId}")]
         public async Task<ActionResult<SimulationDto>> GetByIdAsync([FromRoute] Guid simulationId)
         {
             var result = await mediator.Send(new GetSimulationByIdQuery(simulationId));
             if (result is null)
                 throw new NotFoundException("No simulations for given Id");
+            return Ok(result);
+        }
+        
+        [HttpDelete("stop/{simulationId}")]
+        public async Task<ActionResult<SimulationDto>> StopSimulationBySimulationIdAsync([FromRoute] Guid simulationId)
+        {
+            var result = await mediator.Send(new StopSimulationCommand(simulationId));
+            if (result is null)
+                throw new NotFoundException("Something went wrong with stop simulation workflow!");
             return Ok(result);
         }
     }

@@ -10,6 +10,7 @@ using SimulationService.Application.Features.Simulations.Commands.RunSimulation.
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviewById;
 using SimulationService.Application.Features.IterationResults.Queries.GetIterationResultById;
+using SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 namespace SimulationService.Application.Features;
 
 public static class MediatrServicesExtension
@@ -19,11 +20,13 @@ public static class MediatrServicesExtension
         // Commands
         services.AddMediatR(typeof(InitSimulationContentCommand).Assembly);
         services.AddMediatR(typeof(RunSimulationCommandHandler).Assembly);
+        services.AddMediatR(typeof(SetSimulationCommand).Assembly);
         services.AddMediatR(typeof(CreateIterationResultCommand).Assembly);
         
         // Commands handlers
         services.AddMediatR(typeof(InitSimulationContentCommandHandler).Assembly);
         services.AddMediatR(typeof(RunSimulationCommandHandler).Assembly);
+        services.AddMediatR(typeof(SetSimulationCommandHandler).Assembly);
         services.AddMediatR(typeof(CreateIterationResultCommandHandler).Assembly);
 
         // Queries

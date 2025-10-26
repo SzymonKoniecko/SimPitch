@@ -82,6 +82,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=${ASPNETCORE_URL}:${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
       - ConnectionStrings__SimulationDb=Server=mssql;Database=SimulationDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
+      - ConnectionStrings__Redis=${REDIS_CONN_STRING}
       - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - GrpcLogging__SourceName=SimulationService
       - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
@@ -107,6 +108,16 @@ services:
     depends_on:
       - mssql
       - logging-service
+
+  redis-cache:
+    restart: always
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
+    networks:
+      - backend_network
+    volumes: 
+      - cache:/data
 
   mssql:
     environment:
@@ -151,3 +162,5 @@ networks:
 
 volumes:
   mssql_data:
+  cache:
+    driver: local

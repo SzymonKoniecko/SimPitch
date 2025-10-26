@@ -40,6 +40,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\SimulationService.Application\SimulationService.Application.csproj" />
     <ProjectReference Include="..\..\src\SimulationService.Domain\SimulationService.Domain.csproj" />
+    <ProjectReference Include="..\..\src\SimulationService.Infrastructure\SimulationService.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

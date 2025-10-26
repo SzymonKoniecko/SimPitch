@@ -16,7 +16,7 @@ public class CreateSimulationCommandHandler : IRequestHandler<CreateSimulationCo
 
     public async Task<string> Handle(CreateSimulationCommand command, CancellationToken cancellationToken)
     {
-        string simulationId = await _simulationEngineGrpcClient.CreateSimulation(command.simulationParamsDto, cancellationToken: cancellationToken);
+        string simulationId = await _simulationEngineGrpcClient.CreateSimulationAsync(command.simulationParamsDto, cancellationToken: cancellationToken);
         
         return simulationId;
     }

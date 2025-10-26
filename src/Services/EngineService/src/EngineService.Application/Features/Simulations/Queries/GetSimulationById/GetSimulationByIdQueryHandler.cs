@@ -25,6 +25,7 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
         var iterationsQuery = new GetIterationResultsBySimulationIdQuery(query.simulationId);
         var scoreboardsQuery = new GetScoreboardsBySimulationIdQuery(query.simulationId, withTeamStats: true);
         var simulationOverviews = await _simulationEngineGrpcClient.GetSimulationOverviewsAsync(cancellationToken);
+        var simulationState = await _simulationEngineGrpcClient.GetSimulationStateAsync(query.simulationId, cancellationToken);
 
         List<IterationResultDto> iterationResults = await _mediator.Send(iterationsQuery, cancellationToken);
         List<ScoreboardDto> scoreboards = await _mediator.Send(scoreboardsQuery, cancellationToken);
@@ -33,6 +34,8 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
             return null;
         if (scoreboards == null || scoreboards.Count == 0)
             return null;
+        if (simulationState == null)
+            throw new KeyNotFoundException($"Not found simulation state, id:{simulationState}");
 
         List<IterationPreviewDto> iterationPreviewDtos = new();
 
@@ -43,7 +46,7 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
 
         return SimulationMapper.ToSimulationDto(
                 query.simulationId,
-                iterationResults.Count,
+                simulationState,
                 simulationOverviews.First(x => x.Id == query.simulationId)?.SimulationParams,
                 iterationPreviewDtos.OrderBy(x => x.Rank).ToList(),
                 (int)(iterationResults.First()?.SimulatedMatchRounds.Count),

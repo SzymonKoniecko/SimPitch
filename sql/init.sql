@@ -152,6 +152,18 @@ BEGIN
     );
 END
 
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SimulationState' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.SimulationState
+    (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        SimulationId UNIQUEIDENTIFIER NOT NULL,
+        LastCompletedIteration INT NOT NULL,
+        ProgressPercent FLOAT NOT NULL,
+        [State] NVARCHAR(MAX) NULL,
+        UpdatedAt DATETIME2 NOT NULL
+    );
+END
 ----StatisticsDb Initialization Script----
 --DATABASES
 IF DB_ID('StatisticsDb') IS NULL

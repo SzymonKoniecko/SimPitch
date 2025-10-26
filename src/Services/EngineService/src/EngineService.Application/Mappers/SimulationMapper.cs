@@ -7,7 +7,7 @@ public static class SimulationMapper
 {
     public static SimulationDto ToSimulationDto(
         Guid simulationId,
-        int completedIterations,
+        SimulationStateDto stateDto,
         SimulationParamsDto simulationParamsDto,
         List<IterationPreviewDto> iterationPreviewList,
         int simulatedMatches,
@@ -15,7 +15,7 @@ public static class SimulationMapper
     {
         var dto = new SimulationDto();
         dto.Id = simulationId;
-        dto.CompletedIterations = completedIterations;
+        dto.State = stateDto;
         dto.SimulationParams = simulationParamsDto;
         dto.IterationPreviews = iterationPreviewList;
         dto.SimulatedMatches = simulatedMatches;
