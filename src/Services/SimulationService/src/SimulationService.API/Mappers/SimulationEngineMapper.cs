@@ -24,6 +24,7 @@ public static class SimulationEngineMapper
 
         grpc.Id = dto.Id.ToString();
         grpc.SimulationId = dto.SimulationId.ToString();
+        grpc.ProgressPercent = dto.ProgressPercent;
         grpc.LastCompletedIteration = dto.LastCompletedIteration;
         grpc.State = dto.State;
         grpc.UpdatedAt = dto.UpdatedAt.ToString();

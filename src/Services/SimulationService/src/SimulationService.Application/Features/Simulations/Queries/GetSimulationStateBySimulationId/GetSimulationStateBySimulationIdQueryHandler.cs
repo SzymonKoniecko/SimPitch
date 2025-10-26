@@ -27,6 +27,7 @@ public class GetSimulationStateBySimulationIdQueryHandler : IRequestHandler<GetS
         var dto = new SimulationStateDto();
 
         dto.Id = result.Id;
+        dto.SimulationId = result.SimulationId;
         dto.LastCompletedIteration = result.LastCompletedIteration;
         dto.ProgressPercent = result.ProgressPercent;
         dto.UpdatedAt = result.UpdatedAt;
