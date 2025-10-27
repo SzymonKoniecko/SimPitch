@@ -3,6 +3,7 @@ using FluentValidation;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
+using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.SimulationEngine;
 using SimulationService.API.Mappers;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
@@ -48,15 +49,17 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
         };
     }
 
-    public override async Task<SimulationOverviewsListResponse> GetAllSimulationOverviews(Empty empty, ServerCallContext serverCallContext)
+    public override async Task<SimulationOverviewsPagedResponse> GetAllSimulationOverviews(PagedRequest pagedRequest, ServerCallContext serverCallContext)
     {
-        var query = new GetAllSimulationOverviewsQuery();
+        var query = new GetAllSimulationOverviewsQuery(pagedRequest.Offset, pagedRequest.Limit);
 
         var response = await _mediator.Send(query, serverCallContext.CancellationToken);
 
-        var result = new SimulationOverviewsListResponse();
-        result.SimulationOverviews.AddRange(response.Select(x => SimulationOverviewMapper.ToProto(x)));
-        return result;
+        return new SimulationOverviewsPagedResponse
+        {
+            Items = { response.Item1.Select(x => SimulationOverviewMapper.ToProto(x)) },
+            TotalCount = response.Item2
+        };
     }
 
     public override async Task<SimulationStateResponse> GetSimulationStateById(GetSimulationStateByIdRequest request, ServerCallContext context)

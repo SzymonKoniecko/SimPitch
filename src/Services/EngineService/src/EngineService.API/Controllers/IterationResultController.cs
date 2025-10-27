@@ -19,11 +19,13 @@ namespace EngineService.API.Controllers
         }
 
         [HttpGet("{iterationId}")]
-        public async Task<ActionResult<IterationResultDto>> GetById([FromRoute] Guid iterationId)
+        public async Task<ActionResult<IterationResultDto>> GetById(
+            [FromRoute] Guid iterationId,
+            CancellationToken cancellationToken = default)
         {
             var query = new GetIterationResultByIdQuery(iterationId);
 
-            var response = await _mediator.Send(query);
+            var response = await _mediator.Send(query, cancellationToken);
             if (response == null) return NotFound();
             return Ok(response);
         }

@@ -2,10 +2,11 @@ using System;
 using MediatR;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
+using EngineService.Application.Common.Pagination;
 
 namespace EngineService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 
-public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<GetIterationResultsBySimulationIdQuery, List<IterationResultDto>>
+public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<GetIterationResultsBySimulationIdQuery, PagedResponse<IterationResultDto>>
 {
     private readonly IIterationResultGrpcClient _IterationResultGrpcClient;
 
@@ -14,9 +15,17 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
         _IterationResultGrpcClient = IterationResultGrpcClient;
     }
 
-    public async Task<List<IterationResultDto>> Handle(GetIterationResultsBySimulationIdQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResponse<IterationResultDto>> Handle(GetIterationResultsBySimulationIdQuery request, CancellationToken cancellationToken)
     {
-        var iterationResults = await _IterationResultGrpcClient.GetIterationResultsBySimulationIdAsync(request.simulationId, cancellationToken);
-        return iterationResults;
+        var offset = (request.pageNumber - 1) * request.pageSize;
+
+        var response = await _IterationResultGrpcClient.GetIterationResultsBySimulationIdAsync(request.simulationId, offset, request.pageSize, cancellationToken);
+        return new PagedResponse<IterationResultDto>
+        {
+            Items = response.Item1,
+            TotalCount = response.Item2,
+            PageNumber = request.pageNumber,
+            PageSize = request.pageSize
+        };
     }
 }

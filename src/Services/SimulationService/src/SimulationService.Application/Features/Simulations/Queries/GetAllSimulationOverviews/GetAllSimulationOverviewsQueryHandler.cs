@@ -7,7 +7,7 @@ using SimulationService.Domain.Interfaces.Read;
 
 namespace SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
 
-public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimulationOverviewsQuery, IEnumerable<SimulationOverviewDto>>
+public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimulationOverviewsQuery, (IEnumerable<SimulationOverviewDto>, int)>
 {
     private readonly ISimulationOverviewReadRepository _simulationOverviewReadRepository;
 
@@ -16,9 +16,12 @@ public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimul
         _simulationOverviewReadRepository = simulationOverviewReadRepository;
     }
 
-    public async Task<IEnumerable<SimulationOverviewDto>> Handle(GetAllSimulationOverviewsQuery query, CancellationToken cancellationToken)
+    public async Task<(IEnumerable<SimulationOverviewDto>, int)> Handle(GetAllSimulationOverviewsQuery query, CancellationToken cancellationToken)
     {
-        var results = await _simulationOverviewReadRepository.GetSimulationOverviewsAsync(cancellationToken);
-        return results.Select(x => SimulationOverviewMapper.ToDto(x));
+        var results = await _simulationOverviewReadRepository.GetSimulationOverviewsAsync(query.offset, query.limit, cancellationToken);
+        
+        return
+            (results.Select(x => SimulationOverviewMapper.ToDto(x)),
+            await _simulationOverviewReadRepository.GetSimulationOverviewCountAsync(cancellationToken));
     }
 }

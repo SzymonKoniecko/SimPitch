@@ -37,13 +37,14 @@ public class IterationResultGrpcService : IterationResultService.IterationResult
 
     public override async Task<IterationResultsBySimulationIdResponse> GetIterationResultsBySimulationId(IterationResultsBySimulationIdRequest request, ServerCallContext context)
     {
-        var query = new GetIterationResultsBySimulationIdQuery(Guid.Parse(request.SimulationId));
+        var query = new GetIterationResultsBySimulationIdQuery(Guid.Parse(request.SimulationId), request.PagedRequest.Offset, request.PagedRequest.Limit);
 
-        List<IterationResultDto> IterationResults = await _mediator.Send(query, cancellationToken: context.CancellationToken);
+        var response = await _mediator.Send(query, cancellationToken: context.CancellationToken);
 
         return new IterationResultsBySimulationIdResponse
         {
-            IterationResults = { IterationResults.Select(sr => IterationResultMapper.ToProto(sr)) }
+            Items = { response.Item1.Select(sr => IterationResultMapper.ToProto(sr)) },
+            TotalCount = response.Item2
         };
     }
 }

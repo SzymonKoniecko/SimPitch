@@ -1,10 +1,13 @@
 using System;
-using StatisticsService.Application.DTOs.Clients;
+using StatisticsService.Domain.ValueObjects;
 
 namespace StatisticsService.Application.Interfaces;
 
 public interface ISimulationEngineGrpcClient
 {
     Task<SimulationOverview> GetSimulationOverviewByIdAsync(Guid simulationId, CancellationToken cancellationToken);
-    Task<List<SimulationOverview>> GetSimulationOverviewAsync(CancellationToken cancellationToken);
+    Task<List<SimulationOverview>> GetAllSimulationOverviewsAsync(
+        int pageSize = 100,
+        CancellationToken cancellationToken = default);
 }
+

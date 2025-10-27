@@ -34,22 +34,42 @@ public class SimulationOverviewReadRepository : ISimulationOverviewReadRepositor
         if (result == null) throw new KeyNotFoundException("No simulation overviews for given ID");
         return result;
     }
-    
-    public async Task<IEnumerable<SimulationOverview>> GetSimulationOverviewsAsync(CancellationToken cancellationToken)
+
+    public async Task<IEnumerable<SimulationOverview>> GetSimulationOverviewsAsync(
+        int offset,
+        int limit,
+        CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
         const string sql = @"
             SELECT *
-            FROM SimulationOverview;
+            FROM SimulationOverview
+            ORDER BY CreatedDate
+            OFFSET @Offset ROWS FETCH NEXT @Limit ROWS ONLY;
         ";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { Offset = offset, Limit = limit },
+            cancellationToken: cancellationToken
+        );
+
+        var results = await connection.QueryAsync<SimulationOverview>(command);
+        return results;
+    }
+
+    public async Task<int> GetSimulationOverviewCountAsync(CancellationToken cancellationToken)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = "SELECT COUNT(*) FROM SimulationOverview;";
 
         var command = new CommandDefinition(
             commandText: sql,
             cancellationToken: cancellationToken
         );
 
-        var results = await connection.QueryAsync<SimulationOverview>(command);
-        return results;
+        return await connection.ExecuteScalarAsync<int>(command);
     }
 }

@@ -27,16 +27,24 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
         return MapToDto(response.IterationResult);
     }
 
-    public async Task<List<IterationResultDto>> GetIterationResultsBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    public async Task<(List<IterationResultDto>, int)> GetIterationResultsBySimulationIdAsync(Guid simulationId, int offset, int limit, CancellationToken cancellationToken)
     {
         var request = new IterationResultsBySimulationIdRequest
         {
-            SimulationId = simulationId.ToString()
+            SimulationId = simulationId.ToString(),
+            PagedRequest = new PagedRequest
+            {
+                Offset = offset,
+                Limit = limit
+            }
         };
 
         var response = await _client.GetIterationResultsBySimulationIdAsync(request, cancellationToken: cancellationToken);
 
-        return MapToDto(response.IterationResults);
+        return (
+            MapToDto(response.Items),
+            response.TotalCount
+        );
     }
 
     private List<IterationResultDto> MapToDto(RepeatedField<IterationResultGrpc> iterationResults)

@@ -1,4 +1,5 @@
 using System;
+using EngineService.Application.Common.Pagination;
 using EngineService.Application.DTOs;
 
 namespace EngineService.Application.Mappers;
@@ -9,7 +10,7 @@ public static class SimulationMapper
         Guid simulationId,
         SimulationStateDto stateDto,
         SimulationParamsDto simulationParamsDto,
-        List<IterationPreviewDto> iterationPreviewList,
+        PagedResponse<IterationPreviewDto> iterationPreviewList,
         int simulatedMatches,
         float priorLeagueStrength)
     {
