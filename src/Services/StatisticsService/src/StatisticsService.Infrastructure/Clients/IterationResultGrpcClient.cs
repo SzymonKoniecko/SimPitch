@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.IterationResult;
+using StatisticsService.Application.Consts;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Application.DTOs.Clients;
 using StatisticsService.Application.Interfaces;
@@ -34,7 +35,7 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
 
     public async Task<List<IterationResultDto>> GetAllIterationResultsBySimulationIdAsync(
         Guid simulationId,
-        int pageSize = 100,
+        int pageSize = Pagination.PAGINATION_PAGE_LIMIT,
         CancellationToken cancellationToken = default)
     {
         var allResults = new List<IterationResultDto>();
