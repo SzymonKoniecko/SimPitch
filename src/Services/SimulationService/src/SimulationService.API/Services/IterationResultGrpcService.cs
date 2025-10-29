@@ -6,6 +6,9 @@ using SimulationService.Application.Features.IterationResults.Queries.GetIterati
 using SimulationService.API.Mappers;
 using SimulationService.Application.Features.IterationResults.Queries.GetIterationResultById;
 using System.ComponentModel.DataAnnotations;
+using SimulationService.Application.Consts;
+using Google.Protobuf;
+using SimulationService.API.Helpers;
 
 namespace SimulationService.API.Services;
 
@@ -34,17 +37,30 @@ public class IterationResultGrpcService : IterationResultService.IterationResult
             IterationResult = IterationResultMapper.ToProto(dto)
         };
     }
-
-    public override async Task<IterationResultsBySimulationIdResponse> GetIterationResultsBySimulationId(IterationResultsBySimulationIdRequest request, ServerCallContext context)
+    public override async Task GetIterationResultsBySimulationId(
+        IterationResultsBySimulationIdRequest request,
+        IServerStreamWriter<IterationResultsBySimulationIdResponse> responseStream,
+        ServerCallContext context)
     {
-        var query = new GetIterationResultsBySimulationIdQuery(Guid.Parse(request.SimulationId), request.PagedRequest.Offset, request.PagedRequest.Limit);
+        var simulationId = Guid.Parse(request.SimulationId);
+        var offset = request.PagedRequest?.Offset ?? 0;
+        var limit = request.PagedRequest?.Limit ?? 10;
 
-        var response = await _mediator.Send(query, cancellationToken: context.CancellationToken);
+        var query = new GetIterationResultsBySimulationIdQuery(simulationId, offset, limit);
+        var (results, totalCount) = await _mediator.Send(query, cancellationToken: context.CancellationToken);
 
-        return new IterationResultsBySimulationIdResponse
-        {
-            Items = { response.Item1.Select(sr => IterationResultMapper.ToProto(sr)) },
-            TotalCount = response.Item2
-        };
+        await GrpcStreamHelper.StreamListAsync(
+            results.Select(IterationResultMapper.ToProto),
+            responseStream,
+            items => new IterationResultsBySimulationIdResponse
+            {
+                Items = { items },
+                TotalCount = totalCount
+            },
+            chunkSizeBytes: GrpcConsts.CHUNK_SIZE,
+            context.CancellationToken
+        );
+
+        _logger.LogInformation($"Streamed {results.Count} iteration results for simulation {simulationId} (total={totalCount})");
     }
 }

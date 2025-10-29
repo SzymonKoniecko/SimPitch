@@ -4,6 +4,7 @@ using SimPitchProtos.SimulationService.IterationResult;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
 using Google.Protobuf.Collections;
+using Grpc.Core;
 
 namespace EngineService.Infrastructure.Clients;
 
@@ -38,15 +39,26 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
                 Limit = limit
             }
         };
+        var results = new List<IterationResultDto>();
+        int totalCount = 0;
 
-        var response = await _client.GetIterationResultsBySimulationIdAsync(request, cancellationToken: cancellationToken);
+        using var call = _client.GetIterationResultsBySimulationId(request, cancellationToken: cancellationToken);
 
+
+        await foreach (var response in call.ResponseStream.ReadAllAsync(cancellationToken))
+        {
+            if (response?.Items != null)
+            {
+                var mapped = MapToDto(response.Items);
+                results.AddRange(mapped);
+                totalCount = response.TotalCount;
+            }
+        }
         return (
-            MapToDto(response.Items),
-            response.TotalCount
+            results,
+            totalCount
         );
     }
-
     private List<IterationResultDto> MapToDto(RepeatedField<IterationResultGrpc> iterationResults)
     {
         List<IterationResultDto> dtos = new List<IterationResultDto>();

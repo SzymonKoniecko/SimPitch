@@ -1,3 +1,4 @@
+using Grpc.Core;
 using Newtonsoft.Json;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.IterationResult;
@@ -16,7 +17,11 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
-    public async Task<List<IterationResultDto>> GetPagedIterationResultsBySimulationIdAsync(Guid simulationId, int offset, int limit, CancellationToken cancellationToken)
+    public async Task<List<IterationResultDto>> GetPagedIterationResultsBySimulationIdAsync(
+        Guid simulationId,
+        int offset,
+        int limit,
+        CancellationToken cancellationToken)
     {
         var request = new IterationResultsBySimulationIdRequest
         {
@@ -28,9 +33,20 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
             }
         };
 
-        var response = await _client.GetIterationResultsBySimulationIdAsync(request, cancellationToken: cancellationToken);
+        var results = new List<IterationResultDto>();
 
-        return ResponseMapToDto(response);
+        using var call = _client.GetIterationResultsBySimulationId(request, cancellationToken: cancellationToken);
+
+        await foreach (var response in call.ResponseStream.ReadAllAsync(cancellationToken))
+        {
+            if (response?.Items != null)
+            {
+                var mapped = ResponseMapToDto(response);
+                results.AddRange(mapped);
+            }
+        }
+
+        return results;
     }
 
     public async Task<List<IterationResultDto>> GetAllIterationResultsBySimulationIdAsync(

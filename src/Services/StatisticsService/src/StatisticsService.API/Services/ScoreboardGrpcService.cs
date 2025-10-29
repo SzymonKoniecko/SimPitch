@@ -4,6 +4,8 @@ using Grpc.Core;
 using MediatR;
 using SimPitchProtos.StatisticsService;
 using SimPitchProtos.StatisticsService.Scoreboard;
+using StatisticsService.API.Helpers;
+using StatisticsService.Application.Consts;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
 using StatisticsService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
@@ -33,32 +35,38 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
         };
     }
 
-    public override async Task<ScoreboardsResponse> GetScoreboardsByQuery(ScoreboardsByQueryRequest request, ServerCallContext context)
+    public override async Task GetScoreboardsByQuery(
+        ScoreboardsByQueryRequest request,
+        IServerStreamWriter<ScoreboardsResponse> responseStream,
+        ServerCallContext context)
     {
+        var simulationId = Guid.Parse(request.SimulationId);
+        var iterationResultId = request.HasIterationResultId
+            ? Guid.Parse(request.IterationResultId)
+            : Guid.Empty;
+
         var query = new GetScoreboardsBySimulationIdQuery(
-            Guid.Parse(request.SimulationId),
-            request.HasIterationResultId ? Guid.Parse(request.IterationResultId): Guid.Empty,
+            simulationId,
+            iterationResultId,
             request.WithTeamStats
         );
 
         var results = await _mediator.Send(query, cancellationToken: context.CancellationToken);
 
-        if (results != null && results.Count > 0)
+        // if no results – create scoreboard
+        if (results == null || results.Count == 0)
         {
-            return new ScoreboardsResponse
-            {
-                Scoreboards = { results.Select(x => ScoreboardToGrpc(x)) }
-            };
+            var command = new CreateScoreboardCommand(simulationId, iterationResultId);
+            results = (await _mediator.Send(command, cancellationToken: context.CancellationToken)).ToList();
         }
-        // Flow like: CreateScoreboards(CreateScoreboardsRequest request, ServerCallContext context)
-        var command = new CreateScoreboardCommand(Guid.Parse(request.SimulationId), request.HasIterationResultId ? Guid.Parse(request.IterationResultId): Guid.Empty);
 
-        var createdResults = await _mediator.Send(command, cancellationToken: context.CancellationToken);
-
-        return new ScoreboardsResponse
-        {
-            Scoreboards = { createdResults.Select(x => ScoreboardToGrpc(x)) }
-        };
+        await GrpcStreamHelper.StreamListAsync(
+            results.Select(ScoreboardToGrpc),
+            responseStream,
+            items => new ScoreboardsResponse { Scoreboards = { items } },
+            chunkSizeBytes: GrpcConsts.CHUNK_SIZE,
+            context.CancellationToken
+        );
     }
 
 
