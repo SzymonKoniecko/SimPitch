@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.IterationResult;
+using StatisticsService.Application.Consts;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Application.DTOs.Clients;
 using StatisticsService.Application.Interfaces;
@@ -15,22 +16,58 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
-    public async Task<List<IterationResultDto>> GetIterationResultsBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    public async Task<List<IterationResultDto>> GetPagedIterationResultsBySimulationIdAsync(Guid simulationId, int offset, int limit, CancellationToken cancellationToken)
     {
         var request = new IterationResultsBySimulationIdRequest
         {
-            SimulationId = simulationId.ToString()
+            SimulationId = simulationId.ToString(),
+            PagedRequest = new PagedRequest
+            {
+                Offset = offset,
+                Limit = limit
+            }
         };
 
         var response = await _client.GetIterationResultsBySimulationIdAsync(request, cancellationToken: cancellationToken);
 
-        return MapToDto(response);
+        return ResponseMapToDto(response);
     }
 
-    private static List<IterationResultDto> MapToDto(IterationResultsBySimulationIdResponse response)
+    public async Task<List<IterationResultDto>> GetAllIterationResultsBySimulationIdAsync(
+        Guid simulationId,
+        int pageSize = Pagination.PAGINATION_PAGE_LIMIT,
+        CancellationToken cancellationToken = default)
+    {
+        var allResults = new List<IterationResultDto>();
+        int offset = 0;
+
+        while (true)
+        {
+            var page = await GetPagedIterationResultsBySimulationIdAsync(
+                simulationId,
+                offset,
+                pageSize,
+                cancellationToken);
+
+            if (page == null || page.Count == 0)
+                break; // no more data to fetch
+
+            allResults.AddRange(page);
+
+            
+            if (page.Count < pageSize) // its the last iteration
+                break;
+
+            offset += pageSize;
+        }
+
+        return allResults;
+    }
+
+    private static List<IterationResultDto> ResponseMapToDto(IterationResultsBySimulationIdResponse response)
     {
         List<IterationResultDto> dtos = new List<IterationResultDto>();
-        foreach (var result in response.IterationResults)
+        foreach (var result in response.Items)
         {
             var dto = new IterationResultDto();
 

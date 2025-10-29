@@ -16,7 +16,7 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
 
     public async Task<List<IterationResultDto>> Handle(GetIterationResultsBySimulationIdQuery request, CancellationToken cancellationToken)
     {
-        var IterationResults = await _IterationResultGrpcClient.GetIterationResultsBySimulationIdAsync(request.SimulationId, cancellationToken);
+        var IterationResults = await _IterationResultGrpcClient.GetAllIterationResultsBySimulationIdAsync(request.SimulationId, cancellationToken: cancellationToken);
         return IterationResults;
     }
 }

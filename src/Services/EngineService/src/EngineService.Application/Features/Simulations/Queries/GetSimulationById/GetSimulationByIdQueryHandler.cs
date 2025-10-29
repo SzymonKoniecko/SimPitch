@@ -1,10 +1,12 @@
 using System;
+using EngineService.Application.Common.Pagination;
 using EngineService.Application.DTOs;
 using EngineService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 using EngineService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 using EngineService.Application.Interfaces;
 using EngineService.Application.Mappers;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace EngineService.Application.Features.Simulations.Queries.GetSimulationById;
 
@@ -12,45 +14,71 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
 {
     private readonly IMediator _mediator;
     private readonly ISimulationEngineGrpcClient _simulationEngineGrpcClient;
+    private readonly ILogger<GetSimulationByIdQueryHandler> _logger;
 
     public GetSimulationByIdQueryHandler(
         IMediator mediator,
-        ISimulationEngineGrpcClient simulationEngineGrpcClient)
+        ISimulationEngineGrpcClient simulationEngineGrpcClient,
+        ILogger<GetSimulationByIdQueryHandler> logger)
     {
         _mediator = mediator;
         _simulationEngineGrpcClient = simulationEngineGrpcClient;
+        _logger = logger;
     }
     public async Task<SimulationDto> Handle(GetSimulationByIdQuery query, CancellationToken cancellationToken)
     {
-        var iterationsQuery = new GetIterationResultsBySimulationIdQuery(query.simulationId);
-        var scoreboardsQuery = new GetScoreboardsBySimulationIdQuery(query.simulationId, withTeamStats: true);
-        var simulationOverviews = await _simulationEngineGrpcClient.GetSimulationOverviewsAsync(cancellationToken);
+        var iterationsQuery = new GetIterationResultsBySimulationIdQuery(query.simulationId, query.iterationResultPageNumber, query.iterationResultPageSize);
+        var simulationOverview = await _simulationEngineGrpcClient.GetSimulationOverviewBySimulationId(query.simulationId, cancellationToken);
         var simulationState = await _simulationEngineGrpcClient.GetSimulationStateAsync(query.simulationId, cancellationToken);
 
-        List<IterationResultDto> iterationResults = await _mediator.Send(iterationsQuery, cancellationToken);
-        List<ScoreboardDto> scoreboards = await _mediator.Send(scoreboardsQuery, cancellationToken);
+        PagedResponse<IterationResultDto> iterationResults = await _mediator.Send(iterationsQuery, cancellationToken);
 
-        if (iterationResults == null || iterationResults.Count == 0)
-            return null;
-        if (scoreboards == null || scoreboards.Count == 0)
-            return null;
+        if (iterationResults == null || iterationResults.Items.Count() == 0)
+        {
+            _logger.LogWarning($"No iteration results for query: PageNumber:{query.iterationResultPageNumber} - PageSize:{query.iterationResultPageSize}");
+            return SimulationMapper.ToSimulationDto(
+                query.simulationId,
+                simulationState,
+                simulationOverview.SimulationParams,
+                new PagedResponse<IterationPreviewDto>()
+                {
+                    Items = null,
+                    TotalCount = 0,
+                    PageNumber = query.iterationResultPageNumber,
+                    PageSize = query.iterationResultPageSize,
+                },
+                0,
+                0
+            );
+        }
         if (simulationState == null)
             throw new KeyNotFoundException($"Not found simulation state, id:{simulationState}");
 
         List<IterationPreviewDto> iterationPreviewDtos = new();
 
-        foreach (var scoreboard in scoreboards)
+        foreach (var iterationResult in iterationResults.Items)
         {
-            iterationPreviewDtos.AddRange(IterationPreviewMapper.GetIterationPreviewDtosAsync(scoreboard.ScoreboardTeams, iterationResults.First(x => x.Id == scoreboard.IterationResultId)));
+            var scoreboardsQuery = new GetScoreboardsBySimulationIdQuery(query.simulationId, iterationResult.Id, withTeamStats: true);
+            List<ScoreboardDto> scoreboards = await _mediator.Send(scoreboardsQuery, cancellationToken);
+            if (scoreboards == null || scoreboards.Count == 0)
+                throw new KeyNotFoundException($"Missing scoreboard by iterationId {iterationResult.Id}");
+
+            iterationPreviewDtos.AddRange(IterationPreviewMapper.GetIterationPreviewDtosAsync(scoreboards.First().ScoreboardTeams, iterationResult));
         }
 
         return SimulationMapper.ToSimulationDto(
                 query.simulationId,
                 simulationState,
-                simulationOverviews.First(x => x.Id == query.simulationId)?.SimulationParams,
-                iterationPreviewDtos.OrderBy(x => x.Rank).ToList(),
-                (int)(iterationResults.First()?.SimulatedMatchRounds.Count),
-                (float)(iterationResults.First()?.PriorLeagueStrength)
+                simulationOverview.SimulationParams,
+                new PagedResponse<IterationPreviewDto>()
+                {
+                    Items = iterationPreviewDtos.OrderBy(x => x.Rank).ToList(),
+                    TotalCount = iterationResults.TotalCount,
+                    PageNumber = iterationResults.PageNumber,
+                    PageSize = iterationResults.PageSize
+                },
+                (int)(iterationResults.Items.First()?.SimulatedMatchRounds.Count),
+                (float)(iterationResults.Items.First()?.PriorLeagueStrength)
             );
     }
 }

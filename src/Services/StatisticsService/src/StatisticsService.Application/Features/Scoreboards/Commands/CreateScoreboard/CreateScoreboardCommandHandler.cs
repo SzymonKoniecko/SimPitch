@@ -10,6 +10,7 @@ using StatisticsService.Domain.Entities;
 using StatisticsService.Domain.Interfaces;
 using StatisticsService.Domain.Services;
 using StatisticsService.Application.DTOs.Clients;
+using StatisticsService.Domain.ValueObjects;
 
 namespace StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
 

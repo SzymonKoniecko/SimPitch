@@ -6,7 +6,7 @@ using SimulationService.Domain.Interfaces.Read;
 
 namespace SimulationService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 
-public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<GetIterationResultsBySimulationIdQuery, List<IterationResultDto>>
+public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<GetIterationResultsBySimulationIdQuery, (List<IterationResultDto>, int)>
 {
     private readonly IIterationResultReadRepository _IterationResultReadRepository;
 
@@ -15,10 +15,12 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
         _IterationResultReadRepository = IterationResultReadRepository;
     }
 
-    public async Task<List<IterationResultDto>> Handle(GetIterationResultsBySimulationIdQuery query, CancellationToken cancellationToken)
+    public async Task<(List<IterationResultDto>, int)> Handle(GetIterationResultsBySimulationIdQuery query, CancellationToken cancellationToken)
     {
-        var IterationResults = await _IterationResultReadRepository.GetIterationResultsBySimulationIdAsync(query.SimulationId, cancellationToken);
+        var IterationResults = await _IterationResultReadRepository.GetIterationResultsBySimulationIdAsync(query.SimulationId, query.offset, query.limit, cancellationToken);
 
-        return IterationResults.Select(sr => IterationResultMapper.ToDto(sr)).ToList();
+        return (
+            IterationResults.Select(sr => IterationResultMapper.ToDto(sr)).ToList(),
+            await _IterationResultReadRepository.GetIterationResultsCountBySimulationIdAsync(query.SimulationId, cancellationToken));
     }
 }

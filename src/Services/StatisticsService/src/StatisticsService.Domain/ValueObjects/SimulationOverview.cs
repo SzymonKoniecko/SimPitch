@@ -1,6 +1,6 @@
 using System;
 
-namespace StatisticsService.Application.DTOs.Clients;
+namespace StatisticsService.Domain.ValueObjects;
 
 public class SimulationOverview
 {

@@ -31,12 +31,26 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         return response.SimulationId;
     }
 
-    public async Task<List<SimulationOverviewDto>> GetSimulationOverviewsAsync(CancellationToken cancellationToken)
+    public async Task<(List<SimulationOverviewDto>, int)> GetPagedSimulationOverviewsAsync(int offset, int limit, CancellationToken cancellationToken)
     {
-        var request = new Empty();
+        var request = new PagedRequest();
+        request.Offset = offset;
+        request.Limit = limit;
         var response = await _client.GetAllSimulationOverviewsAsync(request, cancellationToken: cancellationToken);
 
-        return response.SimulationOverviews.Select(x => ToDto(x)).ToList();
+        return (
+            response.Items.Select(x => ToDto(x)).ToList(),
+            response.TotalCount);
+    }
+
+    public async Task<SimulationOverviewDto> GetSimulationOverviewBySimulationId(Guid simulationId, CancellationToken cancellationToken)
+    {
+        var request = new GetSimulationOverviewByIdRequest();
+        request.SimulationId = simulationId.ToString();
+
+        var response = await _client.GetSimulationOverviewByIdAsync(request, cancellationToken: cancellationToken);
+
+        return ToDto(response.SimulationOverview);
     }
 
     public async Task<SimulationStateDto> GetSimulationStateAsync(Guid simulationId, CancellationToken cancellationToken)
@@ -67,6 +81,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
 
         dto.Id = Guid.Parse(stateGrpc.Id);
         dto.SimulationId = Guid.Parse(stateGrpc.SimulationId);
+        dto.ProgressPercent = stateGrpc.ProgressPercent;
         dto.LastCompletedIteration = stateGrpc.LastCompletedIteration;
         dto.State = stateGrpc.State;
         dto.UpdatedAt = DateTime.ParseExact(

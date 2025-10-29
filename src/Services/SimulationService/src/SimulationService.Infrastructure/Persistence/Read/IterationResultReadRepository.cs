@@ -42,27 +42,66 @@ public class IterationResultReadRepository : IIterationResultReadRepository
         return result;
     }
 
-    public async Task<IEnumerable<IterationResult>> GetIterationResultsBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<IterationResult>> GetIterationResultsBySimulationIdAsync(
+        Guid simulationId,
+        int offset,
+        int limit,
+        CancellationToken cancellationToken)
     {
-        var simiulationState = await _simulationStateReadRepository.GetSimulationStateBySimulationIdAsync(simulationId, cancellationToken);
+        var simulationState = await _simulationStateReadRepository
+            .GetSimulationStateBySimulationIdAsync(simulationId, cancellationToken);
 
         using var connection = _dbConnectionFactory.CreateConnection();
 
         const string sql = @"
-            SELECT Id, SimulationId, IterationIndex, StartDate, ExecutionTime, TeamStrengths
-                SimulatedMatchRounds, LeagueStrength, PriorLeagueStrength
+            SELECT *
             FROM IterationResult
             WHERE SimulationId = @SimulationId 
-            AND IterationIndex <= @MaxIndex;
+            AND IterationIndex <= @MaxIndex
+            ORDER BY IterationIndex
+            OFFSET @Offset ROWS FETCH NEXT @Limit ROWS ONLY;
         ";
 
         var command = new CommandDefinition(
             commandText: sql,
-            parameters: new { SimulationId = simulationId, MaxIndex = simiulationState.LastCompletedIteration},
+            parameters: new
+            {
+                SimulationId = simulationId,
+                MaxIndex = simulationState.LastCompletedIteration,
+                Offset = offset,
+                Limit = limit
+            },
             cancellationToken: cancellationToken
         );
 
         var results = await connection.QueryAsync<IterationResult>(command);
         return results;
+    }
+
+    public async Task<int> GetIterationResultsCountBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    {
+        var simulationState = await _simulationStateReadRepository
+            .GetSimulationStateBySimulationIdAsync(simulationId, cancellationToken);
+
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = @"
+            SELECT COUNT(*)
+            FROM IterationResult
+            WHERE SimulationId = @SimulationId
+            AND IterationIndex <= @MaxIndex;
+        ";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new
+            {
+                SimulationId = simulationId,
+                MaxIndex = simulationState.LastCompletedIteration
+            },
+            cancellationToken: cancellationToken
+        );
+
+        return await connection.ExecuteScalarAsync<int>(command);
     }
 }
