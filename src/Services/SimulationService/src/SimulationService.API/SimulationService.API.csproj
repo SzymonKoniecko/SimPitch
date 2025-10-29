@@ -30,4 +30,8 @@
     <ProjectReference Include="..\SimulationService.Infrastructure\SimulationService.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers/" />
+  </ItemGroup>
+
 </Project>

@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
+using Grpc.Core;
 using SimPitchProtos.StatisticsService;
 using SimPitchProtos.StatisticsService.Scoreboard;
 
@@ -32,9 +33,23 @@ public class ScoreboardGrpcClient : IScoreboardGrpcClient
         {
             request.WithTeamStats = withTeamStats.Value;
         }
+        var results = new List<ScoreboardDto>();
+        int totalCount = 0;
 
-        var response = await _client.GetScoreboardsByQueryAsync(request, cancellationToken: cancellationToken);
-        return response.Scoreboards.Select(x => ProtoToDto(x)).ToList();
+        using var call = _client.GetScoreboardsByQuery(request, cancellationToken: cancellationToken);
+
+
+        await foreach (var response in call.ResponseStream.ReadAllAsync(cancellationToken))
+        {
+            if (response?.Scoreboards != null)
+            {
+                var mapped = response.Scoreboards.Select(x => ProtoToDto(x));
+                results.AddRange(mapped);
+            }
+        }
+        return (
+            results
+        );
     }
 
     private static ScoreboardDto ProtoToDto(ScoreboardGrpc grpc)
