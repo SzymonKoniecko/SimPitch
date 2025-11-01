@@ -3,7 +3,7 @@ namespace EngineService.Application.Common.Sorting;
 public enum SortingOptionEnum
 {
     CreatedDate,
-    LowestExecutionTime,
+    ExecutionTime,
     Name,
     IterationResultNumber,
     Team,
