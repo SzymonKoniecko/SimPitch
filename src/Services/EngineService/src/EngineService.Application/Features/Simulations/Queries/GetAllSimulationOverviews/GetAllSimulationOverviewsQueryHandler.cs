@@ -2,6 +2,7 @@ using System;
 using EngineService.Application.Common.Pagination;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
+using EngineService.Application.Mappers;
 using MediatR;
 
 namespace EngineService.Application.Features.Simulations.Queries.GetAllSimulationOverviews;
@@ -17,20 +18,14 @@ public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimul
 
     public async Task<PagedResponse<SimulationOverviewDto>> Handle(GetAllSimulationOverviewsQuery query, CancellationToken cancellationToken)
     {
-        var offset = (query.pageNumber - 1) * query.pageSize;
+        var offset = (query.PagedRequest.PageNumber - 1) * query.PagedRequest.PageSize;
 
-        var result = await _simulationEngineGrpcClient.GetPagedSimulationOverviewsAsync(offset, query.pageSize, cancellationToken);
+        var result = await _simulationEngineGrpcClient.GetPagedSimulationOverviewsAsync(query.PagedRequest, cancellationToken);
 
         foreach (var overview in result.Item1)
         {
             overview.State = await _simulationEngineGrpcClient.GetSimulationStateAsync(overview.Id, cancellationToken);
         }
-        return new PagedResponse<SimulationOverviewDto>
-        {
-            Items = result.Item1,
-            TotalCount = result.Item2,
-            PageNumber = query.pageNumber,
-            PageSize = query.pageSize
-        };
+        return PagedResponseMapper<SimulationOverviewDto>.ToPagedResponse(result.Item1, result.Item2);
     }
 }

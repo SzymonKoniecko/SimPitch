@@ -5,4 +5,4 @@ using MediatR;
 
 namespace EngineService.Application.Features.Simulations.Queries.GetAllSimulationOverviews;
 
-public record GetAllSimulationOverviewsQuery(int pageNumber, int pageSize) : IRequest<PagedResponse<SimulationOverviewDto>>;
+public record GetAllSimulationOverviewsQuery(PagedRequest PagedRequest) : IRequest<PagedResponse<SimulationOverviewDto>>;

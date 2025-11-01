@@ -3,9 +3,10 @@ using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.IterationResult;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
-using Google.Protobuf.Collections;
 using Grpc.Core;
-
+using EngineService.Application.Common.Pagination;
+using EngineService.Domain.ValueObjects;
+using Google.Protobuf.Collections;
 namespace EngineService.Infrastructure.Clients;
 
 public class IterationResultGrpcClient : IIterationResultGrpcClient
@@ -28,19 +29,26 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
         return MapToDto(response.IterationResult);
     }
 
-    public async Task<(List<IterationResultDto>, int)> GetIterationResultsBySimulationIdAsync(Guid simulationId, int offset, int limit, CancellationToken cancellationToken)
+    public async Task<(List<IterationResultDto>, PagedResponseDetails)> GetIterationResultsBySimulationIdAsync(Guid simulationId, PagedRequest pagedRequest, CancellationToken cancellationToken)
     {
+        var offset = (pagedRequest.PageNumber - 1) * pagedRequest.PageSize;
+
         var request = new IterationResultsBySimulationIdRequest
         {
             SimulationId = simulationId.ToString(),
-            PagedRequest = new PagedRequest
+            PagedRequest = new PagedRequestGrpc
             {
                 Offset = offset,
-                Limit = limit
+                Limit = pagedRequest.PageSize,
+                SortingMethod = new SortingMethodGrpc
+                {
+                    SortingOption = pagedRequest.SortingMethod.SortingOption.ToString(),
+                    Condition = pagedRequest.SortingMethod.Condition
+                }
             }
         };
         var results = new List<IterationResultDto>();
-        int totalCount = 0;
+        PagedResponseDetails details = new();
 
         using var call = _client.GetIterationResultsBySimulationId(request, cancellationToken: cancellationToken);
 
@@ -51,14 +59,28 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
             {
                 var mapped = MapToDto(response.Items);
                 results.AddRange(mapped);
-                totalCount = response.TotalCount;
+                details = MapToDto(response.Paged, pagedRequest);
             }
         }
         return (
             results,
-            totalCount
+            details
         );
     }
+
+    private PagedResponseDetails MapToDto(PagedResponseGrpc grpc, PagedRequest pagedRequest)
+    {
+        var details = new PagedResponseDetails();
+
+        details.TotalCount = grpc.TotalCount;
+        details.PageNumber = pagedRequest.PageNumber;
+        details.PageSize = pagedRequest.PageSize;
+        details.SortingOption = grpc.SortingOption;
+        details.Condition = grpc.SortingCondition;
+
+        return details;
+    }
+
     private List<IterationResultDto> MapToDto(RepeatedField<IterationResultGrpc> iterationResults)
     {
         List<IterationResultDto> dtos = new List<IterationResultDto>();

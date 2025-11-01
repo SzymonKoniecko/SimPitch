@@ -4,10 +4,11 @@ using SimulationService.Application.Features.Simulations.DTOs;
 using SimulationService.Application.Features.Simulations.Queries;
 using SimulationService.Application.Mappers;
 using SimulationService.Domain.Interfaces.Read;
+using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
 
-public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimulationOverviewsQuery, (IEnumerable<SimulationOverviewDto>, int)>
+public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimulationOverviewsQuery, (IEnumerable<SimulationOverviewDto>, PagedResponseDetails)>
 {
     private readonly ISimulationOverviewReadRepository _simulationOverviewReadRepository;
 
@@ -16,12 +17,27 @@ public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimul
         _simulationOverviewReadRepository = simulationOverviewReadRepository;
     }
 
-    public async Task<(IEnumerable<SimulationOverviewDto>, int)> Handle(GetAllSimulationOverviewsQuery query, CancellationToken cancellationToken)
+    public async Task<(IEnumerable<SimulationOverviewDto>, PagedResponseDetails)> Handle(GetAllSimulationOverviewsQuery query, CancellationToken cancellationToken)
     {
-        var results = await _simulationOverviewReadRepository.GetSimulationOverviewsAsync(query.offset, query.limit, cancellationToken);
-        
+        var results = await _simulationOverviewReadRepository.GetSimulationOverviewsAsync(
+            new PagedRequest(
+                query.PagedRequest.PageNumber,
+                query.PagedRequest.PageSize,
+                query.PagedRequest.SortingMethod.SortingOption.ToString(),
+                query.PagedRequest.SortingMethod.Condition
+            ), cancellationToken);
+
         return
-            (results.Select(x => SimulationOverviewMapper.ToDto(x)),
-            await _simulationOverviewReadRepository.GetSimulationOverviewCountAsync(cancellationToken));
+        (
+            results.Select(x => SimulationOverviewMapper.ToDto(x)),
+            new PagedResponseDetails()
+            {
+                TotalCount = await _simulationOverviewReadRepository.GetSimulationOverviewCountAsync(cancellationToken),
+                PageNumber = query.PagedRequest.PageNumber,
+                PageSize = query.PagedRequest.PageSize,
+                SortingOption = query.PagedRequest.SortingMethod.SortingOption.ToString(),
+                Condition = query.PagedRequest.SortingMethod.Condition
+            }
+        );
     }
 }

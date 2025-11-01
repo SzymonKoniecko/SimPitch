@@ -1,10 +1,9 @@
 using SimulationService.Infrastructure;
 using SimulationService.Infrastructure.Middlewares;
 using SimulationService.Infrastructure.Logging;
-using SimPitchProtos.SportsDataService.LeagueRound;
 using SimulationService.Application.Features;
 using SimulationService.API.Services;
-using SimulationService.API;
+using SimulationService.API.Helpers;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);

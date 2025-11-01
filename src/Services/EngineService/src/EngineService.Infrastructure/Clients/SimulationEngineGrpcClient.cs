@@ -1,7 +1,9 @@
 using System;
 using System.Globalization;
+using EngineService.Application.Common.Pagination;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
+using EngineService.Domain.ValueObjects;
 using Google.Protobuf.WellKnownTypes;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.SimulationEngine;
@@ -31,18 +33,41 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         return response.SimulationId;
     }
 
-    public async Task<(List<SimulationOverviewDto>, int)> GetPagedSimulationOverviewsAsync(int offset, int limit, CancellationToken cancellationToken)
+    public async Task<(List<SimulationOverviewDto>, PagedResponseDetails)> GetPagedSimulationOverviewsAsync(PagedRequest pagedRequest, CancellationToken cancellationToken)
     {
-        var request = new PagedRequest();
-        request.Offset = offset;
-        request.Limit = limit;
+        var offset = (pagedRequest.PageNumber - 1) * pagedRequest.PageSize;
+
+        var request = new PagedRequestGrpc
+        {
+            Offset = offset,
+            Limit = pagedRequest.PageSize,
+            SortingMethod = new SortingMethodGrpc
+            {
+                SortingOption = pagedRequest.SortingMethod.SortingOption.ToString(),
+                Condition = pagedRequest.SortingMethod.Condition
+            }
+        };
+
         var response = await _client.GetAllSimulationOverviewsAsync(request, cancellationToken: cancellationToken);
 
         return (
             response.Items.Select(x => ToDto(x)).ToList(),
-            response.TotalCount);
+            MapToDto(response.Paged, pagedRequest));
     }
 
+    private PagedResponseDetails MapToDto(PagedResponseGrpc grpc, PagedRequest pagedRequest)
+    {
+        var details = new PagedResponseDetails();
+
+        details.TotalCount = grpc.TotalCount;
+        details.PageNumber = pagedRequest.PageNumber;
+        details.PageSize = pagedRequest.PageSize;
+        details.SortingOption = grpc.SortingOption;
+        details.Condition = grpc.SortingCondition;
+
+        return details;
+    }
+    
     public async Task<SimulationOverviewDto> GetSimulationOverviewBySimulationId(Guid simulationId, CancellationToken cancellationToken)
     {
         var request = new GetSimulationOverviewByIdRequest();

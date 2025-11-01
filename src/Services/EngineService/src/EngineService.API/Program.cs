@@ -32,6 +32,12 @@ builder.Services.AddGrpc(options =>
 builder.Services.AddSimulationGrpcClient(ConfigHelper.GetSimulationAddress());
 builder.Services.AddStatisticsGrpcClient(ConfigHelper.GetStatisticsAddress());
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(6);
+    options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(4);
+});
+
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {

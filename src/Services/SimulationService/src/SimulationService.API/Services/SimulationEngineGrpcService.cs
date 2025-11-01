@@ -5,13 +5,17 @@ using Grpc.Core;
 using MediatR;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.SimulationEngine;
+using SimulationService.API.Helpers;
 using SimulationService.API.Mappers;
+using SimulationService.Application.Common.Pagination;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 using SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 using SimulationService.Application.Features.Simulations.Commands.StopSimulation;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviewById;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationStateBySimulationId;
+using SimulationService.Application.Mappers;
+using SimulationOverviewMapper = SimulationService.API.Mappers.SimulationOverviewMapper;
 namespace SimulationService.API.Services;
 
 public class SimulationEngineGrpcService : SimulationEngineService.SimulationEngineServiceBase
@@ -49,16 +53,19 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
         };
     }
 
-    public override async Task<SimulationOverviewsPagedResponse> GetAllSimulationOverviews(PagedRequest pagedRequest, ServerCallContext serverCallContext)
+    public override async Task<SimulationOverviewsPagedResponse> GetAllSimulationOverviews(PagedRequestGrpc pagedRequest, ServerCallContext serverCallContext)
     {
-        var query = new GetAllSimulationOverviewsQuery(pagedRequest.Offset, pagedRequest.Limit);
+
+        var query = new GetAllSimulationOverviewsQuery(
+            ProtoHelper.ValidateProtoAndMapToDto(pagedRequest)
+        );
 
         var response = await _mediator.Send(query, serverCallContext.CancellationToken);
 
         return new SimulationOverviewsPagedResponse
         {
             Items = { response.Item1.Select(x => SimulationOverviewMapper.ToProto(x)) },
-            TotalCount = response.Item2
+            Paged = ProtoHelper.MapPagedResultsToProto(response.Item2)
         };
     }
 

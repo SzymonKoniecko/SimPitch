@@ -1,7 +1,9 @@
 using System;
 using MediatR;
+using SimulationService.Application.Common.Pagination;
 using SimulationService.Application.Features.Simulations.DTOs;
+using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
 
-public record GetAllSimulationOverviewsQuery(int offset, int limit) : IRequest<(IEnumerable<SimulationOverviewDto>, int)>;
+public record GetAllSimulationOverviewsQuery(PagedRequestDto PagedRequest) : IRequest<(IEnumerable<SimulationOverviewDto>, PagedResponseDetails)>;

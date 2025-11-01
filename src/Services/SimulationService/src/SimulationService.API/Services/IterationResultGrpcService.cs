@@ -9,6 +9,10 @@ using System.ComponentModel.DataAnnotations;
 using SimulationService.Application.Consts;
 using Google.Protobuf;
 using SimulationService.API.Helpers;
+using SimulationService.Domain.ValueObjects;
+using SimulationService.Application.Common.Pagination;
+using SimulationService.Application.Mappers;
+using IterationResultMapper = SimulationService.API.Mappers.IterationResultMapper;
 
 namespace SimulationService.API.Services;
 
@@ -43,24 +47,27 @@ public class IterationResultGrpcService : IterationResultService.IterationResult
         ServerCallContext context)
     {
         var simulationId = Guid.Parse(request.SimulationId);
-        var offset = request.PagedRequest?.Offset ?? 0;
-        var limit = request.PagedRequest?.Limit ?? 10;
 
-        var query = new GetIterationResultsBySimulationIdQuery(simulationId, offset, limit);
-        var (results, totalCount) = await _mediator.Send(query, cancellationToken: context.CancellationToken);
 
+        var query = new GetIterationResultsBySimulationIdQuery(
+            simulationId,
+            ProtoHelper.ValidateProtoAndMapToDto(request.PagedRequest)
+        );
+
+        var (results, details) = await _mediator.Send(query, cancellationToken: context.CancellationToken);
+        
         await GrpcStreamHelper.StreamListAsync(
             results.Select(IterationResultMapper.ToProto),
             responseStream,
             items => new IterationResultsBySimulationIdResponse
             {
                 Items = { items },
-                TotalCount = totalCount
+                Paged = ProtoHelper.MapPagedResultsToProto(details)
             },
             chunkSizeBytes: GrpcConsts.CHUNK_SIZE,
             context.CancellationToken
         );
 
-        _logger.LogInformation($"Streamed {results.Count} iteration results for simulation {simulationId} (total={totalCount})");
+        _logger.LogInformation($"Streamed {results.Count} iteration results for simulation {simulationId} (total={details.TotalCount})");
     }
 }

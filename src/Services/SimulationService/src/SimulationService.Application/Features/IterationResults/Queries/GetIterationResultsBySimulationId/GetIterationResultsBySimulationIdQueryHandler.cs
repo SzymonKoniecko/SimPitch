@@ -3,10 +3,11 @@ using MediatR;
 using SimulationService.Application.Features.IterationResults.DTOs;
 using SimulationService.Application.Mappers;
 using SimulationService.Domain.Interfaces.Read;
+using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 
-public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<GetIterationResultsBySimulationIdQuery, (List<IterationResultDto>, int)>
+public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<GetIterationResultsBySimulationIdQuery, (List<IterationResultDto>, PagedResponseDetails)>
 {
     private readonly IIterationResultReadRepository _IterationResultReadRepository;
 
@@ -15,12 +16,27 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
         _IterationResultReadRepository = IterationResultReadRepository;
     }
 
-    public async Task<(List<IterationResultDto>, int)> Handle(GetIterationResultsBySimulationIdQuery query, CancellationToken cancellationToken)
+    public async Task<(List<IterationResultDto>, PagedResponseDetails)> Handle(GetIterationResultsBySimulationIdQuery query, CancellationToken cancellationToken)
     {
-        var IterationResults = await _IterationResultReadRepository.GetIterationResultsBySimulationIdAsync(query.SimulationId, query.offset, query.limit, cancellationToken);
+        var IterationResults = await _IterationResultReadRepository.GetIterationResultsBySimulationIdAsync(
+            query.SimulationId,
+            new PagedRequest(
+                query.PagedRequest.PageNumber,
+                query.PagedRequest.PageSize,
+                query.PagedRequest.SortingMethod.SortingOption.ToString(),
+                query.PagedRequest.SortingMethod.Condition
+            ), cancellationToken);
 
         return (
             IterationResults.Select(sr => IterationResultMapper.ToDto(sr)).ToList(),
-            await _IterationResultReadRepository.GetIterationResultsCountBySimulationIdAsync(query.SimulationId, cancellationToken));
+            new PagedResponseDetails()
+            {
+                TotalCount = await _IterationResultReadRepository.GetIterationResultsCountBySimulationIdAsync(query.SimulationId, cancellationToken),
+                PageNumber = query.PagedRequest.PageNumber,
+                PageSize = query.PagedRequest.PageSize,
+                SortingOption = query.PagedRequest.SortingMethod.SortingOption.ToString(),
+                Condition = query.PagedRequest.SortingMethod.Condition
+            }
+        );
     }
 }

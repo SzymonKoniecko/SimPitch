@@ -2,6 +2,8 @@ using System;
 using Dapper;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Interfaces.Read;
+using SimulationService.Domain.ValueObjects;
+using SimulationService.Infrastructure.Builders;
 
 namespace SimulationService.Infrastructure.Persistence.Read;
 
@@ -36,24 +38,12 @@ public class SimulationOverviewReadRepository : ISimulationOverviewReadRepositor
     }
 
     public async Task<IEnumerable<SimulationOverview>> GetSimulationOverviewsAsync(
-        int offset,
-        int limit,
+        PagedRequest pagedRequest,
         CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql = @"
-            SELECT *
-            FROM SimulationOverview
-            ORDER BY CreatedDate
-            OFFSET @Offset ROWS FETCH NEXT @Limit ROWS ONLY;
-        ";
-
-        var command = new CommandDefinition(
-            commandText: sql,
-            parameters: new { Offset = offset, Limit = limit },
-            cancellationToken: cancellationToken
-        );
+        var command = CustomSqlCommandBuilder.BuildPagedSimulationOverviewsQuery(pagedRequest, cancellationToken);
 
         var results = await connection.QueryAsync<SimulationOverview>(command);
         return results;

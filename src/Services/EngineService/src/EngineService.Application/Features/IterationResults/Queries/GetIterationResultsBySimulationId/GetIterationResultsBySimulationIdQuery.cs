@@ -5,4 +5,4 @@ using EngineService.Application.Common.Pagination;
 
 namespace EngineService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 
-public record GetIterationResultsBySimulationIdQuery(Guid simulationId, int pageNumber, int pageSize) : IRequest<PagedResponse<IterationResultDto>>;
+public record GetIterationResultsBySimulationIdQuery(Guid simulationId, PagedRequest PagedRequest) : IRequest<PagedResponse<IterationResultDto>>;

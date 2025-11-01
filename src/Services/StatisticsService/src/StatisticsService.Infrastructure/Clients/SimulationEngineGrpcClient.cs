@@ -28,16 +28,16 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         return ToDto(response.SimulationOverview);
     }
 
-    public async Task<(List<SimulationOverview>, int)> GetPagedSimulationOverviewsAsync(int offset, int limit, CancellationToken cancellationToken)
+    private async Task<(List<SimulationOverview>, int)> GetPagedSimulationOverviewsAsync(int offset, int limit, CancellationToken cancellationToken)
     {
-        var request = new PagedRequest();
+        var request = new PagedRequestGrpc();
         request.Offset = offset;
         request.Limit = limit;
         var response = await _client.GetAllSimulationOverviewsAsync(request, cancellationToken: cancellationToken);
 
         return (
             response.Items.Select(x => ToDto(x)).ToList(),
-            response.TotalCount);
+            response.Paged.TotalCount);
     }
 
     public async Task<List<SimulationOverview>> GetAllSimulationOverviewsAsync(

@@ -41,6 +41,7 @@ public static class GrpcStreamHelper
 
             if (cancellationToken.IsCancellationRequested)
                 break;
+            System.Console.WriteLine(DateTime.Now);
         }
 
         if (buffer.Count > 0)
