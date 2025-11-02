@@ -3,6 +3,7 @@ using MediatR;
 using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
 using EngineService.Application.Common.Pagination;
+using EngineService.Application.Mappers;
 
 namespace EngineService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 
@@ -17,15 +18,7 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
 
     public async Task<PagedResponse<IterationResultDto>> Handle(GetIterationResultsBySimulationIdQuery request, CancellationToken cancellationToken)
     {
-        var offset = (request.pageNumber - 1) * request.pageSize;
-
-        var response = await _IterationResultGrpcClient.GetIterationResultsBySimulationIdAsync(request.simulationId, offset, request.pageSize, cancellationToken);
-        return new PagedResponse<IterationResultDto>
-        {
-            Items = response.Item1,
-            TotalCount = response.Item2,
-            PageNumber = request.pageNumber,
-            PageSize = request.pageSize
-        };
+        var response = await _IterationResultGrpcClient.GetIterationResultsBySimulationIdAsync(request.simulationId, request.PagedRequest, cancellationToken);
+        return PagedResponseMapper<IterationResultDto>.ToPagedResponse(response.Item1, response.Item2);
     }
 }

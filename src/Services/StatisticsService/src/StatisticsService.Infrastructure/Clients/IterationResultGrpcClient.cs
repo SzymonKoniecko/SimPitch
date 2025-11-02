@@ -2,6 +2,7 @@ using Grpc.Core;
 using Newtonsoft.Json;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.IterationResult;
+using StatisticsService.Application.Common.Pagination;
 using StatisticsService.Application.Consts;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Application.DTOs.Clients;
@@ -19,17 +20,18 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
 
     public async Task<List<IterationResultDto>> GetPagedIterationResultsBySimulationIdAsync(
         Guid simulationId,
-        int offset,
-        int limit,
+        PagedRequestDto pagedRequest,
         CancellationToken cancellationToken)
     {
+        var offset = (pagedRequest.PageNumber - 1) * pagedRequest.PageSize;
+
         var request = new IterationResultsBySimulationIdRequest
         {
             SimulationId = simulationId.ToString(),
-            PagedRequest = new PagedRequest
+            PagedRequest = new PagedRequestGrpc
             {
                 Offset = offset,
-                Limit = limit
+                Limit = pagedRequest.PageSize
             }
         };
 
@@ -55,14 +57,15 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
         CancellationToken cancellationToken = default)
     {
         var allResults = new List<IterationResultDto>();
-        int offset = 0;
+        int pageNumber = 0;
 
         while (true)
         {
+            pageNumber++;
+
             var page = await GetPagedIterationResultsBySimulationIdAsync(
                 simulationId,
-                offset,
-                pageSize,
+                new PagedRequestDto(pageNumber, pageSize),
                 cancellationToken);
 
             if (page == null || page.Count == 0)
@@ -74,7 +77,6 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
             if (page.Count < pageSize) // its the last iteration
                 break;
 
-            offset += pageSize;
         }
 
         return allResults;

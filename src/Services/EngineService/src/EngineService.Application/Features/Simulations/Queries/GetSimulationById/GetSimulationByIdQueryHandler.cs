@@ -5,6 +5,7 @@ using EngineService.Application.Features.IterationResults.Queries.GetIterationRe
 using EngineService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 using EngineService.Application.Interfaces;
 using EngineService.Application.Mappers;
+using EngineService.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +28,7 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
     }
     public async Task<SimulationDto> Handle(GetSimulationByIdQuery query, CancellationToken cancellationToken)
     {
-        var iterationsQuery = new GetIterationResultsBySimulationIdQuery(query.simulationId, query.iterationResultPageNumber, query.iterationResultPageSize);
+        var iterationsQuery = new GetIterationResultsBySimulationIdQuery(query.simulationId, query.PagedRequest);
         var simulationOverview = await _simulationEngineGrpcClient.GetSimulationOverviewBySimulationId(query.simulationId, cancellationToken);
         var simulationState = await _simulationEngineGrpcClient.GetSimulationStateAsync(query.simulationId, cancellationToken);
 
@@ -35,7 +36,7 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
 
         if (iterationResults == null || iterationResults.Items.Count() == 0)
         {
-            _logger.LogWarning($"No iteration results for query: PageNumber:{query.iterationResultPageNumber} - PageSize:{query.iterationResultPageSize}");
+            _logger.LogWarning($"No iteration results for query: PageNumber:{query.PagedRequest.PageNumber} - PageSize:{query.PagedRequest.PageSize}");
             return SimulationMapper.ToSimulationDto(
                 query.simulationId,
                 simulationState,
@@ -44,8 +45,9 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
                 {
                     Items = null,
                     TotalCount = 0,
-                    PageNumber = query.iterationResultPageNumber,
-                    PageSize = query.iterationResultPageSize,
+                    PageNumber = query.PagedRequest.PageNumber,
+                    PageSize = query.PagedRequest.PageSize,
+                    SortingMethod = query.PagedRequest.SortingMethod
                 },
                 0,
                 0
@@ -66,16 +68,22 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
             iterationPreviewDtos.AddRange(IterationPreviewMapper.GetIterationPreviewDtosAsync(scoreboards.First().ScoreboardTeams, iterationResult));
         }
 
+        if (EnumMapper.SortingOptionToEnum(query.PagedRequest.SortingMethod.SortingOption) == SortingOptionEnum.LeaderPoints)
+        {
+            iterationPreviewDtos.OrderBy(x => x.Points);
+        }
+
         return SimulationMapper.ToSimulationDto(
                 query.simulationId,
                 simulationState,
                 simulationOverview.SimulationParams,
                 new PagedResponse<IterationPreviewDto>()
                 {
-                    Items = iterationPreviewDtos.OrderBy(x => x.Rank).ToList(),
+                    Items = iterationPreviewDtos.ToList(),
                     TotalCount = iterationResults.TotalCount,
                     PageNumber = iterationResults.PageNumber,
-                    PageSize = iterationResults.PageSize
+                    PageSize = iterationResults.PageSize,
+                    SortingMethod = query.PagedRequest.SortingMethod
                 },
                 (int)(iterationResults.Items.First()?.SimulatedMatchRounds.Count),
                 (float)(iterationResults.Items.First()?.PriorLeagueStrength)

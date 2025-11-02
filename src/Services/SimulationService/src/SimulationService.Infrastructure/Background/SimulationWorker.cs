@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using SimulationService.Application.Consts;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 using SimulationService.Application.Interfaces;
 using SimulationService.Application.Mappers;
@@ -95,7 +96,7 @@ namespace SimulationService.Infrastructure.Background
                         var currentState = await registry.GetStateAsync(job.SimulationId);
                         if (currentState?.State == SimulationStatus.Cancelled)
                             linkedCts.Cancel();
-                        await Task.Delay(100, linkedCts.Token);
+                        await Task.Delay(SimulationConsts.ITERATION_DELAY, linkedCts.Token);
                     }
                 }, linkedCts.Token);
 

@@ -1,4 +1,5 @@
 using EngineService.Application.Common.Pagination;
+using EngineService.Application.Common.Sorting;
 using EngineService.Application.DTOs;
 using EngineService.Application.Features.Simulations.Commands.CreateSimulation;
 using EngineService.Application.Features.Simulations.Commands.StopSimulation;
@@ -40,9 +41,11 @@ namespace EngineService.API.Controllers
         public async Task<ActionResult<PagedResponse<SimulationOverviewDto>>> GetAllAsync(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
+            [FromQuery] string sortingOption = "CreatedDate",
+            [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
-            var result = await mediator.Send(new GetAllSimulationOverviewsQuery(pageNumber, pageSize), cancellationToken);
+            var result = await mediator.Send(new GetAllSimulationOverviewsQuery(new PagedRequest(pageNumber, pageSize, sortingOption, order)), cancellationToken);
             if (result is null)
                 throw new NotFoundException("No simulations or something went wrong");
             return Ok(result);
@@ -53,10 +56,12 @@ namespace EngineService.API.Controllers
             [FromRoute] Guid simulationId,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
+            [FromQuery] string sortingOption = "CreatedDate",
+            [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
-            var result = await mediator.Send(new GetSimulationByIdQuery(simulationId, pageNumber, pageSize), cancellationToken);
-            if (result is null)
+            var result = await mediator.Send(new GetSimulationByIdQuery(simulationId, new PagedRequest(pageNumber, pageSize, sortingOption, order)), cancellationToken);
+            if (result == null)    
                 throw new NotFoundException("No simulations for given Id");
             return Ok(result);
         }

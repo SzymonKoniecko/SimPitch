@@ -2,6 +2,8 @@ using System;
 using Dapper;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Interfaces.Read;
+using SimulationService.Domain.ValueObjects;
+using SimulationService.Infrastructure.Builders;
 
 namespace SimulationService.Infrastructure.Persistence.Read;
 
@@ -44,8 +46,7 @@ public class IterationResultReadRepository : IIterationResultReadRepository
 
     public async Task<IEnumerable<IterationResult>> GetIterationResultsBySimulationIdAsync(
         Guid simulationId,
-        int offset,
-        int limit,
+        PagedRequest pagedRequest,
         CancellationToken cancellationToken)
     {
         var simulationState = await _simulationStateReadRepository
@@ -53,28 +54,14 @@ public class IterationResultReadRepository : IIterationResultReadRepository
 
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql = @"
-            SELECT *
-            FROM IterationResult
-            WHERE SimulationId = @SimulationId 
-            AND IterationIndex <= @MaxIndex
-            ORDER BY IterationIndex
-            OFFSET @Offset ROWS FETCH NEXT @Limit ROWS ONLY;
-        ";
-
-        var command = new CommandDefinition(
-            commandText: sql,
-            parameters: new
-            {
-                SimulationId = simulationId,
-                MaxIndex = simulationState.LastCompletedIteration,
-                Offset = offset,
-                Limit = limit
-            },
-            cancellationToken: cancellationToken
-        );
+        var command = CustomSqlCommandBuilder.BuildPagedIterationResultsQuery(
+            simulationId,
+            simulationState.LastCompletedIteration,
+            pagedRequest,
+            cancellationToken);
 
         var results = await connection.QueryAsync<IterationResult>(command);
+
         return results;
     }
 

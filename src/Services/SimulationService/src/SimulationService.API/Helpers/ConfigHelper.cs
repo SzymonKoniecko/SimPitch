@@ -1,7 +1,7 @@
 using System;
 using Microsoft.IdentityModel.Tokens;
 
-namespace SimulationService.API;
+namespace SimulationService.API.Helpers;
 public static class ConfigHelper
 {
     public static string GetSportsDataAddress()

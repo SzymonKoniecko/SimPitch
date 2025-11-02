@@ -1,0 +1,12 @@
+using System;
+
+namespace SimulationService.Domain.ValueObjects;
+
+public class PagedResponseDetails
+{
+    public int TotalCount { get; set; }
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
+    public string SortingOption { get; set; }
+    public string Order { get; set; }
+}
