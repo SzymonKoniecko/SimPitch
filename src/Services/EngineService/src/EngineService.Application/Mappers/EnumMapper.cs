@@ -11,7 +11,7 @@ public static class EnumMapper
         {
             case "CreatedDate":
                 return SortingOptionEnum.CreatedDate;
-            case "LowestExecutionTime":
+            case "ExecutionTime":
                 return SortingOptionEnum.ExecutionTime;
             case "Name":
                 return SortingOptionEnum.Name;

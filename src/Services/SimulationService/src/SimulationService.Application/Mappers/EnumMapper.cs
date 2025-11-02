@@ -60,7 +60,7 @@ public static class EnumMapper
         {
             case "CreatedDate":
                 return Domain.Enums.SortingOptionEnum .CreatedDate;
-            case "LowestExecutionTime":
+            case "ExecutionTime":
                 return Domain.Enums.SortingOptionEnum .ExecutionTime;
             case "Name":
                 return Domain.Enums.SortingOptionEnum .Name;
