@@ -44,7 +44,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
             SortingMethod = new SortingMethodGrpc
             {
                 SortingOption = pagedRequest.SortingMethod.SortingOption.ToString(),
-                Condition = pagedRequest.SortingMethod.Condition
+                Order = pagedRequest.SortingMethod.Order
             }
         };
 
@@ -63,7 +63,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         details.PageNumber = pagedRequest.PageNumber;
         details.PageSize = pagedRequest.PageSize;
         details.SortingOption = grpc.SortingOption;
-        details.Condition = grpc.SortingCondition;
+        details.Order = grpc.SortingOrder;
 
         return details;
     }

@@ -5,7 +5,6 @@ namespace SimulationService.Domain.ValueObjects;
 
 public class SortingMethod
 {
-    public string SortingOption { get; set; }
-    public string Direction { get; set; } = "DESC";
-    public string Condition { get; set; }
+    public SortingOptionEnum SortingOption { get; set; }
+    public string Order { get; set; } = "DESC";
 }

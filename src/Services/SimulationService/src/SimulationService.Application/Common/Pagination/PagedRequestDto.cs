@@ -10,15 +10,15 @@ public class PagedRequestDto
     public int PageSize { get; set; } = 10;
     public SortingMethodDto SortingMethod { get; set; }
 
-    public PagedRequestDto(int pageNumber, int pageSize, SortingOptionEnum sortingOptionEnum, string condition)
+    public PagedRequestDto(int pageNumber, int pageSize, string sortingOption, string order)
     {
 
         this.PageNumber = pageNumber;
         this.PageSize = pageSize;
         SortingMethod = new()
         {
-            SortingOption = sortingOptionEnum,
-            Condition = condition
+            SortingOption = sortingOption,
+            Order = order
         };
     }
 }

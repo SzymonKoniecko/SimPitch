@@ -15,7 +15,7 @@ public class PagedRequestDto
         this.PageSize = pageSize;
     }
 
-    public PagedRequestDto(int pageNumber, int pageSize, SortingOptionEnum sortingOptionEnum, string condition)
+    public PagedRequestDto(int pageNumber, int pageSize, string sortingOptionEnum, string order)
     {
 
         this.PageNumber = pageNumber;
@@ -23,7 +23,7 @@ public class PagedRequestDto
         SortingMethod = new()
         {
             SortingOption = sortingOptionEnum,
-            Condition = condition
+            Order = order
         };
     }
 }

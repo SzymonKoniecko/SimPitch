@@ -5,25 +5,26 @@ namespace SimulationService.Infrastructure.Persistence.Sql;
 
 public static class SortingMapper
 {
-    public static string OrderAndFilterToSqlColumnIterationResults(string sortingOption, string direction)
+    public static string OrderAndFilterToSqlColumnIterationResults(SortingOptionEnum sortingOption, string order)
     {
         return sortingOption switch
         {
-            "CreatedDate" => $"ORDER BY StartDate {direction}",
-            "ExecutionTime" => $"ORDER BY ExecutionTime {direction}",
-            "IterationResultNumber" => $"ORDER BY IterationIndex {direction}",
-            _ => $"ORDER BY StartDate {direction}",
+            SortingOptionEnum.CreatedDate => $"ORDER BY StartDate {order}",
+            SortingOptionEnum.ExecutionTime => $"ORDER BY ExecutionTime {order}",
+            SortingOptionEnum.IterationResultNumber => $"ORDER BY IterationIndex {order}",
+            SortingOptionEnum.LeaderPoints => $"ORDER BY StartDate {order}",
+            _ => $"ORDER BY StartDate {order}",
         };
     }
 
-    public static string ToSqlColumnSimulationOverviews(string sortingOption, string direction)
+    public static string ToSqlColumnSimulationOverviews(SortingOptionEnum sortingOption, string order)
     {
         return sortingOption switch
         {
-            "CreatedDate" => $"ORDER BY CreatedDate {direction}",
-            "ExecutionTime" => $"ORDER BY ExecutionTime {direction}",
-            "IterationResultNumber" => $"ORDER BY CAST(JSON_VALUE(SimulationParams, '$.Iterations') AS INT) {direction}",
-            _ => $"ORDER BY CreatedDate {direction}",
+            SortingOptionEnum.CreatedDate => $"ORDER BY CreatedDate {order}",
+            SortingOptionEnum.Name => $"ORDER BY Title {order}",
+            SortingOptionEnum.IterationResultNumber => $"ORDER BY CAST(JSON_VALUE(SimulationParams, '$.Iterations') AS INT) {order}",
+            _ => $"ORDER BY CreatedDate {order}",
         };
     }
 

@@ -20,15 +20,15 @@ public static class ProtoHelper
         {
             pagedRequest.SortingMethod = new();
             pagedRequest.SortingMethod.SortingOption = "CreatedDate";
-            pagedRequest.SortingMethod.Condition = "";
+            pagedRequest.SortingMethod.Order = "DESC";
         }
 
         return new PagedRequestDto
         (
             pagedRequest.Offset,
             pagedRequest.Limit,
-            EnumMapper.SortingOptionToEnum(pagedRequest.SortingMethod.SortingOption),
-            pagedRequest.SortingMethod.Condition
+            pagedRequest.SortingMethod.SortingOption,
+            pagedRequest.SortingMethod.Order
         );
     }
 
@@ -38,6 +38,7 @@ public static class ProtoHelper
         {
             TotalCount = details.TotalCount,
             SortingOption = details.SortingOption,
+            SortingOrder = details.Order
         };
     }
 }

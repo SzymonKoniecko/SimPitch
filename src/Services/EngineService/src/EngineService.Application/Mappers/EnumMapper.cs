@@ -1,5 +1,6 @@
 using System;
 using EngineService.Application.Common.Sorting;
+using EngineService.Domain.Enums;
 
 namespace EngineService.Application.Mappers;
 
@@ -17,9 +18,7 @@ public static class EnumMapper
                 return SortingOptionEnum.Name;
             case "IterationResultNumber":
                 return SortingOptionEnum.IterationResultNumber;
-            case "Team":
-                return SortingOptionEnum.Team;
-            case "LeaderPoints":
+            case "LeaderPoints": // will be sorted in the closest handler
                 return SortingOptionEnum.LeaderPoints;
             default:
                 throw new KeyNotFoundException($"Cannot map SortingOption to enum value: {enumValue}");

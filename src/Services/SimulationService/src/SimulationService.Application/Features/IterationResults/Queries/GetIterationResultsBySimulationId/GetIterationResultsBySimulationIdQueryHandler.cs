@@ -23,8 +23,8 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
             new PagedRequest(
                 query.PagedRequest.PageNumber,
                 query.PagedRequest.PageSize,
-                query.PagedRequest.SortingMethod.SortingOption.ToString(),
-                query.PagedRequest.SortingMethod.Condition
+                EnumMapper.SortingOptionToEnum(query.PagedRequest.SortingMethod.SortingOption),
+                query.PagedRequest.SortingMethod.Order
             ), cancellationToken);
 
         return (
@@ -34,8 +34,8 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
                 TotalCount = await _IterationResultReadRepository.GetIterationResultsCountBySimulationIdAsync(query.SimulationId, cancellationToken),
                 PageNumber = query.PagedRequest.PageNumber,
                 PageSize = query.PagedRequest.PageSize,
-                SortingOption = query.PagedRequest.SortingMethod.SortingOption.ToString(),
-                Condition = query.PagedRequest.SortingMethod.Condition
+                SortingOption = query.PagedRequest.SortingMethod.SortingOption,
+                Order = query.PagedRequest.SortingMethod.Order
             }
         );
     }

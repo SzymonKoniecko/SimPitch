@@ -5,6 +5,7 @@ using EngineService.Application.Features.IterationResults.Queries.GetIterationRe
 using EngineService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 using EngineService.Application.Interfaces;
 using EngineService.Application.Mappers;
+using EngineService.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -67,13 +68,18 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
             iterationPreviewDtos.AddRange(IterationPreviewMapper.GetIterationPreviewDtosAsync(scoreboards.First().ScoreboardTeams, iterationResult));
         }
 
+        if (EnumMapper.SortingOptionToEnum(query.PagedRequest.SortingMethod.SortingOption) == SortingOptionEnum.LeaderPoints)
+        {
+            iterationPreviewDtos.OrderBy(x => x.Points);
+        }
+
         return SimulationMapper.ToSimulationDto(
                 query.simulationId,
                 simulationState,
                 simulationOverview.SimulationParams,
                 new PagedResponse<IterationPreviewDto>()
                 {
-                    Items = iterationPreviewDtos.OrderBy(x => x.Rank).ToList(),
+                    Items = iterationPreviewDtos.ToList(),
                     TotalCount = iterationResults.TotalCount,
                     PageNumber = iterationResults.PageNumber,
                     PageSize = iterationResults.PageSize,

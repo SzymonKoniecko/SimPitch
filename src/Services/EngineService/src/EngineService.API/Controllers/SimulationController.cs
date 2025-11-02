@@ -41,11 +41,11 @@ namespace EngineService.API.Controllers
         public async Task<ActionResult<PagedResponse<SimulationOverviewDto>>> GetAllAsync(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
-            [FromQuery] SortingOptionEnum sortingOption = SortingOptionEnum.CreatedDate,
-            [FromQuery] string condition = "",
+            [FromQuery] string sortingOption = "CreatedDate",
+            [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
-            var result = await mediator.Send(new GetAllSimulationOverviewsQuery(new PagedRequest(pageNumber, pageSize, sortingOption, condition)), cancellationToken);
+            var result = await mediator.Send(new GetAllSimulationOverviewsQuery(new PagedRequest(pageNumber, pageSize, sortingOption, order)), cancellationToken);
             if (result is null)
                 throw new NotFoundException("No simulations or something went wrong");
             return Ok(result);
@@ -56,11 +56,11 @@ namespace EngineService.API.Controllers
             [FromRoute] Guid simulationId,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
-            [FromQuery] SortingOptionEnum sortingOption = SortingOptionEnum.CreatedDate,
-            [FromQuery] string condition = "",
+            [FromQuery] string sortingOption = "CreatedDate",
+            [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
-            var result = await mediator.Send(new GetSimulationByIdQuery(simulationId, new PagedRequest(pageNumber, pageSize, sortingOption, condition)), cancellationToken);
+            var result = await mediator.Send(new GetSimulationByIdQuery(simulationId, new PagedRequest(pageNumber, pageSize, sortingOption, order)), cancellationToken);
             if (result == null)    
                 throw new NotFoundException("No simulations for given Id");
             return Ok(result);

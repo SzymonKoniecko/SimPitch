@@ -16,12 +16,12 @@ public class CustomSqlCommandBuilder
         var offset = (request.PageNumber - 1) * request.PageSize;
         var limit = request.PageSize;
 
-        var direction = SortingMapper.GetSortDirection(request.SortingMethod.Direction);
-        var sqlOrderFilter = SortingMapper.OrderAndFilterToSqlColumnIterationResults(request.SortingMethod.SortingOption, direction);
+        var order = SortingMapper.GetSortDirection(request.SortingMethod.Order);
+        var sqlOrderFilter = SortingMapper.OrderAndFilterToSqlColumnIterationResults(request.SortingMethod.SortingOption, order);
 
         var sql = $@"
         SET @Offset = ISNULL(@Offset, 0);
-IF @Offset < 0 SET @Offset = 0;
+        IF @Offset < 0 SET @Offset = 0;
             SELECT *
             FROM IterationResult
             WHERE SimulationId = @SimulationId
@@ -50,13 +50,13 @@ IF @Offset < 0 SET @Offset = 0;
         var offset = (request.PageNumber - 1) * request.PageSize;
         var limit = request.PageSize;
         
-        var direction = SortingMapper.GetSortDirection(request.SortingMethod.Direction);
+        var order = SortingMapper.GetSortDirection(request.SortingMethod.Order);
 
-        var sqlOrderFilter = SortingMapper.ToSqlColumnSimulationOverviews(request.SortingMethod.SortingOption, direction);
+        var sqlOrderFilter = SortingMapper.ToSqlColumnSimulationOverviews(request.SortingMethod.SortingOption, order);
 
         string sql = $@"
         SET @Offset = ISNULL(@Offset, 0);
-IF @Offset < 0 SET @Offset = 0;
+        IF @Offset < 0 SET @Offset = 0;
             SELECT *
             FROM SimulationOverview
             {sqlOrderFilter}

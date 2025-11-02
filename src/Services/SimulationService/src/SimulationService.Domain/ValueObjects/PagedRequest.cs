@@ -9,7 +9,7 @@ public class PagedRequest
     public int PageSize { get; set; } = 10;
     public SortingMethod SortingMethod { get; set; }
 
-    public PagedRequest(int pageNumber, int pageSize, string sortingOptionEnum, string condition)
+    public PagedRequest(int pageNumber, int pageSize, SortingOptionEnum sortingOptionEnum, string order)
     {
 
         this.PageNumber = pageNumber;
@@ -17,7 +17,7 @@ public class PagedRequest
         SortingMethod = new()
         {
             SortingOption = sortingOptionEnum,
-            Condition = condition
+            Order = order
         };
     }
 } 

@@ -14,8 +14,8 @@ public static class PagedResponseMapper<T>
         response.PageSize = pagedResponseDetails.PageSize;
         response.TotalCount = pagedResponseDetails.TotalCount;
         response.SortingMethod = new();
-        response.SortingMethod.SortingOption = EnumMapper.SortingOptionToEnum(pagedResponseDetails.SortingOption);
-        response.SortingMethod.Condition = pagedResponseDetails.Condition;
+        response.SortingMethod.SortingOption = pagedResponseDetails.SortingOption;
+        response.SortingMethod.Order = pagedResponseDetails.Order;
 
         return response;
     }

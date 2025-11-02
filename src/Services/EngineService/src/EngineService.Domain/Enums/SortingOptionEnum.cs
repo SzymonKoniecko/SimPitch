@@ -1,4 +1,4 @@
-namespace SimulationService.Domain.Enums;
+namespace EngineService.Domain.Enums;
 
 public enum SortingOptionEnum
 {

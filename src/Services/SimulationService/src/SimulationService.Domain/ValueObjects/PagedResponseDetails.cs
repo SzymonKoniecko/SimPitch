@@ -8,5 +8,5 @@ public class PagedResponseDetails
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
     public string SortingOption { get; set; }
-    public string Condition { get; set; }
+    public string Order { get; set; }
 }

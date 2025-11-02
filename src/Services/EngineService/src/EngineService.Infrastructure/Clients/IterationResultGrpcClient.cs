@@ -43,7 +43,7 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
                 SortingMethod = new SortingMethodGrpc
                 {
                     SortingOption = pagedRequest.SortingMethod.SortingOption.ToString(),
-                    Condition = pagedRequest.SortingMethod.Condition
+                    Order = pagedRequest.SortingMethod.Order
                 }
             }
         };
@@ -76,7 +76,7 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
         details.PageNumber = pagedRequest.PageNumber;
         details.PageSize = pagedRequest.PageSize;
         details.SortingOption = grpc.SortingOption;
-        details.Condition = grpc.SortingCondition;
+        details.Order = grpc.SortingOrder;
 
         return details;
     }

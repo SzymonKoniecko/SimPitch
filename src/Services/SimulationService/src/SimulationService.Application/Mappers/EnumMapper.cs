@@ -33,28 +33,7 @@ public static class EnumMapper
         throw new ArgumentException($"Invalid season string type. Provided {seasonEnum}");
     }
 
-    public static Common.Sorting.SortingOptionEnum SortingOptionToEnum(string enumValue)
-    {
-        switch (enumValue)
-        {
-            case "CreatedDate":
-                return Common.Sorting.SortingOptionEnum.CreatedDate;
-            case "ExecutionTime":
-                return Common.Sorting.SortingOptionEnum.ExecutionTime;
-            case "Name":
-                return Common.Sorting.SortingOptionEnum.Name;
-            case "IterationResultNumber":
-                return Common.Sorting.SortingOptionEnum.IterationResultNumber;
-            case "Team":
-                return Common.Sorting.SortingOptionEnum.Team;
-            case "LeaderPoints":
-                return Common.Sorting.SortingOptionEnum.LeaderPoints;
-            default:
-                throw new KeyNotFoundException($"Cannot map SortingOption to enum value: {enumValue}");
-        }
-    }
-    
-    public static Domain.Enums.SortingOptionEnum SortingOptionToEnumDomain(string enumValue)
+    public static Domain.Enums.SortingOptionEnum SortingOptionToEnum(string enumValue)
     {
         switch (enumValue)
         {
@@ -66,10 +45,6 @@ public static class EnumMapper
                 return Domain.Enums.SortingOptionEnum .Name;
             case "IterationResultNumber":
                 return Domain.Enums.SortingOptionEnum .IterationResultNumber;
-            case "Team":
-                return Domain.Enums.SortingOptionEnum .Team;
-            case "LeaderPoints":
-                return Domain.Enums.SortingOptionEnum .LeaderPoints;
             default:
                 throw new KeyNotFoundException($"Cannot map SortingOption to enum value: {enumValue}");
         }
