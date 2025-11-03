@@ -20,9 +20,9 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
     {
         List<ScoreboardDto> scoreboardDtos = new List<ScoreboardDto>();
 
-        if (await _scoreboardReadRepository.ScoreboardBySimulationIdExistsAsync(query.simulationId, cancellationToken: cancellationToken))
+        if (await _scoreboardReadRepository.ScoreboardByIterationResultIdExistsAsync(query.iterationResultId, cancellationToken: cancellationToken))
         {
-            var scoreboards = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(query.simulationId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);
+            var scoreboards = await _scoreboardReadRepository.GetScoeboardBySimulationIdAsync(query.simulationId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);
             
             foreach (var scoreboard in scoreboards)
                 scoreboard.SortByRank();

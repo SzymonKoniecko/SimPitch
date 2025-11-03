@@ -8,7 +8,7 @@ namespace SimulationService.Application.Mappers;
 
 public static class IterationResultMapper
 {
-    public static IterationResultDto SimulationToDto(
+    public static IterationResultDto SimulationToIterationResultDto(
         Guid simulationId,
         int iterationIndex,
         DateTime simulationDate,

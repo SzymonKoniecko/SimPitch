@@ -43,6 +43,7 @@ builder.Services.AddGrpc(options =>
 });
 
 builder.Services.AddSportsDataGrpcClient(ConfigHelper.GetSportsDataAddress());
+builder.Services.AddStatisticsGrpcClient(ConfigHelper.GetStatisticsAddress());
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
