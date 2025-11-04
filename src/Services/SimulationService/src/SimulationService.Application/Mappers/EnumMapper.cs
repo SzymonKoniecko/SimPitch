@@ -45,6 +45,8 @@ public static class EnumMapper
                 return Domain.Enums.SortingOptionEnum .Name;
             case "IterationResultNumber":
                 return Domain.Enums.SortingOptionEnum .IterationResultNumber;
+            case "LeaderPoints":
+                return Domain.Enums.SortingOptionEnum .LeaderPoints;
             default:
                 throw new KeyNotFoundException($"Cannot map SortingOption to enum value: {enumValue}");
         }
