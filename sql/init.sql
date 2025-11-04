@@ -201,3 +201,18 @@ BEGIN
         GoalsAgainst INT NOT NULL
     );
 END
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SimulationTeamStats' AND xtype='U')
+BEGIN
+    CREATE TABLE SimulationTeamStats(
+        Id UNIQUEIDENTIFIER PRIMARY KEY,
+        SimulationId UNIQUEIDENTIFIER NOT NULL,
+        TeamId UNIQUEIDENTIFIER NOT NULL,
+        PositionProbbility NVARCHAR(MAX) NOT NULL,
+        AverangePoints FLOAT NOT NULL,
+        AverangeWins FLOAT NOT NULL,
+        AverangeLosses FLOAT NOT NULL,
+        AverangeDraws FLOAT NOT NULL,
+        AverangeGoalsFor FLOAT NOT NULL,
+        AverangeGoalsAgainst FLOAT NOT NULL,
+    );
+END

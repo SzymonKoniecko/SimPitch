@@ -26,9 +26,11 @@ public static class DependencyInjection
         //  Read repositories
         services.AddScoped<IScoreboardReadRepository, ScoreboardReadRepository>();
         services.AddScoped<IScoreboardTeamStatsReadRepository, ScoreboardTeamStatsReadRepository>();
+        services.AddScoped<ISimulationTeamStatsReadRepository, SimulationTeamStatsReadRepository>();
         //  Write repositories
         services.AddScoped<IScoreboardWriteRepository, ScoreboardWriteRepository>();
         services.AddScoped<IScoreboardTeamStatsWriteRepository, ScoreboardTeamStatsWriteRepository>();
+        services.AddScoped<ISimulationTeamStatsWriteRepository, SimulationTeamStatsWriteRepository>();
 
         // Services
         services.AddTransient<ScoreboardService>();

@@ -30,7 +30,8 @@ public static class SimulationOverviewMapper
         {
             SeasonYears = { dto.SeasonYears },
             LeagueId = dto.LeagueId.ToString(),
-            Iterations = dto.Iterations
+            Iterations = dto.Iterations,
+            CreateScoreboardOnCompleteIteration = dto.CreateScoreboardOnCompleteIteration
         };
 
         if (dto.LeagueRoundId != Guid.Empty)
