@@ -8,4 +8,5 @@ public class SimulationParams
     public Guid LeagueId { get; set; }
     public int Iterations { get; set; }
     public Guid LeagueRoundId { get; set; }
+    public bool CreateScoreboardOnCompleteIteration { get; set; }
 }

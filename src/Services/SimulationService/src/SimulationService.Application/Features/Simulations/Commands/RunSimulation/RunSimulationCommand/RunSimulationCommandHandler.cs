@@ -87,7 +87,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             
             if (command.SimulationParamsDto.CreateScoreboardOnCompleteIteration)
             {
-                if (await _mediator.Send(new CreateScoreboardByIterationResultCommand(itResultDto), cancellationToken) == false)
+                if (await _mediator.Send(new CreateScoreboardByIterationResultCommand(SimulationOverviewMapper.ToDto(command.Overview), itResultDto), cancellationToken) == false)
                 _logger.LogError($"Scoreboard is not created-> IterationResultId:{itResultDto.Id}, SimulationId: {itResultDto.SimulationId}");
             }
         }

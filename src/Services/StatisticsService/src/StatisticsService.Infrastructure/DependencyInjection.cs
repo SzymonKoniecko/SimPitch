@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StatisticsService.Application.Features.Scoreboards.Services;
 using StatisticsService.Application.Interfaces;
 using StatisticsService.Domain.Interfaces;
 using StatisticsService.Domain.Services;
@@ -32,6 +33,7 @@ public static class DependencyInjection
         // Services
         services.AddTransient<ScoreboardService>();
         services.AddTransient<ScoreboardTeamStatsService>();
+        services.AddTransient<IScoreboardDataService, ScoreboardDataService>();
 
         return services;
     }

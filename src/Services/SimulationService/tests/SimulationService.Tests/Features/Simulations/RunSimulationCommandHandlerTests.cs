@@ -67,6 +67,7 @@ public class RunSimulationCommandHandlerTests
         var simulationId = Guid.NewGuid();
 
         var command = new RunSimulationCommand(
+            new SimulationOverview(),
             simulationId,
             new SimulationParamsDto
             {

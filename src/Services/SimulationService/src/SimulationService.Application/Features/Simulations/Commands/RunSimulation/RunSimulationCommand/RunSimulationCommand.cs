@@ -6,4 +6,4 @@ using SimulationService.Domain.ValueObjects;
 
 namespace SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 
-public record RunSimulationCommand(Guid simulationId, SimulationParamsDto SimulationParamsDto, SimulationState State) : IRequest<Guid>;
+public record RunSimulationCommand(SimulationOverview Overview, Guid simulationId, SimulationParamsDto SimulationParamsDto, SimulationState State) : IRequest<Guid>;

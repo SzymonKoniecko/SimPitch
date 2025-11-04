@@ -1,9 +1,9 @@
 using System;
 using System.Xml;
-using SimulationService.Application.Features.Simulations.DTOs;
-using SimulationService.Domain.ValueObjects;
+using StatisticsService.Application.DTOs.Clients;
+using StatisticsService.Domain.ValueObjects;
 
-namespace SimulationService.Application.Mappers;
+namespace StatisticsService.Application.Mappers;
 
 public static class SimulationParamsMapper
 {
