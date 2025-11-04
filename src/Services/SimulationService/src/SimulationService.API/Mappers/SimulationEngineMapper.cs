@@ -14,7 +14,7 @@ public static class SimulationEngineMapper
         dto.LeagueId = Guid.Parse(request.SimulationParams.LeagueId);
         dto.Iterations = request.SimulationParams.Iterations;
         dto.LeagueRoundId = request.SimulationParams.HasLeagueRoundId ? Guid.Parse(request.SimulationParams.LeagueRoundId) : Guid.Empty;
-
+        dto.CreateScoreboardOnCompleteIteration = request.SimulationParams.HasCreateScoreboardOnCompleteIteration;
         return dto;
     }
 

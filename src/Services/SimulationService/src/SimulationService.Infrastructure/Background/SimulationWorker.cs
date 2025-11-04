@@ -86,7 +86,7 @@ namespace SimulationService.Infrastructure.Background
                 };
                 await overviewRepo.CreateSimulationOverviewAsync(overview, stoppingToken);
 
-                var cmd = new RunSimulationCommand(job.SimulationId, SimulationParamsMapper.ToDto(job.Params), job.State);
+                var cmd = new RunSimulationCommand(overview, job.SimulationId, SimulationParamsMapper.ToDto(job.Params), job.State);
 
                 using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
                 var watcher = Task.Run(async () =>

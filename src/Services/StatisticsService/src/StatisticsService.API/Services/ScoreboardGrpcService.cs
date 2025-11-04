@@ -2,13 +2,17 @@ using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using MediatR;
+using Newtonsoft.Json;
 using SimPitchProtos.StatisticsService;
 using SimPitchProtos.StatisticsService.Scoreboard;
 using StatisticsService.API.Helpers;
 using StatisticsService.Application.Consts;
 using StatisticsService.Application.DTOs;
+using StatisticsService.Application.DTOs.Clients;
 using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
+using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboardByIterationResult;
 using StatisticsService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
+using StatisticsService.Domain.ValueObjects;
 
 namespace StatisticsService.API.Services;
 
@@ -25,7 +29,7 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
 
     public override async Task<ScoreboardsResponse> CreateScoreboards(CreateScoreboardsRequest request, ServerCallContext context)
     {
-        var command = new CreateScoreboardCommand(Guid.Parse(request.SimulationId), request.HasIterationResultId ? Guid.Parse(request.IterationResultId): Guid.Empty);
+        var command = new CreateScoreboardCommand(Guid.Parse(request.SimulationId), request.HasIterationResultId ? Guid.Parse(request.IterationResultId) : Guid.Empty);
 
         var results = await _mediator.Send(command, cancellationToken: context.CancellationToken);
 
@@ -67,6 +71,20 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
             chunkSizeBytes: GrpcConsts.CHUNK_SIZE,
             context.CancellationToken
         );
+    }
+
+    public override async Task<CreateScoreboardByIterationResultDataResponse> CreateScoreboardByIterationResultData(CreateScoreboardByIterationResultDataRequest request, ServerCallContext context)
+    {
+        var command = new CreateScoreboardByIterationResultCommand(
+            JsonConvert.DeserializeObject<SimulationOverviewDto>(request.SimulationOverviewJson),
+            JsonConvert.DeserializeObject<IterationResultDto>(request.IterationResultJson));
+
+        var result = await _mediator.Send(command, cancellationToken: context.CancellationToken);
+
+        return new CreateScoreboardByIterationResultDataResponse
+        {
+            IsCreated = result
+        };
     }
 
 

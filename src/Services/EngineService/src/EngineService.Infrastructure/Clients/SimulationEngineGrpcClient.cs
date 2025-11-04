@@ -26,7 +26,8 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
             simulationParamsDto.SeasonYears,
             simulationParamsDto.LeagueId,
             simulationParamsDto.Iterations,
-            simulationParamsDto.LeagueRoundId);
+            simulationParamsDto.LeagueRoundId,
+            simulationParamsDto.CreateScoreboardOnCompleteIteration);
 
         var response = await _client.RunSimulationAsync(request, cancellationToken: cancellationToken);
 
@@ -142,22 +143,25 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         dto.Iterations = grpc.Iterations;
         dto.LeagueId = Guid.Parse(grpc.LeagueId);
         dto.LeagueRoundId = grpc.HasLeagueRoundId ? Guid.Parse(grpc.LeagueRoundId) : Guid.Empty;
+        dto.CreateScoreboardOnCompleteIteration = grpc.HasCreateScoreboardOnCompleteIteration;
 
         return dto;
     }
 
-    private static SimulationParamsGrpc ToProto(List<string> seasonYears, Guid leagueId, int iterations, Guid? leagueRoundId = default)
+    private static SimulationParamsGrpc ToProto(List<string> seasonYears, Guid leagueId, int iterations, Guid? leagueRoundId = default, bool createScoreboardOnCompleteIteration = false)
     {
         var grpc = new SimulationParamsGrpc
         {
             LeagueId = leagueId.ToString(),
-            Iterations = iterations
+            Iterations = iterations,
+            CreateScoreboardOnCompleteIteration = createScoreboardOnCompleteIteration
         };
 
         grpc.SeasonYears.AddRange(seasonYears);
 
         if (leagueRoundId.HasValue)
             grpc.LeagueRoundId = leagueRoundId.ToString();
+            
 
         return grpc;
     }

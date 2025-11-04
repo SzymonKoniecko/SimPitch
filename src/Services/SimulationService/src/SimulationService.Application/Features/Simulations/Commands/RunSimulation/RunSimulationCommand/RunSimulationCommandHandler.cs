@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using SimulationService.Application.DomainValidators;
 using SimulationService.Application.Features.IterationResults.Commands.CreateIterationResultCommand;
+using SimulationService.Application.Features.Scoreboards.Commands;
 using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 using SimulationService.Application.Interfaces;
@@ -66,22 +67,29 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
 
             simulationIndex++;
 
+            var itResultDto = IterationResultMapper.SimulationToIterationResultDto
+            (
+                command.simulationId,
+                simulationIndex,
+                startTime,
+                watch.Elapsed,
+                simulationContent.MatchRoundsToSimulate,
+                simulationContent.LeagueStrength,
+                simulationContent.PriorLeagueStrength,
+                simulationContent.TeamsStrengthDictionary
+            );
 
-            await _mediator.Send(new CreateIterationResultCommand(
-                IterationResultMapper.SimulationToDto(
-                    command.simulationId,
-                    simulationIndex,
-                    startTime,
-                    watch.Elapsed,
-                    simulationContent.MatchRoundsToSimulate,
-                    simulationContent.LeagueStrength,
-                    simulationContent.PriorLeagueStrength,
-                    simulationContent.TeamsStrengthDictionary
-                )), cancellationToken);
+            await _mediator.Send(new CreateIterationResultCommand(itResultDto), cancellationToken);
 
             command.State.LastCompletedIteration = i;
             await _registry.SetStateAsync(command.simulationId, command.State.Update((float)i / command.SimulationParamsDto.Iterations * 100));
             await _simulationStateWriteRepository.UpdateOrCreateAsync(command.State, cancellationToken: cancellationToken);
+            
+            if (command.SimulationParamsDto.CreateScoreboardOnCompleteIteration)
+            {
+                if (await _mediator.Send(new CreateScoreboardByIterationResultCommand(SimulationOverviewMapper.ToDto(command.Overview), itResultDto), cancellationToken) == false)
+                _logger.LogError($"Scoreboard is not created-> IterationResultId:{itResultDto.Id}, SimulationId: {itResultDto.SimulationId}");
+            }
         }
 
         return command.simulationId;

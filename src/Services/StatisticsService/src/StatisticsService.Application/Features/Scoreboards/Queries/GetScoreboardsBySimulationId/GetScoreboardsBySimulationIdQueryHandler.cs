@@ -1,5 +1,7 @@
 using MediatR;
 using StatisticsService.Application.DTOs;
+using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
+using StatisticsService.Application.Interfaces;
 using StatisticsService.Application.Mappers;
 using StatisticsService.Domain.Interfaces;
 
@@ -9,24 +11,34 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
 {
     private readonly IScoreboardReadRepository _scoreboardReadRepository;
     private readonly IMediator _mediator;
+    private readonly ISimulationEngineGrpcClient _simulationEngineGrpcClient;
 
-    public GetScoreboardsBySimulationIdQueryHandler(IScoreboardReadRepository scoreboardReadRepository, IMediator mediator)
+    public GetScoreboardsBySimulationIdQueryHandler
+    (
+        IScoreboardReadRepository scoreboardReadRepository,
+        IMediator mediator,
+        ISimulationEngineGrpcClient simulationEngineGrpcClient
+    )
     {
         _scoreboardReadRepository = scoreboardReadRepository;
-        this._mediator = mediator;
+        _mediator = mediator;
+        _simulationEngineGrpcClient = simulationEngineGrpcClient ?? throw new ArgumentNullException(nameof(simulationEngineGrpcClient));
     }
 
     public async Task<List<ScoreboardDto>> Handle(GetScoreboardsBySimulationIdQuery query, CancellationToken cancellationToken)
     {
         List<ScoreboardDto> scoreboardDtos = new List<ScoreboardDto>();
+        var simulationOverview = await _simulationEngineGrpcClient.GetSimulationOverviewByIdAsync(query.simulationId, cancellationToken);
+        if (simulationOverview == null)
+            throw new KeyNotFoundException($"Missing simulation overview object for-> SimulationId:{query.simulationId}");
 
-        if (await _scoreboardReadRepository.ScoreboardBySimulationIdExistsAsync(query.simulationId, cancellationToken: cancellationToken))
+        if (await _scoreboardReadRepository.ScoreboardsBySimulationIdExistsAsync(query.simulationId, simulationOverview.SimulationParams.Iterations, cancellationToken: cancellationToken))
         {
             var scoreboards = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(query.simulationId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);
-            
+
             foreach (var scoreboard in scoreboards)
                 scoreboard.SortByRank();
-                
+
             if (query.iterationResultId != Guid.Empty) // filter for requested iteration result
             {
                 scoreboards = scoreboards.Where(x => x.IterationResultId == query.iterationResultId).ToList();
@@ -34,6 +46,17 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
 
             return scoreboards.Select(x => ScoreboardMapper.ToDto(x)).ToList();
         }
-        return null;
+        else
+        {
+            var simulationState = await _simulationEngineGrpcClient.GetSimulationStateByIdAsync(query.simulationId, cancellationToken);
+            if (simulationState.State != "Failed") // create a new MISSING scoreboards if simulationd is not failed
+            {
+                var command = new CreateScoreboardCommand(query.simulationId, Guid.Empty);
+                await _mediator.Send(command, cancellationToken: cancellationToken);    
+            }
+        }
+        var scoreboardsAfterAll = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(query.simulationId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);
+
+        return scoreboardsAfterAll.Select(x => ScoreboardMapper.ToDto(x)).ToList();
     }
 }

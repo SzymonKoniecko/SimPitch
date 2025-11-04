@@ -41,10 +41,10 @@ public class ScoreboardReadRepository : IScoreboardReadRepository
         return results;
     }
     
-    public async Task<bool> ScoreboardBySimulationIdExistsAsync(Guid simulationId, CancellationToken cancellationToken)
+    public async Task<bool> ScoreboardsBySimulationIdExistsAsync(Guid simulationId, int expectedScoreboards, CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        const string sql = "SELECT COUNT(1) FROM Scoreboard WHERE SimulationId = @SimulationId";
+        string sql = $"SELECT COUNT({expectedScoreboards}) FROM Scoreboard WHERE SimulationId = @SimulationId";
 
         var command = new CommandDefinition(
             commandText: sql,

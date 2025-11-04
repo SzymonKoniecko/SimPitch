@@ -1,10 +1,9 @@
 using System;
 using System.Globalization;
-using Google.Protobuf.WellKnownTypes;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.SimulationEngine;
-using StatisticsService.Application.DTOs.Clients;
 using StatisticsService.Application.Interfaces;
+using StatisticsService.Domain.Entities;
 using StatisticsService.Domain.ValueObjects;
 
 namespace StatisticsService.Infrastructure.Clients;
@@ -26,6 +25,16 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         var response = await _client.GetSimulationOverviewByIdAsync(request, cancellationToken: cancellationToken);
 
         return ToDto(response.SimulationOverview);
+    }
+
+    public async Task<SimulationState> GetSimulationStateByIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    {
+        var request = new GetSimulationStateByIdRequest();
+        request.SimulationId = simulationId.ToString();
+        
+        var response = await _client.GetSimulationStateByIdAsync(request, cancellationToken: cancellationToken);
+
+        return GrpcStateToDto(response.SimulationState);
     }
 
     private async Task<(List<SimulationOverview>, int)> GetPagedSimulationOverviewsAsync(int offset, int limit, CancellationToken cancellationToken)
@@ -102,5 +111,22 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         dto.LeagueRoundId = grpc.HasLeagueRoundId ? Guid.Parse(grpc.LeagueRoundId) : Guid.Empty;
 
         return dto;
+    }
+
+    private SimulationState GrpcStateToDto(SimulationStateGrpc simulationState)
+    {
+        var vo = new SimulationState();
+        vo.Id = Guid.Parse(simulationState.Id);
+        vo.SimulationId = Guid.Parse(simulationState.SimulationId);
+        vo.LastCompletedIteration = simulationState.LastCompletedIteration;
+        vo.ProgressPercent = simulationState.ProgressPercent;
+        vo.State = simulationState.State;
+        vo.UpdatedAt = DateTime.ParseExact(
+            simulationState.UpdatedAt,
+            "MM/dd/yyyy HH:mm:ss",
+            CultureInfo.InvariantCulture
+        );
+
+        return vo;
     }
 }

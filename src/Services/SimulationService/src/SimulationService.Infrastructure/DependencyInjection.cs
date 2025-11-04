@@ -30,6 +30,7 @@ public static class DependencyInjection
         services.AddTransient<ILeagueGrpcClient, LeagueGrpcClient>();
         services.AddTransient<IMatchRoundGrpcClient, MatchRoundGrpcClient>();
         services.AddTransient<ISeasonStatsGrpcClient, SeasonStatsGrpcClient>();
+        services.AddTransient<IScoreboardGrpcClient, ScoreboardGrpcClient>();
 
         //  Read repositories
         services.AddTransient<IIterationResultReadRepository, IterationResultReadRepository>();

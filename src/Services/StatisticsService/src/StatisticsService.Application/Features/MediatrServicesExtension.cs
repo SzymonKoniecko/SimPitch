@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using StatisticsService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
+using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboardByIterationResult;
 using StatisticsService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 
 namespace StatisticsService.Application.Features;
@@ -13,9 +14,11 @@ public static class MediatrServicesExtension
     {
         // Commands
         services.AddMediatR(typeof(CreateScoreboardCommand).Assembly);
+        services.AddMediatR(typeof(CreateScoreboardByIterationResultCommand).Assembly);
         
         // Commands handlers
         services.AddMediatR(typeof(CreateScoreboardCommandHandler).Assembly);
+        services.AddMediatR(typeof(CreateScoreboardByIterationResultCommandHandler).Assembly);
 
         // Queries
         services.AddMediatR(typeof(GetIterationResultsBySimulationIdQuery).Assembly);

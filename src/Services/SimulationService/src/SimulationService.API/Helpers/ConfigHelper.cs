@@ -24,6 +24,27 @@ public static class ConfigHelper
         return sportsDataAddress;
     }
 
+    public static string GetStatisticsAddress()
+    {
+        string statisticsAddress = Environment.GetEnvironmentVariable("StatisticsService__Address");
+
+        if (string.IsNullOrEmpty(statisticsAddress))
+        {
+            if (!File.Exists("/.dockerenv"))
+            {
+                var config = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
+                    .Build();
+
+                statisticsAddress = config["StatisticsService:Address"];
+            }
+            else
+                throw new SystemException("StatisticsService address is not declared!");
+        }
+        return statisticsAddress;
+    }
+    
     internal static string GetLoggerSourceName()
     {
         string serviceName = Environment.GetEnvironmentVariable("GrpcLogging__SourceName");
