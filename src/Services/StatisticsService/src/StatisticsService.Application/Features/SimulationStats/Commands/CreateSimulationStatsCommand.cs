@@ -3,4 +3,4 @@ using MediatR;
 
 namespace StatisticsService.Application.Features.SimulationStats.Commands;
 
-public record CreateSimulationStatsCommand(Guid SimulationId) : IRequest<bool>;
+public record CreateSimulationStatsCommand(Guid SimulationId) : IRequest<(bool, Guid)>;

@@ -6,6 +6,7 @@ using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboa
 using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboardByIterationResult;
 using StatisticsService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 using StatisticsService.Application.Features.SimulationStats.Commands;
+using StatisticsService.Application.Features.SimulationStats.Queries.GetSimulationStatsBySimulationId;
 
 namespace StatisticsService.Application.Features;
 
@@ -26,10 +27,12 @@ public static class MediatrServicesExtension
         // Queries
         services.AddMediatR(typeof(GetIterationResultsBySimulationIdQuery).Assembly);
         services.AddMediatR(typeof(GetScoreboardsBySimulationIdQuery).Assembly);
+        services.AddMediatR(typeof(GetSimulationStatsBySimulationIdQuery).Assembly);
 
         // Query Handlers
         services.AddMediatR(typeof(GetIterationResultsBySimulationIdQueryHandler).Assembly);
         services.AddMediatR(typeof(GetScoreboardsBySimulationIdQueryHandler).Assembly);
+        services.AddMediatR(typeof(GetSimulationStatsBySimulationIdQueryHandler).Assembly);
 
         // Validators
 

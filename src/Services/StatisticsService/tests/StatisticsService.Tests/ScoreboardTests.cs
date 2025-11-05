@@ -2,6 +2,7 @@ using System;
 using StatisticsService.Domain.Entities;
 using Xunit;
 
+namespace StatisticsService.Tests;
 public class ScoreboardTests
 {
     [Fact]

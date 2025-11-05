@@ -5,6 +5,7 @@ using StatisticsService.Domain.Services;
 using StatisticsService.Domain.ValueObjects;
 using Xunit;
 
+namespace StatisticsService.Tests;
 public class ScoreboardServiceTests
 {
     [Fact]

@@ -3,6 +3,8 @@ using MediatR;
 using SimPitchProtos.StatisticsService;
 using SimPitchProtos.StatisticsService.SimulationStats;
 using StatisticsService.Application.DTOs;
+using StatisticsService.Application.Features.SimulationStats.Commands;
+using StatisticsService.Application.Features.SimulationStats.Queries.GetSimulationStatsBySimulationId;
 
 namespace StatisticsService.API.Services;
 
@@ -19,22 +21,26 @@ public class SimulationStatsGrpcService : SimulationStatsService.SimulationStats
 
     public override async Task<CreateSimulationStatsResponse> CreateSimulationStats(CreateSimulationStatsRequest request, ServerCallContext context)
     {
-        //var command = new CreateScoreboardCommand(Guid.Parse(request.SimulationId));
+        var command = new CreateSimulationStatsCommand(Guid.Parse(request.SimulationId));
 
-        //var results = await _mediator.Send(command, cancellationToken: context.CancellationToken);
+        var result = await _mediator.Send(command, cancellationToken: context.CancellationToken);
 
         return new CreateSimulationStatsResponse
         {
-            IsCreated = true
+            IsCreated = result.Item1,
+            SimulationId = result.Item2.ToString()
         };
     }
 
     public override async Task<GetSimulationStatsResponse> GetSimulationStats(GetSimulationStatsRequest request, ServerCallContext context)
     {
+        var query = new GetSimulationStatsBySimulationIdQuery(Guid.Parse(request.SimulationId));
+
+        var results = await _mediator.Send(query, cancellationToken: context.CancellationToken);
 
         return new GetSimulationStatsResponse
         {
-            SimulationTeamStats = { }
+            SimulationTeamStats = { results.Select(x => SimulationStatsToGrpc(x)) }
         };
     }
 

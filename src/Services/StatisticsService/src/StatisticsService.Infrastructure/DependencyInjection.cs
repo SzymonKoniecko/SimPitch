@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StatisticsService.Application.Features.Scoreboards.Services;
+using StatisticsService.Application.Features.SimulationStats.Services;
 using StatisticsService.Application.Interfaces;
 using StatisticsService.Domain.Interfaces;
 using StatisticsService.Domain.Services;
@@ -27,6 +28,7 @@ public static class DependencyInjection
         services.AddScoped<IScoreboardReadRepository, ScoreboardReadRepository>();
         services.AddScoped<IScoreboardTeamStatsReadRepository, ScoreboardTeamStatsReadRepository>();
         services.AddScoped<ISimulationTeamStatsReadRepository, SimulationTeamStatsReadRepository>();
+
         //  Write repositories
         services.AddScoped<IScoreboardWriteRepository, ScoreboardWriteRepository>();
         services.AddScoped<IScoreboardTeamStatsWriteRepository, ScoreboardTeamStatsWriteRepository>();
@@ -36,6 +38,7 @@ public static class DependencyInjection
         services.AddTransient<ScoreboardService>();
         services.AddTransient<ScoreboardTeamStatsService>();
         services.AddTransient<IScoreboardDataService, ScoreboardDataService>();
+        services.AddTransient<ISimulationStatsService, SimulationStatsService>();
 
         return services;
     }
