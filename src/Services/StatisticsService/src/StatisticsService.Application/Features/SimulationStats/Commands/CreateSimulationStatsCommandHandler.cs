@@ -12,19 +12,22 @@ public class CreateSimulationStatsCommandHandler : IRequestHandler<CreateSimulat
     private readonly ISimulationStatsService _simulationStatsService;
     private readonly ISimulationTeamStatsWriteRepository _simulationTeamStatsWriteRepository;
     private readonly ISimulationTeamStatsReadRepository _simulationTeamStatsReadRepository;
+    private readonly IScoreboardReadRepository _scoreboardReadRepository;
 
     public CreateSimulationStatsCommandHandler
     (
         IScoreboardTeamStatsReadRepository scoreboardTeamStatsReadRepository,
         ISimulationStatsService simulationStatsService,
         ISimulationTeamStatsWriteRepository simulationTeamStatsWriteRepository,
-        ISimulationTeamStatsReadRepository simulationTeamStatsReadRepository
+        ISimulationTeamStatsReadRepository simulationTeamStatsReadRepository,
+        IScoreboardReadRepository scoreboardReadRepository
     )
     {
         _scoreboardTeamStatsReadRepository = scoreboardTeamStatsReadRepository;
         _simulationStatsService = simulationStatsService;
         _simulationTeamStatsWriteRepository = simulationTeamStatsWriteRepository;
         _simulationTeamStatsReadRepository = simulationTeamStatsReadRepository;
+        _scoreboardReadRepository = scoreboardReadRepository;
     }
     
     public async Task<(bool, Guid)> Handle(CreateSimulationStatsCommand command, CancellationToken cancellationToken)
@@ -33,8 +36,13 @@ public class CreateSimulationStatsCommandHandler : IRequestHandler<CreateSimulat
         {
             return (true, command.SimulationId); // simulationTeamStats are already created
         }
-        
-        var scoreboardTeamStats = await _scoreboardTeamStatsReadRepository.GetScoreboardByScoreboardIdAsync(command.SimulationId, cancellationToken);
+        var scoreboards = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(command.SimulationId, withTeamStats: false, cancellationToken);
+        List<ScoreboardTeamStats> scoreboardTeamStats = new();
+
+        foreach (var scoreboard in scoreboards)
+        {
+            scoreboardTeamStats.AddRange(await _scoreboardTeamStatsReadRepository.GetScoreboardByScoreboardIdAsync(scoreboard.Id, cancellationToken));
+        }
 
         List<SimulationTeamStats> simulationTeamStats = _simulationStatsService.CalculateSimulationStatsForTeams(scoreboardTeamStats.OrderBy(x => x.TeamId).ToList(), command.SimulationId);
 
