@@ -52,7 +52,7 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
             if (simulationState.State != "Failed") // create a new MISSING scoreboards if simulationd is not failed
             {
                 var command = new CreateScoreboardCommand(query.simulationId, Guid.Empty);
-                await _mediator.Send(command, cancellationToken: cancellationToken);    
+                await _mediator.Send(command, cancellationToken: cancellationToken);
             }
         }
         var scoreboardsAfterAll = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(query.simulationId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);

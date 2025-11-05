@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SimPitchProtos.SimulationService.IterationResult;
 using SimPitchProtos.SimulationService.SimulationEngine;
 using SimPitchProtos.StatisticsService.Scoreboard;
+using SimPitchProtos.StatisticsService.SimulationStats;
 
 namespace EngineService.Infrastructure;
 
@@ -29,7 +30,10 @@ public static class GrpcClientServiceCollectionExtensions
         {
             options.Address = new Uri(statisticsServiceAddress);
         });
-
+        services.AddGrpcClient<SimulationStatsService.SimulationStatsServiceClient>(options =>
+        {
+            options.Address = new Uri(statisticsServiceAddress);
+        });
 
         return services;
     }
