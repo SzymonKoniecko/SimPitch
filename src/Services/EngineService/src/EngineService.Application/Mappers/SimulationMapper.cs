@@ -21,6 +21,7 @@ public static class SimulationMapper
         dto.IterationPreviews = iterationPreviewList;
         dto.SimulatedMatches = simulatedMatches;
         dto.PriorLeagueStrength = priorLeagueStrength;
+        dto.WinnersSummary = "Unknown";
 
         return dto;
     }
