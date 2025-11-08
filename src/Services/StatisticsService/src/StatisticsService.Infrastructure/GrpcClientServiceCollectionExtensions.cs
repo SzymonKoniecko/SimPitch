@@ -4,6 +4,7 @@ using SimPitchProtos.SimulationService.IterationResult;
 using SimPitchProtos.SimulationService.SimulationEngine;
 using SimPitchProtos.SportsDataService.LeagueRound;
 using SimPitchProtos.SportsDataService.MatchRound;
+using StatisticsService.Application.Consts;
 
 namespace StatisticsService.Infrastructure;
 
@@ -17,15 +18,17 @@ public static class GrpcClientServiceCollectionExtensions
         })
         .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
         {
-            ConnectTimeout = TimeSpan.FromSeconds(10) // timeout na połączenie TCP
+            ConnectTimeout = TimeSpan.FromSeconds(10)
         })
-        .SetHandlerLifetime(TimeSpan.FromMinutes(5)) // opcjonalne, kontroluje lifetime HttpHandlera
+        .SetHandlerLifetime(TimeSpan.FromMinutes(5))
         .ConfigureChannel(options =>
         {
             options.HttpHandler = new SocketsHttpHandler
             {
                 ConnectTimeout = TimeSpan.FromSeconds(300)
             };
+            options.MaxReceiveMessageSize = GrpcConsts.MAX_RECEIVE_MESSAGE_SIZE;
+            options.MaxSendMessageSize = GrpcConsts.MAX_SEND_MESSAGE_SIZE;
         });
 
         services.AddGrpcClient<SimulationEngineService.SimulationEngineServiceClient>(options =>
@@ -35,7 +38,17 @@ public static class GrpcClientServiceCollectionExtensions
         .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
         {
             ConnectTimeout = TimeSpan.FromSeconds(300)
+        })
+        .ConfigureChannel(options =>
+        {
+            options.HttpHandler = new SocketsHttpHandler
+            {
+                ConnectTimeout = TimeSpan.FromSeconds(300)
+            };
+            options.MaxReceiveMessageSize = GrpcConsts.MAX_RECEIVE_MESSAGE_SIZE;
+            options.MaxSendMessageSize = GrpcConsts.MAX_SEND_MESSAGE_SIZE;
         });
+
 
         return services;
     }
@@ -49,7 +62,7 @@ public static class GrpcClientServiceCollectionExtensions
         {
             options.Address = new Uri(sportsDataServiceAddress);
         });
-        
+
         return services;
     }
 }

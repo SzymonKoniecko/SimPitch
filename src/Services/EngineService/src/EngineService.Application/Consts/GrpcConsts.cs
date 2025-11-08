@@ -1,10 +1,9 @@
 using System;
 
-namespace StatisticsService.Application.Consts;
+namespace EngineService.Application.Consts;
 
-public class GrpcConsts
+public static class GrpcConsts
 {
-    public const int CHUNK_SIZE = 3 * 1024 * 1024; // ~3 MB
     public const int MAX_RECEIVE_MESSAGE_SIZE = 20 * 1024 * 1024; // 20 MB
     public const int MAX_SEND_MESSAGE_SIZE = 20 * 1024 * 1024;    // 20 MB
 }

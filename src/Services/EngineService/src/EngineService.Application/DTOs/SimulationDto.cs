@@ -3,7 +3,7 @@ using EngineService.Application.Common.Pagination;
 
 namespace EngineService.Application.DTOs;
 
-public class SimulationDto
+public class  SimulationDto
 {
     public Guid Id { get; set; }
     public string WinnersSummary { get; set; } = "1st JAG (30%) 2nd LEG (20%) 3rd ZAG (10%)";

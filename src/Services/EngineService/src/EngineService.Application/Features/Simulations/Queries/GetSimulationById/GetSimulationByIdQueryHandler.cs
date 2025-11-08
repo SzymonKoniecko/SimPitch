@@ -36,7 +36,7 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
 
         if (iterationResults == null || iterationResults.Items.Count() == 0)
         {
-            _logger.LogWarning($"No iteration results for query: PageNumber:{query.PagedRequest.PageNumber} - PageSize:{query.PagedRequest.PageSize}");
+            _logger.LogWarning($"No iteration results for query: Offset:{query.PagedRequest.Offset} - PageSize:{query.PagedRequest.PageSize}");
             return SimulationMapper.ToSimulationDto(
                 query.simulationId,
                 simulationState,
@@ -44,8 +44,8 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
                 new PagedResponse<IterationPreviewDto>()
                 {
                     Items = null,
-                    TotalCount = 0,
-                    PageNumber = query.PagedRequest.PageNumber,
+                    TotalCount = -1,
+                    PageNumber = (query.PagedRequest.Offset / query.PagedRequest.PageSize) + 1,
                     PageSize = query.PagedRequest.PageSize,
                     SortingMethod = query.PagedRequest.SortingMethod
                 },

@@ -1,4 +1,6 @@
 
+using System.Threading.Channels;
+using EngineService.Application.Consts;
 using Microsoft.Extensions.DependencyInjection;
 using SimPitchProtos.SimulationService.IterationResult;
 using SimPitchProtos.SimulationService.SimulationEngine;
@@ -14,6 +16,10 @@ public static class GrpcClientServiceCollectionExtensions
         services.AddGrpcClient<IterationResultService.IterationResultServiceClient>(options =>
         {
             options.Address = new Uri(simulationServiceAddress);
+        }).ConfigureChannel(options =>
+        {
+            options.MaxReceiveMessageSize = GrpcConsts.MAX_RECEIVE_MESSAGE_SIZE;
+            options.MaxSendMessageSize = GrpcConsts.MAX_SEND_MESSAGE_SIZE;
         });
         services.AddGrpcClient<SimulationEngineService.SimulationEngineServiceClient>(options =>
         {
@@ -29,6 +35,10 @@ public static class GrpcClientServiceCollectionExtensions
         services.AddGrpcClient<ScoreboardService.ScoreboardServiceClient>(options =>
         {
             options.Address = new Uri(statisticsServiceAddress);
+        }).ConfigureChannel(options =>
+        {
+            options.MaxReceiveMessageSize = GrpcConsts.MAX_RECEIVE_MESSAGE_SIZE;
+            options.MaxSendMessageSize = GrpcConsts.MAX_SEND_MESSAGE_SIZE;
         });
         services.AddGrpcClient<SimulationStatsService.SimulationStatsServiceClient>(options =>
         {

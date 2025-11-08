@@ -30,7 +30,7 @@ public static class GrpcStreamHelper
 
             buffer.Add(item);
             currentSize += estimatedSize;
-
+            System.Console.WriteLine($"Currentsize: {currentSize} )) esitmatedSize: {estimatedSize}");
             if (cancellationToken.IsCancellationRequested)
                 break;
         }

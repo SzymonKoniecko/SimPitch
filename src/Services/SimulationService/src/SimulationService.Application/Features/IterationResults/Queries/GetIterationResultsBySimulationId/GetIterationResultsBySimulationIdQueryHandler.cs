@@ -21,7 +21,7 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
         var IterationResults = await _IterationResultReadRepository.GetIterationResultsBySimulationIdAsync(
             query.SimulationId,
             new PagedRequest(
-                query.PagedRequest.PageNumber,
+                query.PagedRequest.Offset,
                 query.PagedRequest.PageSize,
                 EnumMapper.SortingOptionToEnum(query.PagedRequest.SortingMethod.SortingOption),
                 query.PagedRequest.SortingMethod.Order
@@ -32,7 +32,7 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
             new PagedResponseDetails()
             {
                 TotalCount = await _IterationResultReadRepository.GetIterationResultsCountBySimulationIdAsync(query.SimulationId, cancellationToken),
-                PageNumber = query.PagedRequest.PageNumber,
+                PageNumber = (query.PagedRequest.Offset / query.PagedRequest.PageSize) + 1,
                 PageSize = query.PagedRequest.PageSize,
                 SortingOption = query.PagedRequest.SortingMethod.SortingOption,
                 Order = query.PagedRequest.SortingMethod.Order
