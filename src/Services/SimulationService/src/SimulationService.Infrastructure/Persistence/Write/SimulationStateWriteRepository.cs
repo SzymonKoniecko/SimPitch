@@ -21,7 +21,6 @@ public class SimulationStateWriteRepository : ISimulationStateWriteRepository
     public async Task UpdateOrCreateAsync(SimulationState state, CancellationToken cancellationToken)
     {
         using var connection = _connectionFactory.CreateConnection();
-        System.Console.WriteLine(DateTime.Now + "-UpdateOrCreateAsync-"+ state.ToString());
 
         var sql = @"
             MERGE INTO dbo.SimulationState AS target
@@ -54,7 +53,6 @@ public class SimulationStateWriteRepository : ISimulationStateWriteRepository
     public async Task ChangeStatusAsync(Guid simulationId, SimulationStatus newStatus, CancellationToken cancellationToken)
     {
         using var connection = _connectionFactory.CreateConnection();
-        System.Console.WriteLine(DateTime.Now + "-ChangeStatusAsync-"+ newStatus.ToString());
         var sql = @"
             UPDATE dbo.SimulationState
             SET [State] = @State,
