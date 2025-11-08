@@ -1,103 +1,87 @@
 # SimPitch
 
-SimPitch
-A full-stack web application demonstrating advanced microservices architecture and sports simulation capabilities. SimPitch showcases proficiency in modern web development through a comprehensive pitch simulation system powered by mathematical algorithms, with future integration of AI models for comparative analysis.
+> **Advanced sports match simulation platform built with modern microservice architecture.**
 
-Overview
-SimPitch is a sports simulation platform built with a microservices architecture, implementing mathematical algorithms to simulate sporting events. The project serves as a technical portfolio piece demonstrating expertise in distributed systems, clean architecture, and modern DevOps practices.
+SimPitch was created to demonstrate my skills in developing advanced web and microservice-based applications.  
+It’s a comprehensive system for simulating sports matches using mathematical algorithms, with future plans to integrate AI-based predictive models.  
+The project showcases how to combine modern technologies, scalable architecture, and clean design principles to build a high-performance, extensible system.
 
-Architecture
-The application follows CQRS (Command Query Responsibility Segregation) pattern with Clean Architecture principles, ensuring separation of concerns and maintainability across all backend services.
+---
 
-Technology Stack
-Frontend
+## Tech Stack & Architecture
 
-Vue.js 3 with TypeScript - Modern reactive UI framework for the presentation layer
+The system is built with **modern, battle-tested technologies** and **clean architectural patterns**:
 
-Backend
+| Technology | Purpose |
+|-------------|----------|
+| **Docker** | Containerization for independent service deployment, easy scalability, and CI/CD integration |
+| **Kubernates** | Integration in future |
+| **NGINX** | Acts as a reverse proxy, load balancer, and traffic security layer |
+| **Vue.js + TypeScript** | Modern, fast, and responsive front-end framework for intuitive user experience |
+| **C# (.NET Core)** | Core backend with **CQRS** and **Clean Architecture** for clear separation of concerns |
+| **gRPC** | Fast, strongly-typed communication between microservices and central logging service |
+| **Redis** | Background job processing and asynchronous task execution (e.g., iterative simulations) |
+| **Microsoft SQL Server** | Persistent database for input data, results, and configurations |
 
-C#/.NET - All microservices built with CQRS and clean architecture layers
+---
 
-gRPC - High-performance RPC framework for inter-service communication and logging
+## Core Features
 
-Redis - Background job processing and simulation workflow management
+- Start and stop football match simulations with live progress tracking  
+- Process real football data to generate realistic simulations  
+- Store detailed iteration results for future analysis  
+- Generate advanced statistics, leaderboards, and reports from simulation data  
+- Reliable microservice communication ensuring flexibility and resilience  
+- Centralized logging and monitoring of all events and errors via **LoggerService**  
+- Asynchronous background workflows that do not block frontend interaction  
+- Multiple simulation modes with customizable parameters and configurations
+- **gRPC data chunking** for efficient large response handling  
+- **Memory optimization** in `SimulationService` for multi-iteration performance  
 
-Data & Storage
+---
 
-MSSQL - Primary database for all microservices
+## Microservices Overview
 
-MSSQL Tools - Database management and optimization
+### **SportDataService**
+Collects and maintains real sports data used as the foundation for simulations.  
+Ensures data integrity and freshness. 
+> (currently only football data)
 
-Infrastructure
+### **SimulationService**
+Manages simulation lifecycle — starting, stopping, and processing simulations in the background using Redis.  
+Stores iteration results efficiently while optimizing memory usage.
+> Based on System.Collections.Concurrent.ConcurrentQueue
 
-Docker - Containerization for all services
+### **StatisticsService**
+Generates detailed reports, leaderboards, and statistics from simulation results.  
+Enables visualization and comparative insights.
 
-NGINX - Reverse proxy and load balancing
+### **EngineService**
+Coordinates the entire simulation workflow.  
+Communicates with all other services and controls the simulation algorithm.
+> In future that microservice will choose the exact service to handle a simulation (Can be in GO, Python, C#)
 
-Kubernetes (planned) - Container orchestration for production deployment
+### **LoggerService**
+Dedicated logging service aggregating logs from all components.  
+Simplifies monitoring, debugging, and system health tracking.
 
-Microservices
-SportDataService
-Manages real-world sports data ingestion and storage, providing the foundation for accurate simulation scenarios.
+---
 
-SimulationService
-Core simulation engine responsible for:
+## Development Roadmap
 
-Starting and stopping simulation workflows
+- 🔹 **AI microservice (Python)** to introduce intelligent simulations and predictions  
+- 🔹 **Full Kubernetes migration** for scalability, auto-deployment, and high availability  
+- 🔹 **Enhanced frontend dashboards** with visualization, filtering, and export tools  
 
-Managing background simulation threads via Redis
+---
 
-Persisting simulation configurations and iteration results
+## Setup & Run Instructions
 
-Handling simulation state management
+You can run SimPitch locally or in a production-like environment using **Docker** and **Docker Compose**.
 
-StatisticsService
-Processes simulation outputs to generate:
+### **Requirements**
 
-Real-time scoreboards for each simulation iteration
-
-Comprehensive match statistics
-
-Performance metrics and analytics
-
-EngineService
-Orchestration layer that:
-
-Coordinates communication between all microservices
-
-Executes simulation algorithms
-
-Manages simulation workflows end-to-end
-
-LoggerService
-Centralized logging infrastructure:
-
-Collects logs from all microservices via gRPC
-
-Provides unified logging interface
-
-Enables distributed tracing and debugging
-
-Roadmap
-Planned Enhancements
-Performance Optimization
-
-Implement gRPC streaming with chunking to handle large response payloads
-
-Optimize SimulationService database schema for reduced memory footprint during iteration storage
-
-AI Integration
-
-Develop Python-based AI simulation service
-
-Compare mathematical algorithm results against AI model predictions
-
-Build hybrid simulation models combining both approaches
-
-Infrastructure
-
-Complete Kubernetes deployment configuration
-
-Implement horizontal pod autoscaling
-
-Add service mesh for advanced traffic management
+- Docker & Docker Compose  
+- .NET SDK (for local backend development)  
+- Node.js + npm (for frontend development)  
+- Microsoft SQL Server
