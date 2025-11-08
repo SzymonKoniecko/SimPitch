@@ -16,3 +16,6 @@
 [submodule "src/Services/EngineService/src/SimPitchProtos"]
 	path = src/Services/EngineService/src/SimPitchProtos
 	url = https://github.com/SzymonKoniecko/SimPitchProtos.git
+[submodule "src/Selenium"]
+	path = src/Selenium
+	url = https://github.com/SzymonKoniecko/SimPitchSelenium.git
