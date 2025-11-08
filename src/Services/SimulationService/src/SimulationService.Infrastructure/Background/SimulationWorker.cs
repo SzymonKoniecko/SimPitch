@@ -12,6 +12,7 @@ using SimulationService.Domain.Background;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
 using SimulationService.Domain.Interfaces;
+using SimulationService.Domain.Interfaces.Read;
 using SimulationService.Domain.Interfaces.Write;
 
 namespace SimulationService.Infrastructure.Background
@@ -72,6 +73,7 @@ namespace SimulationService.Infrastructure.Background
             var registry = scope.ServiceProvider.GetRequiredService<IRedisSimulationRegistry>();
             var overviewRepo = scope.ServiceProvider.GetRequiredService<ISimulationOverviewWriteRepository>();
             var stateRepo = scope.ServiceProvider.GetRequiredService<ISimulationStateWriteRepository>();
+            var stateReadRepo = scope.ServiceProvider.GetRequiredService<ISimulationStateReadRepository>();
 
             try
             {
@@ -102,11 +104,19 @@ namespace SimulationService.Infrastructure.Background
 
                 await mediator.Send(cmd, linkedCts.Token);
 
-                var completedState = job.State.SetCompleted();
-                await registry.SetStateAsync(job.SimulationId, completedState, stoppingToken);
+                if (await stateReadRepo.IsSimulationStateCancelled(job.SimulationId, stoppingToken))
+                {
+                    _logger.LogInformation("Simulation {SimulationId} has been cancelled.", job.SimulationId);
+                    job.State.SetCancelled();
+                }
+                else
+                {
+                    var completedState = job.State.SetCompleted();
+                    await registry.SetStateAsync(job.SimulationId, completedState, stoppingToken);
 
-                await stateRepo.ChangeStatusAsync(job.SimulationId, SimulationStatus.Completed, stoppingToken);
-                _logger.LogInformation("Simulation {SimulationId} completed successfully.", job.SimulationId);
+                    await stateRepo.ChangeStatusAsync(job.SimulationId, SimulationStatus.Completed, stoppingToken);
+                    _logger.LogInformation("Simulation {SimulationId} completed successfully.", job.SimulationId);
+                }
             }
             catch (Exception ex)
             {

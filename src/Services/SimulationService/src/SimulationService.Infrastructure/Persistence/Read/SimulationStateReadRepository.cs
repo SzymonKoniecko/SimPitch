@@ -13,11 +13,29 @@ public class SimulationStateReadRepository : ISimulationStateReadRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
+    public async Task<bool> IsSimulationStateCancelled(Guid simulationId, CancellationToken cancellationToken)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = @"
+            SELECT Count(*)
+            FROM dbo.SimulationState
+            WHERE SimulationId = @SimulationId AND [State] = 'Cancelled';
+        ";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { SimulationId = simulationId },
+            cancellationToken: cancellationToken
+        );
+
+        return await connection.ExecuteScalarAsync<int>(command) == 1;
+    }
 
     public async Task<SimulationState> GetSimulationStateBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        
+
         const string sql = @"
             SELECT 
                 Id,

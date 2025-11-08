@@ -60,9 +60,6 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
 
         while (true)
         {
-            // log dla czytelności
-            Console.WriteLine($"➡️ Pobieranie strony {pageNumber} (offset={offset}, limit={pageSize})");
-
             var result = await GetPagedSimulationOverviewsAsync(offset, pageSize, cancellationToken);
             var page = result.Item1;
             if (page == null || page.Count == 0)
