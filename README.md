@@ -71,7 +71,10 @@ Simplifies monitoring, debugging, and system health tracking.
 
 - 🔹 **AI microservice (Python)** to introduce intelligent simulations and predictions  
 - 🔹 **Full Kubernetes migration** for scalability, auto-deployment, and high availability  
-- 🔹 **Enhanced frontend dashboards** with visualization, filtering, and export tools  
+- 🔹 **Enhanced frontend dashboards** with visualization, filtering, and export tools
+- 🔹 **CI / CD** test code by Selenium
+- 🔹 **More content** 
+
 
 ---
 
