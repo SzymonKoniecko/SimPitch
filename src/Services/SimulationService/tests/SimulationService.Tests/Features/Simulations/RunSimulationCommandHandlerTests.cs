@@ -15,6 +15,7 @@ using SimulationService.Application.Features.Simulations.DTOs;
 using SimulationService.Domain.Enums;
 using SimulationService.Domain.Interfaces.Write;
 using SimulationService.Application.Interfaces;
+using SimulationService.Domain.Interfaces.Read;
 
 namespace SimulationService.Tests.Features.Simulations;
 public class RunSimulationCommandHandlerTests
@@ -26,6 +27,7 @@ public class RunSimulationCommandHandlerTests
         var mediatorMock = new Mock<IMediator>();
         var simulationOverviewWriteMock = new Mock<ISimulationOverviewWriteRepository>();
         var simulationStateWriteMock = new Mock<ISimulationStateWriteRepository>();
+        var simulationStateReadMock = new Mock<ISimulationStateReadRepository>();
         var registry = new Mock<IRedisSimulationRegistry>();
         var loggerMock = new Mock<ILogger<RunSimulationCommandHandler>>();
 
@@ -62,7 +64,7 @@ public class RunSimulationCommandHandlerTests
             .Setup(m => m.Send(It.IsAny<InitSimulationContentCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(initResponse);
 
-        var handler = new RunSimulationCommandHandler(mediatorMock.Object, registry.Object, loggerMock.Object, simulationStateWriteMock.Object);
+        var handler = new RunSimulationCommandHandler(mediatorMock.Object, registry.Object, loggerMock.Object, simulationStateWriteMock.Object, simulationStateReadMock.Object);
 
         var simulationId = Guid.NewGuid();
 

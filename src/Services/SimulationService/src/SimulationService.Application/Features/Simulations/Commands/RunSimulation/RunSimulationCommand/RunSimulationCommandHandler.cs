@@ -9,6 +9,7 @@ using SimulationService.Application.Features.Simulations.Commands.RunSimulation.
 using SimulationService.Application.Interfaces;
 using SimulationService.Application.Mappers;
 using SimulationService.Domain.Entities;
+using SimulationService.Domain.Interfaces.Read;
 using SimulationService.Domain.Interfaces.Write;
 using SimulationService.Domain.Services;
 
@@ -18,6 +19,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
     private readonly IRedisSimulationRegistry _registry;
     private readonly ILogger<RunSimulationCommandHandler> _logger;
     private readonly ISimulationStateWriteRepository _simulationStateWriteRepository;
+    private readonly ISimulationStateReadRepository _simulationStateReadRepository;
     private readonly MatchSimulatorService _matchSimulator;
     
 
@@ -25,12 +27,14 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         IMediator mediator,
         IRedisSimulationRegistry registry,
         ILogger<RunSimulationCommandHandler> logger,
-        ISimulationStateWriteRepository simulationStateWriteRepository)
+        ISimulationStateWriteRepository simulationStateWriteRepository,
+        ISimulationStateReadRepository simulationStateReadRepository)
     {
         _mediator = mediator;
         _registry = registry;
         _logger = logger;
         _simulationStateWriteRepository = simulationStateWriteRepository;
+        _simulationStateReadRepository = simulationStateReadRepository;
         _matchSimulator = new MatchSimulatorService();
     }
 
@@ -53,8 +57,15 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         for (int i = 1; i <= command.SimulationParamsDto.Iterations; i++)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
-            _logger.LogInformation($"Started simulation, iteration: {i} -- simulationId: {command.simulationId}");
+
+            if (await _simulationStateReadRepository.IsSimulationStateCancelled(command.simulationId, cancellationToken))
+            {
+                _logger.LogInformation($"////Cancelled simulation before iteration: {i} -- simulationId: {command.simulationId}////");
+                break;
+            }
+
+
+            _logger.LogInformation($"//Started simulation, iteration: {i} -- simulationId: {command.simulationId}//");
 
             DateTime startTime = DateTime.Now;
             var watch = System.Diagnostics.Stopwatch.StartNew();

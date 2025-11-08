@@ -53,7 +53,6 @@ public class SimulationStateWriteRepository : ISimulationStateWriteRepository
     public async Task ChangeStatusAsync(Guid simulationId, SimulationStatus newStatus, CancellationToken cancellationToken)
     {
         using var connection = _connectionFactory.CreateConnection();
-
         var sql = @"
             UPDATE dbo.SimulationState
             SET [State] = @State,
