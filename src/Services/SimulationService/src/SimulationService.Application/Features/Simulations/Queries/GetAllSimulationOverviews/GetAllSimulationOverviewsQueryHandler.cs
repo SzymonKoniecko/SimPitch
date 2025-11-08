@@ -21,7 +21,7 @@ public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimul
     {
         var results = await _simulationOverviewReadRepository.GetSimulationOverviewsAsync(
             new PagedRequest(
-                query.PagedRequest.PageNumber,
+                query.PagedRequest.Offset,
                 query.PagedRequest.PageSize,
                 EnumMapper.SortingOptionToEnum(query.PagedRequest.SortingMethod.SortingOption),
                 query.PagedRequest.SortingMethod.Order
@@ -33,7 +33,7 @@ public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimul
             new PagedResponseDetails()
             {
                 TotalCount = await _simulationOverviewReadRepository.GetSimulationOverviewCountAsync(cancellationToken),
-                PageNumber = query.PagedRequest.PageNumber,
+                PageNumber = (query.PagedRequest.Offset / query.PagedRequest.PageSize) + 1,
                 PageSize = query.PagedRequest.PageSize,
                 SortingOption = query.PagedRequest.SortingMethod.SortingOption.ToString(),
                 Order = query.PagedRequest.SortingMethod.Order

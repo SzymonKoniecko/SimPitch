@@ -6,14 +6,14 @@ namespace SimulationService.Application.Common.Pagination;
 
 public class PagedRequestDto
 {
-    public int PageNumber { get; set; } = 1;
+    public int Offset { get; set; } = 1;
     public int PageSize { get; set; } = 10;
     public SortingMethodDto SortingMethod { get; set; }
 
-    public PagedRequestDto(int pageNumber, int pageSize, string sortingOption, string order)
+    public PagedRequestDto(int offset, int pageSize, string sortingOption, string order)
     {
 
-        this.PageNumber = pageNumber;
+        this.Offset = offset;
         this.PageSize = pageSize;
         SortingMethod = new()
         {

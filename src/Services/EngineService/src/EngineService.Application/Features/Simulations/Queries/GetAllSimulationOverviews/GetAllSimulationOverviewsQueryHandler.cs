@@ -18,8 +18,6 @@ public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimul
 
     public async Task<PagedResponse<SimulationOverviewDto>> Handle(GetAllSimulationOverviewsQuery query, CancellationToken cancellationToken)
     {
-        var offset = (query.PagedRequest.PageNumber - 1) * query.PagedRequest.PageSize;
-
         var result = await _simulationEngineGrpcClient.GetPagedSimulationOverviewsAsync(query.PagedRequest, cancellationToken);
 
         foreach (var overview in result.Item1)

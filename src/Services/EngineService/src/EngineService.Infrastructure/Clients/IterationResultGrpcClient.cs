@@ -31,14 +31,12 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
 
     public async Task<(List<IterationResultDto>, PagedResponseDetails)> GetIterationResultsBySimulationIdAsync(Guid simulationId, PagedRequest pagedRequest, CancellationToken cancellationToken)
     {
-        var offset = (pagedRequest.PageNumber - 1) * pagedRequest.PageSize;
-
         var request = new IterationResultsBySimulationIdRequest
         {
             SimulationId = simulationId.ToString(),
             PagedRequest = new PagedRequestGrpc
             {
-                Offset = offset,
+                Offset = pagedRequest.Offset,
                 Limit = pagedRequest.PageSize,
                 SortingMethod = new SortingMethodGrpc
                 {
@@ -73,7 +71,7 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
         var details = new PagedResponseDetails();
 
         details.TotalCount = grpc.TotalCount;
-        details.PageNumber = pagedRequest.PageNumber;
+        details.PageNumber = (pagedRequest.Offset / pagedRequest.PageSize) + 1;
         details.PageSize = pagedRequest.PageSize;
         details.SortingOption = grpc.SortingOption;
         details.Order = grpc.SortingOrder;

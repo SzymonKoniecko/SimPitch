@@ -45,7 +45,9 @@ namespace EngineService.API.Controllers
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
-            var result = await mediator.Send(new GetAllSimulationOverviewsQuery(new PagedRequest(pageNumber, pageSize, sortingOption, order)), cancellationToken);
+            var result = await mediator.Send(new GetAllSimulationOverviewsQuery(
+                new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, order)),
+                cancellationToken);
             if (result is null)
                 throw new NotFoundException("No simulations or something went wrong");
             return Ok(result);
@@ -60,7 +62,9 @@ namespace EngineService.API.Controllers
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
-            var result = await mediator.Send(new GetSimulationByIdQuery(simulationId, new PagedRequest(pageNumber, pageSize, sortingOption, order)), cancellationToken);
+            var result = await mediator.Send(new GetSimulationByIdQuery(simulationId,
+                new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, order)),
+                cancellationToken);
             if (result == null)    
                 throw new NotFoundException("No simulations for given Id");
             return Ok(result);

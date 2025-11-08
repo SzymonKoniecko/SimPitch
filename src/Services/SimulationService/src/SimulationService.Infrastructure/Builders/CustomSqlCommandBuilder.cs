@@ -13,9 +13,6 @@ public class CustomSqlCommandBuilder
         PagedRequest request,
         CancellationToken cancellationToken)
     {
-        var offset = (request.PageNumber - 1) * request.PageSize;
-        var limit = request.PageSize;
-
         var order = SortingMapper.GetSortDirection(request.SortingMethod.Order);
         var sqlOrderFilter = SortingMapper.OrderAndFilterToSqlColumnIterationResults(request.SortingMethod.SortingOption, order);
 
@@ -36,8 +33,8 @@ public class CustomSqlCommandBuilder
             {
                 SimulationId = simulationId,
                 MaxIndex = maxIndex,
-                Offset = offset,
-                Limit = limit
+                Offset = request.Offset,
+                Limit = request.PageSize
             },
             cancellationToken: cancellationToken
         );
@@ -47,9 +44,6 @@ public class CustomSqlCommandBuilder
         PagedRequest request,
         CancellationToken cancellationToken)
     {
-        var offset = (request.PageNumber - 1) * request.PageSize;
-        var limit = request.PageSize;
-        
         var order = SortingMapper.GetSortDirection(request.SortingMethod.Order);
 
         var sqlOrderFilter = SortingMapper.ToSqlColumnSimulationOverviews(request.SortingMethod.SortingOption, order);
@@ -65,7 +59,7 @@ public class CustomSqlCommandBuilder
 
         var command = new CommandDefinition(
             commandText: sql,
-            parameters: new { Offset = offset, Limit = limit },
+            parameters: new { Offset = request.Offset, Limit = request.PageSize },
             cancellationToken: cancellationToken
         );
 
