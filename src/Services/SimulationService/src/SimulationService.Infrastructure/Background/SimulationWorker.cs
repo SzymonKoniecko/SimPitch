@@ -82,7 +82,6 @@ namespace SimulationService.Infrastructure.Background
                 var overview = new SimulationOverview
                 {
                     Id = job.SimulationId,
-                    Title = $"Title: {DateTime.UtcNow:HH:mm:ss}",
                     CreatedDate = DateTime.UtcNow,
                     SimulationParams = JsonConvert.SerializeObject(job.Params)
                 };

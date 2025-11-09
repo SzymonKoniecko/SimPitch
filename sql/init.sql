@@ -131,7 +131,6 @@ BEGIN
     CREATE TABLE dbo.SimulationOverview
     (
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
-        Title NVARCHAR(MAX) NULL,
         CreatedDate DATETIME2 NOT NULL,
         SimulationParams NVARCHAR(MAX) NULL,
     );

@@ -23,6 +23,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
     {
         var request = new RunSimulationEngineRequest();
         request.SimulationParams = ToProto(
+            simulationParamsDto.Title,
             simulationParamsDto.SeasonYears,
             simulationParamsDto.LeagueId,
             simulationParamsDto.Iterations,
@@ -122,7 +123,6 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         var dto = new SimulationOverviewDto();
 
         dto.Id = Guid.Parse(grpc.Id);
-        dto.Title = grpc.Title;
         dto.CreatedDate = DateTime.ParseExact(
             grpc.CreatedDate,
             "MM/dd/yyyy HH:mm:ss",
@@ -137,6 +137,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
     {
         var dto = new SimulationParamsDto();
 
+        dto.Title = grpc.Title;
         dto.SeasonYears = grpc.SeasonYears.ToList();
         dto.Iterations = grpc.Iterations;
         dto.LeagueId = Guid.Parse(grpc.LeagueId);
@@ -146,10 +147,11 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         return dto;
     }
 
-    private static SimulationParamsGrpc ToProto(List<string> seasonYears, Guid leagueId, int iterations, Guid? leagueRoundId = default, bool createScoreboardOnCompleteIteration = false)
+    private static SimulationParamsGrpc ToProto(string title, List<string> seasonYears, Guid leagueId, int iterations, Guid? leagueRoundId = default, bool createScoreboardOnCompleteIteration = false)
     {
         var grpc = new SimulationParamsGrpc
         {
+            Title = title,
             LeagueId = leagueId.ToString(),
             Iterations = iterations,
             CreateScoreboardOnCompleteIteration = createScoreboardOnCompleteIteration
