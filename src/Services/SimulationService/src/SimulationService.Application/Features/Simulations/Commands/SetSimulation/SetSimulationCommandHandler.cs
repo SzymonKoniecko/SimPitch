@@ -1,15 +1,11 @@
 using System;
 using MediatR;
-using Newtonsoft.Json;
-using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 using SimulationService.Application.Interfaces;
 using SimulationService.Application.Mappers;
 using SimulationService.Domain.Background;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
 using SimulationService.Domain.Interfaces;
-using SimulationService.Domain.Interfaces.Write;
-using SimulationService.Domain.Entities;
 
 namespace SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 

@@ -12,7 +12,6 @@ public static class SimulationOverviewMapper
         var grpc = new SimulationOverviewGrpc();
 
         grpc.Id = dto.Id.ToString();
-        grpc.Title = dto.Title;
         grpc.CreatedDate = dto.CreatedDate.ToString();
         grpc.SimulationParams = SimulationParamsToProto(dto.SimulationParams);
 
@@ -28,6 +27,7 @@ public static class SimulationOverviewMapper
         
         var proto = new SimulationParamsGrpc
         {
+            Title = dto.Title,
             SeasonYears = { dto.SeasonYears },
             LeagueId = dto.LeagueId.ToString(),
             Iterations = dto.Iterations,

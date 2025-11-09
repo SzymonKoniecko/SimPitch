@@ -11,6 +11,7 @@ public static class SimulationParamsMapper
     {
         var vo = new SimulationParams();
 
+        vo.Title = dto.Title;
         vo.SeasonYears = dto.SeasonYears;
         vo.LeagueId = dto.LeagueId;
         vo.Iterations = dto.Iterations;
@@ -24,6 +25,7 @@ public static class SimulationParamsMapper
     {
         var dto = new SimulationParamsDto();
 
+        dto.Title = vo.Title;
         dto.SeasonYears = vo.SeasonYears;
         dto.LeagueId = vo.LeagueId;
         dto.Iterations = vo.Iterations;

@@ -11,7 +11,6 @@ public static class SimulationOverviewMapper
     {
         var domain = new SimulationOverview();
         domain.Id = dto.Id;
-        domain.Title = dto.Title;
         domain.CreatedDate = dto.CreatedDate;
         domain.SimulationParams = JsonConvert.SerializeObject(dto.SimulationParams);
 
@@ -22,7 +21,6 @@ public static class SimulationOverviewMapper
     {
         var dto = new SimulationOverviewDto();
         dto.Id = domain.Id;
-        dto.Title = domain.Title;
         dto.CreatedDate = domain.CreatedDate;
         dto.SimulationParams = JsonConvert.DeserializeObject<SimulationParamsDto>(domain.SimulationParams);
 

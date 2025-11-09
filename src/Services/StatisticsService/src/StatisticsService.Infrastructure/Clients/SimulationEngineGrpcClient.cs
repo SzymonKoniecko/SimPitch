@@ -88,7 +88,6 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         var dto = new SimulationOverview();
 
         dto.Id = Guid.Parse(grpc.Id);
-        dto.Title = grpc.Title;
         dto.CreatedDate = DateTime.ParseExact(
             grpc.CreatedDate,
             "MM/dd/yyyy HH:mm:ss",
@@ -102,6 +101,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
     {
         var dto = new SimulationParams();
 
+        dto.Title = grpc.Title;
         dto.SeasonYears = grpc.SeasonYears.ToList();
         dto.Iterations = grpc.Iterations;
         dto.LeagueId = Guid.Parse(grpc.LeagueId);

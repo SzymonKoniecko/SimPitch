@@ -19,9 +19,9 @@ public class SimulationOverviewWriteRepository : ISimulationOverviewWriteReposit
 
         const string sql = @"
             INSERT INTO SimulationOverview 
-            (Id, Title, CreatedDate, SimulationParams)
+            (Id, CreatedDate, SimulationParams)
             VALUES 
-            (@Id, @Title, @CreatedDate, @SimulationParams);
+            (@Id, @CreatedDate, @SimulationParams);
         ";
 
         var command = new CommandDefinition(
@@ -29,7 +29,6 @@ public class SimulationOverviewWriteRepository : ISimulationOverviewWriteReposit
             parameters: new
             {
                 simulationOverview.Id,
-                simulationOverview.Title,
                 simulationOverview.CreatedDate,
                 simulationOverview.SimulationParams
             },

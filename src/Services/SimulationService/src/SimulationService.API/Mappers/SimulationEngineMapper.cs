@@ -10,6 +10,8 @@ public static class SimulationEngineMapper
     public static SimulationParamsDto SimulationEngineReqestToDto(RunSimulationEngineRequest request)
     {
         var dto = new SimulationParamsDto();
+        
+        dto.Title = request.SimulationParams.Title;
         dto.SeasonYears = request.SimulationParams.SeasonYears.ToList();
         dto.LeagueId = Guid.Parse(request.SimulationParams.LeagueId);
         dto.Iterations = request.SimulationParams.Iterations;
