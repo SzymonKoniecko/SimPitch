@@ -18,6 +18,7 @@ public class SimulationOverviewReadRepository : ISimulationOverviewReadRepositor
 
     public async Task<SimulationOverview> GetSimulationOverviewByIdAsync(Guid simulationId, CancellationToken cancellationToken)
     {
+
         using var connection = _dbConnectionFactory.CreateConnection();
 
         const string sql = @"
@@ -33,7 +34,15 @@ public class SimulationOverviewReadRepository : ISimulationOverviewReadRepositor
         );
 
         var result = await connection.QuerySingleOrDefaultAsync<SimulationOverview>(command);
-        if (result == null) throw new KeyNotFoundException("No simulation overviews for given ID");
+        if (result == null)
+        {
+            var retryResult = await connection.QuerySingleOrDefaultAsync<SimulationOverview>(command);
+            if (retryResult == null)
+            {
+                throw new KeyNotFoundException("No simulation overviews for given ID");
+            }
+            return retryResult;
+        }
         return result;
     }
 
