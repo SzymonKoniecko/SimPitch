@@ -17,6 +17,11 @@ public static class SimulationParamsMapper
         vo.Iterations = dto.Iterations;
         vo.LeagueRoundId = dto.LeagueRoundId;
         vo.CreateScoreboardOnCompleteIteration = dto.CreateScoreboardOnCompleteIteration;
+        vo.Seed = dto.Seed;
+        vo.GamesToReachTrust = dto.GamesToReachTrust;
+        vo.ConfidenceLevel = dto.ConfidenceLevel;
+        vo.HomeAdvantage = dto.HomeAdvantage;
+        vo.NoiseFactor = dto.NoiseFactor;
 
         return vo;
     }
@@ -31,6 +36,11 @@ public static class SimulationParamsMapper
         dto.Iterations = vo.Iterations;
         dto.LeagueRoundId = vo.LeagueRoundId;
         dto.CreateScoreboardOnCompleteIteration = vo.CreateScoreboardOnCompleteIteration;
+        dto.Seed = vo.Seed;
+        dto.GamesToReachTrust = vo.GamesToReachTrust;
+        dto.ConfidenceLevel = vo.ConfidenceLevel;
+        dto.HomeAdvantage = vo.HomeAdvantage;
+        dto.NoiseFactor = vo.NoiseFactor;
 
         return dto;
     }

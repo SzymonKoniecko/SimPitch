@@ -16,6 +16,8 @@ using SimulationService.Domain.Enums;
 using SimulationService.Domain.Interfaces.Write;
 using SimulationService.Application.Interfaces;
 using SimulationService.Domain.Interfaces.Read;
+using SimulationService.Domain.Consts;
+using SimulationService.Application.Mappers;
 
 namespace SimulationService.Tests.Features.Simulations;
 public class RunSimulationCommandHandlerTests
@@ -57,7 +59,18 @@ public class RunSimulationCommandHandlerTests
         {
             MatchRoundsToSimulate = new List<MatchRound> { matchRound1 },
             TeamsStrengthDictionary = teamStrengthDict,
-            PriorLeagueStrength = 1.5f
+            PriorLeagueStrength = 1.5f,
+            SimulationParams = new()
+            {
+                SeasonYears = new() { "2023/2024" },
+                LeagueId = leagueId,
+                Iterations = 1,
+                Seed = 1000,
+                GamesToReachTrust = SimulationConsts.GAMES_TO_REACH_TRUST,
+                ConfidenceLevel = SimulationConsts.SIMULATION_CONFIDENCE_LEVEL,
+                HomeAdvantage = SimulationConsts.HOME_ADVANTAGE,
+                NoiseFactor = SimulationConsts.NOISE_FACTOR
+            }
         };
 
         mediatorMock
@@ -76,6 +89,11 @@ public class RunSimulationCommandHandlerTests
                 SeasonYears = new() { "2023/2024" },
                 LeagueId = leagueId,
                 Iterations = 1,
+                Seed = 1000,
+                GamesToReachTrust = SimulationConsts.GAMES_TO_REACH_TRUST,
+                ConfidenceLevel = SimulationConsts.SIMULATION_CONFIDENCE_LEVEL,
+                HomeAdvantage = SimulationConsts.HOME_ADVANTAGE,
+                NoiseFactor = SimulationConsts.NOISE_FACTOR
             },
             new SimulationState(simulationId, 0, 0f, SimulationStatus.Pending, DateTime.Now));
 

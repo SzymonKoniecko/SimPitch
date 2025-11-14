@@ -19,6 +19,7 @@ using SimulationService.Application.Features.SeasonsStats.Queries.GetSeasonsStat
 using SimulationService.Domain.Enums;
 using SimulationService.Application.Mappers;
 using SimulationService.Application.Features.SeasonsStats.DTOs;
+using SimulationService.Domain.Consts;
 
 namespace SimulationService.Tests.Application.Features.Simulations
 {
@@ -27,26 +28,36 @@ namespace SimulationService.Tests.Application.Features.Simulations
         private readonly SeasonStatsService _seasonStatsService;
         private readonly Mock<IMediator> _mediatorMock;
         private readonly InitSimulationContentCommandHandler _handler;
+        public SimulationParamsDto SimulationParams { get; set; }
+
+        Guid leagueId = Guid.NewGuid();
+        string seasonYear = "2023/2024";
+        Guid roundId = Guid.NewGuid();
+        Guid teamId = Guid.NewGuid();
 
         public InitSimulationContentCommandHandlerTests()
         {
             _seasonStatsService = new SeasonStatsService(); // używamy realnego serwisu
             _mediatorMock = new Mock<IMediator>();
             _handler = new InitSimulationContentCommandHandler(_seasonStatsService, _mediatorMock.Object);
+
+            SimulationParams = new()
+            {
+                SeasonYears = new List<string>() { seasonYear },
+                LeagueRoundId = roundId,
+                Seed = 1000,
+                GamesToReachTrust = SimulationConsts.GAMES_TO_REACH_TRUST,
+                ConfidenceLevel = SimulationConsts.SIMULATION_CONFIDENCE_LEVEL,
+                HomeAdvantage = SimulationConsts.HOME_ADVANTAGE,
+                NoiseFactor = SimulationConsts.NOISE_FACTOR
+            };
         }
 
         [Fact]
         public async Task Handle_ShouldReturnCorrectLeagueStrengthAndPriorLeagueStrength()
         {
-            var leagueId = Guid.NewGuid();
-            var seasonYear = "2023/2024";
-            var roundId = Guid.NewGuid();
 
-            var command = new InitSimulationContentCommand(new SimulationParamsDto
-            {
-                SeasonYears = new List<string>() { seasonYear },
-                LeagueRoundId = roundId
-            });
+            var command = new InitSimulationContentCommand(SimulationParams);
 
             var leagueRounds = new List<LeagueRound>
             {
@@ -97,15 +108,7 @@ namespace SimulationService.Tests.Application.Features.Simulations
         [Fact]
         public async Task Handle_ShouldSetPriorLeagueStrengthToZero_WhenNoMatchesPlayed()
         {
-            var leagueId = Guid.NewGuid();
-            var seasonYear = "2023/2024";
-            var roundId = Guid.NewGuid();
-
-            var command = new InitSimulationContentCommand(new SimulationParamsDto
-            {
-                SeasonYears = new() { seasonYear },
-                LeagueRoundId = roundId
-            });
+            var command = new InitSimulationContentCommand(SimulationParams);
 
             var leagueRounds = new List<LeagueRound>
             {
@@ -145,15 +148,7 @@ namespace SimulationService.Tests.Application.Features.Simulations
         [Fact]
         public async Task Handle_ShouldNotModifyTeamStrength_WhenNoSeasonStatsReturned()
         {
-            var leagueId = Guid.NewGuid();
-            var teamId = Guid.NewGuid();
-            var seasonYear = "2023/2024";
-
-            var command = new InitSimulationContentCommand(new SimulationParamsDto
-            {
-                SeasonYears = new() { seasonYear },
-                LeagueRoundId = Guid.NewGuid()
-            });
+            var command = new InitSimulationContentCommand(SimulationParams);
 
             var leagueRounds = new List<LeagueRound>
             {
@@ -194,15 +189,7 @@ namespace SimulationService.Tests.Application.Features.Simulations
         [Fact]
         public async Task Handle_ShouldSkipSeasonStats_WhenSeasonYearNotInParams()
         {
-            var leagueId = Guid.NewGuid();
-            var teamId = Guid.NewGuid();
-            var seasonYear = "2023/2024";
-
-            var command = new InitSimulationContentCommand(new SimulationParamsDto
-            {
-                SeasonYears = new() { seasonYear },
-                LeagueRoundId = Guid.NewGuid()
-            });
+            var command = new InitSimulationContentCommand(SimulationParams);
 
             var leagueRounds = new List<LeagueRound>
             {

@@ -1,6 +1,6 @@
 using System;
 
-namespace SimulationService.Application.Consts;
+namespace SimulationService.Domain.Consts;
 
 public class GrpcConsts
 {

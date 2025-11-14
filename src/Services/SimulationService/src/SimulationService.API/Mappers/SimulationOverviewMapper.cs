@@ -31,13 +31,19 @@ public static class SimulationOverviewMapper
             SeasonYears = { dto.SeasonYears },
             LeagueId = dto.LeagueId.ToString(),
             Iterations = dto.Iterations,
-            CreateScoreboardOnCompleteIteration = dto.CreateScoreboardOnCompleteIteration
+            CreateScoreboardOnCompleteIteration = dto.CreateScoreboardOnCompleteIteration,
+            Seed = dto.Seed,
+            GamesToReachTrust = dto.GamesToReachTrust,
+            ConfidenceLevel = dto.ConfidenceLevel,
+            HomeAdvantage = dto.HomeAdvantage,
+            NoiseFactor = dto.NoiseFactor
         };
 
         if (dto.LeagueRoundId != Guid.Empty)
         {
             proto.LeagueRoundId = dto.LeagueRoundId.ToString();
         }
+
 
         return proto;
     }
