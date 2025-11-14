@@ -22,7 +22,7 @@ public static class SimulationConsts
     /// <summary>
     /// Ile meczów potrzeba, żeby ufać statystyce drużyny bardziej niż priory
     /// </summary>
-    public const int GAMES_TO_REACH_TRUST = 2;
+    public const int GAMES_TO_REACH_TRUST = 10;
 
     /// <summary>
     /// Przewaga własnego boiska jako mnożnik lambda (np. 1.05 = +5%)
