@@ -10,4 +10,9 @@ public class SimulationParamsDto
     public int Iterations { get; set; }
     public Guid? LeagueRoundId { get; set; }
     public bool CreateScoreboardOnCompleteIteration { get; set; }
+    public int Seed { get; set; }
+    public int GamesToReachTrust { get; set; }
+    public float ConfidenceLevel { get; set; }
+    public float HomeAdvantage { get; set; }
+    public float NoiseFactor { get; set; }
 }

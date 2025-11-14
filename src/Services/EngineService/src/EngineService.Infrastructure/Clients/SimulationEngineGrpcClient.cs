@@ -22,13 +22,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
     public async Task<string> CreateSimulationAsync(SimulationParamsDto simulationParamsDto, CancellationToken cancellationToken)
     {
         var request = new RunSimulationEngineRequest();
-        request.SimulationParams = ToProto(
-            simulationParamsDto.Title,
-            simulationParamsDto.SeasonYears,
-            simulationParamsDto.LeagueId,
-            simulationParamsDto.Iterations,
-            simulationParamsDto.LeagueRoundId,
-            simulationParamsDto.CreateScoreboardOnCompleteIteration);
+        request.SimulationParams = ToProto(simulationParamsDto);
 
         var response = await _client.RunSimulationAsync(request, cancellationToken: cancellationToken);
 
@@ -141,27 +135,34 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         dto.SeasonYears = grpc.SeasonYears.ToList();
         dto.Iterations = grpc.Iterations;
         dto.LeagueId = Guid.Parse(grpc.LeagueId);
+        dto.Seed = grpc.Seed;
         dto.LeagueRoundId = grpc.HasLeagueRoundId ? Guid.Parse(grpc.LeagueRoundId) : Guid.Empty;
         dto.CreateScoreboardOnCompleteIteration = grpc.HasCreateScoreboardOnCompleteIteration;
+        dto.GamesToReachTrust = grpc.GamesToReachTrust;
+        dto.ConfidenceLevel = grpc.ConfidenceLevel;
+        dto.HomeAdvantage = grpc.HomeAdvantage;
+        dto.NoiseFactor = grpc.NoiseFactor;
 
         return dto;
     }
 
-    private static SimulationParamsGrpc ToProto(string title, List<string> seasonYears, Guid leagueId, int iterations, Guid? leagueRoundId = default, bool createScoreboardOnCompleteIteration = false)
+    private static SimulationParamsGrpc ToProto(SimulationParamsDto simulationParamsDto)
     {
         var grpc = new SimulationParamsGrpc
         {
-            Title = title,
-            LeagueId = leagueId.ToString(),
-            Iterations = iterations,
-            CreateScoreboardOnCompleteIteration = createScoreboardOnCompleteIteration
+            Title = simulationParamsDto.Title,
+            LeagueId = simulationParamsDto.LeagueId.ToString(),
+            Iterations = simulationParamsDto.Iterations,
+            Seed = simulationParamsDto.Seed,
+            LeagueRoundId = simulationParamsDto.LeagueRoundId.ToString(),
+            CreateScoreboardOnCompleteIteration = simulationParamsDto.CreateScoreboardOnCompleteIteration,
+            GamesToReachTrust = simulationParamsDto.GamesToReachTrust,
+            ConfidenceLevel = simulationParamsDto.ConfidenceLevel,
+            HomeAdvantage = simulationParamsDto.HomeAdvantage,
+            NoiseFactor = simulationParamsDto.NoiseFactor,
         };
 
-        grpc.SeasonYears.AddRange(seasonYears);
-
-        if (leagueRoundId.HasValue)
-            grpc.LeagueRoundId = leagueRoundId.ToString();
-            
+        grpc.SeasonYears.AddRange(simulationParamsDto.SeasonYears);
 
         return grpc;
     }
