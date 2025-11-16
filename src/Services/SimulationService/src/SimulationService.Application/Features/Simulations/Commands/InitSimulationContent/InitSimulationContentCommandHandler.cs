@@ -100,7 +100,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         contentResponse.TeamsStrengthDictionary = contentResponse.TeamsStrengthDictionary
             .ToDictionary(
                 kvp => kvp.Key,
-                kvp => kvp.Value.Select(x => x.WithLikelihood().WithPosterior(contentResponse.PriorLeagueStrength)).ToList()
+                kvp => kvp.Value.Select(x => x.WithLikelihood().WithPosterior(contentResponse.PriorLeagueStrength, contentResponse.SimulationParams)).ToList()
             );
 
         return contentResponse;

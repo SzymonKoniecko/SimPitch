@@ -1,4 +1,5 @@
 using System;
+using SimulationService.Domain.Consts;
 using SimulationService.Domain.Enums;
 using SimulationService.Domain.ValueObjects;
 using Xunit;
@@ -7,6 +8,18 @@ namespace SimulationService.Tests.Domain.ValueObjects
 {
     public class TeamStrengthTests
     {
+        public SimulationParams SimulationParams { get; set; }
+        public TeamStrengthTests()
+        {
+            SimulationParams = new()
+            {
+                Seed = 1000,
+                GamesToReachTrust = SimulationConsts.GAMES_TO_REACH_TRUST,
+                ConfidenceLevel = SimulationConsts.SIMULATION_CONFIDENCE_LEVEL,
+                HomeAdvantage = SimulationConsts.HOME_ADVANTAGE,
+                NoiseFactor = SimulationConsts.NOISE_FACTOR
+            };
+        }
         [Fact]
         public void Create_ShouldInitializeSeasonStats()
         {
@@ -63,7 +76,7 @@ namespace SimulationService.Tests.Domain.ValueObjects
             };
 
             var teamStrength = TeamStrength.Create(teamId, seasonEnum, leagueId, leagueStrength) with { SeasonStats = seasonStats };
-            var updated = teamStrength.WithPosterior(1.5f);
+            var updated = teamStrength.WithPosterior(1.5f, SimulationParams);
 
             Assert.True(updated.Posterior.Offensive > 0);
             Assert.True(updated.Posterior.Defensive > 0);

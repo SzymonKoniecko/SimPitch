@@ -6,13 +6,13 @@ using SimulationService.Application.Features.IterationResults.Queries.GetIterati
 using SimulationService.API.Mappers;
 using SimulationService.Application.Features.IterationResults.Queries.GetIterationResultById;
 using System.ComponentModel.DataAnnotations;
-using SimulationService.Application.Consts;
 using Google.Protobuf;
 using SimulationService.API.Helpers;
 using SimulationService.Domain.ValueObjects;
 using SimulationService.Application.Common.Pagination;
 using SimulationService.Application.Mappers;
 using IterationResultMapper = SimulationService.API.Mappers.IterationResultMapper;
+using SimulationService.Domain.Consts;
 
 namespace SimulationService.API.Services;
 

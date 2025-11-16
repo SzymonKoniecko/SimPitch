@@ -1,5 +1,5 @@
 using System;
-using SimulationService.Domain.Constraints;
+using SimulationService.Domain.Consts;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
 
@@ -56,15 +56,15 @@ public record TeamStrength
         return this with { Likelihood = likelihood };
     }
 
-    public TeamStrength WithPosterior(float leagueStrength)
+    public TeamStrength WithPosterior(float leagueStrength, SimulationParams simulationParams)
     {
         if (SeasonStats.MatchesPlayed == 0)
             throw new InvalidOperationException("Cannot calculate posterior without matches played.");
 
         // Step 1: Calculate beta_0 based on trust factor
-        float beta_0 = (1 - SimulationConstraints.GAMES_TO_REACH_TRUST)
-                        / SimulationConstraints.GAMES_TO_REACH_TRUST
-                        * SimulationConstraints.SIMULATION_CONFIDENCE_LEVEL;
+        float beta_0 = (1 - simulationParams.GamesToReachTrust)
+                        / simulationParams.GamesToReachTrust
+                        * simulationParams.ConfidenceLevel;
 
         // Step 2: Calculate alpha_0 so prior mean matches league mean
         float alpha_0 = beta_0 * leagueStrength;

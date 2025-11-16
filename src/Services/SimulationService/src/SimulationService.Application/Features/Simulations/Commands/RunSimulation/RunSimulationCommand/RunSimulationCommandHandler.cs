@@ -20,7 +20,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
     private readonly ILogger<RunSimulationCommandHandler> _logger;
     private readonly ISimulationStateWriteRepository _simulationStateWriteRepository;
     private readonly ISimulationStateReadRepository _simulationStateReadRepository;
-    private readonly MatchSimulatorService _matchSimulator;
+    private MatchSimulatorService _matchSimulator;
     
 
     public RunSimulationCommandHandler(
@@ -46,6 +46,8 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         );
         var validator = new SimulationContentValidator();
         var validationResult = validator.Validate(simulationContent);
+
+        _matchSimulator = new MatchSimulatorService(simulationContent.SimulationParams.Seed);
 
         if (!validationResult.IsValid)
         {

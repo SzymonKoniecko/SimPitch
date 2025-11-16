@@ -19,7 +19,7 @@ namespace SimulationService.Domain.Services
                 var homeTeam = simulationContent.TeamsStrengthDictionary[match.HomeTeamId].OrderByDescending(x => x.LastUpdate).First();
                 var awayTeam = simulationContent.TeamsStrengthDictionary[match.AwayTeamId].OrderByDescending(x => x.LastUpdate).First();
 
-                var (homeGoals, awayGoals) = SimulateMatch(homeTeam, awayTeam, homeAdvantage: 1.05);
+                var (homeGoals, awayGoals) = SimulateMatch(homeTeam, awayTeam, simulationContent.SimulationParams.HomeAdvantage, simulationContent.SimulationParams.NoiseFactor);
 
                 match.HomeGoals = homeGoals;
                 match.AwayGoals = awayGoals;
@@ -35,20 +35,21 @@ namespace SimulationService.Domain.Services
                 homeTeam = homeTeam with { SeasonStats = homeStatsUpdated };
                 awayTeam = awayTeam with { SeasonStats = awayStatsUpdated };
 
-                homeTeam = homeTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength).UpdateTime().SetRoundId(match.RoundId);
-                awayTeam = awayTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength).UpdateTime().SetRoundId(match.RoundId);
+                homeTeam = homeTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength, simulationContent.SimulationParams).UpdateTime().SetRoundId(match.RoundId);
+                awayTeam = awayTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength, simulationContent.SimulationParams).UpdateTime().SetRoundId(match.RoundId);
 
                 simulationContent.TeamsStrengthDictionary[homeTeam.TeamId].Add(homeTeam);
                 simulationContent.TeamsStrengthDictionary[awayTeam.TeamId].Add(awayTeam);
             }
-            
+
             return simulationContent;
         }
 
         private (int HomeGoals, int AwayGoals) SimulateMatch(
             TeamStrength homeTeam,
             TeamStrength awayTeam,
-            double homeAdvantage = 1.05)
+            float homeAdvantage,
+            float noiceFactor)
         {
             if (homeTeam == null) throw new ArgumentNullException(nameof(homeTeam));
             if (awayTeam == null) throw new ArgumentNullException(nameof(awayTeam));
@@ -59,8 +60,8 @@ namespace SimulationService.Domain.Services
             double lambdaHome = homeTeam.Posterior.Offensive / awayFactor * awayTeam.Posterior.Defensive * homeAdvantage;
             double lambdaAway = awayTeam.Posterior.Offensive / homeFactor * homeTeam.Posterior.Defensive;
 
-            lambdaHome *= 0.9 + 0.2 * _rng.NextDouble(); // between 0.9 a 1.1
-            lambdaAway *= 0.9 + 0.2 * _rng.NextDouble();
+            lambdaHome *= 1f - noiceFactor + 2f * noiceFactor * _rng.NextDouble();
+            lambdaAway *= 1f - noiceFactor + 2f * noiceFactor * _rng.NextDouble();
 
             int goalsHome = SamplePoisson(lambdaHome);
             int goalsAway = SamplePoisson(lambdaAway);
