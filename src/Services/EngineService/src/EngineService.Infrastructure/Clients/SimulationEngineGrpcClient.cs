@@ -61,7 +61,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
 
         return details;
     }
-    
+
     public async Task<SimulationOverviewDto> GetSimulationOverviewBySimulationId(Guid simulationId, CancellationToken cancellationToken)
     {
         var request = new GetSimulationOverviewByIdRequest();
@@ -93,7 +93,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
     }
 
     /// Mappers
-    
+
     private static SimulationStateDto StateGrpcToDto(SimulationStateGrpc stateGrpc)
     {
         var dto = new SimulationStateDto();
@@ -148,21 +148,24 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
 
     private static SimulationParamsGrpc ToProto(SimulationParamsDto simulationParamsDto)
     {
-        var grpc = new SimulationParamsGrpc
-        {
-            Title = simulationParamsDto.Title,
-            LeagueId = simulationParamsDto.LeagueId.ToString(),
-            Iterations = simulationParamsDto.Iterations,
-            Seed = simulationParamsDto.Seed,
-            LeagueRoundId = simulationParamsDto.LeagueRoundId.ToString(),
-            CreateScoreboardOnCompleteIteration = simulationParamsDto.CreateScoreboardOnCompleteIteration,
-            GamesToReachTrust = simulationParamsDto.GamesToReachTrust,
-            ConfidenceLevel = simulationParamsDto.ConfidenceLevel,
-            HomeAdvantage = simulationParamsDto.HomeAdvantage,
-            NoiseFactor = simulationParamsDto.NoiseFactor,
-        };
+        var grpc = new SimulationParamsGrpc();
+
+        grpc.Title = simulationParamsDto.Title;
+        grpc.LeagueId = simulationParamsDto.LeagueId.ToString();
+        grpc.Iterations = simulationParamsDto.Iterations;
+        grpc.Seed = simulationParamsDto.Seed;
+        grpc.CreateScoreboardOnCompleteIteration = simulationParamsDto.CreateScoreboardOnCompleteIteration;
+        grpc.GamesToReachTrust = simulationParamsDto.GamesToReachTrust;
+        grpc.ConfidenceLevel = simulationParamsDto.ConfidenceLevel;
+        grpc.HomeAdvantage = simulationParamsDto.HomeAdvantage;
+        grpc.NoiseFactor = simulationParamsDto.NoiseFactor;
 
         grpc.SeasonYears.AddRange(simulationParamsDto.SeasonYears);
+
+        if (simulationParamsDto.LeagueRoundId != null && simulationParamsDto.LeagueRoundId != Guid.Empty)
+        {
+            grpc.LeagueRoundId = simulationParamsDto.LeagueRoundId.ToString();
+        }
 
         return grpc;
     }
