@@ -188,8 +188,6 @@ BEGIN
         Id UNIQUEIDENTIFIER PRIMARY KEY,
         SimulationId UNIQUEIDENTIFIER NOT NULL,
         IterationResultId UNIQUEIDENTIFIER NOT NULL,
-        LeagueStrength FLOAT NOT NULL,
-        PriorLeagueStrength FLOAT NOT NULL,
         CreatedAt DATETIME2 NOT NULL
     );
 END

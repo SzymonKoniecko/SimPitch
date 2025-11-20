@@ -6,4 +6,4 @@ using StatisticsService.Domain.ValueObjects;
 
 namespace StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboardByIterationResult;
 
-public record CreateScoreboardByIterationResultCommand(SimulationOverviewDto Overview, IterationResultDto iterationResultDto) : IRequest<bool>;
+public record CreateScoreboardByIterationResultCommand(SimulationOverview Overview, IterationResultDto iterationResultDto) : IRequest<bool>;

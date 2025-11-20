@@ -18,9 +18,6 @@ public static class IterationResultMapper
         valueObject.SimulatedMatchRounds = dto.SimulatedMatchRounds
             .Select(x => MatchRoundMapper.ToValueObject(x))
             .ToList();
-        valueObject.LeagueStrength = dto.LeagueStrength;
-        valueObject.PriorLeagueStrength = dto.PriorLeagueStrength;
-        valueObject.Raport = dto.Raport;
 
         return valueObject;
     }

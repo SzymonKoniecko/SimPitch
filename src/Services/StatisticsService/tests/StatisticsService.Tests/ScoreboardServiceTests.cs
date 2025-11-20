@@ -18,8 +18,6 @@ public class ScoreboardServiceTests
         {
             Id = Guid.NewGuid(),
             SimulationId = Guid.NewGuid(),
-            LeagueStrength = 1.2f,
-            PriorLeagueStrength = 1.1f,
             SimulatedMatchRounds = new List<MatchRound>
             {
                 new MatchRound

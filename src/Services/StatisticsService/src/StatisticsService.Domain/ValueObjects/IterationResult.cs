@@ -10,7 +10,4 @@ public class IterationResult
     public DateTime StartDate { get; set; }
     public TimeSpan ExecutionTime { get; set; }
     public List<MatchRound> SimulatedMatchRounds { get; set; }
-    public float LeagueStrength { get; set; }
-    public float PriorLeagueStrength { get; set; }
-    public string Raport { get; set; }
 }

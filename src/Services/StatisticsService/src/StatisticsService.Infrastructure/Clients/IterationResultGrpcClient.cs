@@ -96,8 +96,6 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
             dto.ExecutionTime = TimeSpan.Parse(result.ExecutionTime);
             dto.TeamStrengths = JsonConvert.DeserializeObject<List<TeamStrengthDto>>(result.TeamStrengths);
             dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundDto>>(result.SimulatedMatchRounds);
-            dto.LeagueStrength = result.LeagueStrength;
-            dto.PriorLeagueStrength = result.PriorLeagueStrength;
 
             dtos.Add(dto);
         }

@@ -41,7 +41,7 @@ public class CreateScoreboardByIterationResultCommandHandler : IRequestHandler<C
 
     public async Task<bool> Handle(CreateScoreboardByIterationResultCommand command, CancellationToken cancellationToken)
     {
-        var playedMatchRounds = await _scoreboardDataService.GetPlayedMatchRoundsAsync(SimulationOverviewMapper.ToDomain(command.Overview), cancellationToken);
+        var playedMatchRounds = await _scoreboardDataService.GetPlayedMatchRoundsAsync(command.Overview, cancellationToken);
 
         var newScoreboard = await CreateMissingScoreboardAsync(IterationResultMapper.ToValueObject(command.iterationResultDto), playedMatchRounds, cancellationToken);
         

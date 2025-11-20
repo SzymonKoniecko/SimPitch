@@ -76,7 +76,7 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
     public override async Task<CreateScoreboardByIterationResultDataResponse> CreateScoreboardByIterationResultData(CreateScoreboardByIterationResultDataRequest request, ServerCallContext context)
     {
         var command = new CreateScoreboardByIterationResultCommand(
-            JsonConvert.DeserializeObject<SimulationOverviewDto>(request.SimulationOverviewJson),
+            JsonConvert.DeserializeObject<SimulationOverview>(request.SimulationOverviewJson),
             JsonConvert.DeserializeObject<IterationResultDto>(request.IterationResultJson));
 
         var result = await _mediator.Send(command, cancellationToken: context.CancellationToken);
@@ -96,8 +96,6 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
             SimulationId = dto.SimulationId.ToString(),
             IterationResultId = dto.IterationResultId.ToString(),
             ScoreboardTeams = { dto.ScoreboardTeams.Select(team => ScoreboardTeamStatsToGrpc(team)).OrderBy(x => x.Rank).ToList() },
-            LeagueStrength = dto.LeagueStrength,
-            PriorLeagueStrength = dto.PriorLeagueStrength,
             CreatedAt = dto.CreatedAt.ToString()
         };
 
