@@ -1,21 +1,11 @@
 using System;
 using SimulationService.Application.Features.Leagues.DTOs;
+using SimulationService.Domain.Entities;
 
 namespace SimulationService.Application.Mappers;
 
 public static class LeagueMapper
 {
-    public static LeagueDto ToDto(this Domain.Entities.League league)
-    {
-        return new LeagueDto
-        {
-            Id = league.Id,
-            Name = league.Name,
-            CountryId = league.CountryId,
-            MaxRound = league.MaxRound,
-            Strength = league.Strength
-        };
-    }
 
     public static Domain.Entities.League ToDomain(this LeagueDto leagueDto)
     {
@@ -25,7 +15,17 @@ public static class LeagueMapper
             Name = leagueDto.Name,
             CountryId = leagueDto.CountryId,
             MaxRound = leagueDto.MaxRound,
-            Strength = leagueDto.Strength
+            LeagueStrengths = leagueDto.Strengths.Select(x => ToDomain(x)).ToList()
+        };
+    }
+    public static LeagueStrength ToDomain(this LeagueStrengthDto dto)
+    {
+        return new LeagueStrength
+        {
+            Id = dto.Id,
+            LeagueId = dto.LeagueId,
+            SeasonYear = dto.SeasonYear,
+            Strength = dto.Strength
         };
     }
 }

@@ -3,6 +3,7 @@ using SimPitchProtos.SportsDataService;
 using SimPitchProtos.SportsDataService.League;
 using SimulationService.Application.Features.Leagues.DTOs;
 using SimulationService.Application.Interfaces;
+using SimulationService.Application.Mappers;
 
 namespace SimulationService.Infrastructure.Clients;
 
@@ -36,6 +37,16 @@ public class LeagueGrpcClient : ILeagueGrpcClient
             Name = grpc.Name,
             CountryId = Guid.Parse(grpc.CountryId),
             MaxRound = grpc.MaxRound,
+            Strengths = grpc.LeagueStrengths.Select(x => ToProto(x)).ToList()
+        };
+    }
+    public static LeagueStrengthDto ToProto(this LeagueStrengthGrpc grpc)
+    {
+        return new LeagueStrengthDto
+        {
+            Id = Guid.Parse(grpc.Id),
+            LeagueId = Guid.Parse(grpc.LeagueId),
+            SeasonYear = EnumMapper.StringtoSeasonEnum(grpc.SeasonYear),
             Strength = grpc.Strength
         };
     }
