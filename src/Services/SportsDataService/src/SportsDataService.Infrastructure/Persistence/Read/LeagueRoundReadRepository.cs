@@ -26,7 +26,8 @@ public class LeagueRoundReadRepository : ILeagueRoundReadRepository
 
         var command = new CommandDefinition(
             commandText: sql,
-            parameters: new { seasonYear = seasonYear }
+            parameters: new { seasonYear = seasonYear },
+            cancellationToken: cancellationToken
         );
 
         var leagueRounds = await connection.QueryAsync<LeagueRound>(command);

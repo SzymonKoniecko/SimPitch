@@ -1,22 +1,11 @@
 using System;
+using SportsDataService.Application.DTOs;
+using SportsDataService.Domain.Entities;
 
 namespace SportsDataService.Application.Mappers;
 
 public static class LeagueMapper
 {
-    public static Domain.Entities.League ToDomain(this Application.DTOs.LeagueDto dto)
-    {
-        if (dto == null) return null;
-
-        return new Domain.Entities.League
-        {
-            Id = dto.Id,
-            Name = dto.Name,
-            MaxRound = dto.MaxRound,
-            CountryId = dto.CountryId,
-            Strength = dto.Strength
-        };
-    }
 
     public static Application.DTOs.LeagueDto ToDto(this Domain.Entities.League entity)
     {
@@ -28,7 +17,21 @@ public static class LeagueMapper
             Name = entity.Name,
             MaxRound = entity.MaxRound,
             CountryId = entity.CountryId,
-            Strength = entity.Strength
+            Strengths = entity.Strengths.Select(x=> ToDto(x)).ToList()
         };
+    }
+
+    public static LeagueStrengthDto ToDto(LeagueStrength entity)
+    {
+        if (entity == null) return null;
+        
+        var dto = new LeagueStrengthDto();
+
+        dto.Id = entity.Id;
+        dto.LeagueId = entity.LeagueId;
+        dto.SeasonYear = EnumMapper.StringtoSeasonEnum(entity.SeasonYear);
+        dto.Strength = entity.Strength;
+
+        return dto;
     }
 }

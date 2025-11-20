@@ -9,5 +9,5 @@ public class League
     public string Name { get; set; }
     public Guid CountryId { get; set; }
     public int MaxRound { get; set; }
-    public float Strength { get; set; }
+    public List<LeagueStrength> Strengths { get; set; }
 }

@@ -56,6 +56,7 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='LeagueStrength' AND xtype='U
 BEGIN
     CREATE TABLE dbo.LeagueStrength
     (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         LeagueId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES League(Id),
         SeasonYear NVARCHAR(255) NOT NULL,
         Strength FLOAT

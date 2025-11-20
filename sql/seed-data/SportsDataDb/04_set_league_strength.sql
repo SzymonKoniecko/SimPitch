@@ -35,8 +35,8 @@ Stats AS (
     GROUP BY ls.LeagueId, ls.SeasonYear
 )
 
-INSERT INTO SportsDataDb.dbo.LeagueStrength (LeagueId, SeasonYear, Strength)
-SELECT s.LeagueId, s.SeasonYear, s.Strength
+INSERT INTO SportsDataDb.dbo.LeagueStrength (Id, LeagueId, SeasonYear, Strength)
+SELECT NewID(), s.LeagueId, s.SeasonYear, s.Strength
 FROM Stats s
 LEFT JOIN SportsDataDb.dbo.LeagueStrength ls
     ON ls.LeagueId = s.LeagueId

@@ -8,7 +8,9 @@ namespace SportsDataService.Infrastructure.Persistence.Read;
 public class LeagueReadRepository : ILeagueReadRepository
 {
     private readonly IDbConnectionFactory _DbConnectionFactory;
-    public LeagueReadRepository(IDbConnectionFactory dbConnectionFactory)
+    private readonly ILeagueStrengthReadRepository _leagueStrengthReadRepository;
+
+    public LeagueReadRepository(IDbConnectionFactory dbConnectionFactory, ILeagueStrengthReadRepository leagueStrengthReadRepository)
     {
         if (dbConnectionFactory == null)
         {
@@ -16,6 +18,7 @@ public class LeagueReadRepository : ILeagueReadRepository
         }
 
         _DbConnectionFactory = dbConnectionFactory;
+        _leagueStrengthReadRepository = leagueStrengthReadRepository;
     }
     public async Task<IEnumerable<League>> GetLeaguesByCountryIdAsync(Guid countryId, CancellationToken cancellationToken)
     {
@@ -28,14 +31,19 @@ public class LeagueReadRepository : ILeagueReadRepository
             cancellationToken: cancellationToken
         );
 
-        var league = await connection.QueryAsync<League>(command);
+        var leagues = await connection.QueryAsync<League>(command);
 
-        if (league == null)
+        if (leagues == null)
         {
-            throw new KeyNotFoundException($"League with CountryId '{countryId}' was not found.");
+            throw new KeyNotFoundException($"Leagues with CountryId '{countryId}' was not found.");
+        }
+        
+        foreach (var league in leagues)
+        {
+            league.Strengths = await _leagueStrengthReadRepository.GetLeagueStrengthsByLeagueIdAsync(league.Id, cancellationToken);
         }
 
-        return league;
+        return leagues;
     }
     public async Task<IEnumerable<League>> GetAllLeaguesAsync(CancellationToken cancellationToken)
     {
@@ -46,8 +54,13 @@ public class LeagueReadRepository : ILeagueReadRepository
             commandText: sql,
             cancellationToken: cancellationToken
         );
-
-        return await connection.QueryAsync<League>(command);
+        var leagues = await connection.QueryAsync<League>(command);
+        
+        foreach (var league in leagues)
+        {
+            league.Strengths = await _leagueStrengthReadRepository.GetLeagueStrengthsByLeagueIdAsync(league.Id, cancellationToken);
+        }
+        return leagues;
     }
     public async Task<bool> LeagueExistsAsync(Guid leagueId, CancellationToken cancellationToken)
     {
@@ -81,7 +94,7 @@ public class LeagueReadRepository : ILeagueReadRepository
         {
             throw new KeyNotFoundException($"League with Id '{leagueId}' was not found.");
         }
-
+        league.Strengths = await _leagueStrengthReadRepository.GetLeagueStrengthsByLeagueIdAsync(leagueId, cancellationToken);
         return league;
     }
 }
