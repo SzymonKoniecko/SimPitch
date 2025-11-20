@@ -77,7 +77,7 @@ public class RunSimulationCommandHandlerTests
             .Setup(m => m.Send(It.IsAny<InitSimulationContentCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(initResponse);
 
-        var handler = new RunSimulationCommandHandler(mediatorMock.Object, registry.Object, loggerMock.Object, simulationStateWriteMock.Object, simulationStateReadMock.Object);
+        var handler = new RunSimulationCommandHandler(mediatorMock.Object, registry.Object, loggerMock.Object, simulationStateWriteMock.Object, simulationStateReadMock.Object, simulationOverviewWriteMock.Object);
 
         var simulationId = Guid.NewGuid();
 

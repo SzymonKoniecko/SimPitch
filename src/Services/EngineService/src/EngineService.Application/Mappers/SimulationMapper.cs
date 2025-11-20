@@ -12,6 +12,7 @@ public static class SimulationMapper
         SimulationParamsDto simulationParamsDto,
         PagedResponse<IterationPreviewDto> iterationPreviewList,
         int simulatedMatches,
+        List<LeagueStrengthDto> leagueStrengthDtos,
         float priorLeagueStrength)
     {
         var dto = new SimulationDto();
@@ -20,6 +21,7 @@ public static class SimulationMapper
         dto.SimulationParams = simulationParamsDto;
         dto.IterationPreviews = iterationPreviewList;
         dto.SimulatedMatches = simulatedMatches;
+        dto.LeagueStrengths = leagueStrengthDtos;
         dto.PriorLeagueStrength = priorLeagueStrength;
         dto.WinnersSummary = "Unknown";
 

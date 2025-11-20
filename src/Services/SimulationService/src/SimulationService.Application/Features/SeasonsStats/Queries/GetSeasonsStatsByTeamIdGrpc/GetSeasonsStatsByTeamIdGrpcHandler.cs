@@ -27,7 +27,7 @@ public class GetSeasonsStatsByTeamIdGrpcHandler : IRequestHandler<GetSeasonsStat
         {
             if (!leagues.Any(x => x.Id == seasonStats.LeagueId))
                 leagues.Add(await _leagueGrpcClient.GetLeagueByIdAsync(seasonStats.LeagueId));
-            result.Add(SeasonStatsMapper.DtoToValueObject(seasonStats, (float)(leagues.First(x => x.Id == seasonStats.LeagueId)?.Strength)));
+            result.Add(SeasonStatsMapper.DtoToValueObject(seasonStats, (float)(leagues.First(x => x.Id == seasonStats.LeagueId)?.Strengths.First(x => EnumMapper.StringtoSeasonEnum(x.SeasonYear) == seasonStats.SeasonYear).Strength)));
         }
         return result;
     }

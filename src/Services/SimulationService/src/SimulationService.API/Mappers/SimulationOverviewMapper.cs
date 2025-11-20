@@ -14,6 +14,8 @@ public static class SimulationOverviewMapper
         grpc.Id = dto.Id.ToString();
         grpc.CreatedDate = dto.CreatedDate.ToString();
         grpc.SimulationParams = SimulationParamsToProto(dto.SimulationParams);
+        grpc.LeagueStrengths = JsonConvert.SerializeObject(dto.LeagueStrengths);
+        grpc.PriorLeagueStrength = dto.PriorLeagueStrength;
 
         return grpc;
     } 

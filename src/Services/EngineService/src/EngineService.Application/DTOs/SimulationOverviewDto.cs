@@ -8,4 +8,6 @@ public class SimulationOverviewDto
     public DateTime CreatedDate { get; set; }
     public SimulationParamsDto SimulationParams { get; set; }
     public SimulationStateDto State { get; set; }
+    public List<LeagueStrengthDto> LeagueStrengths { get; set; }
+    public float PriorLeagueStrength { get; set; }
 }

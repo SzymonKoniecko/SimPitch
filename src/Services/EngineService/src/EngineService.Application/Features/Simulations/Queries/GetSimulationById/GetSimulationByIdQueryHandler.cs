@@ -50,6 +50,7 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
                     SortingMethod = query.PagedRequest.SortingMethod
                 },
                 0,
+                new List<LeagueStrengthDto>(),
                 0
             );
         }
@@ -86,7 +87,8 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
                     SortingMethod = query.PagedRequest.SortingMethod
                 },
                 (int)(iterationResults.Items.First()?.SimulatedMatchRounds.Count),
-                (float)(iterationResults.Items.First()?.PriorLeagueStrength)
+                simulationOverview.LeagueStrengths,
+                simulationOverview.PriorLeagueStrength
             );
     }
 }

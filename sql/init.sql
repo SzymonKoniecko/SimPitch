@@ -49,8 +49,17 @@ BEGIN
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         [Name] NVARCHAR(255) NOT NULL,
         CountryId UNIQUEIDENTIFIER NOT NULL,
-        MaxRound INT NOT NULL,
-        Strength FLOAT NOT NULL
+        MaxRound INT NOT NULL
+    );
+END
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='LeagueStrength' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.LeagueStrength
+    (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        LeagueId UNIQUEIDENTIFIER NOT NULL FOREIGN KEY REFERENCES League(Id),
+        SeasonYear NVARCHAR(255) NOT NULL,
+        Strength FLOAT
     );
 END
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Stadium' AND xtype='U')
@@ -133,6 +142,8 @@ BEGIN
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         CreatedDate DATETIME2 NOT NULL,
         SimulationParams NVARCHAR(MAX) NULL,
+        LeagueStrengthsJSON NVARCHAR(MAX) NULL,
+        PriorLeagueStrength FLOAT NOT NULL,
     );
 END
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='IterationResult' AND xtype='U')
@@ -146,8 +157,6 @@ BEGIN
         ExecutionTime TIME NOT NULL,
         TeamStrengths NVARCHAR(MAX) NULL,
         SimulatedMatchRounds NVARCHAR(MAX) NULL,
-        LeagueStrength FLOAT NOT NULL,
-        PriorLeagueStrength FLOAT NOT NULL,
     );
 END
 
@@ -179,8 +188,6 @@ BEGIN
         Id UNIQUEIDENTIFIER PRIMARY KEY,
         SimulationId UNIQUEIDENTIFIER NOT NULL,
         IterationResultId UNIQUEIDENTIFIER NOT NULL,
-        LeagueStrength FLOAT NOT NULL,
-        PriorLeagueStrength FLOAT NOT NULL,
         CreatedAt DATETIME2 NOT NULL
     );
 END

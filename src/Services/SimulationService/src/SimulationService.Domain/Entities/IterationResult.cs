@@ -12,6 +12,4 @@ public class IterationResult
     public TimeSpan ExecutionTime { get; set; }
     public string TeamStrengths { get; set; }
     public string SimulatedMatchRounds { get; set; }
-    public float LeagueStrength { get; set; }
-    public float PriorLeagueStrength { get; set; }
 }

@@ -19,8 +19,6 @@ public class ScoreboardService
             Guid.NewGuid(),
             IterationResult.SimulationId,
             IterationResult.Id,
-            IterationResult.LeagueStrength,
-            IterationResult.PriorLeagueStrength,
             DateTime.Now
         );
         List<MatchRound> matches = playedMatchRounds

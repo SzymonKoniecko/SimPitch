@@ -20,6 +20,7 @@ using SimulationService.Domain.Enums;
 using SimulationService.Application.Mappers;
 using SimulationService.Application.Features.SeasonsStats.DTOs;
 using SimulationService.Domain.Consts;
+using Castle.Core.Logging;
 
 namespace SimulationService.Tests.Application.Features.Simulations
 {
@@ -39,7 +40,7 @@ namespace SimulationService.Tests.Application.Features.Simulations
         {
             _seasonStatsService = new SeasonStatsService(); // używamy realnego serwisu
             _mediatorMock = new Mock<IMediator>();
-            _handler = new InitSimulationContentCommandHandler(_seasonStatsService, _mediatorMock.Object);
+            _handler = new InitSimulationContentCommandHandler(_seasonStatsService, _mediatorMock.Object, null);
 
             SimulationParams = new()
             {
@@ -63,8 +64,13 @@ namespace SimulationService.Tests.Application.Features.Simulations
             {
                 new LeagueRound { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = seasonYear }
             };
-
-            var league = new League { Id = leagueId, Strength = 1.8f };
+            LeagueStrength leagueStrength = new()
+            {
+                LeagueId = leagueId,
+                SeasonYear = SeasonEnum.Season2023_2024,
+                Strength = 1.8f
+            };
+            var league = new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>{leagueStrength} };
 
             var playedMatch = new MatchRound
             {
@@ -98,7 +104,7 @@ namespace SimulationService.Tests.Application.Features.Simulations
             var result = await _handler.Handle(command, CancellationToken.None);
 
             Assert.NotNull(result);
-            Assert.Equal(league.Strength, result.LeagueStrength);
+            Assert.Equal(league.LeagueStrengths.First().Strength, result.LeagueStrengths.First().Strength);
             Assert.True(result.PriorLeagueStrength > 0);
             Assert.Single(result.MatchRoundsToSimulate);
             Assert.Equal(unplayedMatch.Id, result.MatchRoundsToSimulate[0].Id);
@@ -115,7 +121,13 @@ namespace SimulationService.Tests.Application.Features.Simulations
                 new LeagueRound { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = seasonYear }
             };
 
-            var league = new League { Id = leagueId, Strength = 2.0f };
+            LeagueStrength leagueStrength = new()
+            {
+                LeagueId = leagueId,
+                SeasonYear = SeasonEnum.Season2023_2024,
+                Strength = 2.0f
+            };
+            var league = new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>{leagueStrength} };
 
             var unplayedMatch = new MatchRound
             {
@@ -139,7 +151,7 @@ namespace SimulationService.Tests.Application.Features.Simulations
             var result = await _handler.Handle(command, CancellationToken.None);
 
             Assert.NotNull(result);
-            Assert.Equal(league.Strength, result.LeagueStrength);
+            Assert.Equal(league.LeagueStrengths.First().Strength, result.LeagueStrengths.First().Strength);
             Assert.Equal(0f, result.PriorLeagueStrength);
             Assert.Single(result.MatchRoundsToSimulate);
             Assert.Equal(unplayedMatch.Id, result.MatchRoundsToSimulate[0].Id);
@@ -155,7 +167,13 @@ namespace SimulationService.Tests.Application.Features.Simulations
                 new LeagueRound { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = seasonYear }
             };
 
-            var league = new League { Id = leagueId, Strength = 1.5f };
+            LeagueStrength leagueStrength = new()
+            {
+                LeagueId = leagueId,
+                SeasonYear = SeasonEnum.Season2023_2024,
+                Strength = 1.5f
+            };
+            var league = new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>{leagueStrength} };
 
             var match = new MatchRound
             {
@@ -196,7 +214,13 @@ namespace SimulationService.Tests.Application.Features.Simulations
                 new LeagueRound { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = seasonYear }
             };
 
-            var league = new League { Id = leagueId, Strength = 1.5f };
+            LeagueStrength leagueStrength = new()
+            {
+                LeagueId = leagueId,
+                SeasonYear = SeasonEnum.Season2023_2024,
+                Strength = 1.5f
+            };
+            var league = new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>{leagueStrength} };
 
             var match = new MatchRound
             {

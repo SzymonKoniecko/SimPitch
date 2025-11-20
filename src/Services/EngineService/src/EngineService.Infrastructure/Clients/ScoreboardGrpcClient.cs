@@ -59,8 +59,6 @@ public class ScoreboardGrpcClient : IScoreboardGrpcClient
         dto.SimulationId =  Guid.Parse(grpc.SimulationId);
         dto.IterationResultId =  Guid.Parse(grpc.IterationResultId);
         dto.ScoreboardTeams = grpc.ScoreboardTeams.Select(x => ProtoToDto(x)).ToList();
-        dto.LeagueStrength = grpc.LeagueStrength;
-        dto.PriorLeagueStrength = grpc.PriorLeagueStrength;
         dto.CreatedAt = DateTime.ParseExact(
             grpc.CreatedAt,
             "MM/dd/yyyy HH:mm:ss",

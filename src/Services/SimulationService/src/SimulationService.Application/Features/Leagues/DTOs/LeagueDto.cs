@@ -8,5 +8,5 @@ public class LeagueDto
     public string Name { get; set; } = string.Empty;
     public Guid CountryId { get; set; } = Guid.Empty;
     public int MaxRound { get; set; }
-    public float Strength { get; set; }
+    public List<LeagueStrengthDto> Strengths { get; set; }
 }
