@@ -19,9 +19,9 @@ public class SimulationOverviewWriteRepository : ISimulationOverviewWriteReposit
 
         const string sql = @"
             INSERT INTO SimulationOverview 
-            (Id, CreatedDate, SimulationParams, LeagueStrength, PriorLeagueStrength)
+            (Id, CreatedDate, SimulationParams, LeagueStrengthsJSON, PriorLeagueStrength)
             VALUES 
-            (@Id, @CreatedDate, @SimulationParams, @LeagueStrength, @PriorLeagueStrength);
+            (@Id, @CreatedDate, @SimulationParams, @LeagueStrengthsJSON, @PriorLeagueStrength);
         ";
 
         var command = new CommandDefinition(
@@ -30,7 +30,9 @@ public class SimulationOverviewWriteRepository : ISimulationOverviewWriteReposit
             {
                 simulationOverview.Id,
                 simulationOverview.CreatedDate,
-                simulationOverview.SimulationParams
+                simulationOverview.SimulationParams,
+                simulationOverview.LeagueStrengthsJSON,
+                simulationOverview.PriorLeagueStrength
             },
             cancellationToken: cancellationToken
         );

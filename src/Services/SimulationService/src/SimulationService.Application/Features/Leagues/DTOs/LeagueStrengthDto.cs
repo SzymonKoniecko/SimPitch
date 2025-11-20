@@ -7,6 +7,6 @@ public class LeagueStrengthDto
 {
     public Guid Id { get; set; }
     public Guid LeagueId { get; set; }
-    public SeasonEnum SeasonYear { get; set; }
+    public string SeasonYear { get; set; }
     public float Strength { get; set; }
 }

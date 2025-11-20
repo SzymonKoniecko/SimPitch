@@ -46,7 +46,7 @@ public class LeagueGrpcClient : ILeagueGrpcClient
         {
             Id = Guid.Parse(grpc.Id),
             LeagueId = Guid.Parse(grpc.LeagueId),
-            SeasonYear = EnumMapper.StringtoSeasonEnum(grpc.SeasonYear),
+            SeasonYear = grpc.SeasonYear,
             Strength = grpc.Strength
         };
     }

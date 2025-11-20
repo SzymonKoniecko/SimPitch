@@ -17,6 +17,11 @@ public static class SimulationOverviewMapper
         dto.LeagueStrengths = JsonConvert.DeserializeObject<List<LeagueStrengthDto>>(domain.LeagueStrengthsJSON);
         dto.PriorLeagueStrength = domain.PriorLeagueStrength;
 
+        foreach (var leagueStrength in dto.LeagueStrengths)
+        {
+            leagueStrength.SeasonYear = EnumMapper.StringedIntToSeasonString(leagueStrength.SeasonYear);
+        }
+        
         return dto;
     }
 }

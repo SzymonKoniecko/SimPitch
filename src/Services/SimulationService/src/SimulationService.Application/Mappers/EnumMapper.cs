@@ -51,4 +51,21 @@ public static class EnumMapper
                 throw new KeyNotFoundException($"Cannot map SortingOption to enum value: {enumValue}");
         }
     }
+
+    internal static string StringedIntToSeasonString(string seasonYear)
+    {
+        int value = int.Parse(seasonYear);
+        SeasonEnum season = (SeasonEnum)value;
+
+        if (SeasonEnum.Season2022_2023 == season)
+            return "2022/2023";
+        if (SeasonEnum.Season2023_2024 == season)
+            return "2023/2024";
+        if (SeasonEnum.Season2024_2025 == season)
+            return "2024/2025";
+        if (SeasonEnum.Season2025_2026 == season)
+            return "2025/2026";
+        
+        throw new KeyNotFoundException($"Cannot map season enum from his INT value to enum value: int?->{seasonYear}//");
+    }
 }

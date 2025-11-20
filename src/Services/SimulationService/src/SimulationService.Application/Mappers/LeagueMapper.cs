@@ -24,7 +24,7 @@ public static class LeagueMapper
         {
             Id = dto.Id,
             LeagueId = dto.LeagueId,
-            SeasonYear = dto.SeasonYear,
+            SeasonYear = EnumMapper.StringtoSeasonEnum(dto.SeasonYear),
             Strength = dto.Strength
         };
     }

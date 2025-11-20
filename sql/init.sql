@@ -142,7 +142,7 @@ BEGIN
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         CreatedDate DATETIME2 NOT NULL,
         SimulationParams NVARCHAR(MAX) NULL,
-        LeagueStrength FLOAT NOT NULL,
+        LeagueStrengthsJSON NVARCHAR(MAX) NULL,
         PriorLeagueStrength FLOAT NOT NULL,
     );
 END

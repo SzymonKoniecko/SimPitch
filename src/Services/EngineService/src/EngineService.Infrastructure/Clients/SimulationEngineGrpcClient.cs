@@ -5,6 +5,7 @@ using EngineService.Application.DTOs;
 using EngineService.Application.Interfaces;
 using EngineService.Domain.ValueObjects;
 using Google.Protobuf.WellKnownTypes;
+using Newtonsoft.Json;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.SimulationEngine;
 
@@ -123,6 +124,8 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
             CultureInfo.InvariantCulture
         );
         dto.SimulationParams = SimulationParamsToDto(grpc.SimulationParams);
+        dto.LeagueStrengths = JsonConvert.DeserializeObject<List<LeagueStrengthDto>>(grpc.LeagueStrengths);
+        dto.PriorLeagueStrength = grpc.PriorLeagueStrength;
 
         return dto;
     }
