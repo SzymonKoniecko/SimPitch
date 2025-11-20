@@ -11,16 +11,19 @@ using SimulationService.Domain.Enums;
 using SimulationService.Application.Features.LeagueRounds.DTOs;
 using SimulationService.Application.Interfaces;
 using SimulationService.Application.Features.SeasonsStats.Queries.GetSeasonsStatsByTeamIdGrpc;
+using Microsoft.Extensions.Logging;
 
 public partial class InitSimulationContentCommandHandler : IRequestHandler<InitSimulationContentCommand, SimulationContent>
 {
     private readonly SeasonStatsService _seasonStatsService;
     private readonly IMediator _mediator;
+    private readonly ILogger<InitSimulationContentCommandHandler> _logger;
 
-    public InitSimulationContentCommandHandler(SeasonStatsService seasonStatsService, IMediator mediator)
+    public InitSimulationContentCommandHandler(SeasonStatsService seasonStatsService, IMediator mediator, ILogger<InitSimulationContentCommandHandler> logger)
     {
         _seasonStatsService = seasonStatsService ?? throw new ArgumentNullException(nameof(seasonStatsService));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _logger = logger;
     }
 
     public async Task<SimulationContent> Handle(InitSimulationContentCommand query, CancellationToken cancellationToken)
@@ -46,7 +49,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             if (league == null || league.Id != leagueRound.LeagueId)
             {
                 league = await _mediator.Send(new GetLeagueByIdQuery(leagueRound.LeagueId));
-                contentResponse.LeagueStrength = league.Strength;
+                contentResponse.LeagueStrengths = league.LeagueStrengths;
             }
 
             var matchRounds = await _mediator.Send(new GetMatchRoundsByIdQuery(leagueRound.Id));
@@ -56,7 +59,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                 contentResponse,
                 matchRounds,
                 leagueRound,
-                league.Strength,
+                league.LeagueStrengths,
                 ref totalGoals,
                 ref totalMatches
             );
@@ -110,11 +113,14 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         SimulationContent contentResponse,
         IEnumerable<MatchRound> matchRounds,
         LeagueRound leagueRound,
-        float leagueStrength,
+        List<LeagueStrength> leagueStrengths,
         ref int totalGoals,
         ref int totalMatches)
     {
         var seasonEnum = EnumMapper.StringtoSeasonEnum(leagueRound.SeasonYear);
+        var leagueStrength = leagueStrengths.FirstOrDefault(x => x.SeasonYear == seasonEnum)?.Strength ?? 1.00f;
+        if (leagueStrength == 1.00f)
+            _logger.LogWarning($"***/ Missing league strength! LeagueRoundId:{leagueRound.Id} for seasonYear: {leagueRound.SeasonYear}/*** ___Used 1.00f___");
 
         foreach (var matchRound in matchRounds)
         {

@@ -16,5 +16,5 @@ public class SimulationContent
     /// Averange team calc by all_goals / all_matches
     /// </summary>
     public float PriorLeagueStrength { get; set; } = 0;
-    public float LeagueStrength { get; set; } = 0.0000f;
+    public List<LeagueStrength> LeagueStrengths { get; set; }
 }

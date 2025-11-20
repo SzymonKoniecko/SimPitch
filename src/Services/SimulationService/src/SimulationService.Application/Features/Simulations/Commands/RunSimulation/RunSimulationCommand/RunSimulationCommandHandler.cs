@@ -1,6 +1,7 @@
 using System.Reflection;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SimulationService.Application.DomainValidators;
 using SimulationService.Application.Features.IterationResults.Commands.CreateIterationResultCommand;
 using SimulationService.Application.Features.Scoreboards.Commands;
@@ -20,6 +21,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
     private readonly ILogger<RunSimulationCommandHandler> _logger;
     private readonly ISimulationStateWriteRepository _simulationStateWriteRepository;
     private readonly ISimulationStateReadRepository _simulationStateReadRepository;
+    private readonly ISimulationOverviewWriteRepository _simulationOverviewWriteRepository;
     private MatchSimulatorService _matchSimulator;
     
 
@@ -28,13 +30,15 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         IRedisSimulationRegistry registry,
         ILogger<RunSimulationCommandHandler> logger,
         ISimulationStateWriteRepository simulationStateWriteRepository,
-        ISimulationStateReadRepository simulationStateReadRepository)
+        ISimulationStateReadRepository simulationStateReadRepository,
+        ISimulationOverviewWriteRepository simulationOverviewWriteRepository)
     {
         _mediator = mediator;
         _registry = registry;
         _logger = logger;
         _simulationStateWriteRepository = simulationStateWriteRepository;
         _simulationStateReadRepository = simulationStateReadRepository;
+        _simulationOverviewWriteRepository = simulationOverviewWriteRepository;
         _matchSimulator = new MatchSimulatorService();
     }
 
@@ -44,6 +48,11 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             new InitSimulationContentCommand(command.SimulationParamsDto),
             cancellationToken
         );
+        command.Overview.PriorLeagueStrength = simulationContent.PriorLeagueStrength;
+        command.Overview.LeagueStrengthsJSON = JsonConvert.SerializeObject(simulationContent.LeagueStrengths);
+
+        await _simulationOverviewWriteRepository.CreateSimulationOverviewAsync(command.Overview, cancellationToken);
+
         var validator = new SimulationContentValidator();
         var validationResult = validator.Validate(simulationContent);
 
@@ -87,8 +96,6 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
                 startTime,
                 watch.Elapsed,
                 simulationContent.MatchRoundsToSimulate,
-                simulationContent.LeagueStrength,
-                simulationContent.PriorLeagueStrength,
                 simulationContent.TeamsStrengthDictionary
             );
 

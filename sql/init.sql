@@ -142,6 +142,8 @@ BEGIN
         Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
         CreatedDate DATETIME2 NOT NULL,
         SimulationParams NVARCHAR(MAX) NULL,
+        LeagueStrength FLOAT NOT NULL,
+        PriorLeagueStrength FLOAT NOT NULL,
     );
 END
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='IterationResult' AND xtype='U')
@@ -155,8 +157,6 @@ BEGIN
         ExecutionTime TIME NOT NULL,
         TeamStrengths NVARCHAR(MAX) NULL,
         SimulatedMatchRounds NVARCHAR(MAX) NULL,
-        LeagueStrength FLOAT NOT NULL,
-        PriorLeagueStrength FLOAT NOT NULL,
     );
 END
 

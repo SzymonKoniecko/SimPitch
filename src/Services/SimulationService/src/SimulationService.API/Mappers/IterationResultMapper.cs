@@ -17,9 +17,7 @@ public static class IterationResultMapper
             StartDate = dto.StartDate.ToString("o"),
             ExecutionTime = dto.ExecutionTime.ToString(),
             TeamStrengths = JsonConvert.SerializeObject(dto.TeamStrengths),
-            SimulatedMatchRounds = JsonConvert.SerializeObject(dto.SimulatedMatchRounds),
-            LeagueStrength = dto.LeagueStrength,
-            PriorLeagueStrength = dto.PriorLeagueStrength,
+            SimulatedMatchRounds = JsonConvert.SerializeObject(dto.SimulatedMatchRounds)
         };
     }
 }

@@ -14,8 +14,6 @@ public static class IterationResultMapper
         DateTime simulationDate,
         TimeSpan executionTime,
         List<MatchRound> simulatedMatchRounds,
-        float leagueStrength,
-        float priorLeagueStrength,
         Dictionary<Guid, List<TeamStrength>> teamStrengthsDictionary)
     {
         var dto = new IterationResultDto();
@@ -26,9 +24,7 @@ public static class IterationResultMapper
         dto.StartDate = simulationDate;
         dto.ExecutionTime = executionTime;
         dto.SimulatedMatchRounds = (List<MatchRoundDto>)MatchRoundMapper.ToDtoBulk(simulatedMatchRounds);
-        dto.LeagueStrength = leagueStrength;
-        dto.PriorLeagueStrength = priorLeagueStrength;
-
+        
         dto.TeamStrengths = new();
         foreach (var (key, value) in teamStrengthsDictionary)
         {
@@ -48,8 +44,6 @@ public static class IterationResultMapper
         entity.ExecutionTime = dto.ExecutionTime;
         entity.TeamStrengths = JsonConvert.SerializeObject(dto.TeamStrengths);
         entity.SimulatedMatchRounds = JsonConvert.SerializeObject(dto.SimulatedMatchRounds);
-        entity.LeagueStrength = dto.LeagueStrength;
-        entity.PriorLeagueStrength = dto.PriorLeagueStrength;
 
         return entity;
     }
@@ -75,8 +69,6 @@ public static class IterationResultMapper
             ? JsonConvert.DeserializeObject<List<MatchRoundDto>>(entity.SimulatedMatchRounds)
             ?? new List<MatchRoundDto>()
             : new List<MatchRoundDto>();
-        dto.LeagueStrength = entity.LeagueStrength;
-        dto.PriorLeagueStrength = entity.PriorLeagueStrength;
 
         return dto;
     }

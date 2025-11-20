@@ -40,7 +40,7 @@ public class LeagueGrpcClient : ILeagueGrpcClient
             Strengths = grpc.LeagueStrengths.Select(x => ToProto(x)).ToList()
         };
     }
-    public static LeagueStrengthDto ToProto(this LeagueStrengthGrpc grpc)
+    private static LeagueStrengthDto ToProto(LeagueStrengthGrpc grpc)
     {
         return new LeagueStrengthDto
         {

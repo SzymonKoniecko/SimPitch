@@ -71,7 +71,6 @@ namespace SimulationService.Infrastructure.Background
 
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
             var registry = scope.ServiceProvider.GetRequiredService<IRedisSimulationRegistry>();
-            var overviewRepo = scope.ServiceProvider.GetRequiredService<ISimulationOverviewWriteRepository>();
             var stateRepo = scope.ServiceProvider.GetRequiredService<ISimulationStateWriteRepository>();
             var stateReadRepo = scope.ServiceProvider.GetRequiredService<ISimulationStateReadRepository>();
 
@@ -85,7 +84,6 @@ namespace SimulationService.Infrastructure.Background
                     CreatedDate = DateTime.UtcNow,
                     SimulationParams = JsonConvert.SerializeObject(job.Params)
                 };
-                await overviewRepo.CreateSimulationOverviewAsync(overview, stoppingToken);
 
                 var cmd = new RunSimulationCommand(overview, job.SimulationId, SimulationParamsMapper.ToDto(job.Params), job.State);
 
