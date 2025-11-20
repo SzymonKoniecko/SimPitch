@@ -25,14 +25,14 @@ BEGIN TRY
 
     -- Insert into League
     IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.League)
-    INSERT INTO SportsDataDb.dbo.League (Id, [Name], CountryId, MaxRound, Strength)
+    INSERT INTO SportsDataDb.dbo.League (Id, [Name], CountryId, MaxRound)
     VALUES
-        (@LeagueId1, 'PKO BP Ekstraklasa', @CountryId1, 34, 1),
-        (@LeagueId2, 'Bundesliga', @CountryId2, 34, 1),
-        (@LeagueId3, 'La Liga', @CountryId3, 38, 1),
-        (@LeagueId4, 'Premier League', @CountryId4, 38, 1),
-        (@LeagueId5, 'Serie A', @CountryId5, 38, 1),
-        (@LeagueId6, 'Betclic 1 Liga', @CountryId1, 34, 0.75);
+        (@LeagueId1, 'PKO BP Ekstraklasa', @CountryId1, 34),
+        (@LeagueId2, 'Bundesliga', @CountryId2, 34),
+        (@LeagueId3, 'La Liga', @CountryId3, 38),
+        (@LeagueId4, 'Premier League', @CountryId4, 38),
+        (@LeagueId5, 'Serie A', @CountryId5, 38),
+        (@LeagueId6, 'Betclic 1 Liga', @CountryId1, 34);
 
     COMMIT TRANSACTION
     PRINT 'Data has been successfully inserted into all tables.'
