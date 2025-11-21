@@ -2,6 +2,7 @@ using System;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.SimulationEngine;
 using SimulationService.Application.Features.Simulations.DTOs;
+using SimulationService.Application.Mappers;
 using SimulationService.Domain.Consts;
 
 namespace SimulationService.API.Mappers;
@@ -23,7 +24,8 @@ public static class SimulationEngineMapper
         dto.ConfidenceLevel = request.SimulationParams.HasConfidenceLevel ? request.SimulationParams.ConfidenceLevel : SimulationConsts.SIMULATION_CONFIDENCE_LEVEL;
         dto.HomeAdvantage = request.SimulationParams.HasHomeAdvantage ? request.SimulationParams.HomeAdvantage : SimulationConsts.HOME_ADVANTAGE;
         dto.NoiseFactor = request.SimulationParams.HasNoiseFactor ? request.SimulationParams.NoiseFactor : SimulationConsts.NOISE_FACTOR;
-
+        dto.ModelType = EnumMapper.StringtoModelTypeEnum(request.SimulationParams.Model);
+        
         return dto;
     }
 

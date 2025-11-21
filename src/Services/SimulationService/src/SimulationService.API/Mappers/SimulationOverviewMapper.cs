@@ -38,7 +38,8 @@ public static class SimulationOverviewMapper
             GamesToReachTrust = dto.GamesToReachTrust,
             ConfidenceLevel = dto.ConfidenceLevel,
             HomeAdvantage = dto.HomeAdvantage,
-            NoiseFactor = dto.NoiseFactor
+            NoiseFactor = dto.NoiseFactor,
+            Model = dto.ModelType.ToString(),
         };
 
         if (dto.LeagueRoundId != Guid.Empty)

@@ -1,4 +1,5 @@
 using System;
+using SimulationService.Domain.Enums;
 
 namespace SimulationService.Application.Features.Simulations.DTOs;
 
@@ -15,4 +16,5 @@ public class SimulationParamsDto
     public float ConfidenceLevel { get; set; }
     public float HomeAdvantage { get; set; }
     public float NoiseFactor { get; set; }
+    public SimulationModelType ModelType { get; set; }
 }
