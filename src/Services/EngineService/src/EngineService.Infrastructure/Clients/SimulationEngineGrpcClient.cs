@@ -145,6 +145,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         dto.ConfidenceLevel = grpc.ConfidenceLevel;
         dto.HomeAdvantage = grpc.HomeAdvantage;
         dto.NoiseFactor = grpc.NoiseFactor;
+        dto.ModelType = grpc.Model;
 
         return dto;
     }
@@ -162,6 +163,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         grpc.ConfidenceLevel = simulationParamsDto.ConfidenceLevel;
         grpc.HomeAdvantage = simulationParamsDto.HomeAdvantage;
         grpc.NoiseFactor = simulationParamsDto.NoiseFactor;
+        grpc.Model = simulationParamsDto.ModelType;
 
         grpc.SeasonYears.AddRange(simulationParamsDto.SeasonYears);
 
@@ -171,5 +173,21 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         }
 
         return grpc;
+    }
+
+    private static void Validate(SimulationParamsGrpc grpc)
+    {
+        string model = grpc.Model;
+
+        if ("StandardPoisson" == model)
+            return;
+        if ("DixonColes" == model)
+            return;
+        if ("BivariatePoisson" == model)
+            return;
+        if ("Advanced" == model)
+            return;
+
+        throw new ArgumentException($"Invalid simulation model string type. Provided {model}");
     }
 }

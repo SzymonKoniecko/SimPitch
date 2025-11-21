@@ -15,4 +15,5 @@ public class SimulationParams
     public float ConfidenceLevel { get; set; }
     public float HomeAdvantage { get; set; }
     public float NoiseFactor { get; set; }
+    public string ModelType { get; set; }
 }

@@ -22,6 +22,7 @@ public static class SimulationParamsMapper
         vo.ConfidenceLevel = dto.ConfidenceLevel;
         vo.HomeAdvantage = dto.HomeAdvantage;
         vo.NoiseFactor = dto.NoiseFactor;
+        vo.ModelType = dto.ModelType.ToString();
 
         return vo;
     }
@@ -41,6 +42,7 @@ public static class SimulationParamsMapper
         dto.ConfidenceLevel = vo.ConfidenceLevel;
         dto.HomeAdvantage = vo.HomeAdvantage;
         dto.NoiseFactor = vo.NoiseFactor;
+        dto.ModelType = EnumMapper.StringtoModelTypeEnum(vo.ModelType);
 
         return dto;
     }

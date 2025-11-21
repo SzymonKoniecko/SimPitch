@@ -11,6 +11,9 @@ public class SimulationContentValidator : AbstractValidator<SimulationContent>
         RuleFor(x => x.PriorLeagueStrength)
             .NotEmpty()
             .WithMessage("Simulation must contain PriorLeagueStrength.");
+        RuleFor(x => x.LeagueStrengths)
+            .NotEmpty()
+            .WithMessage("Simulation must contain LeagueStrengths.");
             
         RuleForEach(x => x.TeamsStrengthDictionary)
             .ChildRules(team =>

@@ -68,4 +68,17 @@ public static class EnumMapper
         
         throw new KeyNotFoundException($"Cannot map season enum from his INT value to enum value: int?->{seasonYear}//");
     }
+
+    public static SimulationModelType StringtoModelTypeEnum(this string model)
+    {
+        if ("StandardPoisson" == model)
+            return SimulationModelType.StandardPoisson;
+        if ("DixonColes" == model)
+            return SimulationModelType.DixonColes;
+        if ("BivariatePoisson" == model)
+            return SimulationModelType.BivariatePoisson;
+        if ("Advanced" == model)
+            return SimulationModelType.Advanced;
+        throw new ArgumentException($"Invalid simulation model string type. Provided {model}");
+    }
 }

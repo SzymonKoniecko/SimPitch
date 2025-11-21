@@ -56,7 +56,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         var validator = new SimulationContentValidator();
         var validationResult = validator.Validate(simulationContent);
 
-        _matchSimulator = new MatchSimulatorService(simulationContent.SimulationParams.Seed);
+        _matchSimulator = new MatchSimulatorService(simulationContent.SimulationParams.Seed, command.SimulationParamsDto.ModelType);
 
         if (!validationResult.IsValid)
         {
