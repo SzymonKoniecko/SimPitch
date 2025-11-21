@@ -60,8 +60,10 @@ public class LeagueReadRepository : ILeagueReadRepository
         {
             league.Strengths = await _leagueStrengthReadRepository.GetLeagueStrengthsByLeagueIdAsync(league.Id, cancellationToken);
         }
-        return leagues;
+        return leagues
+            .Where(l => l.Strengths != null && l.Strengths.Any());
     }
+
     public async Task<bool> LeagueExistsAsync(Guid leagueId, CancellationToken cancellationToken)
     {
         using var connection = _DbConnectionFactory.CreateConnection();
