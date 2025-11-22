@@ -8,11 +8,11 @@ public class RunSimulationCommandValidator : AbstractValidator<RunSimulationComm
     public RunSimulationCommandValidator()
     {
         RuleFor(x => x.SimulationParamsDto.SeasonYears)
-        .NotEmpty()
-            .WithMessage("SeasonYear list is required.")
-        .ForEach(seasonRule => seasonRule
-            .Matches(@"^\d{4}/\d{4}$")
-            .WithMessage("Each SeasonYear must be in format YYYY/YYYY"));
+            .NotEmpty()
+            .WithMessage("SeasonYear list is required.");
+        RuleForEach(x => x.SimulationParamsDto.SeasonYears)
+            .Must(season => season.Length > 4 && season[4] == '/')
+            .WithMessage("SeasonYear has missing '/'.");
 
         RuleFor(x => x.SimulationParamsDto.Iterations)
             .Must(it => it > 0)

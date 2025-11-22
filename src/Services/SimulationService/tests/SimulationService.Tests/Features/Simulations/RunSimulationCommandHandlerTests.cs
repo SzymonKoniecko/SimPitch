@@ -59,6 +59,16 @@ public class RunSimulationCommandHandlerTests
         {
             MatchRoundsToSimulate = new List<MatchRound> { matchRound1 },
             TeamsStrengthDictionary = teamStrengthDict,
+            LeagueStrengths = new List<LeagueStrength>()
+            {
+                new LeagueStrength()
+                {
+                    Id = Guid.NewGuid(),
+                    SeasonYear = SeasonEnum.Season2022_2023,
+                    LeagueId = leagueId,
+                    Strength = 1.0f
+                }
+            },
             PriorLeagueStrength = 1.5f,
             SimulationParams = new()
             {

@@ -44,6 +44,13 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
 
     public async Task<Guid> Handle(RunSimulationCommand command, CancellationToken cancellationToken)
     {
+        var commandValidator = new RunSimulationCommandValidator();
+        var validationResult = commandValidator.Validate(command);
+        if (!validationResult.IsValid)
+        {
+            throw new FluentValidation.ValidationException(validationResult.Errors);
+        }
+        
         var simulationContent = await _mediator.Send(
             new InitSimulationContentCommand(command.SimulationParamsDto),
             cancellationToken
@@ -53,7 +60,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
 
 
         var validator = new SimulationContentValidator();
-        var validationResult = validator.Validate(simulationContent);
+        validationResult = validator.Validate(simulationContent);
 
         _matchSimulator = new MatchSimulatorService(simulationContent.SimulationParams.Seed, command.SimulationParamsDto.ModelType);
 
