@@ -13,6 +13,7 @@ using SimulationService.Domain.Entities;
 using SimulationService.Domain.Interfaces.Read;
 using SimulationService.Domain.Interfaces.Write;
 using SimulationService.Domain.Services;
+using SimulationService.Domain.ValueObjects;
 
 public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand, Guid>
 {
@@ -71,6 +72,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         await _simulationOverviewWriteRepository.CreateSimulationOverviewAsync(command.Overview, cancellationToken);
         int simulationIndex = 0;
         List<MatchRound> matchRoundsToSimulateBackup = simulationContent.MatchRoundsToSimulate;
+        Dictionary<Guid, List<TeamStrength>> teamStrengthDicBackup = simulationContent.TeamsStrengthDictionary;
 
         for (int i = 1; i <= command.SimulationParamsDto.Iterations; i++)
         {
@@ -87,8 +89,13 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
 
             DateTime startTime = DateTime.Now;
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            if (i > 1) // the be sure that matches are not updated in his first iteration
+
+             // the be sure that matches are not updated in his first iteration
+            if (i > 1)
+            {
                 simulationContent.MatchRoundsToSimulate = matchRoundsToSimulateBackup;
+                simulationContent.TeamsStrengthDictionary = teamStrengthDicBackup;
+            }
 
             simulationContent = _matchSimulator.SimulationWorkflow(simulationContent);
             watch.Stop();
