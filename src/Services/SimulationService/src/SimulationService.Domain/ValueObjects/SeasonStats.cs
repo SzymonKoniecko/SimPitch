@@ -111,4 +111,11 @@ public record SeasonStats
             LeagueId = newData.LeagueId
         };
     }
+    public SeasonStats CloneDeep()
+    {
+        return this with
+        {
+            // Record `with` copy all
+        };
+    }
 }

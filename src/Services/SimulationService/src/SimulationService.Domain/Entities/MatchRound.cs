@@ -12,4 +12,18 @@ public class MatchRound
     public int AwayGoals { get; set; }
     public bool IsDraw { get; set; }
     public bool IsPlayed { get; set; }
+    public MatchRound Clone()
+    {
+        return new MatchRound
+        {
+            Id = this.Id,
+            RoundId = this.RoundId,
+            HomeTeamId = this.HomeTeamId,
+            AwayTeamId = this.AwayTeamId,
+            HomeGoals = this.HomeGoals,
+            AwayGoals = this.AwayGoals,
+            IsDraw = this.IsDraw,
+            IsPlayed = this.IsPlayed
+        };
+    }
 }

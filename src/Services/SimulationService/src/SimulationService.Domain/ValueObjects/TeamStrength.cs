@@ -97,4 +97,13 @@ public record TeamStrength
         => this with { LastUpdate = DateTime.Now };
     public TeamStrength SetRoundId(Guid roundId)
         => this with { RoundId = roundId};
+
+    public TeamStrength DeepClone()
+    {
+        return this with
+        {
+            // `with` do copy for others
+            SeasonStats = this.SeasonStats.CloneDeep() // SeasonStats record
+        };
+    }
 }
