@@ -51,7 +51,6 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         command.Overview.PriorLeagueStrength = simulationContent.PriorLeagueStrength;
         command.Overview.LeagueStrengthsJSON = JsonConvert.SerializeObject(simulationContent.LeagueStrengths);
 
-        await _simulationOverviewWriteRepository.CreateSimulationOverviewAsync(command.Overview, cancellationToken);
 
         var validator = new SimulationContentValidator();
         var validationResult = validator.Validate(simulationContent);
@@ -62,6 +61,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         {
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
+        await _simulationOverviewWriteRepository.CreateSimulationOverviewAsync(command.Overview, cancellationToken);
         int simulationIndex = 0;
         List<MatchRound> matchRoundsToSimulateBackup = simulationContent.MatchRoundsToSimulate;
 
