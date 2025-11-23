@@ -17,8 +17,8 @@ public record SeasonStats
     public int GoalsFor { get; init; }
     public int GoalsAgainst { get; init; }
 
-    // Konstruktor ułatwiający mapowanie z encji
-    public SeasonStats(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength, int matchesPlayed, int wins, int losses, int draws, int goalsFor, int goalsAgainst)
+    public SeasonStats(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength, 
+        int matchesPlayed, int wins, int losses, int draws, int goalsFor, int goalsAgainst)
     {
         TeamId = teamId;
         SeasonYear = seasonYear;
@@ -32,14 +32,21 @@ public record SeasonStats
         GoalsAgainst = goalsAgainst;
     }
 
-    // Factory dla nowych obiektów
+    /// <summary>
+    /// Factory
+    /// </summary>
     public static SeasonStats CreateNew(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength)
         => new SeasonStats(teamId, seasonYear, leagueId, leagueStrength, 0, 0, 0, 0, 0, 0);
 
-    public override string ToString() => $"Team ID: {TeamId}, Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, Goals For: {GoalsFor}, Goals Against: {GoalsAgainst}";
+    public override string ToString() 
+        => $"Team: {TeamId}, Season: {SeasonYear}, Wins: {Wins}, Draws: {Draws}, Losses: {Losses}, " +
+           $"Goals: {GoalsFor}-{GoalsAgainst}, Matches: {MatchesPlayed}";
 
     public int GetGoalsDifference() => GoalsFor - GoalsAgainst;
 
+    /// <summary>
+    /// Aktualizuje statystykę drużyny po rozegraniu pojedynczego meczu.
+    /// </summary>
     public SeasonStats Increment(MatchRound matchRound, bool isHomeTeam)
     {
         int matchesPlayed = MatchesPlayed + 1;
@@ -77,34 +84,38 @@ public record SeasonStats
     }
 
     /// <summary>
-    /// Merge both season stats
+    /// Łączy statystyki dwóch sezonów (akumulacja historii drużyny).
+    /// Zawsze bierze LeagueStrength z newData (bieżącego sezonu do symulacji).
     /// </summary>
-    /// <returns>currentSeasonStats with scaled data by LeagueStrength</returns>
-    /// <exception cref="Exception"></exception>
-    public SeasonStats Merge(SeasonStats currentSeasonStats, SeasonStats newSeasonStats)
+    /// <param name="accumulator">Aktualne dane (zazwyczaj z symulacji bieżącego sezonu)</param>
+    /// <param name="newData">Nowe dane do dodania (zazwyczaj dane historyczne z bazy)</param>
+    /// <returns>Połączone statystyki z aktualizowaną LeagueStrength</returns>
+    /// <exception cref="InvalidOperationException">Gdy TeamId się nie zgadza</exception>
+    public SeasonStats Merge(SeasonStats accumulator, SeasonStats newData)
     {
-        if (currentSeasonStats.TeamId != newSeasonStats.TeamId)
-            throw new Exception($"CANNOT MERGE DIFFERENT SEASON STATS IN {nameof(SeasonStats)}");
+        if (accumulator.TeamId != newData.TeamId)
+            throw new InvalidOperationException(
+                $"Cannot merge SeasonStats for different teams: {accumulator.TeamId} != {newData.TeamId}");
 
-        float strengthFactor = newSeasonStats.LeagueStrength / currentSeasonStats.LeagueStrength;
-
-        int matchesPlayed = currentSeasonStats.MatchesPlayed + newSeasonStats.MatchesPlayed;
-        int wins = currentSeasonStats.Wins + newSeasonStats.Wins; 
-        int losses = currentSeasonStats.Losses + newSeasonStats.Losses;
-        int draws = currentSeasonStats.Draws + newSeasonStats.Draws;
-
-        int goalsFor = currentSeasonStats.GoalsFor + (int)Math.Round(newSeasonStats.GoalsFor * strengthFactor);
-        int goalsAgainst = currentSeasonStats.GoalsAgainst + (int)Math.Round(newSeasonStats.GoalsAgainst * strengthFactor);
-
-        return currentSeasonStats with
+        return accumulator with
         {
-            MatchesPlayed = matchesPlayed,
-            Wins = wins,
-            Losses = losses,
-            Draws = draws,
-            GoalsFor = goalsFor,
-            GoalsAgainst = goalsAgainst,
-            LeagueStrength = currentSeasonStats.LeagueStrength
+            MatchesPlayed = accumulator.MatchesPlayed + newData.MatchesPlayed,
+            Wins = accumulator.Wins + newData.Wins,
+            Losses = accumulator.Losses + newData.Losses,
+            Draws = accumulator.Draws + newData.Draws,
+            GoalsFor = accumulator.GoalsFor + newData.GoalsFor,
+            GoalsAgainst = accumulator.GoalsAgainst + newData.GoalsAgainst,
+
+            LeagueStrength = newData.LeagueStrength,
+            SeasonYear = newData.SeasonYear,
+            LeagueId = newData.LeagueId
+        };
+    }
+    public SeasonStats CloneDeep()
+    {
+        return this with
+        {
+            // Record `with` copy all
         };
     }
 }

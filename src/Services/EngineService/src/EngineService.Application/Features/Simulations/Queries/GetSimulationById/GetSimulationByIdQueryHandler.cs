@@ -71,7 +71,9 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
 
         if (EnumMapper.SortingOptionToEnum(query.PagedRequest.SortingMethod.SortingOption) == SortingOptionEnum.LeaderPoints)
         {
-            iterationPreviewDtos.OrderBy(x => x.Points);
+            iterationPreviewDtos = iterationPreviewDtos.OrderBy(x => x.Points).ToList();
+            if (query.PagedRequest.SortingMethod.Order == "DESC")
+                iterationPreviewDtos.Reverse();
         }
 
         return SimulationMapper.ToSimulationDto(
@@ -80,7 +82,7 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
                 simulationOverview.SimulationParams,
                 new PagedResponse<IterationPreviewDto>()
                 {
-                    Items = iterationPreviewDtos.ToList(),
+                    Items = iterationPreviewDtos,
                     TotalCount = iterationResults.TotalCount,
                     PageNumber = iterationResults.PageNumber,
                     PageSize = iterationResults.PageSize,

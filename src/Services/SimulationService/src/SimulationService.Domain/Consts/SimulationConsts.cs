@@ -1,4 +1,5 @@
 using System;
+using SimulationService.Domain.Enums;
 
 namespace SimulationService.Domain.Consts;
 
@@ -33,4 +34,8 @@ public static class SimulationConsts
     /// Poziom wariancji losowej, np. 0.1 = ±10% rozrzut względem wyliczonych lambda
     /// </summary>
     public const float NOISE_FACTOR = 0.10f; // lub 0.15f dla ±15%
+    /// <summary>
+    /// Wskazuje OBECNY sezon, do którego merge SeasonStats będzie dązył
+    /// </summary>
+    public const SeasonEnum CURRENT_SEASON = SeasonEnum.Season2025_2026;
 }

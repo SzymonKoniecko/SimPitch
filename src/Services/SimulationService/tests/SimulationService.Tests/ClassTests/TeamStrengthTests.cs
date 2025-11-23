@@ -98,7 +98,7 @@ namespace SimulationService.Tests.Domain.ValueObjects
             var season1 = SeasonStats.CreateNew(Guid.NewGuid(), SeasonEnum.Season2023_2024, Guid.NewGuid(), 1.0f);
             var season2 = SeasonStats.CreateNew(Guid.NewGuid(), SeasonEnum.Season2023_2024, Guid.NewGuid(), 1.0f);
 
-            Assert.Throws<Exception>(() => season1.Merge(season1, season2));
+            Assert.Throws<InvalidOperationException>(() => season1.Merge(season1, season2));
         }
 
         [Fact]
@@ -132,36 +132,6 @@ namespace SimulationService.Tests.Domain.ValueObjects
             Assert.Equal(1, merged.Losses);
             Assert.Equal(5, merged.GoalsFor);
             Assert.Equal(3, merged.GoalsAgainst);
-        }
-
-        [Fact]
-        public void Merge_ShouldScaleGoals_WhenDifferentLeagueStrength()
-        {
-            var teamId = Guid.NewGuid();
-            var leagueId = Guid.NewGuid();
-
-            var season1 = SeasonStats.CreateNew(teamId, SeasonEnum.Season2022_2023, leagueId, 1.15f) with
-            {
-                MatchesPlayed = 2,
-                GoalsFor = 10,
-                GoalsAgainst = 5
-            };
-
-            var season2 = SeasonStats.CreateNew(teamId, SeasonEnum.Season2023_2024, leagueId, 0.75f) with
-            {
-                MatchesPlayed = 1,
-                GoalsFor = 20,   // w słabszej lidze
-                GoalsAgainst = 10
-            };
-
-            var merged = season1.Merge(season1, season2);
-
-            // przeskalowane do 1.15:
-            // GoalsFor ≈ 20 * 0.75 / 1.15 ≈ 13
-            // GoalsAgainst ≈ 10 * 0.75 / 1.15 ≈ 7
-            Assert.Equal(3, merged.MatchesPlayed);
-            Assert.Equal(10 + 13, merged.GoalsFor);
-            Assert.Equal(5 + 7, merged.GoalsAgainst);
         }
     }
 }
