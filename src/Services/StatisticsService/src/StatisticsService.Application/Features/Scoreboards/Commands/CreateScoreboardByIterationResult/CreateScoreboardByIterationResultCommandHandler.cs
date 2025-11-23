@@ -57,8 +57,7 @@ public class CreateScoreboardByIterationResultCommandHandler : IRequestHandler<C
         return existing;
     }
 
-    private async Task<Scoreboard> CreateMissingScoreboardAsync
-    (
+    private async Task<Scoreboard> CreateMissingScoreboardAsync(
         IterationResult iterationResult,
         IEnumerable<MatchRoundDto> playedMatchRounds,
         CancellationToken ct

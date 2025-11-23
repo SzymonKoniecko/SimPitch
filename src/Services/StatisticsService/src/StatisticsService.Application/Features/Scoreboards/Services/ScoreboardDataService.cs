@@ -44,7 +44,10 @@ public class ScoreboardDataService : IScoreboardDataService
         {
             LeagueId = overview.SimulationParams.LeagueId,
             SeasonYears = overview.SimulationParams.SeasonYears,
-            LeagueRoundId = overview.SimulationParams.LeagueRoundId
+            
+            // no needs to use - custom league round id as start of simulation 
+            // (isPlayed = true, are marked as false in IterationResult)
+            //LeagueRoundId = overview.SimulationParams.LeagueRoundId 
         };
 
         var leagueRounds = await _leagueRoundGrpcClient.GetAllLeagueRoundsByParams(leagueRoundRequest, ct);

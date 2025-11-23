@@ -26,4 +26,16 @@ public class MatchRound
             IsPlayed = this.IsPlayed
         };
     }
+    /// <summary>
+    /// SetCustomStartToSimulate method
+    /// </summary>
+    public MatchRound SetAsNotPlayed()
+    {
+        this.AwayGoals = 0;
+        this.HomeGoals = 0;
+        this.IsDraw = false;
+        this.IsPlayed = false;
+
+        return this;
+    }
 }

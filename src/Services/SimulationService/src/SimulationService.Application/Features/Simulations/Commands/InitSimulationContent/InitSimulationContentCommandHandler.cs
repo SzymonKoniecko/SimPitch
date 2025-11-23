@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -11,6 +12,7 @@ using SimulationService.Application.Features.Leagues.Query.GetLeagueById;
 using SimulationService.Application.Features.MatchRounds.Queries.GetMatchRoundsByIdQuery;
 using SimulationService.Application.Features.SeasonsStats.Queries.GetSeasonsStatsByTeamIdGrpc;
 using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
+using SimulationService.Application.Helpers;
 using SimulationService.Application.Mappers;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
@@ -45,10 +47,12 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         {
             SeasonYears = contentResponse.SimulationParams.SeasonYears,
             LeagueId = contentResponse.SimulationParams.LeagueId,
-            LeagueRoundId = contentResponse.SimulationParams.LeagueRoundId,
+            //LeagueRoundId = contentResponse.SimulationParams.LeagueRoundId, no needs to use - we gonna filter out from all league rounds
         };
 
         var leagueRounds = await _mediator.Send(new GetLeagueRoundsByParamsGrpcQuery(leagueRoundDtoRequest), cancellationToken);
+        List<Guid> leagueRoundsToClearForCustomSimulation = LeagueRoundSimulationHelper.FindLeagueRoundsForCustomSimulation(leagueRounds, contentResponse.SimulationParams.LeagueRoundId);
+
 
         // KROK 2: Akumuluj statystyki z meczów do symulacji
         int totalGoals = 0;
@@ -67,6 +71,14 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             var matchRounds = await _mediator.Send(
                 new GetMatchRoundsByIdQuery(leagueRound.Id),
                 cancellationToken);
+
+            if (query.SimulationParamsDto.LeagueRoundId != Guid.Empty &&
+                leagueRoundsToClearForCustomSimulation.Contains(leagueRound.Id))
+            {
+                matchRounds = LeagueRoundSimulationHelper.SetCustomStartToSimulate(
+                    matchRounds,
+                    leagueRoundsToClearForCustomSimulation);
+            }
 
             // Dodaj tylko mecze, które nie zostały jeszcze rozegrane
             contentResponse.MatchRoundsToSimulate.AddRange(
