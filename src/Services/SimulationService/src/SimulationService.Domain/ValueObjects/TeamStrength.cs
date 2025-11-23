@@ -10,14 +10,21 @@ public record TeamStrength
     public Guid TeamId { get; init; }
     public (float Offensive, float Defensive) Likelihood { get; init; }
     public (float Offensive, float Defensive) Posterior { get; init; }
+    
+    /// <summary>
+    /// Represents the team's generic expected goals against an average league opponent.
+    /// Effectively equal to Posterior.Offensive in this model context.
+    /// </summary>
     public float ExpectedGoals { get; init; }
+    
     public DateTime LastUpdate { get; set; } = DateTime.Now;
+    
     /// <summary>
     /// Indicate the roundId in which these stats has been updated
-    /// 
     /// If null, its before the first match
     /// </summary>
     public Guid? RoundId { get; set; } = null;
+    
     public SeasonStats SeasonStats { get; set; }
 
     private TeamStrength(Guid teamId,
@@ -41,7 +48,6 @@ public record TeamStrength
         var seasonStats = SeasonStats.CreateNew(teamId, seasonYear, leagueId, leagueStrength);
         return new TeamStrength(teamId, seasonStats);
     }
-
 
     public TeamStrength WithLikelihood()
     {
@@ -78,12 +84,29 @@ public record TeamStrength
             Offensive: posterior_alpha_offensive / posterior_beta,
             Defensive: posterior_alpha_defensive / posterior_beta
         );
-
-        return this with { Posterior = posterior };
+        // Chain update: Automatically update ExpectedGoals when Posterior is recalculated
+        var updatedPosterior = this with { Posterior = posterior };
+        return updatedPosterior.WithExpectedGoalsFromPosterior();
     }
 
+    /// <summary>
+    /// Sets specific Expected Goals value manually.
+    /// </summary>
     public TeamStrength WithExpectedGoals(float expectedGoals)
         => this with { ExpectedGoals = expectedGoals };
+
+    /// <summary>
+    /// Sets Expected Goals based on current Posterior Offensive strength.
+    /// In Poisson model, Posterior.Offensive represents lambda (avg goals) against average defense.
+    /// </summary>
+    public TeamStrength WithExpectedGoalsFromPosterior()
+    {
+        // If Posterior hasn't been calculated (is 0), return current state or calculate default
+        if (Posterior.Offensive == 0) 
+            return this;
+
+        return this with { ExpectedGoals = Posterior.Offensive };
+    }
 
     public TeamStrength WithSeasonStats(SeasonStats newSeasonStats)
     {
@@ -95,15 +118,17 @@ public record TeamStrength
 
     public TeamStrength UpdateTime()
         => this with { LastUpdate = DateTime.Now };
+
     public TeamStrength SetRoundId(Guid roundId)
-        => this with { RoundId = roundId};
+        => this with { RoundId = roundId };
 
     public TeamStrength DeepClone()
     {
         return this with
         {
-            // `with` do copy for others
-            SeasonStats = this.SeasonStats.CloneDeep() // SeasonStats record
+            // `with` copies value types and strings automatically
+            // SeasonStats is a reference/record that needs explicit deep clone if it's mutable or nested
+            SeasonStats = this.SeasonStats.CloneDeep() 
         };
     }
 }
