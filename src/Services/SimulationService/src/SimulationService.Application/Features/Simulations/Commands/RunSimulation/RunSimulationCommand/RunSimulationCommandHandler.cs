@@ -132,7 +132,6 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
                     _logger.LogError($"Scoreboard is not created-> IterationResultId:{itResultDto.Id}, SimulationId: {itResultDto.SimulationId}");
             }
         }
-
         return command.simulationId;
     }
 }

@@ -109,23 +109,30 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             ? (float)totalGoals / totalMatches
             : 2.5f; // Fallback na typową średnią
 
+        EnsureAllTeamsHaveBaseStrength(contentResponse);
+
         // KROK 5: Oblicz Likelihood i Posterior dla każdej drużyny
         contentResponse.TeamsStrengthDictionary = contentResponse.TeamsStrengthDictionary
             .ToDictionary(
                 kvp => kvp.Key,
                 kvp => kvp.Value.Select(teamStrength =>
                 {
-                    // Jeśli drużyna ma rozegrane mecze, oblicz Likelihood
-                    var updatedTeam = teamStrength.SeasonStats.MatchesPlayed > 0
-                        ? teamStrength.WithLikelihood()
-                        : teamStrength; // Bez historii, bez Likelihood
+                    var updatedTeam = teamStrength;
 
-                    // Zawsze oblicz Posterior (używając Priora z aktualnego sezonu)
-                    return updatedTeam.WithPosterior(
+                    if (teamStrength.SeasonStats.MatchesPlayed > 0)
+                    {
+                        updatedTeam = updatedTeam.WithLikelihood();
+                    }
+
+                    // Zawsze licz Posterior (dla 0 meczów będzie to po prostu prior)
+                    updatedTeam = updatedTeam.WithPosterior(
                         contentResponse.PriorLeagueStrength,
                         contentResponse.SimulationParams);
+
+                    return updatedTeam;
                 }).ToList()
             );
+
 
         // _logger.LogInformation(
         //     "Simulation content initialized. Teams: {TeamCount}, Matches to simulate: {MatchCount}, " +
@@ -136,6 +143,50 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
 
         return contentResponse;
     }
+    /// <summary>
+    /// Ensures that every team appearing in MatchRoundsToSimulate has a base TeamStrength entry,
+    /// even if the season starts from the very first round (no matches played yet).
+    /// </summary>
+    private void EnsureAllTeamsHaveBaseStrength(SimulationContent contentResponse)
+    {
+        var allTeamIds = contentResponse.MatchRoundsToSimulate
+            .SelectMany(m => new[] { m.HomeTeamId, m.AwayTeamId })
+            .Distinct()
+            .ToList();
+
+        if (contentResponse.TeamsStrengthDictionary == null)
+        {
+            contentResponse.TeamsStrengthDictionary = new Dictionary<Guid, List<TeamStrength>>();
+        }
+
+        var currentSeasonStr = contentResponse.SimulationParams.SeasonYears.LastOrDefault()
+                               ?? contentResponse.SimulationParams.SeasonYears.First();
+        var currentSeasonEnum = EnumMapper.StringtoSeasonEnum(currentSeasonStr);
+        var currentLeagueId = contentResponse.SimulationParams.LeagueId;
+
+        var leagueStrength = contentResponse.LeagueStrengths?
+            .FirstOrDefault(x => x.SeasonYear == currentSeasonEnum)?.Strength
+            ?? 2.5f;
+
+        foreach (var teamId in allTeamIds)
+        {
+            if (!contentResponse.TeamsStrengthDictionary.ContainsKey(teamId))
+            {
+                var baseStrength = TeamStrength.Create(
+                    teamId,
+                    currentSeasonEnum,
+                    currentLeagueId,
+                    leagueStrength
+                );
+
+                contentResponse.TeamsStrengthDictionary.Add(
+                    teamId,
+                    new List<TeamStrength> { baseStrength }
+                );
+            }
+        }
+    }
+
 
     /// <summary>
     /// Oblicza statystyki drużyn na podstawie meczów z konkretnej rundy ligowej.

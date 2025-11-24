@@ -64,8 +64,6 @@ public record TeamStrength
 
     public TeamStrength WithPosterior(float leagueStrength, SimulationParams simulationParams)
     {
-        if (SeasonStats.MatchesPlayed == 0)
-            throw new InvalidOperationException("Cannot calculate posterior without matches played.");
 
         // Step 1: Calculate beta_0 based on trust factor
         float beta_0 = (1 - simulationParams.GamesToReachTrust)

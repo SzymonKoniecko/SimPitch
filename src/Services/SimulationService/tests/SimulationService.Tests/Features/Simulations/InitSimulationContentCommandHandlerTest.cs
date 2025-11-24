@@ -126,7 +126,10 @@ public class InitSimulationContentCommandHandlerTests
         {
             SeasonYears = new List<string> { currentSeasonStr },
             LeagueId = leagueId,
-            LeagueRoundId = Guid.NewGuid()
+            LeagueRoundId = Guid.NewGuid(),
+            GamesToReachTrust = SimulationConsts.GAMES_TO_REACH_TRUST,
+            NoiseFactor = SimulationConsts.NOISE_FACTOR,
+            HomeAdvantage = SimulationConsts.HOME_ADVANTAGE
         };
 
         // Mock Data: No played matches
