@@ -5,8 +5,10 @@ using EngineService.Application.Features.Simulations.Commands.CreateSimulation;
 using EngineService.Application.Features.Simulations.Commands.StopSimulation;
 using EngineService.Application.Features.Simulations.Queries.GetAllSimulationOverviews;
 using EngineService.Application.Features.Simulations.Queries.GetSimulationById;
+using EngineService.Application.Features.Simulations.Queries.GetSimulationOverviewBySimulationId;
 using EngineService.Infrastructure.Middlewares;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EngineService.API.Controllers
@@ -32,12 +34,25 @@ namespace EngineService.API.Controllers
 
             var result = await mediator.Send(new CreateSimulationCommand(simulationParamsDto), cancellationToken);
             if (result is null)
-                throw new NotFoundException("Simulation result could not be generated.");
+                return NotFound("Simulation result could not be generated.");
 
             return Ok(result);
         }
         
-        [HttpGet]
+        [HttpGet("overview/{simulationId}")]
+        public async Task<ActionResult<SimulationOverviewDto>> GetSimulationOverviewAsync(
+            [FromRoute] Guid simulationId,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await mediator.Send(
+                new GetSimulationOverviewBySimulationIdQuery(simulationId), 
+                cancellationToken);
+            if (result is null)
+                return NotFound("No simulation overview or something went wrong");
+            return Ok(result);
+        }
+
+        [HttpGet("overviews")]
         public async Task<ActionResult<PagedResponse<SimulationOverviewDto>>> GetAllAsync(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
@@ -45,11 +60,14 @@ namespace EngineService.API.Controllers
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
-            var result = await mediator.Send(new GetAllSimulationOverviewsQuery(
-                new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, order)),
-                cancellationToken);
+            var result = await mediator.Send(
+                new GetAllSimulationOverviewsQuery(
+                    new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, order)
+                ),
+                cancellationToken
+            );
             if (result is null)
-                throw new NotFoundException("No simulations or something went wrong");
+                return NotFound("No simulations or something went wrong");
             return Ok(result);
         }
 
@@ -62,14 +80,17 @@ namespace EngineService.API.Controllers
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
-            var result = await mediator.Send(new GetSimulationByIdQuery(simulationId,
-                new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, order)),
-                cancellationToken);
-            if (result == null)    
-                throw new NotFoundException("No simulations for given Id");
+            var result = await mediator.Send(
+                new GetSimulationByIdQuery(simulationId,
+                    new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, order)
+                ),
+                cancellationToken
+            );
+            if (result == null)
+                return NotFound("No simulations for given Id");
             return Ok(result);
         }
-        
+
         [HttpDelete("stop/{simulationId}")]
         public async Task<ActionResult<SimulationDto>> StopSimulationBySimulationIdAsync(
             [FromRoute] Guid simulationId,
@@ -77,7 +98,7 @@ namespace EngineService.API.Controllers
         {
             var result = await mediator.Send(new StopSimulationCommand(simulationId), cancellationToken);
             if (result is null)
-                throw new NotFoundException("Something went wrong with stop simulation workflow!");
+                return NotFound("Something went wrong with stop simulation workflow!");
             return Ok(result);
         }
     }

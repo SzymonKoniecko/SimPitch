@@ -66,7 +66,8 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             if (currentLeague == null || currentLeague.Id != leagueRound.LeagueId)
             {
                 currentLeague = await _mediator.Send(new GetLeagueByIdQuery(leagueRound.LeagueId), cancellationToken);
-                contentResponse.LeagueStrengths = currentLeague.LeagueStrengths;
+                if (!contentResponse.LeagueStrengths.Any(x => x.LeagueId == currentLeague.Id))
+                    contentResponse.LeagueStrengths.Add(currentLeague.LeagueStrengths.FirstOrDefault(x => x.LeagueId == currentLeague.Id));
             }
 
             var matchRounds = await _mediator.Send(
