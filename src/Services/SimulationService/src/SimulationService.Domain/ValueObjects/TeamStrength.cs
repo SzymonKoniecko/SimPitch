@@ -10,21 +10,21 @@ public record TeamStrength
     public Guid TeamId { get; init; }
     public (float Offensive, float Defensive) Likelihood { get; init; }
     public (float Offensive, float Defensive) Posterior { get; init; }
-    
+
     /// <summary>
     /// Represents the team's generic expected goals against an average league opponent.
     /// Effectively equal to Posterior.Offensive in this model context.
     /// </summary>
     public float ExpectedGoals { get; init; }
-    
+
     public DateTime LastUpdate { get; set; } = DateTime.Now;
-    
+
     /// <summary>
     /// Indicate the roundId in which these stats has been updated
     /// If null, its before the first match
     /// </summary>
     public Guid? RoundId { get; set; } = null;
-    
+
     public SeasonStats SeasonStats { get; set; }
 
     private TeamStrength(Guid teamId,
@@ -64,16 +64,18 @@ public record TeamStrength
 
     public TeamStrength WithPosterior(float leagueStrength, SimulationParams simulationParams)
     {
+        // Zabezpieczenie
+        if (simulationParams.GamesToReachTrust <= 0)
+            throw new ArgumentException("GamesToReachTrust must be greater than zero.");
 
-        // Step 1: Calculate beta_0 based on trust factor
-        float beta_0 = (1 - simulationParams.GamesToReachTrust)
-                        / simulationParams.GamesToReachTrust
-                        * simulationParams.ConfidenceLevel;
+        float avgLeagueStrength = (SeasonStats.LeagueStrength + leagueStrength) / 2; /// should be?
 
-        // Step 2: Calculate alpha_0 so prior mean matches league mean
+        float beta_0 = simulationParams.GamesToReachTrust; // * simulationParams.ConfidenceLevel
         float alpha_0 = beta_0 * leagueStrength;
 
-        // Step 3: Update with observed data
+
+        // Zaktualizuj parametry posterior
+
         float posterior_alpha_offensive = alpha_0 + SeasonStats.GoalsFor;
         float posterior_alpha_defensive = alpha_0 + SeasonStats.GoalsAgainst;
         float posterior_beta = beta_0 + SeasonStats.MatchesPlayed;
@@ -82,7 +84,7 @@ public record TeamStrength
             Offensive: posterior_alpha_offensive / posterior_beta,
             Defensive: posterior_alpha_defensive / posterior_beta
         );
-        // Chain update: Automatically update ExpectedGoals when Posterior is recalculated
+
         var updatedPosterior = this with { Posterior = posterior };
         return updatedPosterior.WithExpectedGoalsFromPosterior();
     }
@@ -100,7 +102,7 @@ public record TeamStrength
     public TeamStrength WithExpectedGoalsFromPosterior()
     {
         // If Posterior hasn't been calculated (is 0), return current state or calculate default
-        if (Posterior.Offensive == 0) 
+        if (Posterior.Offensive == 0)
             return this;
 
         return this with { ExpectedGoals = Posterior.Offensive };
@@ -126,7 +128,7 @@ public record TeamStrength
         {
             // `with` copies value types and strings automatically
             // SeasonStats is a reference/record that needs explicit deep clone if it's mutable or nested
-            SeasonStats = this.SeasonStats.CloneDeep() 
+            SeasonStats = this.SeasonStats.CloneDeep()
         };
     }
 }
