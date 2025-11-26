@@ -361,3 +361,4 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
     }
 
 }
+ 
