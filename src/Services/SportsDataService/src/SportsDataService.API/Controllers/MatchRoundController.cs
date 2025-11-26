@@ -25,6 +25,7 @@ namespace SportsDataService.API.Controllers
             [FromRoute] Guid leagueId,
             CancellationToken cancellationToken = default)
         {
+            seasonYear = seasonYear.Replace('_', '/');
             var result = await _mediator.Send(new GetMatchRoundsByParamsQuery(leagueId, seasonYear), cancellationToken);
 
             if (result is null)
