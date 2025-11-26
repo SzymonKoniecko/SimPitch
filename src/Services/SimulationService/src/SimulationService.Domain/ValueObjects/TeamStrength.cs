@@ -68,14 +68,10 @@ public record TeamStrength
         if (simulationParams.GamesToReachTrust <= 0)
             throw new ArgumentException("GamesToReachTrust must be greater than zero.");
 
-        float avgLeagueStrength = (SeasonStats.LeagueStrength + leagueStrength) / 2; /// should be?
-
         float beta_0 = simulationParams.GamesToReachTrust; // * simulationParams.ConfidenceLevel
         float alpha_0 = beta_0 * leagueStrength;
 
-
         // Zaktualizuj parametry posterior
-
         float posterior_alpha_offensive = alpha_0 + SeasonStats.GoalsFor;
         float posterior_alpha_defensive = alpha_0 + SeasonStats.GoalsAgainst;
         float posterior_beta = beta_0 + SeasonStats.MatchesPlayed;

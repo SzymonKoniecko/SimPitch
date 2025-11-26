@@ -14,14 +14,15 @@ public class ScoreboardTeamStatsServiceTests
         // Arrange
         var service = new ScoreboardTeamStatsService();
         var scoreboardId = Guid.NewGuid();
-
+        var oneTeamId = Guid.NewGuid();
+        var secondTeamId = Guid.NewGuid();
         var matches = new List<MatchRound>
         {
             new MatchRound
             {
                 Id = Guid.NewGuid(),
-                HomeTeamId = Guid.NewGuid(),
-                AwayTeamId = Guid.NewGuid(),
+                HomeTeamId = oneTeamId,
+                AwayTeamId = secondTeamId,
                 HomeGoals = 2,
                 AwayGoals = 1,
                 IsDraw = false
@@ -29,9 +30,18 @@ public class ScoreboardTeamStatsServiceTests
             new MatchRound
             {
                 Id = Guid.NewGuid(),
-                HomeTeamId = Guid.NewGuid(),
-                AwayTeamId = Guid.NewGuid(),
+                HomeTeamId = secondTeamId,
+                AwayTeamId = oneTeamId,
                 HomeGoals = 1,
+                AwayGoals = 1,
+                IsDraw = true
+            },
+            new MatchRound
+            {
+                Id = Guid.NewGuid(),
+                HomeTeamId = secondTeamId,
+                AwayTeamId = oneTeamId,
+                HomeGoals = 10,
                 AwayGoals = 1,
                 IsDraw = true
             }
@@ -44,6 +54,8 @@ public class ScoreboardTeamStatsServiceTests
         // Assert
         Assert.NotNull(stats);
         Assert.True(stats.Count > 0);
+        Assert.Equal(4, stats.Where(x => x.TeamId == oneTeamId).Select(x => x.GoalsFor).Sum());
+        Assert.Equal(12, stats.Where(x => x.TeamId == oneTeamId).Select(x => x.GoalsAgainst).Sum());
     }
     [Fact]
     public void CalculateScoreboardTeamStatsForMatch_ShouldAssignWinCorrectly()
@@ -65,6 +77,8 @@ public class ScoreboardTeamStatsServiceTests
 
         Assert.Equal(3, home.Points);
         Assert.Equal(0, away.Points);
+        Assert.Equal(1, home.Wins);
+        Assert.Equal(1, away.Losses);
         Assert.Equal(1, home.Wins);
         Assert.Equal(1, away.Losses);
     }
