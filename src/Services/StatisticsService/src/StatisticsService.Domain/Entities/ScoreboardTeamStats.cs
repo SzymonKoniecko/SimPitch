@@ -22,6 +22,18 @@ public class ScoreboardTeamStats
                           int matchPlayed, int wins, int losses, int draws,
                           int goalsFor, int goalsAgainst)
     {
+        if (wins + draws + losses != matchPlayed)
+            throw new ArgumentException(
+                $"SUM W+D+L ({wins}+{draws}+{losses}) != MatchPlayed ({matchPlayed}) - id: {id}");
+
+        int expectedPoints = (wins * 3) + (draws * 1);
+        if (points != expectedPoints)
+            throw new ArgumentException(
+                $"Points ({points}) != Expected ({expectedPoints}) - id: {id}");
+
+        if (matchPlayed < 0 || wins < 0 || losses < 0 || draws < 0)
+            throw new ArgumentException($"matchPlayed {matchPlayed} or wins {wins} or losses {losses} or draws {draws} - id: {id}");
+
         Id = id;
         ScoreboardId = scoreboardId;
         TeamId = teamId;

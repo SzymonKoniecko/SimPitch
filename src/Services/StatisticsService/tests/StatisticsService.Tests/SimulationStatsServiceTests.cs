@@ -26,7 +26,7 @@ public class SimulationStatsServiceTests
         var scoreboardStats = new List<ScoreboardTeamStats>
         {
             new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team1Id, rank: 1, points: 10, matchPlayed: 5, wins: 3, losses: 1, draws: 1, goalsFor: 8, goalsAgainst: 4),
-            new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 2, points: 8, matchPlayed: 5, wins: 2, losses: 2, draws: 1, goalsFor: 6, goalsAgainst: 5)
+            new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 2, points: 8, matchPlayed: 5, wins: 2, losses: 1, draws: 2, goalsFor: 6, goalsAgainst: 5)
         };
 
         // Act
@@ -58,12 +58,12 @@ public class SimulationStatsServiceTests
         var scoreboardStats = new List<ScoreboardTeamStats>
         {
             // Team 1 występuje dwa razy
-            new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team1Id, rank: 1, points: 9, matchPlayed: 5, wins: 3, losses: 1, draws: 1, goalsFor: 10, goalsAgainst: 6),
+            new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team1Id, rank: 1, points: 10, matchPlayed: 5, wins: 3, losses: 1, draws: 1, goalsFor: 10, goalsAgainst: 6),
             new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team1Id, rank: 2, points: 7, matchPlayed: 5, wins: 2, losses: 2, draws: 1, goalsFor: 7, goalsAgainst: 8),
 
             // Team 2 występuje dwa razy
-            new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 2, points: 8, matchPlayed: 5, wins: 2, losses: 2, draws: 1, goalsFor: 9, goalsAgainst: 9),
-            new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 1, points: 11, matchPlayed: 5, wins: 4, losses: 1, draws: 0, goalsFor: 12, goalsAgainst: 5)
+            new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 2, points: 7, matchPlayed: 5, wins: 2, losses: 2, draws: 1, goalsFor: 9, goalsAgainst: 9),
+            new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 1, points: 12, matchPlayed: 5, wins: 4, losses: 1, draws: 0, goalsFor: 12, goalsAgainst: 5)
         };
 
         // Act
@@ -77,7 +77,7 @@ public class SimulationStatsServiceTests
         var team2Stats = result.First(x => x.TeamId == team2Id);
 
         // Średnie punktów to (9 + 7) / 2 = 8
-        Assert.Equal(8, Math.Round(team1Stats.AverangePoints, 2));
+        Assert.Equal(8.5, Math.Round(team1Stats.AverangePoints, 2));
         Assert.Equal(9.5, Math.Round(team2Stats.AverangePoints, 2));
 
         // Każdy zespół był w rankach 1 i 2 po jednym razie, więc sumy powinny wynosić 1f w każdej pozycji
@@ -168,17 +168,17 @@ public class SimulationStatsServiceTests
     {
         // TEAM 1 — 3 różne pozycje
         new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team1Id, rank: 1, points: 10, matchPlayed: 5, wins: 3, losses: 1, draws: 1, goalsFor: 8, goalsAgainst: 4),
-        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team1Id, rank: 2, points: 8, matchPlayed: 5, wins: 2, losses: 2, draws: 1, goalsFor: 7, goalsAgainst: 6),
-        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team1Id, rank: 3, points: 6, matchPlayed: 5, wins: 1, losses: 3, draws: 1, goalsFor: 5, goalsAgainst: 7),
+        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team1Id, rank: 2, points: 7, matchPlayed: 5, wins: 2, losses: 2, draws: 1, goalsFor: 7, goalsAgainst: 6),
+        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team1Id, rank: 3, points: 4, matchPlayed: 5, wins: 1, losses: 3, draws: 1, goalsFor: 5, goalsAgainst: 7),
 
         // TEAM 2 — częściej wygrywa
         new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 1, points: 12, matchPlayed: 5, wins: 4, losses: 1, draws: 0, goalsFor: 10, goalsAgainst: 3),
-        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 1, points: 11, matchPlayed: 5, wins: 3, losses: 1, draws: 1, goalsFor: 9, goalsAgainst: 4),
-        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 2, points: 9, matchPlayed: 5, wins: 2, losses: 2, draws: 1, goalsFor: 8, goalsAgainst: 5),
+        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 1, points: 10, matchPlayed: 5, wins: 3, losses: 1, draws: 1, goalsFor: 9, goalsAgainst: 4),
+        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team2Id, rank: 2, points: 7, matchPlayed: 5, wins: 2, losses: 2, draws: 1, goalsFor: 8, goalsAgainst: 5),
 
         // TEAM 3 — zawsze ostatni
-        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team3Id, rank: 3, points: 4, matchPlayed: 5, wins: 1, losses: 4, draws: 0, goalsFor: 3, goalsAgainst: 9),
-        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team3Id, rank: 3, points: 3, matchPlayed: 5, wins: 0, losses: 5, draws: 0, goalsFor: 2, goalsAgainst: 10)
+        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team3Id, rank: 3, points: 3, matchPlayed: 5, wins: 1, losses: 4, draws: 0, goalsFor: 3, goalsAgainst: 9),
+        new ScoreboardTeamStats(Guid.NewGuid(), Guid.NewGuid(), team3Id, rank: 3, points: 0, matchPlayed: 5, wins: 0, losses: 5, draws: 0, goalsFor: 2, goalsAgainst: 10)
     };
 
         // Act

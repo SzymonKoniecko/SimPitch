@@ -37,18 +37,26 @@ public class Scoreboard
         }
     }
 
-    // sortowanie w miejscu (in-place) — NIE tworzy nowej listy
     public void SortByCriteria()
     {
         _teams.Sort((a, b) =>
         {
-            // po punktach malejąco
+            // 1. Po punktach (malejąco)
             int cmp = b.Points.CompareTo(a.Points);
             if (cmp != 0) return cmp;
 
-            // przy remisie po punktach — zwykle więcej wygranych jest lepsze => malejąco
+            // 2. Po wygranych (malejąco)
             cmp = b.Wins.CompareTo(a.Wins);
-            return cmp;
+            if (cmp != 0) return cmp;
+
+            // 3. Po różnicy bramkowej (malejąco) ← DODANO
+            int gdA = a.GoalsFor - a.GoalsAgainst;
+            int gdB = b.GoalsFor - b.GoalsAgainst;
+            cmp = gdB.CompareTo(gdA);
+            if (cmp != 0) return cmp;
+
+            // 4. Po bramkach strzelonych (opcjonalnie)
+            return b.GoalsFor.CompareTo(a.GoalsFor);
         });
     }
 

@@ -14,9 +14,13 @@ public class ScoreboardTeamStatsService
     public List<ScoreboardTeamStats> CalculateScoreboardTeamStats(Guid scoreboardId, List<MatchRound> matchRounds)
     {
         Dictionary<Guid, ScoreboardTeamStats> teamStatsDict = new Dictionary<Guid, ScoreboardTeamStats>();
-
+        matchRounds.OrderBy(x => x.RoundId);
         foreach (var match in matchRounds)
         {
+            if (match.HomeTeamId == Guid.Parse("a9e2d5f7-1b3c-4e0a-8f6d-7c0b9a1e3d5f") || match.AwayTeamId == Guid.Parse("a9e2d5f7-1b3c-4e0a-8f6d-7c0b9a1e3d5f"))
+            {
+                System.Console.WriteLine("a9e2d5f7-1b3c-4e0a-8f6d-7c0b9a1e3d5f");
+            }
             (ScoreboardTeamStats, ScoreboardTeamStats) stats = CalculateScoreboardTeamStatsForMatch(scoreboardId, match);
             if (teamStatsDict.ContainsKey(stats.Item1.TeamId))
             {
@@ -63,7 +67,7 @@ public class ScoreboardTeamStatsService
         (int, int) points = (0, 0);
         (int, int) win = (0, 0);
         (int, int) loss = (0, 0);
-        int draw = 0;
+        (int, int) draws = (0, 0);
         (int, int) goalsFor = (0, 0);
         (int, int) goalsAgainst = (0, 0);
 
@@ -72,7 +76,7 @@ public class ScoreboardTeamStatsService
 
         if (match.IsDraw.Value)
         {
-            draw++;
+            draws = (1, 1);
             points = (1, 1);
         }
         else if (match.HomeGoals > match.AwayGoals)
@@ -88,7 +92,8 @@ public class ScoreboardTeamStatsService
             points = (0, 3);
         }
 
-        return (new ScoreboardTeamStats(Guid.NewGuid(), scoreboardId, match.HomeTeamId, rank, points.Item1, 1, win.Item1, loss.Item1, draw, goalsFor.Item1, goalsAgainst.Item1),
-            new ScoreboardTeamStats(Guid.NewGuid(), scoreboardId, match.AwayTeamId, rank, points.Item2, 1, win.Item2, loss.Item2, draw, goalsFor.Item2, goalsAgainst.Item2));
+        return (new ScoreboardTeamStats(Guid.NewGuid(), scoreboardId, match.HomeTeamId, rank, points.Item1, 1, win.Item1, loss.Item1, draws.Item1, goalsFor.Item1, goalsAgainst.Item1),
+            new ScoreboardTeamStats(Guid.NewGuid(), scoreboardId, match.AwayTeamId, rank, points.Item2, 1, win.Item2, loss.Item2, draws.Item2, goalsFor.Item2, goalsAgainst.Item2));
     }
+    
 }

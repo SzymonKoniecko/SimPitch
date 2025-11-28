@@ -11,8 +11,8 @@ public class ScoreboardTests
         // Arrange
         var scoreboard = new Scoreboard(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), DateTime.Now);
 
-        scoreboard.AddTeam(new ScoreboardTeamStats(Guid.NewGuid(), scoreboard.Id, Guid.NewGuid(), 0, 10, 1, 3, 0, 0, 5, 2));
-        scoreboard.AddTeam(new ScoreboardTeamStats(Guid.NewGuid(), scoreboard.Id, Guid.NewGuid(), 0, 8, 1, 2, 1, 0, 4, 3));
+        scoreboard.AddTeam(new ScoreboardTeamStats(Guid.NewGuid(), scoreboard.Id, Guid.NewGuid(), 0, 10, 4, 3, 0, 1, 5, 2));
+        scoreboard.AddTeam(new ScoreboardTeamStats(Guid.NewGuid(), scoreboard.Id, Guid.NewGuid(), 0, 8, 4, 2, 0, 2, 4, 3));
 
         // Act
         scoreboard.SetRankings();
@@ -25,8 +25,8 @@ public class ScoreboardTests
     public void SortByCriteria_ShouldPrioritizePointsOverWins()
     {
         var scoreboard = new Scoreboard(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), DateTime.Now);
-        var team1 = new ScoreboardTeamStats(Guid.NewGuid(), scoreboard.Id, Guid.NewGuid(), 0, 5, 1, 1, 0, 2, 3, 2);
-        var team2 = new ScoreboardTeamStats(Guid.NewGuid(), scoreboard.Id, Guid.NewGuid(), 0, 8, 1, 2, 1, 0, 4, 3);
+        var team1 = new ScoreboardTeamStats(Guid.NewGuid(), scoreboard.Id, Guid.NewGuid(), 0, 5, 3, 1, 0, 2, 3, 2);
+        var team2 = new ScoreboardTeamStats(Guid.NewGuid(), scoreboard.Id, Guid.NewGuid(), 0, 6, 3, 2, 1, 0, 4, 3);
 
         scoreboard.AddTeam(team1);
         scoreboard.AddTeam(team2);
@@ -50,5 +50,4 @@ public class ScoreboardTests
 
         Assert.Equal(t2, scoreboard.ScoreboardTeams.First());
     }
-
 }
