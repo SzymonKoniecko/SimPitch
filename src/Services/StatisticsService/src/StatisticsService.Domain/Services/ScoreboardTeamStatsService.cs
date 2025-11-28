@@ -50,8 +50,16 @@ public class ScoreboardTeamStatsService
 
     public (ScoreboardTeamStats, ScoreboardTeamStats) CalculateScoreboardTeamStatsForMatch(Guid scoreboardId, MatchRound match)
     {
-        int rank = 0; // Rank will be set later
+        if (match.HomeGoals == null || match.AwayGoals == null)
+        {
+            throw new ArgumentNullException($"Home goals or away goals are null !! MatchRoundId:{match.Id} " + nameof(CalculateScoreboardTeamStatsForMatch));
+        }
+        if (match.IsDraw == null)
+        {
+            throw new ArgumentNullException($"IsDraw flag is null !! MatchRoundId:{match.Id} " + nameof(CalculateScoreboardTeamStatsForMatch));
+        }
 
+        int rank = 0; // Rank will be set later
         (int, int) points = (0, 0);
         (int, int) win = (0, 0);
         (int, int) loss = (0, 0);
@@ -59,10 +67,10 @@ public class ScoreboardTeamStatsService
         (int, int) goalsFor = (0, 0);
         (int, int) goalsAgainst = (0, 0);
 
-        goalsFor = (match.HomeGoals, match.AwayGoals);
-        goalsAgainst = (match.AwayGoals, match.HomeGoals);
+        goalsFor = (match.HomeGoals.Value, match.AwayGoals.Value);
+        goalsAgainst = (match.AwayGoals.Value, match.HomeGoals.Value);
 
-        if (match.IsDraw)
+        if (match.IsDraw.Value)
         {
             draw++;
             points = (1, 1);

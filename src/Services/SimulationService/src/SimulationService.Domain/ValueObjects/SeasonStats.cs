@@ -49,6 +49,11 @@ public record SeasonStats
     /// </summary>
     public SeasonStats Increment(MatchRound matchRound, bool isHomeTeam)
     {
+        if (matchRound.HomeGoals == null || matchRound.AwayGoals == null)
+        {
+            throw new ArgumentNullException($"Home goals or away goals are null !! MatchRoundId:{matchRound.Id} " + nameof(Increment));
+        }
+        
         int matchesPlayed = MatchesPlayed + 1;
         int wins = Wins, losses = Losses, draws = Draws;
         int goalsFor = GoalsFor, goalsAgainst = GoalsAgainst;
@@ -59,8 +64,8 @@ public record SeasonStats
             else if (matchRound.HomeGoals < matchRound.AwayGoals) losses++;
             else draws++;
 
-            goalsFor += matchRound.HomeGoals;
-            goalsAgainst += matchRound.AwayGoals;
+            goalsFor += matchRound.HomeGoals.Value;
+            goalsAgainst += matchRound.AwayGoals.Value;
         }
         else
         {
@@ -68,8 +73,8 @@ public record SeasonStats
             else if (matchRound.HomeGoals < matchRound.AwayGoals) wins++;
             else draws++;
 
-            goalsFor += matchRound.AwayGoals;
-            goalsAgainst += matchRound.HomeGoals;
+            goalsFor += matchRound.AwayGoals.Value;
+            goalsAgainst += matchRound.HomeGoals.Value;
         }
 
         return this with

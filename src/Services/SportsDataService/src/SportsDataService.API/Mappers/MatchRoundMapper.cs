@@ -14,10 +14,15 @@ public static class MatchRoundMapper
         grpc.RoundId = dto.RoundId.ToString();
         grpc.HomeTeamId = dto.HomeTeamId.ToString();
         grpc.AwayTeamId = dto.AwayTeamId.ToString();
-        grpc.HomeGoals = dto.HomeGoals;
-        grpc.AwayGoals = dto.AwayGoals;
-        grpc.IsDraw = dto.IsDraw;
         grpc.IsPlayed = dto.IsPlayed;
+
+        if (dto.HomeGoals != null)
+            grpc.HomeGoals = (int)dto.HomeGoals;
+        if (dto.AwayGoals != null)
+            grpc.AwayGoals = (int)dto.AwayGoals;
+        if (dto.IsDraw != null)
+            grpc.IsDraw = (bool)dto.IsDraw;
+            
 
         return grpc;
     }

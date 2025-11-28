@@ -11,12 +11,7 @@ public class GrpcTests : IClassFixture<GrpcTestFixture>
     {
         _fixture = fixture;
     }
-
-    [Fact]
-    public void Test1()
-    {
-        Assert.Fail();
-    }
+    
     public class CountryGrpcTests : GrpcTests
     {
         private Country country;

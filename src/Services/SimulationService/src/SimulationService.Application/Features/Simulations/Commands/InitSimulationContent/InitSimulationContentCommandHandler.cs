@@ -170,9 +170,14 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         var currentSeasonEnum = SimulationConsts.CURRENT_SEASON;
         var currentLeagueId = contentResponse.SimulationParams.LeagueId;
 
-        var leagueStrength = contentResponse.LeagueStrengths?
+        float leagueStrength = 2.5f;
+        if (contentResponse.LeagueStrengths != null && contentResponse.LeagueStrengths.Count() > 0)
+        {
+            leagueStrength = contentResponse.LeagueStrengths?
             .FirstOrDefault(x => x.SeasonYear == EnumMapper.GetPreviousSeason(currentSeasonEnum))?.Strength
             ?? 2.5f;
+        }
+        
 
         foreach (var teamId in allTeamIds)
         {
@@ -222,6 +227,11 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         {
             if (!matchRound.IsPlayed) continue;
 
+            if (matchRound.HomeGoals == null || matchRound.AwayGoals == null)
+            {
+                throw new ArgumentNullException($"Home goals or away goals are null !! MatchRoundId:{matchRound.Id} " + nameof(CalculateSeasonStatsByMatchRounds));
+            }
+
             UpdateTeamStats(
                 contentResponse,
                 matchRound.HomeTeamId,
@@ -241,7 +251,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                 isHomeTeam: false);
 
             // Akumuluj bramki i mecze (dla PriorLeagueStrength)
-            totalGoals += matchRound.HomeGoals + matchRound.AwayGoals;
+            totalGoals += matchRound.HomeGoals.Value + matchRound.AwayGoals.Value;
             totalMatches += 1;
         }
 
