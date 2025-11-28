@@ -1,6 +1,19 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
+
+error_handler() {
+    local exit_code=$?
+    local line_no=$1
+    echo "❌ ERROR: Script failed at line $line_no with exit code $exit_code"
+    echo "   ➤ Command: ${BASH_COMMAND}"
+    exit $exit_code
+}
+trap 'error_handler $LINENO' ERR
+print() {
+    echo -e "$1"
+}
+
 BRANCH="${1:-main}"
 
 services=(
@@ -11,33 +24,34 @@ services=(
   "EngineService|src/Services/EngineService/src/SimPitchProtos"
 )
 
-cd ..
+# Safe cd
+cd .. || { echo "❌ Cannot cd to project root"; exit 1; }
+
 for entry in "${services[@]}"; do
   service="${entry%%|*}"
   proto_path="${entry##*|}"
 
   if [ -d "$proto_path" ]; then
-    echo "----------------------------------------------------------------------------------------"
-    echo "▶ Updating << $service >> (branch: $BRANCH)"
-    echo "----------------------------------------------------------------------------------------"
+    print "----------------------------------------------------------------------------------------"
+    print "▶ Updating << $service >> (branch: $BRANCH)"
+    print "----------------------------------------------------------------------------------------"
+
     cd "$proto_path"
 
-    git fetch origin > /dev/null 2>&1
-    git checkout "$BRANCH" > /dev/null 2>&1
+    git fetch origin
+    git checkout "$BRANCH"
     git pull origin "$BRANCH"
 
-    echo "✔ $service updated successfully"
-    echo
+    print "✔ $service updated successfully\n"
 
     cd - > /dev/null
   else
-    echo "----------------------------------------------------------------------------------------"
-    echo "⚠ WARNING: Path $proto_path for $service does not exist."
-    echo "----------------------------------------------------------------------------------------"
-    echo
+    print "----------------------------------------------------------------------------------------"
+    print "⚠ WARNING: Path $proto_path for $service does not exist."
+    print "----------------------------------------------------------------------------------------\n"
   fi
 done
 
-echo "========================================================================================"
-echo "✅ All proto submodules updated to branch '$BRANCH'."
-echo "========================================================================================"
+print "========================================================================================"
+print "✅ All proto submodules updated to branch '$BRANCH'."
+print "========================================================================================"

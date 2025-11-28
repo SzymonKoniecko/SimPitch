@@ -113,8 +113,8 @@ public class RunSimulationCommandHandlerTests
         // Assert
         Assert.NotEqual(simulationId, Guid.Empty);
         Assert.True(initResponse.MatchRoundsToSimulate[0].IsPlayed);
-        Assert.InRange(initResponse.MatchRoundsToSimulate[0].HomeGoals, 0, 10); // spodziewany zakres
-        Assert.InRange(initResponse.MatchRoundsToSimulate[0].AwayGoals, 0, 10);
+        Assert.InRange(initResponse.MatchRoundsToSimulate[0].HomeGoals.Value, 0, 10); // spodziewany zakres
+        Assert.InRange(initResponse.MatchRoundsToSimulate[0].AwayGoals.Value, 0, 10);
 
         var homeTeamPosterior = initResponse.TeamsStrengthDictionary[homeTeamId].First().Posterior;
         var awayTeamPosterior = initResponse.TeamsStrengthDictionary[awayTeamId].First().Posterior;

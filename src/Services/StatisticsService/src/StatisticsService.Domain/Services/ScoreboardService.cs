@@ -21,9 +21,13 @@ public class ScoreboardService
             IterationResult.Id,
             DateTime.Now
         );
+        HashSet<Guid> simulatedIds = IterationResult.SimulatedMatchRounds
+            .Select(x => x.Id)
+            .ToHashSet();
+
         List<MatchRound> matches = playedMatchRounds
+            .Where(playedMD => !simulatedIds.Contains(playedMD.Id))
             .Concat(IterationResult.SimulatedMatchRounds)
-            .DistinctBy(x => x.Id)
             .ToList();
         scoreboard.AddTeamRange(
             _scoreboardTeamStatsService.CalculateScoreboardTeamStats(
@@ -31,7 +35,7 @@ public class ScoreboardService
                 matches
             )
         );
-        
+
         return scoreboard;
     }
 }

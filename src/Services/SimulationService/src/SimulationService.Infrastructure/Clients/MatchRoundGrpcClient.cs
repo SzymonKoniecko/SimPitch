@@ -36,9 +36,11 @@ public class MatchRoundGrpcClient : IMatchRoundGrpcClient
         dto.RoundId = Guid.Parse(grpc.RoundId);
         dto.HomeTeamId = Guid.Parse(grpc.HomeTeamId);
         dto.AwayTeamId = Guid.Parse(grpc.AwayTeamId);
-        dto.HomeGoals = grpc.AwayGoals;
-        dto.IsDraw = grpc.IsDraw;
         dto.IsPlayed = grpc.IsPlayed;
+        
+        dto.HomeGoals = grpc.HasHomeGoals ? grpc.HomeGoals : null;
+        dto.AwayGoals = grpc.HasAwayGoals ? grpc.AwayGoals : null;
+        dto.IsDraw = grpc.HasIsDraw ? grpc.IsDraw : null;
 
         return dto;
     }

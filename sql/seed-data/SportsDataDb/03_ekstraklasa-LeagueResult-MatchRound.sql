@@ -110,7 +110,7 @@ BEGIN TRY
         (NEWID(), @RoundId5, @TeamId7, @TeamId4, 1, 0, 0, 1),
         (NEWID(), @RoundId5, @TeamId12, @TeamId16, 0, 0, 1, 1),
         (NEWID(), @RoundId5, @TeamId13, @TeamId18, 4, 1, 0, 1),
-        (NEWID(), @RoundId5, @TeamId3, @TeamId15, 1, 1, 0, 1),
+        (NEWID(), @RoundId5, @TeamId3, @TeamId15, 1, 1, 1, 1),
         (NEWID(), @RoundId5, @TeamId11, @TeamId1, 1, 2, 0, 1),
         (NEWID(), @RoundId5, @TeamId6, @TeamId8, 0, 3, 0, 1),
         (NEWID(), @RoundId5, @TeamId9, @TeamId2, 1, 0, 0, 1),

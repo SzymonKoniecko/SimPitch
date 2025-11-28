@@ -32,6 +32,21 @@ public static class EnumMapper
             return SeasonEnum.Season2025_2026;
         throw new ArgumentException($"Invalid season string type. Provided {seasonEnum}");
     }
+    /// <summary>
+    /// IDK why but we needs it for calculation of future MatchRounds
+    /// </summary>
+    public static SeasonEnum GetPreviousSeason(SeasonEnum seasonEnum)
+    {
+        if (SeasonEnum.Season2022_2023 == seasonEnum)
+            return SeasonEnum.Season2022_2023; // its the last
+        if (SeasonEnum.Season2023_2024 == seasonEnum)
+            return SeasonEnum.Season2022_2023;
+        if (SeasonEnum.Season2024_2025 == seasonEnum)
+            return SeasonEnum.Season2023_2024;
+        if (SeasonEnum.Season2025_2026 == seasonEnum)
+            return SeasonEnum.Season2024_2025;
+        throw new ArgumentException($"Invalid season enum type. Provided {seasonEnum}");
+    }
 
     public static Domain.Enums.SortingOptionEnum SortingOptionToEnum(string enumValue)
     {

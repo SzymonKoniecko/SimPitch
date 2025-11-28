@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -11,7 +12,9 @@ using SimulationService.Application.Features.Leagues.Query.GetLeagueById;
 using SimulationService.Application.Features.MatchRounds.Queries.GetMatchRoundsByIdQuery;
 using SimulationService.Application.Features.SeasonsStats.Queries.GetSeasonsStatsByTeamIdGrpc;
 using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
+using SimulationService.Application.Helpers;
 using SimulationService.Application.Mappers;
+using SimulationService.Domain.Consts;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
 using SimulationService.Domain.Services;
@@ -45,28 +48,41 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         {
             SeasonYears = contentResponse.SimulationParams.SeasonYears,
             LeagueId = contentResponse.SimulationParams.LeagueId,
-            LeagueRoundId = contentResponse.SimulationParams.LeagueRoundId,
+            //LeagueRoundId = contentResponse.SimulationParams.LeagueRoundId, no needs to use - we gonna filter out from all league rounds
         };
 
         var leagueRounds = await _mediator.Send(new GetLeagueRoundsByParamsGrpcQuery(leagueRoundDtoRequest), cancellationToken);
+        List<Guid> leagueRoundsToClearForCustomSimulation = LeagueRoundSimulationHelper.FindLeagueRoundsForCustomSimulation(leagueRounds, contentResponse.SimulationParams.LeagueRoundId);
+
 
         // KROK 2: Akumuluj statystyki z meczów do symulacji
         int totalGoals = 0;
         int totalMatches = 0;
         League currentLeague = null;
 
-        foreach (var leagueRound in leagueRounds)
+        foreach (var leagueRound in leagueRounds) // zmienic na jedynie current_season - bo reszta ma SeasonStats (o ile nie bedzie nigdy symulacji wielu sezonow)
         {
             // Pobierz ligę tylko raz, gdy się zmieni
             if (currentLeague == null || currentLeague.Id != leagueRound.LeagueId)
             {
                 currentLeague = await _mediator.Send(new GetLeagueByIdQuery(leagueRound.LeagueId), cancellationToken);
-                contentResponse.LeagueStrengths = currentLeague.LeagueStrengths;
+                if (!contentResponse.LeagueStrengths.Any(x => x.LeagueId == currentLeague.Id))
+                    contentResponse.LeagueStrengths.Add(currentLeague.LeagueStrengths.FirstOrDefault(x => x.LeagueId == currentLeague.Id));
             }
 
             var matchRounds = await _mediator.Send(
                 new GetMatchRoundsByIdQuery(leagueRound.Id),
                 cancellationToken);
+
+            if (query.SimulationParamsDto.LeagueRoundId != Guid.Empty &&
+                leagueRoundsToClearForCustomSimulation.Contains(leagueRound.Id))
+            {
+                matchRounds = LeagueRoundSimulationHelper.SetCustomStartToSimulate(
+                    matchRounds,
+                    leagueRoundsToClearForCustomSimulation);
+            }
+            // KROK 1.1: dodaj zangazowane druzuny do slownika
+            EnsureAllTeamsHaveBaseStrength(contentResponse, matchRounds);
 
             // Dodaj tylko mecze, które nie zostały jeszcze rozegrane
             contentResponse.MatchRoundsToSimulate.AddRange(
@@ -79,16 +95,22 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                 leagueRound,
                 currentLeague.LeagueStrengths,
                 ref totalGoals,
-                ref totalMatches);
+                ref totalMatches
+            );
         }
 
         // KROK 3: Jeśli symulujemy wiele sezonów, dołącz historyczne dane drużyn
         if (query.SimulationParamsDto.SeasonYears.Count() > 1)
         {
-            await EnrichTeamsWithHistoricalData(
+            (contentResponse, totalGoals) = await EnrichTeamsWithHistoricalData(
                 contentResponse,
                 query.SimulationParamsDto.SeasonYears,
-                cancellationToken);
+                totalGoals,
+                cancellationToken
+            );
+
+            var league = await _mediator.Send(new GetLeagueByIdQuery(contentResponse.SimulationParams.LeagueId), cancellationToken);
+            totalMatches += league.MaxRound * 9;
         }
 
         // KROK 4: Oblicz średnią siłę ligi na podstawie meczów do symulacji
@@ -103,17 +125,22 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                 kvp => kvp.Key,
                 kvp => kvp.Value.Select(teamStrength =>
                 {
-                    // Jeśli drużyna ma rozegrane mecze, oblicz Likelihood
-                    var updatedTeam = teamStrength.SeasonStats.MatchesPlayed > 0
-                        ? teamStrength.WithLikelihood()
-                        : teamStrength; // Bez historii, bez Likelihood
+                    var updatedTeam = teamStrength;
 
-                    // Zawsze oblicz Posterior (używając Priora z aktualnego sezonu)
-                    return updatedTeam.WithPosterior(
+                    if (teamStrength.SeasonStats.MatchesPlayed > 0)
+                    {
+                        updatedTeam = updatedTeam.WithLikelihood();
+                    }
+
+                    // Zawsze licz Posterior (dla 0 meczów będzie to po prostu prior)
+                    updatedTeam = updatedTeam.WithPosterior(
                         contentResponse.PriorLeagueStrength,
                         contentResponse.SimulationParams);
+
+                    return updatedTeam;
                 }).ToList()
             );
+
 
         // _logger.LogInformation(
         //     "Simulation content initialized. Teams: {TeamCount}, Matches to simulate: {MatchCount}, " +
@@ -124,6 +151,53 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
 
         return contentResponse;
     }
+    /// <summary>
+    /// Ensures that every team appearing in MatchRoundsToSimulate has a base TeamStrength entry,
+    /// even if the season starts from the very first round (no matches played yet).
+    /// </summary>
+    private void EnsureAllTeamsHaveBaseStrength(SimulationContent contentResponse, List<MatchRound> matchRounds)
+    {
+        var allTeamIds = matchRounds
+            .SelectMany(m => new[] { m.HomeTeamId, m.AwayTeamId })
+            .Distinct()
+            .ToList();
+
+        if (contentResponse.TeamsStrengthDictionary == null)
+        {
+            contentResponse.TeamsStrengthDictionary = new Dictionary<Guid, List<TeamStrength>>();
+        }
+
+        var currentSeasonEnum = SimulationConsts.CURRENT_SEASON;
+        var currentLeagueId = contentResponse.SimulationParams.LeagueId;
+
+        float leagueStrength = 2.5f;
+        if (contentResponse.LeagueStrengths != null && contentResponse.LeagueStrengths.Count() > 0)
+        {
+            leagueStrength = contentResponse.LeagueStrengths?
+            .FirstOrDefault(x => x.SeasonYear == EnumMapper.GetPreviousSeason(currentSeasonEnum))?.Strength
+            ?? 2.5f;
+        }
+        
+
+        foreach (var teamId in allTeamIds)
+        {
+            if (!contentResponse.TeamsStrengthDictionary.ContainsKey(teamId))
+            {
+                var baseStrength = TeamStrength.Create(
+                    teamId,
+                    currentSeasonEnum,
+                    currentLeagueId,
+                    leagueStrength
+                );
+
+                contentResponse.TeamsStrengthDictionary.Add(
+                    teamId,
+                    new List<TeamStrength> { baseStrength }
+                );
+            }
+        }
+    }
+
 
     /// <summary>
     /// Oblicza statystyki drużyn na podstawie meczów z konkretnej rundy ligowej.
@@ -138,7 +212,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
     {
         var seasonEnum = EnumMapper.StringtoSeasonEnum(leagueRound.SeasonYear);
         var leagueStrength = leagueStrengths
-            .FirstOrDefault(x => x.SeasonYear == seasonEnum)?.Strength
+            .FirstOrDefault(x => x.SeasonYear == seasonEnum)?.Strength // dac mapper do jednego sezonu nizej albo i nie, bo to przyszle mecze
             ?? 2.5f; // Fallback
 
         if (leagueStrength == 2.5f)
@@ -152,6 +226,11 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         foreach (var matchRound in matchRounds)
         {
             if (!matchRound.IsPlayed) continue;
+
+            if (matchRound.HomeGoals == null || matchRound.AwayGoals == null)
+            {
+                throw new ArgumentNullException($"Home goals or away goals are null !! MatchRoundId:{matchRound.Id} " + nameof(CalculateSeasonStatsByMatchRounds));
+            }
 
             UpdateTeamStats(
                 contentResponse,
@@ -172,7 +251,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                 isHomeTeam: false);
 
             // Akumuluj bramki i mecze (dla PriorLeagueStrength)
-            totalGoals += matchRound.HomeGoals + matchRound.AwayGoals;
+            totalGoals += matchRound.HomeGoals.Value + matchRound.AwayGoals.Value;
             totalMatches += 1;
         }
 
@@ -225,64 +304,71 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
     /// <summary>
     /// Dołącza historyczne dane drużyn z poprzednich sezonów (jeśli symulujemy wiele sezonów).
     /// </summary>
-    private async Task EnrichTeamsWithHistoricalData(
-        SimulationContent contentResponse,
-        IEnumerable<string> seasonYears,
-        CancellationToken cancellationToken)
+    private async Task<(SimulationContent, int)> EnrichTeamsWithHistoricalData(
+    SimulationContent contentResponse,
+    IEnumerable<string> seasonYears,
+    int totalGoals,
+    CancellationToken cancellationToken)
     {
         var requestedSeasons = seasonYears.ToHashSet();
 
         foreach (var (teamId, teamStrengthList) in contentResponse.TeamsStrengthDictionary)
         {
-            // Pobierz historyczne statystyki drużyny
             var historicalStats = await _mediator.Send(
                 new GetSeasonsStatsByTeamIdGrpcQuery(teamId),
                 cancellationToken);
 
             if (historicalStats == null)
-                continue; // Brak historii dla (zadnej?) drużyny
+                continue;
 
-            // Filtruj i sortuj chronologicznie
             var filteredSeasons = historicalStats
-                .Where(s => requestedSeasons.Contains(
-                    EnumMapper.SeasonEnumToString(s.SeasonYear)) && s.TeamId == teamId)
-                .OrderBy(s => s.SeasonYear) // Chronologicznie: stare → nowe
+                .Where(s => requestedSeasons.Contains(EnumMapper.SeasonEnumToString(s.SeasonYear)) && s.TeamId == teamId)
+                .OrderBy(s => s.SeasonYear)
                 .ToList();
 
             if (!filteredSeasons.Any())
-                continue; // Brak historii dla tej drużyny
-
-            // Rozpocznij akumulację od obecnych statystyk drużyny
-            var accumulated = teamStrengthList.First().SeasonStats;
-
-            // Merge chronologicznie (stary → nowy)
-            foreach (var historicalSeason in filteredSeasons)
             {
-                var historicalStats_Dto = new SeasonStats(
-                    teamId,
-                    historicalSeason.SeasonYear,
-                    historicalSeason.LeagueId,
-                    historicalSeason.LeagueStrength,
-                    historicalSeason.MatchesPlayed,
-                    historicalSeason.Wins,
-                    historicalSeason.Losses,
-                    historicalSeason.Draws,
-                    historicalSeason.GoalsFor,
-                    historicalSeason.GoalsAgainst);
-
-                accumulated = accumulated.Merge(accumulated, historicalStats_Dto);
+                _logger.LogWarning($"No historical data for team: {teamId}");
+                continue;
             }
 
-            // Zaktualizuj drużynę z połączonymi statystykami
-            contentResponse.TeamsStrengthDictionary[teamId] = new List<TeamStrength>
-            {
-                teamStrengthList.First().WithSeasonStats(accumulated)
-            };
+            // Startujemy od istniejącego TeamStrength i jego SeasonStats
+            var teamStrength = teamStrengthList.First();
 
-            _logger.LogInformation(
-                "Team {TeamId} enriched with historical data. Total matches: {TotalMatches}",
-                teamId,
-                accumulated.MatchesPlayed);
+            // Iteracyjna aktualizacja Posteriora po kolejnych sezonach
+            foreach (var histSeason in filteredSeasons)
+            {
+                var histStatsDto = new SeasonStats(
+                    teamId,
+                    histSeason.SeasonYear,
+                    histSeason.LeagueId,
+                    histSeason.LeagueStrength,
+                    histSeason.MatchesPlayed,
+                    histSeason.Wins,
+                    histSeason.Losses,
+                    histSeason.Draws,
+                    histSeason.GoalsFor,
+                    histSeason.GoalsAgainst);
+
+                totalGoals += histStatsDto.GoalsFor;
+
+                // Łączymy statystyki do seasonStats (merge nie powinien nadpisywać, tylko akumulować)
+                var mergedStats = teamStrength.SeasonStats.Merge(teamStrength.SeasonStats, histStatsDto);
+
+                // Tworzymy refreshed TeamStrength z aktualnym seasonStats
+                teamStrength = teamStrength
+                    .WithSeasonStats(mergedStats)
+                    .WithLikelihood() // Likelihood na podstawie sezonowych danych
+                    .WithPosterior(histSeason.LeagueStrength, contentResponse.SimulationParams) // Posterior uwzględnia siłę ligi z danego sezonu
+                    .WithExpectedGoalsFromPosterior();
+            }
+
+            // Aktualizujemy słownik
+            contentResponse.TeamsStrengthDictionary[teamId] = new List<TeamStrength> { teamStrength };
         }
+
+        return (contentResponse, totalGoals);
     }
+
 }
+ 

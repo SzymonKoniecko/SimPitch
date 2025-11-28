@@ -8,9 +8,9 @@ public class MatchRound
     public Guid RoundId { get; set; }
     public Guid HomeTeamId { get; set; }
     public Guid AwayTeamId { get; set; }
-    public int HomeGoals { get; set; }
-    public int AwayGoals { get; set; }
-    public bool IsDraw { get; set; }
+    public int? HomeGoals { get; set; }
+    public int? AwayGoals { get; set; }
+    public bool? IsDraw { get; set; }
     public bool IsPlayed { get; set; }
     public MatchRound Clone()
     {
@@ -25,5 +25,17 @@ public class MatchRound
             IsDraw = this.IsDraw,
             IsPlayed = this.IsPlayed
         };
+    }
+    /// <summary>
+    /// SetCustomStartToSimulate method
+    /// </summary>
+    public MatchRound SetAsNotPlayed()
+    {
+        this.AwayGoals = 0;
+        this.HomeGoals = 0;
+        this.IsDraw = false;
+        this.IsPlayed = false;
+
+        return this;
     }
 }

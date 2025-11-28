@@ -45,6 +45,7 @@ namespace SimulationService.Domain.Services
                 match.HomeGoals = homeGoals;
                 match.AwayGoals = awayGoals;
                 if (match.HomeGoals == match.AwayGoals) match.IsDraw = true;
+                else match.IsDraw = false;
                 match.IsPlayed = true;
 
                 var homeStatsUpdated = homeTeam.SeasonStats.Increment(match, isHomeTeam: true);

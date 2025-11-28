@@ -126,7 +126,10 @@ public class InitSimulationContentCommandHandlerTests
         {
             SeasonYears = new List<string> { currentSeasonStr },
             LeagueId = leagueId,
-            LeagueRoundId = Guid.NewGuid()
+            LeagueRoundId = Guid.NewGuid(),
+            GamesToReachTrust = SimulationConsts.GAMES_TO_REACH_TRUST,
+            NoiseFactor = SimulationConsts.NOISE_FACTOR,
+            HomeAdvantage = SimulationConsts.HOME_ADVANTAGE
         };
 
         // Mock Data: No played matches
@@ -135,7 +138,7 @@ public class InitSimulationContentCommandHandlerTests
                 new MatchRound { Id = Guid.NewGuid(), IsPlayed = false }
             };
 
-        var league = new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>() }; // No strength in DB
+        var league = new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>(){new LeagueStrength() { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = SeasonEnum.Season2022_2023, Strength = 1.0f}} }; // No strength in DB
 
         mediatorMock.Setup(m => m.Send(It.IsAny<GetLeagueRoundsByParamsGrpcQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<LeagueRound> { new LeagueRound { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = currentSeasonStr } });
@@ -192,13 +195,14 @@ public class InitSimulationContentCommandHandlerTests
         // Note: Returning SeasonStats object directly as DTO
         var historyStatsHomeTeam = new SeasonStats(teamId, SeasonEnum.Season2022_2023, leagueId, 2.0f, 10, 5, 3, 2, 10, 5);
         var historyStatsAwayTeam = new SeasonStats(currentMatch.AwayTeamId, SeasonEnum.Season2022_2023, leagueId, 2.0f, 12, 5, 3, 2, 10, 5);
+        var league = new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>(){new LeagueStrength() { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = SeasonEnum.Season2022_2023, Strength = 1.0f}} }; // No strength in DB
 
         // Mocks
         mediatorMock.Setup(m => m.Send(It.IsAny<GetLeagueRoundsByParamsGrpcQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<LeagueRound> { new LeagueRound { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = currentSeasonStr } });
 
         mediatorMock.Setup(m => m.Send(It.IsAny<GetLeagueByIdQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>() });
+            .ReturnsAsync(league);
 
         mediatorMock.Setup(m => m.Send(It.IsAny<GetMatchRoundsByIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<MatchRound> { currentMatch });

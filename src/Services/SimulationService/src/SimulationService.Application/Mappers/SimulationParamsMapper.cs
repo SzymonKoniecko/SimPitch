@@ -14,9 +14,9 @@ public static class SimulationParamsMapper
         vo.Title = dto.Title;
         vo.SeasonYears = dto.SeasonYears;
         vo.LeagueId = dto.LeagueId;
+        vo.LeagueRoundId = dto.LeagueRoundId;
         vo.Iterations = dto.Iterations;
         vo.Seed = dto.Seed;
-        vo.LeagueRoundId = dto.LeagueRoundId;
         vo.CreateScoreboardOnCompleteIteration = dto.CreateScoreboardOnCompleteIteration;
         vo.GamesToReachTrust = dto.GamesToReachTrust;
         vo.ConfidenceLevel = dto.ConfidenceLevel;
@@ -34,9 +34,9 @@ public static class SimulationParamsMapper
         dto.Title = vo.Title;
         dto.SeasonYears = vo.SeasonYears;
         dto.LeagueId = vo.LeagueId;
+        dto.LeagueRoundId = vo.LeagueRoundId;
         dto.Iterations = vo.Iterations;
         dto.Seed = vo.Seed;
-        dto.LeagueRoundId = vo.LeagueRoundId;
         dto.CreateScoreboardOnCompleteIteration = vo.CreateScoreboardOnCompleteIteration;
         dto.GamesToReachTrust = vo.GamesToReachTrust;
         dto.ConfidenceLevel = vo.ConfidenceLevel;

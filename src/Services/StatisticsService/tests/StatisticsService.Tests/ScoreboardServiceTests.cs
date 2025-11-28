@@ -27,7 +27,8 @@ public class ScoreboardServiceTests
                     AwayTeamId = Guid.NewGuid(),
                     HomeGoals = 2,
                     AwayGoals = 1,
-                    IsDraw = false
+                    IsDraw = false,
+                    IsPlayed = true
                 }
             }
         };

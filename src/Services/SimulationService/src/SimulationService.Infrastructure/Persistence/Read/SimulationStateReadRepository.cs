@@ -61,4 +61,21 @@ public class SimulationStateReadRepository : ISimulationStateReadRepository
 
         return result;
     }
+
+    public async Task<bool> SimulationStateBySimulationIdExistsAsync(Guid simulationId, CancellationToken cancellationToken)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+        string sql = @"SELECT COUNT(1)
+            FROM dbo.SimulationState
+            WHERE SimulationId = @SimulationId;";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { SimulationId = simulationId },
+            cancellationToken: cancellationToken
+        );
+
+        var count = await connection.ExecuteScalarAsync<int>(command);
+        return count > 0;
+    }
 }

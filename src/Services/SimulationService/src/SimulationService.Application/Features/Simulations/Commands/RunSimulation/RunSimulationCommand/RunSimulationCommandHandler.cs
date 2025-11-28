@@ -95,7 +95,12 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             }
 
 
-            _logger.LogInformation($"//Started simulation, iteration: {i} -- simulationId: {command.simulationId}//");
+            _logger.LogInformation(
+            "Simulation content initialized. Teams: {TeamCount}, Matches to simulate: {MatchCount}, " +
+            "Prior League Strength: {PriorStrength:F2}",
+            simulationContent.TeamsStrengthDictionary.Count,
+            simulationContent.MatchRoundsToSimulate.Count,
+            simulationContent.PriorLeagueStrength);
 
             DateTime startTime = DateTime.Now;
             var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -132,7 +137,6 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
                     _logger.LogError($"Scoreboard is not created-> IterationResultId:{itResultDto.Id}, SimulationId: {itResultDto.SimulationId}");
             }
         }
-
         return command.simulationId;
     }
 }

@@ -36,10 +36,20 @@ public class MatchRoundGrpcClient : IMatchRoundGrpcClient
         dto.RoundId = Guid.Parse(grpc.RoundId);
         dto.HomeTeamId = Guid.Parse(grpc.HomeTeamId);
         dto.AwayTeamId = Guid.Parse(grpc.AwayTeamId);
-        dto.HomeGoals = grpc.AwayGoals;
-        dto.IsDraw = grpc.IsDraw;
+        
+        dto.HomeGoals = grpc.HasHomeGoals ? grpc.HomeGoals : null;
+        dto.AwayGoals = grpc.HasAwayGoals ? grpc.AwayGoals : null;
+        dto.IsDraw = grpc.HasIsDraw ? grpc.IsDraw : null;
         dto.IsPlayed = grpc.IsPlayed;
 
+        if (dto.HomeGoals != dto.AwayGoals && dto.IsDraw != null && (bool)dto.IsDraw)
+        {
+            throw new Exception($"MatchRound {dto.Id} - has isDraw=true, but goals are not equal HomeVsAway({dto.HomeGoals}:{dto.AwayGoals})");
+        }
+        if (dto.HomeGoals == dto.AwayGoals && dto.IsDraw != null && (bool)dto.IsDraw == false)
+        {
+            throw new Exception($"MatchRound {dto.Id} - has isDraw=false, but goals are equal HomeVsAway({dto.HomeGoals}:{dto.AwayGoals})");
+        }
         return dto;
     }
 }
