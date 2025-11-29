@@ -17,10 +17,6 @@ public class ScoreboardTeamStatsService
         matchRounds.OrderBy(x => x.RoundId);
         foreach (var match in matchRounds)
         {
-            if (match.HomeTeamId == Guid.Parse("a9e2d5f7-1b3c-4e0a-8f6d-7c0b9a1e3d5f") || match.AwayTeamId == Guid.Parse("a9e2d5f7-1b3c-4e0a-8f6d-7c0b9a1e3d5f"))
-            {
-                System.Console.WriteLine("a9e2d5f7-1b3c-4e0a-8f6d-7c0b9a1e3d5f");
-            }
             (ScoreboardTeamStats, ScoreboardTeamStats) stats = CalculateScoreboardTeamStatsForMatch(scoreboardId, match);
             if (teamStatsDict.ContainsKey(stats.Item1.TeamId))
             {
@@ -96,4 +92,27 @@ public class ScoreboardTeamStatsService
             new ScoreboardTeamStats(Guid.NewGuid(), scoreboardId, match.AwayTeamId, rank, points.Item2, 1, win.Item2, loss.Item2, draws.Item2, goalsFor.Item2, goalsAgainst.Item2));
     }
     
+    public List<ScoreboardTeamStats> CalculateScoreboardTeamStatsForSeasonStats(Guid scoreboardId, List<SeasonStats> seasonStats)
+    {
+        List<ScoreboardTeamStats> scoreboardTeamStats = new();
+        
+        foreach (var singleSeasonStats in seasonStats)
+        {
+            scoreboardTeamStats.Add(SeasonStatsToScoreboardTeamStatsEntity(scoreboardId, singleSeasonStats));
+        }
+
+        return scoreboardTeamStats;
+    }
+    
+    private static ScoreboardTeamStats SeasonStatsToScoreboardTeamStatsEntity(Guid scoreboardId, SeasonStats seasonStats)
+    {
+        int points = 3 * seasonStats.Wins + seasonStats.Draws;
+        
+        return new ScoreboardTeamStats(
+            Guid.NewGuid(), scoreboardId, seasonStats.TeamId, 
+            0, points, seasonStats.MatchesPlayed, 
+            seasonStats.Wins, seasonStats.Losses, seasonStats.Draws, 
+            seasonStats.GoalsFor, seasonStats.GoalsAgainst
+        );
+    }
 }

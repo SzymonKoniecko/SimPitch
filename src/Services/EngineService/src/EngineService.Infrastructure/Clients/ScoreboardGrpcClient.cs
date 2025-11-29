@@ -52,6 +52,20 @@ public class ScoreboardGrpcClient : IScoreboardGrpcClient
         );
     }
 
+    public async Task<ScoreboardDto> CreateScoreboardByLeagueIdAndSeasonYear(Guid leagueId, string seasonYear, CancellationToken cancellationToken)
+    {
+        
+        var request = new CreateScoreboardByLeagueIdAndSeasonYearRequest
+        {
+            LeagueId = leagueId.ToString(),
+            SeasonYear = seasonYear
+        };
+
+        var response = await _client.CreateScoreboardByLeagueIdAndSeasonYearAsync(request, cancellationToken: cancellationToken);
+
+        return ProtoToDto(response.Scoreboard);
+    }
+
     private static ScoreboardDto ProtoToDto(ScoreboardGrpc grpc)
     {
         var dto = new ScoreboardDto();

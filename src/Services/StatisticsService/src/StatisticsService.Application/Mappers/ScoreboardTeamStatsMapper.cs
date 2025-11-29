@@ -1,6 +1,7 @@
 using System;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Domain.Entities;
+using StatisticsService.Domain.ValueObjects;
 
 namespace StatisticsService.Application.Mappers;
 

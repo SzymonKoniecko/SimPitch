@@ -1,4 +1,6 @@
 using EngineService.Application.DTOs;
+using EngineService.Application.Features.Scoreboards.Queries;
+using EngineService.Application.Features.Scoreboards.Queries.GetScoreboardByLeagueIdAndSeasonYear;
 using EngineService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +26,21 @@ namespace EngineService.API.Controllers
             CancellationToken cancellationToken = default)
         {
             var query = new GetScoreboardsBySimulationIdQuery(simulationId, iterationResultId, withTeamStats: true);
+
+            var response = await mediator.Send(query, cancellationToken);
+            if (response == null) return NotFound();
+            return Ok(response);
+        }
+        
+
+        [Route("seasons/{seasonYear}/leagues/{leagueId}/scoreboard")]
+        [HttpGet]
+        public async Task<ActionResult<List<ScoreboardDto>>> GetScoreboardByLeagueIdAndSeasonYear(
+            [FromRoute] string seasonYear,
+            [FromRoute] Guid leagueId,
+            CancellationToken cancellationToken = default)
+        {
+            var query = new GetScoreboardByLeagueIdAndSeasonYearQuery(leagueId, seasonYear.Replace('_', '/'));
 
             var response = await mediator.Send(query, cancellationToken);
             if (response == null) return NotFound();

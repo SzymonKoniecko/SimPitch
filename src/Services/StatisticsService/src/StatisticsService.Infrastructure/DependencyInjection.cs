@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SimulationService.Infrastructure.Clients;
 using StatisticsService.Application.Features.Scoreboards.Services;
 using StatisticsService.Application.Features.SimulationStats.Services;
 using StatisticsService.Application.Interfaces;
@@ -23,6 +24,7 @@ public static class DependencyInjection
         services.AddTransient<ILeagueRoundGrpcClient, LeagueRoundGrpcClient>();
         services.AddTransient<IMatchRoundGrpcClient, MatchRoundGrpcClient>();
         services.AddTransient<ISimulationEngineGrpcClient, SimulationEngineGrpcClient>();
+        services.AddTransient<ISeasonStatsGrpcClient, SeasonStatsGrpcClient>();
 
         //  Read repositories
         services.AddScoped<IScoreboardReadRepository, ScoreboardReadRepository>();
