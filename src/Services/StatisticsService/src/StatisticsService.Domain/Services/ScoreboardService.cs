@@ -38,4 +38,19 @@ public class ScoreboardService
 
         return scoreboard;
     }
+
+    public Scoreboard CalculateScoreboardForSeasonStats(List<SeasonStats> seasonStats)
+    {
+        Scoreboard scoreboard = new(Guid.NewGuid(), Guid.Empty, Guid.Empty, DateTime.Now);
+        scoreboard.AddTeamRange(
+            _scoreboardTeamStatsService.CalculateScoreboardTeamStatsForSeasonStats(
+                scoreboard.Id,
+                seasonStats
+            )
+        );
+        scoreboard.SetRankings();
+
+        return scoreboard;
+    }
+
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using StatisticsService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
 using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboardByIterationResult;
+using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboardByLeagueIdAndSeasonYear;
 using StatisticsService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 using StatisticsService.Application.Features.SimulationStats.Commands;
 using StatisticsService.Application.Features.SimulationStats.Queries.GetSimulationStatsBySimulationId;
@@ -17,11 +18,13 @@ public static class MediatrServicesExtension
         // Commands
         services.AddMediatR(typeof(CreateScoreboardCommand).Assembly);
         services.AddMediatR(typeof(CreateScoreboardByIterationResultCommand).Assembly);
+        services.AddMediatR(typeof(CreateScoreboardByLeagueIdAndSeasonYearCommand).Assembly);
         services.AddMediatR(typeof(CreateSimulationStatsCommand).Assembly);
         
         // Commands handlers
         services.AddMediatR(typeof(CreateScoreboardCommandHandler).Assembly);
         services.AddMediatR(typeof(CreateScoreboardByIterationResultCommandHandler).Assembly);
+        services.AddMediatR(typeof(CreateScoreboardByLeagueIdAndSeasonYearCommandHandler).Assembly);
         services.AddMediatR(typeof(CreateSimulationStatsCommandHandler).Assembly);
 
         // Queries

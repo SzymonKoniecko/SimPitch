@@ -4,6 +4,7 @@ using SimPitchProtos.SimulationService.IterationResult;
 using SimPitchProtos.SimulationService.SimulationEngine;
 using SimPitchProtos.SportsDataService.LeagueRound;
 using SimPitchProtos.SportsDataService.MatchRound;
+using SimPitchProtos.SportsDataService.SeasonStats;
 using StatisticsService.Application.Consts;
 
 namespace StatisticsService.Infrastructure;
@@ -52,6 +53,7 @@ public static class GrpcClientServiceCollectionExtensions
 
         return services;
     }
+
     public static IServiceCollection AddSportsDataGrpcClient(this IServiceCollection services, string sportsDataServiceAddress)
     {
         services.AddGrpcClient<LeagueRoundService.LeagueRoundServiceClient>(options =>
@@ -59,6 +61,10 @@ public static class GrpcClientServiceCollectionExtensions
             options.Address = new Uri(sportsDataServiceAddress);
         });
         services.AddGrpcClient<MatchRoundService.MatchRoundServiceClient>(options =>
+        {
+            options.Address = new Uri(sportsDataServiceAddress);
+        });
+        services.AddGrpcClient<SeasonStatsService.SeasonStatsServiceClient>(options =>
         {
             options.Address = new Uri(sportsDataServiceAddress);
         });

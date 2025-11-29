@@ -11,6 +11,7 @@ using StatisticsService.Application.DTOs;
 using StatisticsService.Application.DTOs.Clients;
 using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboard;
 using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboardByIterationResult;
+using StatisticsService.Application.Features.Scoreboards.Commands.CreateScoreboardByLeagueIdAndSeasonYear;
 using StatisticsService.Application.Features.Scoreboards.Queries.GetScoreboardsBySimulationId;
 using StatisticsService.Domain.ValueObjects;
 
@@ -87,6 +88,17 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
         };
     }
 
+    public override async Task<CreateScoreboardByLeagueIdAndSeasonYearResponse> CreateScoreboardByLeagueIdAndSeasonYear(CreateScoreboardByLeagueIdAndSeasonYearRequest request, ServerCallContext context)
+    {
+        var command = new CreateScoreboardByLeagueIdAndSeasonYearCommand(Guid.Parse(request.LeagueId), request.SeasonYear);
+
+        var result = await _mediator.Send(command, cancellationToken: context.CancellationToken);
+
+        return new CreateScoreboardByLeagueIdAndSeasonYearResponse
+        {
+            Scoreboard = ScoreboardToGrpc(result)
+        };
+    }
 
     private static ScoreboardGrpc ScoreboardToGrpc(ScoreboardDto dto)
     {
