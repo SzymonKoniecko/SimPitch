@@ -24,6 +24,7 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
                 query.PagedRequest.Offset,
                 query.PagedRequest.PageSize,
                 EnumMapper.SortingOptionToEnum(query.PagedRequest.SortingMethod.SortingOption),
+                query.PagedRequest.SortingMethod.Condition,
                 query.PagedRequest.SortingMethod.Order
             ), cancellationToken);
 

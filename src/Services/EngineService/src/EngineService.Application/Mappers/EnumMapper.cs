@@ -14,12 +14,16 @@ public static class EnumMapper
                 return SortingOptionEnum.CreatedDate;
             case "ExecutionTime":
                 return SortingOptionEnum.ExecutionTime;
-            case "Name":
-                return SortingOptionEnum.Name;
+            case "Title":
+                return SortingOptionEnum.Title;
             case "IterationResultNumber":
                 return SortingOptionEnum.IterationResultNumber;
             case "LeaderPoints": // will be sorted in the closest handler
                 return SortingOptionEnum.LeaderPoints;
+            case "State":
+                return SortingOptionEnum.State;
+            case "League":
+                return SortingOptionEnum.League;
             default:
                 throw new KeyNotFoundException($"Cannot map SortingOption to enum value: {enumValue}");
         }

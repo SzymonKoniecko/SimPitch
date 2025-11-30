@@ -10,7 +10,7 @@ public class PagedRequest
     public int PageSize { get; set; } = 10;
     public SortingMethod SortingMethod { get; set; }
 
-    public PagedRequest(int offset, int pageSize, string sortingOptionEnum, string order)
+    public PagedRequest(int offset, int pageSize, string sortingOptionEnum, string condition, string order)
     {
 
         this.Offset = offset;
@@ -18,6 +18,7 @@ public class PagedRequest
         SortingMethod = new()
         {
             SortingOption = sortingOptionEnum,
+            Condition = condition,
             Order = order
         };
     }
