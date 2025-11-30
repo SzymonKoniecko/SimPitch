@@ -58,16 +58,11 @@ public class SimulationOverviewReadRepository : ISimulationOverviewReadRepositor
         return results;
     }
 
-    public async Task<int> GetSimulationOverviewCountAsync(CancellationToken cancellationToken)
+    public async Task<int> GetSimulationOverviewCountAsync(PagedRequest pagedRequest, CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql = "SELECT COUNT(*) FROM SimulationOverview;";
-
-        var command = new CommandDefinition(
-            commandText: sql,
-            cancellationToken: cancellationToken
-        );
+        var command = CustomSqlCommandBuilder.BuildPagedSimulationOverviewsQueryCount(pagedRequest, cancellationToken);
 
         return await connection.ExecuteScalarAsync<int>(command);
     }

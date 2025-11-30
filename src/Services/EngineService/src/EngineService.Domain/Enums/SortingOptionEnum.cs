@@ -15,9 +15,9 @@ public enum SortingOptionEnum
     ExecutionTime,
     /// <summary>
     /// Used in:
-    /// -SimulationOverview 
+    /// -SimulationOverview  (+condition)
     /// </summary>
-    Name,
+    Title,
     /// <summary>
     /// Used in:
     /// -IterationPreview
@@ -28,5 +28,9 @@ public enum SortingOptionEnum
     /// Used in:
     /// -IterationPreview (not DB order)
     /// </summary>
-    LeaderPoints
+    LeaderPoints,
+    /// <summary>
+    /// -SimulationOverview  (+condition)
+    /// </summary>
+    State
 }

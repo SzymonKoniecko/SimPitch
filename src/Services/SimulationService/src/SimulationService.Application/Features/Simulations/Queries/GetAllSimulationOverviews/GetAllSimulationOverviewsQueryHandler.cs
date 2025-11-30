@@ -19,20 +19,21 @@ public class GetAllSimulationOverviewsQueryHandler : IRequestHandler<GetAllSimul
 
     public async Task<(IEnumerable<SimulationOverviewDto>, PagedResponseDetails)> Handle(GetAllSimulationOverviewsQuery query, CancellationToken cancellationToken)
     {
-        var results = await _simulationOverviewReadRepository.GetSimulationOverviewsAsync(
-            new PagedRequest(
+        var pagedRequest = new PagedRequest(
                 query.PagedRequest.Offset,
                 query.PagedRequest.PageSize,
                 EnumMapper.SortingOptionToEnum(query.PagedRequest.SortingMethod.SortingOption),
+                query.PagedRequest.SortingMethod.Condition,
                 query.PagedRequest.SortingMethod.Order
-            ), cancellationToken);
+            );
+        var results = await _simulationOverviewReadRepository.GetSimulationOverviewsAsync(pagedRequest, cancellationToken);
 
         return
         (
             results.Select(x => SimulationOverviewMapper.ToDto(x)),
             new PagedResponseDetails()
             {
-                TotalCount = await _simulationOverviewReadRepository.GetSimulationOverviewCountAsync(cancellationToken),
+                TotalCount = await _simulationOverviewReadRepository.GetSimulationOverviewCountAsync(pagedRequest, cancellationToken),
                 PageNumber = (query.PagedRequest.Offset / query.PagedRequest.PageSize) + 1,
                 PageSize = query.PagedRequest.PageSize,
                 SortingOption = query.PagedRequest.SortingMethod.SortingOption.ToString(),

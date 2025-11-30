@@ -10,7 +10,7 @@ public class PagedRequestDto
     public int PageSize { get; set; } = 10;
     public SortingMethodDto SortingMethod { get; set; }
 
-    public PagedRequestDto(int offset, int pageSize, string sortingOption, string order)
+    public PagedRequestDto(int offset, int pageSize, string sortingOption, string condition, string order)
     {
 
         this.Offset = offset;
@@ -18,6 +18,7 @@ public class PagedRequestDto
         SortingMethod = new()
         {
             SortingOption = sortingOption,
+            Condition = condition,
             Order = order
         };
     }

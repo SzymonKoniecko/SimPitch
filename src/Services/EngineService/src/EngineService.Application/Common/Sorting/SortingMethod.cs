@@ -5,6 +5,7 @@ namespace EngineService.Application.Common.Sorting;
 
 public class SortingMethod
 {
-    public string SortingOption { get; set; }
+    public SortingOptionEnum SortingOption { get; set; }
+    public string Condition { get; set; }
     public string Order { get; set; }
 }

@@ -20,6 +20,7 @@ public static class ProtoHelper
         {
             pagedRequest.SortingMethod = new();
             pagedRequest.SortingMethod.SortingOption = "CreatedDate";
+            pagedRequest.SortingMethod.Condition = "";
             pagedRequest.SortingMethod.Order = "DESC";
         }
 
@@ -28,6 +29,7 @@ public static class ProtoHelper
             pagedRequest.Offset,
             pagedRequest.Limit,
             pagedRequest.SortingMethod.SortingOption,
+            pagedRequest.SortingMethod.Condition,
             pagedRequest.SortingMethod.Order
         );
     }

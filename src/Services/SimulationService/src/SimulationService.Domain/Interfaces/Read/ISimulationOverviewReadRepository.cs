@@ -8,5 +8,5 @@ public interface ISimulationOverviewReadRepository
 {
     Task<SimulationOverview> GetSimulationOverviewByIdAsync(Guid simulationId, CancellationToken cancellationToken);
     Task<IEnumerable<SimulationOverview>> GetSimulationOverviewsAsync(PagedRequest pagedRequest, CancellationToken cancellationToken);
-    Task<int> GetSimulationOverviewCountAsync(CancellationToken cancellationToken);
+    Task<int> GetSimulationOverviewCountAsync(PagedRequest pagedRequest, CancellationToken cancellationToken);
 }

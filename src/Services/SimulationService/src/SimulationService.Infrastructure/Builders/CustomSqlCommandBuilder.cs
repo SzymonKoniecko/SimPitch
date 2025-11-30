@@ -46,20 +46,42 @@ public class CustomSqlCommandBuilder
     {
         var order = SortingMapper.GetSortDirection(request.SortingMethod.Order);
 
+        var whereClausule = SortingMapper.WhereClausule(request.SortingMethod.SortingOption, request.SortingMethod.Condition);
         var sqlOrderFilter = SortingMapper.ToSqlColumnSimulationOverviews(request.SortingMethod.SortingOption, order);
 
         string sql = $@"
         SET @Offset = ISNULL(@Offset, 0);
         IF @Offset < 0 SET @Offset = 0;
-            SELECT *
-            FROM SimulationOverview
-            {sqlOrderFilter}
+            SELECT * 
+            FROM SimulationOverview so
+            {whereClausule}
+            {sqlOrderFilter} 
             OFFSET @Offset ROWS FETCH NEXT @Limit ROWS ONLY;
         ";
-
         var command = new CommandDefinition(
             commandText: sql,
             parameters: new { Offset = request.Offset, Limit = request.PageSize },
+            cancellationToken: cancellationToken
+        );
+
+        return command;
+    }
+
+    public static CommandDefinition BuildPagedSimulationOverviewsQueryCount(
+        PagedRequest request,
+        CancellationToken cancellationToken)
+    {
+        var order = SortingMapper.GetSortDirection(request.SortingMethod.Order);
+
+        var whereClausule = SortingMapper.WhereClausule(request.SortingMethod.SortingOption, request.SortingMethod.Condition);
+
+        string sql = $@"
+            SELECT Count(*) 
+            FROM SimulationOverview so
+            {whereClausule} ;
+        ";
+        var command = new CommandDefinition(
+            commandText: sql,
             cancellationToken: cancellationToken
         );
 
