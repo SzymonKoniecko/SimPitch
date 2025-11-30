@@ -34,6 +34,7 @@ public static class SortingMapper
         {
             SortingOptionEnum.State => $" inner join SimulationDb.dbo.SimulationState ss On so.Id = ss.SimulationId where ss.State = '{condition}' ",
             SortingOptionEnum.Title => $" WHERE CAST(JSON_VALUE(SimulationParams, '$.Title') AS NVARCHAR) LIKE '%{condition}%' COLLATE SQL_Latin1_General_CP1_CI_AS ",
+            SortingOptionEnum.League => $" WHERE JSON_VALUE(so.SimulationParams, '$.LeagueId') = '{condition}' COLLATE SQL_Latin1_General_CP1_CI_AS ",
             _ => $"WHERE 1=1",
         };
     }

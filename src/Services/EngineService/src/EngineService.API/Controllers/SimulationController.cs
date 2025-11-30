@@ -57,12 +57,13 @@ namespace EngineService.API.Controllers
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] string sortingOption = "CreatedDate",
+            [FromQuery] string condition = "",
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
             var result = await mediator.Send(
                 new GetAllSimulationOverviewsQuery(
-                    new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, order)
+                    new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, condition, order)
                 ),
                 cancellationToken
             );
@@ -82,7 +83,7 @@ namespace EngineService.API.Controllers
         {
             var result = await mediator.Send(
                 new GetSimulationByIdQuery(simulationId,
-                    new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, order)
+                    new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, condition: String.Empty, order)
                 ),
                 cancellationToken
             );

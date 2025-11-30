@@ -64,6 +64,8 @@ public static class EnumMapper
                 return Domain.Enums.SortingOptionEnum .LeaderPoints;
             case "State":
                 return Domain.Enums.SortingOptionEnum .State;
+            case "League":
+                return SortingOptionEnum.League;
             default:
                 throw new KeyNotFoundException($"Cannot map SortingOption to enum value: {enumValue}");
         }

@@ -53,7 +53,6 @@ public class SimulationStateReadRepository : ISimulationStateReadRepository
             parameters: new { SimulationId = simulationId },
             cancellationToken: cancellationToken
         );
-
         var result = await connection.QuerySingleOrDefaultAsync<SimulationState>(command);
 
         if (result is null)

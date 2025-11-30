@@ -32,5 +32,9 @@ public enum SortingOptionEnum
     /// <summary>
     /// -SimulationOverview  (+condition)
     /// </summary>
-    State
+    State,
+    /// <summary>
+    /// -SimulationOverview as DynamicValue (+condition)
+    /// </summary>
+    League,
 }

@@ -52,7 +52,7 @@ public class CustomSqlCommandBuilder
         string sql = $@"
         SET @Offset = ISNULL(@Offset, 0);
         IF @Offset < 0 SET @Offset = 0;
-            SELECT * 
+            SELECT so.Id, so.CreatedDate, so.SimulationParams, so.LeagueStrengthsJSON, so.PriorLeagueStrength 
             FROM SimulationOverview so
             {whereClausule}
             {sqlOrderFilter} 
