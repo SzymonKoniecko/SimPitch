@@ -165,7 +165,6 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         grpc.ConfidenceLevel = simulationParamsDto.ConfidenceLevel;
         grpc.HomeAdvantage = simulationParamsDto.HomeAdvantage;
         grpc.NoiseFactor = simulationParamsDto.NoiseFactor;
-        grpc.TargetLeagueRoundId = simulationParamsDto.TargetLeagueRoundId.ToString();
         grpc.Model = simulationParamsDto.ModelType;
 
         grpc.SeasonYears.AddRange(simulationParamsDto.SeasonYears);
@@ -173,6 +172,10 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         if (simulationParamsDto.LeagueRoundId != null && simulationParamsDto.LeagueRoundId != Guid.Empty)
         {
             grpc.LeagueRoundId = simulationParamsDto.LeagueRoundId.ToString();
+        }
+        if (simulationParamsDto.TargetLeagueRoundId != null && simulationParamsDto.TargetLeagueRoundId != Guid.Empty)
+        {
+            grpc.TargetLeagueRoundId = simulationParamsDto.TargetLeagueRoundId.ToString();
         }
 
         return grpc;
