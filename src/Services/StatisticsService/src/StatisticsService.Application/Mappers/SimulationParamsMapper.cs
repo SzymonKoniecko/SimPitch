@@ -16,6 +16,7 @@ public static class SimulationParamsMapper
         vo.LeagueId = dto.LeagueId;
         vo.Iterations = dto.Iterations;
         vo.LeagueRoundId = dto.LeagueRoundId;
+        vo.TargetLeagueRoundId = dto.TargetLeagueRoundId;
         vo.CreateScoreboardOnCompleteIteration = dto.CreateScoreboardOnCompleteIteration;
 
         return vo;
@@ -30,6 +31,7 @@ public static class SimulationParamsMapper
         dto.LeagueId = vo.LeagueId;
         dto.Iterations = vo.Iterations;
         dto.LeagueRoundId = vo.LeagueRoundId;
+        dto.TargetLeagueRoundId = vo.TargetLeagueRoundId;
         dto.CreateScoreboardOnCompleteIteration = vo.CreateScoreboardOnCompleteIteration;
 
         return dto;

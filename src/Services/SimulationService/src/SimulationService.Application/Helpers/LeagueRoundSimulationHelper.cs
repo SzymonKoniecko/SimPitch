@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography.X509Certificates;
 using SimulationService.Domain.Entities;
 
 namespace SimulationService.Application.Helpers;
@@ -29,6 +30,28 @@ public static class LeagueRoundSimulationHelper
             .Skip(index)
             .Select(x => x.Id)
             .ToList();
+    }
+
+    public static List<LeagueRound> FilterLeagueRoundsForCustomSimulationToFindLastLeagueRoundToPlay(
+        List<LeagueRound> leagueRounds,
+        Guid? lastLeagueRoundToPlay)
+    {
+        if (lastLeagueRoundToPlay == null || lastLeagueRoundToPlay == Guid.Empty)
+            return leagueRounds;
+
+        List<LeagueRound> filteredLeagueRounds = new();
+
+        foreach (var leagueRound in leagueRounds.OrderBy(x => x.Round))
+        {
+            if (leagueRound.Id == lastLeagueRoundToPlay)
+            {
+                filteredLeagueRounds.Add(leagueRound);
+                return filteredLeagueRounds;
+            }
+            else
+                filteredLeagueRounds.Add(leagueRound);
+        }
+        return filteredLeagueRounds;
     }
 
     /// <summary>

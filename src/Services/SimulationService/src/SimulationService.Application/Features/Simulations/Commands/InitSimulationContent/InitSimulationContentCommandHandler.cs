@@ -52,6 +52,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         };
 
         var leagueRounds = await _mediator.Send(new GetLeagueRoundsByParamsGrpcQuery(leagueRoundDtoRequest), cancellationToken);
+        leagueRounds = LeagueRoundSimulationHelper.FilterLeagueRoundsForCustomSimulationToFindLastLeagueRoundToPlay(leagueRounds, contentResponse.SimulationParams.TargetLeagueRoundId);
         List<Guid> leagueRoundsToClearForCustomSimulation = LeagueRoundSimulationHelper.FindLeagueRoundsForCustomSimulation(leagueRounds, contentResponse.SimulationParams.LeagueRoundId);
 
 
