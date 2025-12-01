@@ -9,6 +9,7 @@ public class SimulationParamsDto
     public Guid LeagueId { get; set; }
     public int Iterations { get; set; }
     public Guid? LeagueRoundId { get; set; }
+    public Guid? TargetLeagueRoundId { get; set; }
     public bool CreateScoreboardOnCompleteIteration { get; set; }
     public int Seed { get; set; }
     public int GamesToReachTrust { get; set; }
