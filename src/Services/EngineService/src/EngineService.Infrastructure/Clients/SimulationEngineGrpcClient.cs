@@ -141,12 +141,12 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         dto.LeagueId = Guid.Parse(grpc.LeagueId);
         dto.Seed = grpc.Seed;
         dto.LeagueRoundId = grpc.HasLeagueRoundId ? Guid.Parse(grpc.LeagueRoundId) : Guid.Empty;
+        dto.TargetLeagueRoundId = grpc.HasTargetLeagueRoundId ? Guid.Parse(grpc.TargetLeagueRoundId) : Guid.Empty;
         dto.CreateScoreboardOnCompleteIteration = grpc.HasCreateScoreboardOnCompleteIteration;
         dto.GamesToReachTrust = grpc.GamesToReachTrust;
         dto.ConfidenceLevel = grpc.ConfidenceLevel;
         dto.HomeAdvantage = grpc.HomeAdvantage;
         dto.NoiseFactor = grpc.NoiseFactor;
-        dto.TargetLeagueRoundId = Guid.Parse(grpc.TargetLeagueRoundId);
         dto.ModelType = grpc.Model;
 
         return dto;
