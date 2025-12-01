@@ -15,6 +15,7 @@ public static class SimulationParamsMapper
         vo.SeasonYears = dto.SeasonYears;
         vo.LeagueId = dto.LeagueId;
         vo.LeagueRoundId = dto.LeagueRoundId;
+        vo.TargetLeagueRoundId = dto.TargetLeagueRoundId;
         vo.Iterations = dto.Iterations;
         vo.Seed = dto.Seed;
         vo.CreateScoreboardOnCompleteIteration = dto.CreateScoreboardOnCompleteIteration;
@@ -35,6 +36,7 @@ public static class SimulationParamsMapper
         dto.SeasonYears = vo.SeasonYears;
         dto.LeagueId = vo.LeagueId;
         dto.LeagueRoundId = vo.LeagueRoundId;
+        dto.TargetLeagueRoundId = vo.TargetLeagueRoundId;
         dto.Iterations = vo.Iterations;
         dto.Seed = vo.Seed;
         dto.CreateScoreboardOnCompleteIteration = vo.CreateScoreboardOnCompleteIteration;

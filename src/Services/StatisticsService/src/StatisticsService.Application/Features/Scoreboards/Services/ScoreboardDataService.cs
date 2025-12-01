@@ -3,6 +3,7 @@ using MediatR;
 using StatisticsService.Application.DTOs;
 using StatisticsService.Application.Features.IterationResults.Queries.GetIterationResultsBySimulationId;
 using StatisticsService.Application.Features.LeagueRounds.DTOs;
+using StatisticsService.Application.Helpers;
 using StatisticsService.Application.Interfaces;
 using StatisticsService.Application.Mappers;
 using StatisticsService.Domain.ValueObjects;
@@ -54,6 +55,8 @@ public class ScoreboardDataService : IScoreboardDataService
 
         if (leagueRounds == null || leagueRounds.Count == 0)
             throw new InvalidOperationException("No league rounds found for the given parameters.");
+
+        leagueRounds = LeagueRoundSimulationHelper.FilterLeagueRoundsForCustomSimulationToFindLastLeagueRoundToPlay(leagueRounds, overview.SimulationParams.TargetLeagueRoundId);
 
         var playedRounds = new List<MatchRoundDto>();
 

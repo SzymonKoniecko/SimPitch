@@ -106,6 +106,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         dto.Iterations = grpc.Iterations;
         dto.LeagueId = Guid.Parse(grpc.LeagueId);
         dto.LeagueRoundId = grpc.HasLeagueRoundId ? Guid.Parse(grpc.LeagueRoundId) : Guid.Empty;
+        dto.TargetLeagueRoundId = grpc.HasTargetLeagueRoundId ? Guid.Parse(grpc.TargetLeagueRoundId) : Guid.Empty;
 
         return dto;
     }

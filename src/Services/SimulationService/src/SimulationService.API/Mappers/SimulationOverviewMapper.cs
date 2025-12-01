@@ -47,6 +47,10 @@ public static class SimulationOverviewMapper
             proto.LeagueRoundId = dto.LeagueRoundId.ToString();
         }
 
+        if (dto.TargetLeagueRoundId != Guid.Empty)
+        {
+            proto.TargetLeagueRoundId = dto.TargetLeagueRoundId.ToString();
+        }
 
         return proto;
     }

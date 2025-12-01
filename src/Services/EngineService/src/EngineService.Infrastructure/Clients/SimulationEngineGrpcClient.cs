@@ -146,6 +146,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         dto.ConfidenceLevel = grpc.ConfidenceLevel;
         dto.HomeAdvantage = grpc.HomeAdvantage;
         dto.NoiseFactor = grpc.NoiseFactor;
+        dto.TargetLeagueRoundId = Guid.Parse(grpc.TargetLeagueRoundId);
         dto.ModelType = grpc.Model;
 
         return dto;
@@ -164,6 +165,7 @@ public class SimulationEngineGrpcClient : ISimulationEngineGrpcClient
         grpc.ConfidenceLevel = simulationParamsDto.ConfidenceLevel;
         grpc.HomeAdvantage = simulationParamsDto.HomeAdvantage;
         grpc.NoiseFactor = simulationParamsDto.NoiseFactor;
+        grpc.TargetLeagueRoundId = simulationParamsDto.TargetLeagueRoundId.ToString();
         grpc.Model = simulationParamsDto.ModelType;
 
         grpc.SeasonYears.AddRange(simulationParamsDto.SeasonYears);
