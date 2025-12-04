@@ -173,6 +173,8 @@ BEGIN TRY
         (NEWID(), @RoundId3, @TeamId7, @TeamId10, 2, 2, 1, 1),
         (NEWID(), @RoundId3, @TeamId11, @TeamId5, 3, 1, 0, 1),
         (NEWID(), @RoundId3, @TeamId2, @TeamId18, 0, 0, 1, 1),
+        (NEWID(), @RoundId3, @TeamId12, @TeamId1, null, null, null, 0), -- Motor vs Jaga
+
 
         -- Kolejka 4 (8-11 sierpnia 2025) - ROZEGRANA
         (NEWID(), @RoundId4, @TeamId18, @TeamId6, 2, 1, 0, 1),
