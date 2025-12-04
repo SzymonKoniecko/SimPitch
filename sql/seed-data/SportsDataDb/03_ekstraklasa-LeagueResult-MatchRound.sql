@@ -182,9 +182,9 @@ BEGIN TRY
         (NEWID(), @RoundId4, @TeamId10, @TeamId12, 3, 3, 1, 1),
         (NEWID(), @RoundId4, @TeamId8, @TeamId17, 0, 1, 0, 1),
         (NEWID(), @RoundId4, @TeamId15, @TeamId11, 3, 0, 0, 1),
-        (NEWID(), @RoundId4, @TeamId5, @TeamId14, 0, 0, 1, 1),
+        (NEWID(), @RoundId4, @TeamId5, @TeamId14, null, null, null, 0),
         (NEWID(), @RoundId4, @TeamId1, @TeamId7, 5, 2, 0, 1),
-        (NEWID(), @RoundId4, @TeamId16, @TeamId3, 0, 0, 1, 1),
+        (NEWID(), @RoundId4, @TeamId16, @TeamId3, null, null, null, 0),
         (NEWID(), @RoundId4, @TeamId4, @TeamId9, 1, 1, 1, 1),
 
         -- Kolejka 5 (15-17 sierpnia 2025) - ROZEGRANA
@@ -233,7 +233,7 @@ BEGIN TRY
 
         -- Kolejka 9 (19-21 września 2025) - ROZEGRANA
         (NEWID(), @RoundId9, @TeamId13, @TeamId7, 0, 3, 0, 1),
-        (NEWID(), @RoundId9, @TeamId9, @TeamId1, 0, 1, 0, 1),
+        (NEWID(), @RoundId9, @TeamId1, @TeamId9, null, null, null, 0),
         (NEWID(), @RoundId9, @TeamId11, @TeamId16, 1, 0, 0, 1),
         (NEWID(), @RoundId9, @TeamId18, @TeamId15, 0, 0, 1, 1),
         (NEWID(), @RoundId9, @TeamId17, @TeamId3, 0, 2, 0, 1),
@@ -317,7 +317,7 @@ BEGIN TRY
         (NEWID(), @RoundId16, @TeamId3, @TeamId11, 4, 1, 0, 1),
         (NEWID(), @RoundId16, @TeamId4, @TeamId15, 1, 3, 0, 1),
         (NEWID(), @RoundId16, @TeamId6, @TeamId14, 5, 1, 0, 1),
-        (NEWID(), @RoundId16, @TeamId1, @TeamId13, 0, 0, 1, 1),
+        (NEWID(), @RoundId16, @TeamId1, @TeamId13, null, null, null, 0),
 
         -- Kolejka 17 (28 listopada - 1 grudnia 2025) - ROZEGRANA
         (NEWID(), @RoundId17, @TeamId16, @TeamId4, 0, 2, 0, 1),
@@ -330,7 +330,6 @@ BEGIN TRY
         (NEWID(), @RoundId17, @TeamId9, @TeamId3, 0, 0, 1, 1),
         (NEWID(), @RoundId17, @TeamId12, @TeamId2, 1, 1, 1, 1),
 
-        -- Kolejka 18-34 - NIEROZEGRANE (pattern: null, null, null, 0)
         -- Kolejka 18 (6 grudnia 2025)
         (NEWID(), @RoundId18, @TeamId18, @TeamId12, null, null, null, 0),
         (NEWID(), @RoundId18, @TeamId17, @TeamId1, null, null, null, 0),
