@@ -104,7 +104,7 @@ BEGIN TRY
         (@TeamId4, 'Widzew Łódź', @CountryId, @StadiumId4, 'WID'),
         (@TeamId5, 'Raków Częstochowa', @CountryId, @StadiumId5, 'RAK'),
         (@TeamId6, 'Pogoń Szczecin', @CountryId, @StadiumId6, 'POG'),
-        (@TeamId7, 'Cracovia', @CountryId, @StadiumId7, 'arka.png', 'CRA'),
+        (@TeamId7, 'Cracovia', @CountryId, @StadiumId7, 'CRA'),
         (@TeamId8, 'Górnik Zabrze', @CountryId, @StadiumId8, 'GOR'),
         (@TeamId9, 'Wisła Płock', @CountryId, @StadiumId9, 'WPŁ'),
         (@TeamId10, 'Lechia Gdańsk', @CountryId, @StadiumId10, 'LEH'),
@@ -122,7 +122,7 @@ BEGIN TRY
         (@TeamId21, 'Puszcza Niepołomice', @CountryId, @StadiumId21, 'PUN')
 
     IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.CompetitionMembership)
-    INSERT INTO dbo.Team (Id, [TeamId], LeagueId, SeasonYear)
+    INSERT INTO dbo.CompetitionMembership (Id, TeamId, LeagueId, SeasonYear)
     VALUES
         (NEWID(), @TeamId1, @LeagueId, "2025/2026"),
         (NEWID(), @TeamId2, @LeagueId, "2025/2026"),
@@ -145,7 +145,7 @@ BEGIN TRY
 
         (NEWID(), @TeamId19, @LeagueId, "2024/2025"),
         (NEWID(), @TeamId20, @LeagueId, "2024/2025"),
-        (NEWID(), @TeamId21, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId21, @LeagueId, "2024/2025")
 
     COMMIT TRANSACTION
     PRINT 'Ekstraklasa stadiums and teams for 2025/2026 season inserted successfully.'
