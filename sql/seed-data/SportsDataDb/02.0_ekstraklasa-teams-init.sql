@@ -143,12 +143,31 @@ BEGIN TRY
         (NEWID(), @TeamId17, @LeagueId, "2025/2026"),
         (NEWID(), @TeamId18, @LeagueId, "2025/2026"),
 
+
+        (NEWID(), @TeamId1, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId2, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId3, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId4, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId5, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId6, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId7, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId8, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId10, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId11, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId12, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId13, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId14, @LeagueId, "2024/2025"),
+        (NEWID(), @TeamId15, @LeagueId, "2024/2025"),
         (NEWID(), @TeamId19, @LeagueId, "2024/2025"),
         (NEWID(), @TeamId20, @LeagueId, "2024/2025"),
-        (NEWID(), @TeamId21, @LeagueId, "2024/2025")
+        (NEWID(), @TeamId21, @LeagueId, "2024/2025"),
+
+        (NEWID(), @TeamId18, @LeagueId1, '2024/2025'),
+        (NEWID(), @TeamId17, @LeagueId1, '2024/2025'),
+        (NEWID(), @TeamId9, @LeagueId1, '2024/2025');
 
     COMMIT TRANSACTION
-    PRINT 'Ekstraklasa stadiums and teams for 2025/2026 season inserted successfully.'
+    PRINT 'Ekstraklasa stadiums and teams for 2024/2025 - 2025/2026 seasons inserted successfully.'
 END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION
