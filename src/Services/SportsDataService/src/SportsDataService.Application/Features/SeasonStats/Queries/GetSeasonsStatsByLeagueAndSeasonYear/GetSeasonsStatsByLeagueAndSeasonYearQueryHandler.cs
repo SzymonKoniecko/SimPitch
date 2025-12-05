@@ -10,11 +10,16 @@ public class GetSeasonsStatsByLeagueAndSeasonYearQueryHandler : IRequestHandler<
 {
     private readonly ITeamReadRepository _teamReadRepository;
     private readonly ISeasonStatsReadRepository _seasonStatsReadRepository;
+    private readonly ICompetitionMembershipReadRepository _competitionMembershipReadRepository;
 
-    public GetSeasonsStatsByLeagueAndSeasonYearQueryHandler(ITeamReadRepository teamReadRepository, ISeasonStatsReadRepository seasonStatsReadRepository)
+    public GetSeasonsStatsByLeagueAndSeasonYearQueryHandler(
+        ITeamReadRepository teamReadRepository, 
+        ISeasonStatsReadRepository seasonStatsReadRepository,
+        ICompetitionMembershipReadRepository competitionMembershipReadRepository)
     {
         _teamReadRepository = teamReadRepository;
         _seasonStatsReadRepository = seasonStatsReadRepository;
+        _competitionMembershipReadRepository = competitionMembershipReadRepository;
     }
 
     public async Task<List<SeasonStatsDto>> Handle(GetSeasonsStatsByLeagueAndSeasonYearQuery query, CancellationToken cancellationToken)
@@ -22,7 +27,11 @@ public class GetSeasonsStatsByLeagueAndSeasonYearQueryHandler : IRequestHandler<
         List<SeasonStatsDto> neededSeasonStats = new();
 
         var teams = await _teamReadRepository.GetAllTeamsAsync(cancellationToken);
-        teams = teams.Where(x => x.LeagueId == query.leagueId);
+        var membershipList = await _competitionMembershipReadRepository.GetAllByLeagueIdAndSeasonYearAsync(query.leagueId, query.seasonYear, cancellationToken);
+        
+        teams = teams.Where(x => 
+            membershipList.Any(y => y.TeamId == x.Id)
+        ).ToList();
         
         foreach (var team in teams)
         {

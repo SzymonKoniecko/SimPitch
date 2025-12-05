@@ -18,12 +18,6 @@ public class CreateTeamCommandValidator : AbstractValidator<CreateTeamCommand>
             .MustAsync(async (countryId, cancellationToken) =>
                 await countryReadRepository.CountryExistsAsync(countryId, cancellationToken))
             .WithMessage("Country with the specified ID does not exist");
-        RuleFor(command => command.Team.LeagueId)
-            .NotNull()
-            .WithMessage("League ID cannot be null")
-            .MustAsync(async (leagueId, cancellationToken) =>
-                await leagueReadRepository.LeagueExistsAsync(leagueId, cancellationToken))
-            .WithMessage("League with the specified ID does not exist");
         RuleFor(command => command.Team.StadiumId)
             .NotNull()
             .WithMessage("Stadium ID cannot be null")

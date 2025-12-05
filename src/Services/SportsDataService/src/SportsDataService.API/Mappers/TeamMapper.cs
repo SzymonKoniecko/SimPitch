@@ -9,16 +9,16 @@ public static class TeamMapper
 {
     public static TeamGrpc ToProto(this TeamDto team)
     {
-        return new TeamGrpc
+        var teamGrpc = new TeamGrpc
         {
             Id = team.Id.ToString(),
             Name = team.Name,
             Country = CountryMapper.ToProto(team.Country),
             Stadium = StadiumMapper.ToProto(team.Stadium),
-            League = LeagueMapper.ToProto(team.League),
-            LogoUrl = team.LogoUrl,
             ShortName = team.ShortName
         };
+        teamGrpc.Memberships.AddRange(team.Memberships.Select(x => ToProto(x)));
+        return teamGrpc;
     }
     public static CreateTeamDto ToDto(this CreateTeamRequest request)
     {
@@ -27,8 +27,6 @@ public static class TeamMapper
             Name = request.Name,
             CountryId = Guid.Parse(request.CountryId),
             StadiumId = Guid.Parse(request.StadiumId),
-            LeagueId = Guid.Parse(request.LeagueId),
-            LogoUrl = request.LogoUrl,
             ShortName = request.ShortName
         };
     }
@@ -38,5 +36,16 @@ public static class TeamMapper
         var response = new TeamListResponse();
         response.Teams.AddRange(teams.Select(ToProto));
         return response;
+    }
+    public static CompetitionMembershipGrpc ToProto(CompetitionMembershipDto dto)
+    {
+        var proto = new CompetitionMembershipGrpc();
+
+        proto.Id = dto.Id.ToString();
+        proto.TeamId = dto.TeamId.ToString();
+        proto.LeagueId = dto.LeagueId.ToString();
+        proto.SeasonYear = dto.SeasonYear;
+
+        return proto;
     }
 }

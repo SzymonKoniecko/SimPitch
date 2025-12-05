@@ -7,20 +7,20 @@ namespace SportsDataService.Application.Features.Teams.Queries.GetTeamById;
 public class GetTeamByIdHandler : IRequestHandler<GetTeamByIdQuery, TeamDto>
 {
     private readonly ITeamReadRepository _repository;
-    private readonly ICountryReadRepository countryRepository;
-    private readonly ILeagueReadRepository leagueRepository;
-    private readonly IStadiumReadRepository stadiumRepository;
+    private readonly ICountryReadRepository _countryRepository;
+    private readonly ICompetitionMembershipReadRepository _competitionMembershipReadRepository;
+    private readonly IStadiumReadRepository _stadiumRepository;
 
     public GetTeamByIdHandler(
         ITeamReadRepository repository,
         ICountryReadRepository countryRepository,
-        ILeagueReadRepository leagueRepository,
+        ICompetitionMembershipReadRepository competitionMembershipReadRepository,
         IStadiumReadRepository stadiumRepository)
     {   
         _repository = repository;
-        this.countryRepository = countryRepository;
-        this.leagueRepository = leagueRepository;
-        this.stadiumRepository = stadiumRepository;
+        _countryRepository = countryRepository;
+        _competitionMembershipReadRepository = competitionMembershipReadRepository;
+        _stadiumRepository = stadiumRepository;
     }
 
     public async Task<TeamDto> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
@@ -29,18 +29,18 @@ public class GetTeamByIdHandler : IRequestHandler<GetTeamByIdQuery, TeamDto>
         if (team is null)
             throw new KeyNotFoundException($"Team with Id '{request.TeamId}' was not found.");
 
-        var country = await countryRepository.GetCountryByIdAsync(team.CountryId, cancellationToken);
+        var country = await _countryRepository.GetCountryByIdAsync(team.CountryId, cancellationToken);
         if (country is null)
             throw new KeyNotFoundException($"Country with Id '{team.CountryId}' was not found.");
 
-        var stadium = await stadiumRepository.GetStadiumByIdAsync(team.StadiumId, cancellationToken);
+        var stadium = await _stadiumRepository.GetStadiumByIdAsync(team.StadiumId, cancellationToken);
         if (stadium is null)
             throw new KeyNotFoundException($"Stadium with Id '{team.StadiumId}' was not found.");
 
-        var leagues = await leagueRepository.GetAllLeaguesAsync(cancellationToken);
-        if (leagues is null)
-            throw new KeyNotFoundException($"League with Id '{team.LeagueId}' was not found.");
+        var competitionMemberships = await _competitionMembershipReadRepository.GetAllByTeamIdAsync(team.Id, cancellationToken);
+        if (competitionMemberships is null)
+            throw new KeyNotFoundException($"Competition Memberships with TeamId '{team.Id}' was not found.");
         
-        return TeamMapper.ToDto(team, country, stadium, leagues?.FirstOrDefault(l => l.Id == team.Id));
+        return TeamMapper.ToDto(team, country, stadium, competitionMemberships);
     }
 }

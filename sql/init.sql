@@ -62,6 +62,15 @@ BEGIN
         Strength FLOAT
     );
 END
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CompetitionMembership' AND xtype='U')
+BEGIN
+    CREATE TABLE dbo.CompetitionMembership (
+        Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        TeamId UNIQUEIDENTIFIER NOT NULL REFERENCES dbo.Team(Id),
+        LeagueId UNIQUEIDENTIFIER NOT NULL REFERENCES dbo.League(Id),
+        SeasonYear NVARCHAR(10) NOT NULL,
+    );
+END
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Stadium' AND xtype='U')
 BEGIN
     CREATE TABLE dbo.Stadium
