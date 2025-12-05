@@ -330,7 +330,7 @@ BEGIN TRY
         (NEWID(), @RoundId17, @TeamId9, @TeamId3, 0, 0, 1, 1),
         (NEWID(), @RoundId17, @TeamId12, @TeamId2, 1, 1, 1, 1),
 
-        -- Kolejka 18 (6 grudnia 2025)
+       -- Kolejka 18 (6 grudnia 2025)
         (NEWID(), @RoundId18, @TeamId18, @TeamId12, null, null, null, 0),
         (NEWID(), @RoundId18, @TeamId17, @TeamId1, null, null, null, 0),
         (NEWID(), @RoundId18, @TeamId10, @TeamId8, null, null, null, 0),
@@ -341,8 +341,7 @@ BEGIN TRY
         (NEWID(), @RoundId18, @TeamId16, @TeamId2, null, null, null, 0),
         (NEWID(), @RoundId18, @TeamId14, @TeamId4, null, null, null, 0),
 
-        -- Kolejka 19-34: Pozostałe mecze bez wyników (wszystkie z null, null, null, 0)
-        -- Z powodu ograniczenia rozmiaru, poniżej skrót - w pełnym pliku wszystkie mecze
+        -- Kolejka 19 (12 grudnia 2025)
         (NEWID(), @RoundId19, @TeamId9, @TeamId5, null, null, null, 0),
         (NEWID(), @RoundId19, @TeamId17, @TeamId7, null, null, null, 0),
         (NEWID(), @RoundId19, @TeamId2, @TeamId15, null, null, null, 0),
@@ -351,7 +350,172 @@ BEGIN TRY
         (NEWID(), @RoundId19, @TeamId8, @TeamId16, null, null, null, 0),
         (NEWID(), @RoundId19, @TeamId11, @TeamId18, null, null, null, 0),
         (NEWID(), @RoundId19, @TeamId3, @TeamId10, null, null, null, 0),
-        (NEWID(), @RoundId19, @TeamId4, @TeamId1, null, null, null, 0)
+        (NEWID(), @RoundId19, @TeamId4, @TeamId1, null, null, null, 0),
+
+        -- Kolejka 20 (19 grudnia 2025)
+        (NEWID(), @RoundId20, @TeamId9, @TeamId4, null, null, null, 0),
+        (NEWID(), @RoundId20, @TeamId1, @TeamId2, null, null, null, 0),
+        (NEWID(), @RoundId20, @TeamId13, @TeamId10, null, null, null, 0),
+        (NEWID(), @RoundId20, @TeamId6, @TeamId15, null, null, null, 0),
+        (NEWID(), @RoundId20, @TeamId16, @TeamId18, null, null, null, 0),
+        (NEWID(), @RoundId20, @TeamId3, @TeamId5, null, null, null, 0),
+        (NEWID(), @RoundId20, @TeamId12, @TeamId8, null, null, null, 0),
+        (NEWID(), @RoundId20, @TeamId11, @TeamId17, null, null, null, 0),
+        (NEWID(), @RoundId20, @TeamId7, @TeamId14, null, null, null, 0),
+
+        -- Kolejka 21 (26 grudnia 2025)
+        (NEWID(), @RoundId21, @TeamId4, @TeamId7, null, null, null, 0),
+        (NEWID(), @RoundId21, @TeamId10, @TeamId12, null, null, null, 0),
+        (NEWID(), @RoundId21, @TeamId15, @TeamId16, null, null, null, 0),
+        (NEWID(), @RoundId21, @TeamId5, @TeamId1, null, null, null, 0),
+        (NEWID(), @RoundId21, @TeamId18, @TeamId13, null, null, null, 0),
+        (NEWID(), @RoundId21, @TeamId2, @TeamId9, null, null, null, 0),
+        (NEWID(), @RoundId21, @TeamId8, @TeamId11, null, null, null, 0),
+        (NEWID(), @RoundId21, @TeamId17, @TeamId6, null, null, null, 0),
+        (NEWID(), @RoundId21, @TeamId14, @TeamId3, null, null, null, 0),
+
+        -- Kolejka 22 (2 stycznia 2026)
+        (NEWID(), @RoundId22, @TeamId6, @TeamId4, null, null, null, 0),
+        (NEWID(), @RoundId22, @TeamId13, @TeamId9, null, null, null, 0),
+        (NEWID(), @RoundId22, @TeamId12, @TeamId15, null, null, null, 0),
+        (NEWID(), @RoundId22, @TeamId1, @TeamId16, null, null, null, 0),
+        (NEWID(), @RoundId22, @TeamId3, @TeamId18, null, null, null, 0),
+        (NEWID(), @RoundId22, @TeamId11, @TeamId2, null, null, null, 0),
+        (NEWID(), @RoundId22, @TeamId7, @TeamId10, null, null, null, 0),
+        (NEWID(), @RoundId22, @TeamId17, @TeamId5, null, null, null, 0),
+        (NEWID(), @RoundId22, @TeamId8, @TeamId14, null, null, null, 0),
+
+        -- Kolejka 23 (9 stycznia 2026)
+        (NEWID(), @RoundId23, @TeamId4, @TeamId13, null, null, null, 0),
+        (NEWID(), @RoundId23, @TeamId10, @TeamId6, null, null, null, 0),
+        (NEWID(), @RoundId23, @TeamId15, @TeamId1, null, null, null, 0),
+        (NEWID(), @RoundId23, @TeamId18, @TeamId11, null, null, null, 0),
+        (NEWID(), @RoundId23, @TeamId5, @TeamId8, null, null, null, 0),
+        (NEWID(), @RoundId23, @TeamId9, @TeamId17, null, null, null, 0),
+        (NEWID(), @RoundId23, @TeamId14, @TeamId12, null, null, null, 0),
+        (NEWID(), @RoundId23, @TeamId2, @TeamId7, null, null, null, 0),
+        (NEWID(), @RoundId23, @TeamId16, @TeamId3, null, null, null, 0),
+
+        -- Kolejka 24 (16 stycznia 2026)
+        (NEWID(), @RoundId24, @TeamId9, @TeamId10, null, null, null, 0),
+        (NEWID(), @RoundId24, @TeamId7, @TeamId4, null, null, null, 0),
+        (NEWID(), @RoundId24, @TeamId17, @TeamId16, null, null, null, 0),
+        (NEWID(), @RoundId24, @TeamId1, @TeamId18, null, null, null, 0),
+        (NEWID(), @RoundId24, @TeamId13, @TeamId12, null, null, null, 0),
+        (NEWID(), @RoundId24, @TeamId11, @TeamId15, null, null, null, 0),
+        (NEWID(), @RoundId24, @TeamId3, @TeamId14, null, null, null, 0),
+        (NEWID(), @RoundId24, @TeamId6, @TeamId5, null, null, null, 0),
+        (NEWID(), @RoundId24, @TeamId8, @TeamId2, null, null, null, 0),
+
+        -- Kolejka 25 (23 stycznia 2026)
+        (NEWID(), @RoundId25, @TeamId5, @TeamId11, null, null, null, 0),
+        (NEWID(), @RoundId25, @TeamId16, @TeamId9, null, null, null, 0),
+        (NEWID(), @RoundId25, @TeamId12, @TeamId1, null, null, null, 0),
+        (NEWID(), @RoundId25, @TeamId10, @TeamId7, null, null, null, 0),
+        (NEWID(), @RoundId25, @TeamId15, @TeamId18, null, null, null, 0),
+        (NEWID(), @RoundId25, @TeamId4, @TeamId17, null, null, null, 0),
+        (NEWID(), @RoundId25, @TeamId14, @TeamId6, null, null, null, 0),
+        (NEWID(), @RoundId25, @TeamId2, @TeamId13, null, null, null, 0),
+        (NEWID(), @RoundId25, @TeamId3, @TeamId8, null, null, null, 0),
+
+        -- Kolejka 26 (30 stycznia 2026)
+        (NEWID(), @RoundId26, @TeamId13, @TeamId5, null, null, null, 0),
+        (NEWID(), @RoundId26, @TeamId6, @TeamId10, null, null, null, 0),
+        (NEWID(), @RoundId26, @TeamId18, @TeamId9, null, null, null, 0),
+        (NEWID(), @RoundId26, @TeamId1, @TeamId14, null, null, null, 0),
+        (NEWID(), @RoundId26, @TeamId8, @TeamId4, null, null, null, 0),
+        (NEWID(), @RoundId26, @TeamId11, @TeamId3, null, null, null, 0),
+        (NEWID(), @RoundId26, @TeamId7, @TeamId16, null, null, null, 0),
+        (NEWID(), @RoundId26, @TeamId17, @TeamId15, null, null, null, 0),
+        (NEWID(), @RoundId26, @TeamId12, @TeamId2, null, null, null, 0),
+
+        -- Kolejka 27 (6 lutego 2026)
+        (NEWID(), @RoundId27, @TeamId15, @TeamId8, null, null, null, 0),
+        (NEWID(), @RoundId27, @TeamId9, @TeamId1, null, null, null, 0),
+        (NEWID(), @RoundId27, @TeamId16, @TeamId6, null, null, null, 0),
+        (NEWID(), @RoundId27, @TeamId3, @TeamId7, null, null, null, 0),
+        (NEWID(), @RoundId27, @TeamId10, @TeamId13, null, null, null, 0),
+        (NEWID(), @RoundId27, @TeamId5, @TeamId18, null, null, null, 0),
+        (NEWID(), @RoundId27, @TeamId4, @TeamId11, null, null, null, 0),
+        (NEWID(), @RoundId27, @TeamId2, @TeamId17, null, null, null, 0),
+        (NEWID(), @RoundId27, @TeamId14, @TeamId12, null, null, null, 0),
+
+        -- Kolejka 28 (13 lutego 2026)
+        (NEWID(), @RoundId28, @TeamId11, @TeamId16, null, null, null, 0),
+        (NEWID(), @RoundId28, @TeamId6, @TeamId3, null, null, null, 0),
+        (NEWID(), @RoundId28, @TeamId13, @TeamId17, null, null, null, 0),
+        (NEWID(), @RoundId28, @TeamId1, @TeamId10, null, null, null, 0),
+        (NEWID(), @RoundId28, @TeamId8, @TeamId16, null, null, null, 0),
+        (NEWID(), @RoundId28, @TeamId7, @TeamId5, null, null, null, 0),
+        (NEWID(), @RoundId28, @TeamId18, @TeamId4, null, null, null, 0),
+        (NEWID(), @RoundId28, @TeamId12, @TeamId9, null, null, null, 0),
+        (NEWID(), @RoundId28, @TeamId15, @TeamId2, null, null, null, 0),
+
+        -- Kolejka 29 (20 lutego 2026)
+        (NEWID(), @RoundId29, @TeamId4, @TeamId6, null, null, null, 0),
+        (NEWID(), @RoundId29, @TeamId10, @TeamId18, null, null, null, 0),
+        (NEWID(), @RoundId29, @TeamId5, @TeamId15, null, null, null, 0),
+        (NEWID(), @RoundId29, @TeamId17, @TeamId12, null, null, null, 0),
+        (NEWID(), @RoundId29, @TeamId9, @TeamId14, null, null, null, 0),
+        (NEWID(), @RoundId29, @TeamId2, @TeamId11, null, null, null, 0),
+        (NEWID(), @RoundId29, @TeamId16, @TeamId7, null, null, null, 0),
+        (NEWID(), @RoundId29, @TeamId3, @TeamId13, null, null, null, 0),
+        (NEWID(), @RoundId29, @TeamId1, @TeamId8, null, null, null, 0),
+
+        -- Kolejka 30 (27 lutego 2026)
+        (NEWID(), @RoundId30, @TeamId14, @TeamId5, null, null, null, 0),
+        (NEWID(), @RoundId30, @TeamId6, @TeamId9, null, null, null, 0),
+        (NEWID(), @RoundId30, @TeamId13, @TeamId4, null, null, null, 0),
+        (NEWID(), @RoundId30, @TeamId18, @TeamId16, null, null, null, 0),
+        (NEWID(), @RoundId30, @TeamId11, @TeamId1, null, null, null, 0),
+        (NEWID(), @RoundId30, @TeamId12, @TeamId3, null, null, null, 0),
+        (NEWID(), @RoundId30, @TeamId7, @TeamId17, null, null, null, 0),
+        (NEWID(), @RoundId30, @TeamId15, @TeamId10, null, null, null, 0),
+        (NEWID(), @RoundId30, @TeamId8, @TeamId2, null, null, null, 0),
+
+        -- Kolejka 31 (6 marca 2026)
+        (NEWID(), @RoundId31, @TeamId4, @TeamId12, null, null, null, 0),
+        (NEWID(), @RoundId31, @TeamId17, @TeamId11, null, null, null, 0),
+        (NEWID(), @RoundId31, @TeamId3, @TeamId14, null, null, null, 0),
+        (NEWID(), @RoundId31, @TeamId1, @TeamId13, null, null, null, 0),
+        (NEWID(), @RoundId31, @TeamId10, @TeamId9, null, null, null, 0),
+        (NEWID(), @RoundId31, @TeamId5, @TeamId6, null, null, null, 0),
+        (NEWID(), @RoundId31, @TeamId16, @TeamId8, null, null, null, 0),
+        (NEWID(), @RoundId31, @TeamId2, @TeamId18, null, null, null, 0),
+        (NEWID(), @RoundId31, @TeamId7, @TeamId15, null, null, null, 0),
+
+        -- Kolejka 32 (13 marca 2026)
+        (NEWID(), @RoundId32, @TeamId12, @TeamId18, null, null, null, 0),
+        (NEWID(), @RoundId32, @TeamId6, @TeamId17, null, null, null, 0),
+        (NEWID(), @RoundId32, @TeamId9, @TeamId15, null, null, null, 0),
+        (NEWID(), @RoundId32, @TeamId11, @TeamId5, null, null, null, 0),
+        (NEWID(), @RoundId32, @TeamId8, @TeamId3, null, null, null, 0),
+        (NEWID(), @RoundId32, @TeamId14, @TeamId16, null, null, null, 0),
+        (NEWID(), @RoundId32, @TeamId13, @TeamId7, null, null, null, 0),
+        (NEWID(), @RoundId32, @TeamId4, @TeamId10, null, null, null, 0),
+        (NEWID(), @RoundId32, @TeamId2, @TeamId1, null, null, null, 0),
+
+        -- Kolejka 33 (20 marca 2026)
+        (NEWID(), @RoundId33, @TeamId1, @TeamId9, null, null, null, 0),
+        (NEWID(), @RoundId33, @TeamId18, @TeamId8, null, null, null, 0),
+        (NEWID(), @RoundId33, @TeamId7, @TeamId6, null, null, null, 0),
+        (NEWID(), @RoundId33, @TeamId15, @TeamId4, null, null, null, 0),
+        (NEWID(), @RoundId33, @TeamId16, @TeamId12, null, null, null, 0),
+        (NEWID(), @RoundId33, @TeamId5, @TeamId2, null, null, null, 0),
+        (NEWID(), @RoundId33, @TeamId10, @TeamId11, null, null, null, 0),
+        (NEWID(), @RoundId33, @TeamId3, @TeamId13, null, null, null, 0),
+        (NEWID(), @RoundId33, @TeamId17, @TeamId14, null, null, null, 0),
+
+        -- Kolejka 34 (27-29 marca 2026)
+        (NEWID(), @RoundId34, @TeamId8, @TeamId5, null, null, null, 0),
+        (NEWID(), @RoundId34, @TeamId14, @TeamId18, null, null, null, 0),
+        (NEWID(), @RoundId34, @TeamId4, @TeamId16, null, null, null, 0),
+        (NEWID(), @RoundId34, @TeamId9, @TeamId7, null, null, null, 0),
+        (NEWID(), @RoundId34, @TeamId11, @TeamId15, null, null, null, 0),
+        (NEWID(), @RoundId34, @TeamId6, @TeamId1, null, null, null, 0),
+        (NEWID(), @RoundId34, @TeamId13, @TeamId2, null, null, null, 0),
+        (NEWID(), @RoundId34, @TeamId17, @TeamId10, null, null, null, 0),
+        (NEWID(), @RoundId34, @TeamId12, @TeamId3, null, null, null, 0)
 
         IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.SeasonStats)
     INSERT INTO dbo.SeasonStats (Id, TeamId, SeasonYear, LeagueId, MatchesPlayed, Wins, Losses, Draws, GoalsFor, GoalsAgainst)
