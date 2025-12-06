@@ -3,7 +3,6 @@ USE SportsDataDb
 DECLARE 
     @CountryId UNIQUEIDENTIFIER, 
     @LeagueId UNIQUEIDENTIFIER,
-    @LeagueId1 UNIQUEIDENTIFIER,
     @CurrentDateTime DATETIME2 = GETDATE(),
 
     @StadiumId1 UNIQUEIDENTIFIER = NEWID(),
@@ -70,10 +69,6 @@ SELECT
 FROM dbo.League
 WHERE [Name] = 'PKO BP Ekstraklasa' AND CountryId = @CountryId
 
-SELECT
-    @LeagueId1 = Id
-FROM dbo.League
-WHERE [Name] = 'Betclic 1 Liga' AND CountryId = @CountryId
 
 BEGIN TRANSACTION
 
