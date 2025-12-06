@@ -28,6 +28,10 @@ DECLARE
     @StadiumId19 UNIQUEIDENTIFIER = NEWID(),
     @StadiumId20 UNIQUEIDENTIFIER = NEWID(),
     @StadiumId21 UNIQUEIDENTIFIER = NEWID(),
+    @StadiumId22 UNIQUEIDENTIFIER = NEWID(),
+    @StadiumId23 UNIQUEIDENTIFIER = NEWID(),
+    @StadiumId24 UNIQUEIDENTIFIER = NEWID(),
+    @StadiumId25 UNIQUEIDENTIFIER = NEWID(),
     
     @TeamId1 UNIQUEIDENTIFIER = 'e4b7d5c8-9f6a-4d2e-8a3c-1b0f8c0f4d2a',   -- Jaga
     @TeamId2 UNIQUEIDENTIFIER = 'a6c9f7d1-2b34-4e9c-8f13-0d7a2e5b1c9f',   -- Legia
@@ -51,7 +55,11 @@ DECLARE
 
     @TeamId19 UNIQUEIDENTIFIER = '8a46089c-f7aa-4270-9742-21a84ec92460',  -- Stal Mielec
     @TeamId20 UNIQUEIDENTIFIER = '4138333e-69dd-41fb-ad30-47bf2b0e4c31',  -- Slask Wroclaw
-    @TeamId21 UNIQUEIDENTIFIER = '0bc33659-7471-4fae-945f-f24f60a38ae0';   -- Puszcza Niepolomice
+    @TeamId21 UNIQUEIDENTIFIER = '0bc33659-7471-4fae-945f-f24f60a38ae0',  -- Puszcza Niepolomice
+    @TeamId22 UNIQUEIDENTIFIER = 'f7bf7c73-4609-48bf-b8db-66abdaf8c79c',  -- Warta Poznan
+    @TeamId23 UNIQUEIDENTIFIER = '015f9edb-00f6-4e63-8a03-ee77348e6572',  -- Ruch Chorzow
+    @TeamId24 UNIQUEIDENTIFIER = '823587b3-3b37-4c48-b202-f281d150d49c',  -- LKS Lodz
+    @TeamId25 UNIQUEIDENTIFIER = '445cfbe0-607e-4b79-9c83-18dcc7abe73f';  -- Miedz Legnica
 SELECT 
     @CountryId = Id
 FROM dbo.Country
@@ -123,7 +131,7 @@ BEGIN TRY
 
         (@TeamId19, 'Stal Mielec', @CountryId, @StadiumId19, 'STM'),
         (@TeamId20, 'Śląsk Wrocław', @CountryId, @StadiumId20, 'SLA'),
-        (@TeamId21, 'Puszcza Niepołomice', @CountryId, @StadiumId21, 'PUN')
+        (@TeamId21, 'Puszcza Niepołomice', @CountryId, @StadiumId21, 'PUN'),
         (@TeamId22, 'Warta Poznań', @CountryId, @StadiumId22, 'WAR'),
         (@TeamId23, 'Ruch Chorzów', @CountryId, @StadiumId23, 'RCH'),
         (@TeamId24, 'ŁKS Łódź', @CountryId, @StadiumId24, 'LKS'),
