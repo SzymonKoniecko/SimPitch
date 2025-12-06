@@ -1,14 +1,13 @@
 -- ================================================================
 -- EKSTRAKLASA 2025/2026 - (full 1-17)
 -- ================================================================
--- Created: 04.12.2025
+-- Created: 06.12.2025
 
 USE SportsDataDb;
 
 DECLARE 
     @CountryId UNIQUEIDENTIFIER, 
     @LeagueId UNIQUEIDENTIFIER,
-    @LeagueId1 UNIQUEIDENTIFIER,
     @CurrentDateTime DATETIME2 = GETDATE(),
 
     -- Team IDs (18 drużyn)
@@ -86,10 +85,6 @@ SELECT
 FROM dbo.League
 WHERE [Name] = 'PKO BP Ekstraklasa' AND CountryId = @CountryId
 
-SELECT
-    @LeagueId1 = Id
-FROM dbo.League
-WHERE [Name] = 'Betclic 1 Liga' AND CountryId = @CountryId
 BEGIN TRANSACTION
 
 BEGIN TRY
