@@ -68,7 +68,11 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             {
                 currentLeague = await _mediator.Send(new GetLeagueByIdQuery(leagueRound.LeagueId), cancellationToken);
                 if (!contentResponse.LeagueStrengths.Any(x => x.LeagueId == currentLeague.Id))
-                    contentResponse.LeagueStrengths.Add(currentLeague.LeagueStrengths.FirstOrDefault(x => x.LeagueId == currentLeague.Id));
+                {
+                    contentResponse.LeagueStrengths.AddRange(
+                        currentLeague.LeagueStrengths.Where(x => x.LeagueId == currentLeague.Id && query.SimulationParamsDto.SeasonYears.Any(y => y.Equals(EnumMapper.SeasonEnumToString(x.SeasonYear))))
+                    );
+                }
             }
 
             var matchRounds = await _mediator.Send(
@@ -94,7 +98,6 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                 contentResponse,
                 matchRounds,
                 leagueRound,
-                currentLeague.LeagueStrengths,
                 ref totalGoals,
                 ref totalMatches
             );
@@ -175,7 +178,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         if (contentResponse.LeagueStrengths != null && contentResponse.LeagueStrengths.Count() > 0)
         {
             leagueStrength = contentResponse.LeagueStrengths?
-            .FirstOrDefault(x => x.SeasonYear == EnumMapper.GetPreviousSeason(currentSeasonEnum))?.Strength
+            .FirstOrDefault(x => x.SeasonYear == currentSeasonEnum)?.Strength
             ?? 2.5f;
         }
         
@@ -207,21 +210,28 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         SimulationContent contentResponse,
         IEnumerable<MatchRound> matchRounds,
         LeagueRound leagueRound,
-        List<LeagueStrength> leagueStrengths,
         ref int totalGoals,
         ref int totalMatches)
     {
         var seasonEnum = EnumMapper.StringtoSeasonEnum(leagueRound.SeasonYear);
-        var leagueStrength = leagueStrengths
+        var leagueStrength = contentResponse.LeagueStrengths
             .FirstOrDefault(x => x.SeasonYear == seasonEnum)?.Strength // dac mapper do jednego sezonu nizej albo i nie, bo to przyszle mecze
-            ?? 2.5f; // Fallback
+            ?? 0.0f; // Fallback
 
-        if (leagueStrength == 2.5f)
+        if (leagueStrength == 0.0f)
         {
             _logger.LogWarning(
                 "Missing LeagueStrength for season {SeasonYear}, LeagueRoundId: {RoundId}. Using default 2.5",
                 leagueRound.SeasonYear,
                 leagueRound.Id);
+            leagueStrength = 2.5f;
+            contentResponse.LeagueStrengths.Add(
+                new LeagueStrength() { 
+                    Id = Guid.Empty,
+                    LeagueId = leagueRound.LeagueId,
+                    SeasonYear = seasonEnum,
+                    Strength = leagueStrength
+            });
         }
 
         foreach (var matchRound in matchRounds)

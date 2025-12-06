@@ -93,7 +93,11 @@ BEGIN TRY
         (@StadiumId18, 'Stadion Miejski w Gdyni', 15139),
         (@StadiumId19, 'Stadion Miejski im. Grzegorza Lato', 6864),
         (@StadiumId20, 'Tarczyński Arena', 42771),
-        (@StadiumId21, 'Stadion Miejski w Niepołomicach', 2118)
+        (@StadiumId21, 'Stadion Miejski w Niepołomicach', 2118),
+        (@StadiumId22, 'Warta Poznań Stadium (Dębińska Road Stadium)', 2813),       -- Warta Poznań (Ogródek)
+        (@StadiumId23, 'Silesian Stadium', 54378),                     -- Ruch Chorzów (Obiekt domowy w 2025)
+        (@StadiumId24, 'Stadion Miejski im. Władysława Króla', 18029),-- ŁKS Łódź
+        (@StadiumId25, 'Stadion Miejski im. Orła Białego', 6156);
 
     IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.Team)
     INSERT INTO dbo.Team (Id, [Name], CountryId, StadiumId, ShortName)
@@ -120,6 +124,11 @@ BEGIN TRY
         (@TeamId19, 'Stal Mielec', @CountryId, @StadiumId19, 'STM'),
         (@TeamId20, 'Śląsk Wrocław', @CountryId, @StadiumId20, 'SLA'),
         (@TeamId21, 'Puszcza Niepołomice', @CountryId, @StadiumId21, 'PUN')
+        (@TeamId22, 'Warta Poznań', @CountryId, @StadiumId22, 'WAR'),
+        (@TeamId23, 'Ruch Chorzów', @CountryId, @StadiumId23, 'RCH'),
+        (@TeamId24, 'ŁKS Łódź', @CountryId, @StadiumId24, 'LKS'),
+        (@TeamId25, 'Miedź Legnica', @CountryId, @StadiumId25, 'MIE');
+
 
     IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.CompetitionMembership)
     INSERT INTO dbo.CompetitionMembership (Id, TeamId, LeagueId, SeasonYear)
@@ -162,9 +171,45 @@ BEGIN TRY
         (NEWID(), @TeamId20, @LeagueId, "2024/2025"),
         (NEWID(), @TeamId21, @LeagueId, "2024/2025"),
 
-        (NEWID(), @TeamId18, @LeagueId1, '2024/2025'),
-        (NEWID(), @TeamId17, @LeagueId1, '2024/2025'),
-        (NEWID(), @TeamId9, @LeagueId1, '2024/2025');
+
+        (NEWID(), @TeamId1, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId20, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId2, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId6, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId3, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId8, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId5, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId14, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId4, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId16, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId19, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId21, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId7, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId15, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId11, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId22, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId23, @LeagueId, "2023/2024"),
+        (NEWID(), @TeamId24, @LeagueId, "2023/2024"),
+
+
+        (NEWID(), @TeamId5, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId2, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId3, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId6, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId16, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId8, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId7, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId5, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId22, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId14, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId19, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId4, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId15, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId1, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId20, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId9, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId10, @LeagueId, "2022/2023"),
+        (NEWID(), @TeamId25, @LeagueId, "2022/2023");
 
     COMMIT TRANSACTION
     PRINT 'Ekstraklasa stadiums and teams for 2024/2025 - 2025/2026 seasons inserted successfully.'
