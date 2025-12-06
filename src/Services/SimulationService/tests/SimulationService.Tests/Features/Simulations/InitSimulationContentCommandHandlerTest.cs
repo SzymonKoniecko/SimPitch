@@ -62,7 +62,8 @@ public class InitSimulationContentCommandHandlerTests
             Id = leagueId,
             LeagueStrengths = new List<LeagueStrength>
                 {
-                    new LeagueStrength { LeagueId = leagueId, SeasonYear = currentSeasonEnum, Strength = 1.8f }
+                    new LeagueStrength { LeagueId = leagueId, SeasonYear = currentSeasonEnum, Strength = 1.8f },
+                    new LeagueStrength { LeagueId = leagueId, SeasonYear = SeasonEnum.Season2022_2023, Strength = 1.8f }
                 }
         };
 

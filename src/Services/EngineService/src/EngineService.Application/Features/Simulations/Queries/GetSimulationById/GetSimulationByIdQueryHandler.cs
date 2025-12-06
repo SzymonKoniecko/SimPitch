@@ -28,9 +28,14 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
     }
     public async Task<SimulationDto> Handle(GetSimulationByIdQuery query, CancellationToken cancellationToken)
     {
+
         var iterationsQuery = new GetIterationResultsBySimulationIdQuery(query.simulationId, query.PagedRequest);
-        var simulationOverview = await _simulationEngineGrpcClient.GetSimulationOverviewBySimulationId(query.simulationId, cancellationToken);
         var simulationState = await _simulationEngineGrpcClient.GetSimulationStateAsync(query.simulationId, cancellationToken);
+        if (simulationState.State != "Completed" || simulationState.State != "Failed")
+        {
+            Thread.Sleep(2000);
+        }
+        var simulationOverview = await _simulationEngineGrpcClient.GetSimulationOverviewBySimulationId(query.simulationId, cancellationToken);
 
         PagedResponse<IterationResultDto> iterationResults = await _mediator.Send(iterationsQuery, cancellationToken);
 
