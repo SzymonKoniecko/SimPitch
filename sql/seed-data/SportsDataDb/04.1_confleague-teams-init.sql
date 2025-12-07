@@ -93,7 +93,7 @@ BEGIN TRY
     ('Jagiellonia Bialystok', 'JAG', @CID_PL, 'Municipal Stadium in Białystok', 22372),
     ('Lech Poznan', 'LPO', @CID_PL, 'Stadion Miejski Poznań (Municipal Stadium in Poznań)', 42837),
     ('Legia Warsaw', 'LEG', @CID_PL, 'Marshal Józef Piłsudski Municipal Stadium of Legia Warsaw', 31103),
-    ('Rakow Czestochowa', 'RAK', @CID_PL, 'Raków Stadium in Częstochowa', 5500),
+    ('Raków Częstochowa', 'RAK', @CID_PL, 'Raków Stadium in Częstochowa', 5500),
     ('Hamrun Spartans', 'HAM', @CID_MT, 'Victor Tedesco Stadium', 1962),
     ('Rapid Wien', 'RAP', @CID_AT, 'Allianz Stadion', 28000),
     ('KuPS', 'KUP', @CID_FI, 'Väre Areena', 5000),
