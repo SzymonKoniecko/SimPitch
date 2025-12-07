@@ -50,7 +50,7 @@ BEGIN TRY
     DECLARE @T_Samsunspor UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Samsunspor');
     DECLARE @T_Celje UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Celje');
     DECLARE @T_AEKAthens UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'AEK Athens');
-    DECLARE @T_Rakow UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Rakow Czestochowa');
+    DECLARE @T_Rakow UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Raków Częstochowa');
     DECLARE @T_Craiova UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Universitatea Craiova');
     DECLARE @T_Shelbourne UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Shelbourne');
     DECLARE @T_Hacken UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'BK Häcken');
