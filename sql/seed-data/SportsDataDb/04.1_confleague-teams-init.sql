@@ -1,5 +1,5 @@
 -- ================================================================
--- UEFA CONFERENCE LEAGUE 2024/2025 SEED (FIXED FOREIGN KEY)
+-- UEFA CONFERENCE LEAGUE 2025/2026 SEED (FIXED FOREIGN KEY)
 -- Created: 07.12.2025
 -- ================================================================
 
@@ -7,7 +7,7 @@ USE SportsDataDb;
 GO
 
 DECLARE @LeagueId UNIQUEIDENTIFIER;
-DECLARE @SeasonYear NVARCHAR(20) = '2024/2025';
+DECLARE @SeasonYear NVARCHAR(20) = '2025/2026';
 DECLARE @EuropeId UNIQUEIDENTIFIER;
 
 -- 1. POBRANIE ID EUROPY

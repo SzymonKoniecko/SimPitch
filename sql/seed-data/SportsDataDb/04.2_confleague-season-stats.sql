@@ -102,7 +102,7 @@ BEGIN TRY
     -- W tabeli SeasonStats kolumny to często MatchesPlayed, Wins, Losses, Draws.
     -- Musimy zmapować to poprawnie: D -> Draws, L -> Losses.
     
-    DECLARE @StatsSeason NVARCHAR(20) = '2023/2024'; -- Statystyki "bazowe" do symulacji
+    DECLARE @StatsSeason NVARCHAR(20) = '2024/2025'; -- Statystyki "bazowe" do symulacji
 
     INSERT INTO dbo.SeasonStats (Id, TeamId, LeagueId, SeasonYear, MatchesPlayed, Wins, Losses, Draws, GoalsFor, GoalsAgainst)
     SELECT 
