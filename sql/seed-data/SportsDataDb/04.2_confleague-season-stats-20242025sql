@@ -1,0 +1,158 @@
+-- ================================================================
+-- ADD MISSING CONFERENCE LEAGUE TEAMS & STATS
+-- Created: 07.12.2025
+-- ================================================================
+
+USE SportsDataDb;
+GO
+
+DECLARE @LeagueId UNIQUEIDENTIFIER;
+SELECT @LeagueId = Id FROM dbo.League WHERE [Name] = 'UEFA Conference League';
+
+-- ZMIENNE KRAJÓW (Upewnij się, że kraje istnieją - użyj poprzedniego skryptu MissingCountries.sql)
+DECLARE @CID_ENG UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'EN');
+DECLARE @CID_PT UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'PT');
+DECLARE @CID_IT UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'IT');
+DECLARE @CID_AT UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'AT');
+DECLARE @CID_SE UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'SE');
+DECLARE @CID_CH UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'CH');
+DECLARE @CID_PL UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'PL');
+DECLARE @CID_BE UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'BE');
+DECLARE @CID_IE UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'IE');
+DECLARE @CID_CY UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'CY');
+DECLARE @CID_GR UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'GR');
+DECLARE @CID_SI UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'SI');
+DECLARE @CID_ES UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'ES');
+DECLARE @CID_DE UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'DE');
+DECLARE @CID_DK UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'DK');
+DECLARE @CID_IS UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'IS');
+DECLARE @CID_BA UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'BA');
+DECLARE @CID_NO UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'NO');
+DECLARE @CID_RS UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'RS'); -- Serbia
+DECLARE @CID_SCT UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'SCT');
+DECLARE @CID_TR UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'TR');
+DECLARE @CID_CZ UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'CZ');
+DECLARE @CID_KZ UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'KZ'); -- Kazakhstan
+DECLARE @CID_FI UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'FI');
+DECLARE @CID_AM UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'AM');
+DECLARE @CID_WLS UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'WLS'); -- Wales
+DECLARE @CID_BY UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'BY'); -- Belarus
+DECLARE @CID_NIR UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'NIR'); -- N. Ireland
+DECLARE @CID_MD UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Country WHERE Code = 'MD'); -- Moldova
+
+BEGIN TRANSACTION
+BEGIN TRY
+
+    -- 1. UTWÓRZ TABELĘ TYMCZASOWĄ Z NOWYMI DRUŻYNAMI I STATYSTYKAMI
+    CREATE TABLE #StatsData (
+        TeamName NVARCHAR(100),
+        CountryId UNIQUEIDENTIFIER,
+        StadiumName NVARCHAR(100),
+        Capacity INT,
+        M INT, W INT, D INT, L INT, GF INT, GA INT
+    );
+
+    INSERT INTO #StatsData (TeamName, CountryId, StadiumName, Capacity, M, W, D, L, GF, GA)
+    VALUES
+    ('Chelsea', @CID_ENG, 'Stamford Bridge', 40341, 6, 6, 0, 0, 26, 5),
+    ('Vitória de Guimarães', @CID_PT, 'Estádio D. Afonso Henriques', 30000, 6, 4, 2, 0, 13, 6),
+    ('Fiorentina', @CID_IT, 'Stadio Artemio Franchi', 43147, 6, 4, 1, 1, 18, 7),
+    ('Rapid Wien', @CID_AT, 'Allianz Stadion', 28000, 6, 4, 1, 1, 11, 5),
+    ('Djurgårdens IF', @CID_SE, 'Tele2 Arena', 30000, 6, 4, 1, 1, 11, 7),
+    ('Lugano', @CID_CH, 'Cornaredo Stadium', 6330, 6, 4, 1, 1, 11, 7),
+    ('Legia Warsaw', @CID_PL, 'Stadion Wojska Polskiego', 31103, 6, 4, 0, 2, 13, 5),
+    ('Cercle Brugge', @CID_BE, 'Jan Breydel Stadium', 29042, 6, 3, 2, 1, 14, 7),
+    ('Jagiellonia Białystok', @CID_PL, 'Stadion Miejski w Białymstoku', 22372, 6, 3, 2, 1, 10, 5),
+    ('Shamrock Rovers', @CID_IE, 'Tallaght Stadium', 10000, 6, 3, 2, 1, 12, 9),
+    ('APOEL', @CID_CY, 'GSP Stadium', 22859, 6, 3, 2, 1, 8, 5),
+    ('Pafos', @CID_CY, 'Stelios Kyriakides Stadium', 9394, 6, 3, 1, 2, 11, 7),
+    ('Panathinaikos', @CID_GR, 'OAKA Spiros Louis', 69618, 6, 3, 1, 2, 10, 7),
+    ('Olimpija Ljubljana', @CID_SI, 'Stožice Stadium', 16038, 6, 3, 1, 2, 7, 6),
+    ('Real Betis', @CID_ES, 'Benito Villamarín', 60721, 6, 3, 1, 2, 6, 5),
+    ('1. FC Heidenheim', @CID_DE, 'Voith-Arena', 15000, 6, 3, 1, 2, 7, 7),
+    ('Gent', @CID_BE, 'Ghelamco Arena', 20000, 6, 3, 0, 3, 8, 8),
+    ('Copenhagen', @CID_DK, 'Parken Stadium', 38065, 6, 2, 2, 2, 8, 9),
+    ('Víkingur Reykjavík', @CID_IS, 'Víkingsvöllur', 1449, 6, 2, 2, 2, 7, 8),
+    ('Borac Banja Luka', @CID_BA, 'Banja Luka City Stadium', 10030, 6, 2, 2, 2, 4, 7),
+    ('Celje', @CID_SI, 'Stadion Z’dežele', 13059, 6, 2, 1, 3, 13, 13),
+    ('Omonia', @CID_CY, 'GSP Stadium', 22859, 6, 2, 1, 3, 7, 7),
+    ('Molde', @CID_NO, 'Aker Stadion', 11249, 6, 2, 1, 3, 10, 11),
+    ('TSC', @CID_RS, 'TSC Arena', 4500, 6, 2, 1, 3, 10, 13),
+    ('Heart of Midlothian', @CID_SCT, 'Tynecastle Park', 19852, 6, 2, 1, 3, 6, 9),
+    ('İstanbul Başakşehir', @CID_TR, 'Fatih Terim Stadium', 17156, 6, 1, 3, 2, 9, 12),
+    ('Mladá Boleslav', @CID_CZ, 'Lokotrans Aréna', 5000, 6, 2, 0, 4, 7, 10),
+    ('Astana', @CID_KZ, 'Astana Arena', 30000, 6, 1, 2, 3, 4, 8),
+    ('St. Gallen', @CID_CH, 'Kybunpark', 19694, 6, 1, 2, 3, 10, 18),
+    ('HJK', @CID_FI, 'Bolt Arena', 10770, 6, 1, 1, 4, 3, 9),
+    ('Noah', @CID_AM, 'Abovyan City Stadium', 3100, 6, 1, 1, 4, 6, 16),
+    ('The New Saints', @CID_WLS, 'Park Hall', 2034, 6, 1, 0, 5, 5, 10),
+    ('Dinamo Minsk', @CID_BY, 'Dinamo Stadium', 22000, 6, 1, 0, 5, 4, 13),
+    ('Larne', @CID_NIR, 'Inver Park', 3000, 6, 1, 0, 5, 3, 12),
+    ('LASK', @CID_AT, 'Raiffeisen Arena', 19080, 6, 0, 3, 3, 4, 14),
+    ('Petrocub Hîncești', @CID_MD, 'Municipal Stadium Hîncești', 1200, 6, 0, 2, 4, 4, 13);
+
+    -- 2. INSERT STADIUMS (MERGE)
+    MERGE INTO dbo.Stadium AS Target
+    USING #StatsData AS Source
+    ON Target.[Name] = Source.StadiumName
+    WHEN NOT MATCHED THEN
+        INSERT (Id, [Name], Capacity)
+        VALUES (NEWID(), Source.StadiumName, Source.Capacity);
+
+    -- 3. INSERT TEAMS (MERGE)
+    -- Używamy kursora lub pętli logicznej w MERGE, aby pobrać StadiumId
+    MERGE INTO dbo.Team AS Target
+    USING (
+        SELECT s.*, st.Id AS StadId 
+        FROM #StatsData s
+        JOIN dbo.Stadium st ON s.StadiumName = st.[Name]
+    ) AS Source
+    ON Target.[Name] = Source.TeamName
+    WHEN NOT MATCHED THEN
+        INSERT (Id, [Name], CountryId, StadiumId, ShortName)
+        VALUES (NEWID(), Source.TeamName, Source.CountryId, Source.StadId, LEFT(Source.TeamName, 3));
+
+    -- 4. INSERT SEASON STATS (Previous Season/Current Table State)
+    -- Zakładamy, że to sezon 2023/2024 dla celów symulacji (skoro to "poprzednie stats")
+    DECLARE @StatsSeason NVARCHAR(20) = '2023/2024';
+
+    INSERT INTO dbo.SeasonStats (Id, TeamId, LeagueId, SeasonYear, MatchesPlayed, Wins, Losses, Draws, GoalsFor, GoalsAgainst)
+    SELECT 
+        NEWID(),
+        t.Id,
+        @LeagueId,
+        @StatsSeason,
+        s.M, s.W, s.L, s.D, s.GF, s.GA -- Zwróć uwagę na kolejność W-L-D w tabeli vs W-D-L w danych
+    FROM #StatsData s
+    JOIN dbo.Team t ON s.TeamName = t.[Name]
+    WHERE NOT EXISTS (
+        SELECT 1 FROM dbo.SeasonStats ss 
+        WHERE ss.TeamId = t.Id AND ss.LeagueId = @LeagueId AND ss.SeasonYear = @StatsSeason
+    );
+
+    -- 5. INSERT COMPETITION MEMBERSHIP FOR THESE TEAMS (2024/2025)
+    -- Aby były dostępne w lidze
+    INSERT INTO dbo.CompetitionMembership (Id, TeamId, LeagueId, SeasonYear)
+    SELECT 
+        NEWID(),
+        t.Id,
+        @LeagueId,
+        '2024/2025'
+    FROM #StatsData s
+    JOIN dbo.Team t ON s.TeamName = t.[Name]
+    WHERE NOT EXISTS (
+        SELECT 1 FROM dbo.CompetitionMembership cm 
+        WHERE cm.TeamId = t.Id AND cm.LeagueId = @LeagueId AND cm.SeasonYear = '2024/2025'
+    );
+
+    DROP TABLE #StatsData;
+
+    COMMIT TRANSACTION;
+    PRINT '✅ Dodano brakujące drużyny i ich statystyki.';
+
+END TRY
+BEGIN CATCH
+    ROLLBACK TRANSACTION;
+    PRINT '❌ Błąd: ' + ERROR_MESSAGE();
+END CATCH;
+GO
