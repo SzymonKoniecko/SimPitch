@@ -72,16 +72,13 @@ BEGIN TRY
 
     -- 2. AUTOMATYCZNE DODAWANIE BRAKUJĄCYCH KRAJÓW
     INSERT INTO dbo.Country (Id, [Name], [Code])
-    SELECT DISTINCT 
+    SELECT 
         NEWID(),
-        s.CountryName,
-        s.CountryCode
-    FROM #StatsData s
-    WHERE NOT EXISTS (
-        SELECT 1 
-        FROM dbo.Country c 
-        WHERE c.Code = s.CountryCode
-    );
+        CountryName,
+        CountryCode
+    FROM #StatsData
+    WHERE CountryCode NOT IN (SELECT Code FROM dbo.Country)
+    GROUP BY CountryName, CountryCode;
 
     -- 3. INSERT STADIUMS (MERGE)
     MERGE INTO dbo.Stadium AS Target
