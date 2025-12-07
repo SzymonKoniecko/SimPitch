@@ -15,7 +15,8 @@ BEGIN TRY
         'La Liga',
         'Serie A',
         'Bundesliga',
-        'Betclic 1 Liga'
+        'Betclic 1 Liga',
+        'UEFA Conference League'
     )
 ),
 Stats AS (

@@ -16,6 +16,7 @@ BEGIN TRY
 
     INSERT INTO @Countries (Name, Code)
     VALUES
+    ('Europe', 'EUR'),
     ('Ukraine', 'UA'),
     ('England', 'EN'),
     ('Switzerland', 'CH'),

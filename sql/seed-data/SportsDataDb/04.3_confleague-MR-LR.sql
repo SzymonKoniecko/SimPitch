@@ -1,5 +1,5 @@
 -- ================================================================
--- UEFA CONFERENCE LEAGUE 2025/2026 - MATCH ROUNDS SEED
+-- UEFA CONFERENCE LEAGUE 2025/2026 - MATCH ROUNDS SEED (FIXED)
 -- Description: Inserts all match results and fixtures for the league stage.
 -- Created: 07.12.2025
 -- ================================================================
@@ -13,49 +13,49 @@ BEGIN TRY
     DECLARE @LeagueId UNIQUEIDENTIFIER;
     DECLARE @SeasonYear NVARCHAR(20) = '2025/2026';
     
-    SELECT @LeagueId = Id FROM dbo.League WHERE [Name] = 'UEFA Conference League';
+    SELECT TOP 1 @LeagueId = Id FROM dbo.League WHERE [Name] = 'UEFA Conference League';
 
     IF @LeagueId IS NULL
     BEGIN
         THROW 50000, 'League ''UEFA Conference League'' not found. Please run the initial seed scripts.', 1;
     END
 
-    DECLARE @T_DynamoK UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Dynamo Kyiv');
-    DECLARE @T_CrysPal UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Crystal Palace');
-    DECLARE @T_Lausanne UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Lausanne-Sport');
-    DECLARE @T_Breidablik UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Breiðablik');
-    DECLARE @T_Noah UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Noah');
-    DECLARE @T_Rijeka UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Rijeka');
-    DECLARE @T_Zrinjski UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Zrinjski Mostar');
-    DECLARE @T_Lincoln UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Lincoln Red Imps');
-    DECLARE @T_Jagiellonia UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Jagiellonia Bialystok');
-    DECLARE @T_Hamrun UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Hamrun Spartans');
-    DECLARE @T_Lech UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Lech Poznan');
-    DECLARE @T_Rapid UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Rapid Wien');
-    DECLARE @T_KuPS UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'KuPS');
-    DECLARE @T_Drita UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Drita');
-    DECLARE @T_Omonia UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Omonia');
-    DECLARE @T_Mainz UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Mainz 05');
-    DECLARE @T_Rayo UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Rayo Vallecano');
-    DECLARE @T_Shkendija UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Shkëndija');
-    DECLARE @T_Aberdeen UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Aberdeen');
-    DECLARE @T_Shakhtar UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Shakhtar Donetsk');
-    DECLARE @T_SpartaP UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Sparta Prague');
-    DECLARE @T_Shamrock UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Shamrock Rovers');
-    DECLARE @T_Fiorentina UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Fiorentina');
-    DECLARE @T_Sigma UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Sigma Olomouc');
-    DECLARE @T_AEKLarnaca UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'AEK Larnaca');
-    DECLARE @T_AZ UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'AZ Alkmaar');
-    DECLARE @T_Legia UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Legia Warsaw');
-    DECLARE @T_Samsunspor UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Samsunspor');
-    DECLARE @T_Celje UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Celje');
-    DECLARE @T_AEKAthens UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'AEK Athens');
-    DECLARE @T_Rakow UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Rakow Czestochowa');
-    DECLARE @T_Craiova UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Universitatea Craiova');
-    DECLARE @T_Shelbourne UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Shelbourne');
-    DECLARE @T_Hacken UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'BK Häcken');
-    DECLARE @T_SlovanB UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Slovan Bratislava');
-    DECLARE @T_Strasbourg UNIQUEIDENTIFIER = (SELECT Id FROM dbo.Team WHERE Name = 'Strasbourg');
+    DECLARE @T_DynamoK UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Dynamo Kyiv');
+    DECLARE @T_CrysPal UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Crystal Palace');
+    DECLARE @T_Lausanne UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Lausanne-Sport');
+    DECLARE @T_Breidablik UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Breiðablik');
+    DECLARE @T_Noah UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Noah');
+    DECLARE @T_Rijeka UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Rijeka');
+    DECLARE @T_Zrinjski UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Zrinjski Mostar');
+    DECLARE @T_Lincoln UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Lincoln Red Imps');
+    DECLARE @T_Jagiellonia UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Jagiellonia Bialystok');
+    DECLARE @T_Hamrun UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Hamrun Spartans');
+    DECLARE @T_Lech UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Lech Poznan');
+    DECLARE @T_Rapid UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Rapid Wien');
+    DECLARE @T_KuPS UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'KuPS');
+    DECLARE @T_Drita UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Drita');
+    DECLARE @T_Omonia UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Omonia');
+    DECLARE @T_Mainz UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Mainz 05');
+    DECLARE @T_Rayo UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Rayo Vallecano');
+    DECLARE @T_Shkendija UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Shkëndija');
+    DECLARE @T_Aberdeen UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Aberdeen');
+    DECLARE @T_Shakhtar UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Shakhtar Donetsk');
+    DECLARE @T_SpartaP UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Sparta Prague');
+    DECLARE @T_Shamrock UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Shamrock Rovers');
+    DECLARE @T_Fiorentina UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Fiorentina');
+    DECLARE @T_Sigma UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Sigma Olomouc');
+    DECLARE @T_AEKLarnaca UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'AEK Larnaca');
+    DECLARE @T_AZ UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'AZ Alkmaar');
+    DECLARE @T_Legia UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Legia Warsaw');
+    DECLARE @T_Samsunspor UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Samsunspor');
+    DECLARE @T_Celje UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Celje');
+    DECLARE @T_AEKAthens UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'AEK Athens');
+    DECLARE @T_Rakow UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Rakow Czestochowa');
+    DECLARE @T_Craiova UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Universitatea Craiova');
+    DECLARE @T_Shelbourne UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Shelbourne');
+    DECLARE @T_Hacken UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'BK Häcken');
+    DECLARE @T_SlovanB UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Slovan Bratislava');
+    DECLARE @T_Strasbourg UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM dbo.Team WHERE Name = 'Strasbourg');
 
     DECLARE @RoundId1 UNIQUEIDENTIFIER, @RoundId2 UNIQUEIDENTIFIER, @RoundId3 UNIQUEIDENTIFIER,
             @RoundId4 UNIQUEIDENTIFIER, @RoundId5 UNIQUEIDENTIFIER, @RoundId6 UNIQUEIDENTIFIER;
@@ -66,12 +66,12 @@ BEGIN TRY
     WHEN NOT MATCHED THEN
         INSERT (Id, LeagueId, SeasonYear, Round) VALUES (NEWID(), @LeagueId, @SeasonYear, source.RoundNum);
 
-    SELECT @RoundId1 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 1;
-    SELECT @RoundId2 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 2;
-    SELECT @RoundId3 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 3;
-    SELECT @RoundId4 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 4;
-    SELECT @RoundId5 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 5;
-    SELECT @RoundId6 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 6;
+    SELECT TOP 1 @RoundId1 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 1;
+    SELECT TOP 1 @RoundId2 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 2;
+    SELECT TOP 1 @RoundId3 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 3;
+    SELECT TOP 1 @RoundId4 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 4;
+    SELECT TOP 1 @RoundId5 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 5;
+    SELECT TOP 1 @RoundId6 = Id FROM dbo.LeagueRound WHERE LeagueId = @LeagueId AND SeasonYear = @SeasonYear AND Round = 6;
 
     IF NOT EXISTS (SELECT 1 FROM dbo.MatchRound WHERE RoundId IN (@RoundId1, @RoundId2, @RoundId3, @RoundId4, @RoundId5, @RoundId6))
     BEGIN
@@ -207,23 +207,4 @@ BEGIN CATCH
     PRINT '❌ Błąd podczas wstawiania danych meczowych:';
     PRINT ERROR_MESSAGE();
 END CATCH;
-GO
-
--- ================================================================
--- WALIDACJA
--- ================================================================
-SELECT 
-    lr.Round AS Matchday,
-    ht.Name AS HomeTeam,
-    mr.HomeGoals,
-    mr.AwayGoals,
-    at.Name AS AwayTeam,
-    mr.IsPlayed
-FROM dbo.MatchRound mr
-JOIN dbo.LeagueRound lr ON mr.RoundId = lr.Id
-JOIN dbo.Team ht ON mr.HomeTeamId = ht.Id
-JOIN dbo.Team at ON mr.AwayTeamId = at.Id
-WHERE lr.LeagueId = (SELECT Id FROM dbo.League WHERE Name = 'UEFA Conference League')
-  AND lr.SeasonYear = '2025/2026'
-ORDER BY lr.Round, ht.Name;
 GO
