@@ -379,8 +379,6 @@ BEGIN TRY
         (NEWID(), @RoundId20, @TeamId20, @TeamId7, null, null, null, 0),
 
         -- ===== REMAINING ROUNDS 21-38 (360 matches more) - SIMPLIFIED FOR SCRIPT LENGTH =====
-        -- Each round has 10 matches (20 teams playing)
-        -- I'll insert 10 more placeholder rounds to demonstrate, then omit the rest for brevity
         (NEWID(), @RoundId21, @TeamId1, @TeamId12, null, null, null, 0),
         (NEWID(), @RoundId21, @TeamId2, @TeamId19, null, null, null, 0),
         (NEWID(), @RoundId21, @TeamId3, @TeamId9, null, null, null, 0),
@@ -411,10 +409,10 @@ BEGIN TRY
     INSERT INTO dbo.SeasonStats (Id, TeamId, SeasonYear, LeagueId, MatchesPlayed, Wins, Losses, Draws, GoalsFor, GoalsAgainst)
         VALUES
         -- 2024/2025 Season (end of season stats)
-        (NEWID(), @TeamId1, '2024/2025', @LeagueId, 38, 28, 6, 4, 89, 31),
-        (NEWID(), @TeamId2, '2024/2025', @LeagueId, 38, 27, 7, 4, 92, 34),
-        (NEWID(), @TeamId3, '2024/2025', @LeagueId, 38, 23, 8, 7, 78, 35),
-        (NEWID(), @TeamId4, '2024/2025', @LeagueId, 38, 19, 12, 7, 67, 48),
+        (NEWID(), @TeamId2, '2024/2025', @LeagueId, 38, 28, 6, 4, 70, 20),
+        (NEWID(), @TeamId1, '2024/2025', @LeagueId, 38, 24, 8, 6, 75, 36),
+        (NEWID(), @TeamId3, '2024/2025', @LeagueId, 38, 23, 7, 8, 70, 33),
+        (NEWID(), @TeamId5, '2024/2025', @LeagueId, 38, 21, 9, 8, 51, 35),
         (NEWID(), @TeamId5, '2024/2025', @LeagueId, 38, 19, 11, 8, 71, 52),
         (NEWID(), @TeamId6, '2024/2025', @LeagueId, 38, 17, 13, 8, 68, 54),
         (NEWID(), @TeamId7, '2024/2025', @LeagueId, 38, 16, 14, 8, 62, 59),
@@ -455,21 +453,21 @@ BEGIN TRY
         (NEWID(), @TeamId20, '2023/2024', @LeagueId, 38, 2, 29, 7, 6, 88),
 
         -- 2022/2023 Season
-        (NEWID(), @TeamId1, '2022/2023', @LeagueId, 38, 25, 9, 4, 82, 40),
-        (NEWID(), @TeamId2, '2022/2023', @LeagueId, 38, 23, 10, 5, 85, 44),
-        (NEWID(), @TeamId3, '2022/2023', @LeagueId, 38, 21, 11, 6, 78, 48),
-        (NEWID(), @TeamId4, '2022/2023', @LeagueId, 38, 19, 12, 7, 70, 52),
-        (NEWID(), @TeamId5, '2022/2023', @LeagueId, 38, 17, 14, 7, 66, 56),
-        (NEWID(), @TeamId6, '2022/2023', @LeagueId, 38, 15, 16, 7, 60, 62),
-        (NEWID(), @TeamId7, '2022/2023', @LeagueId, 38, 13, 18, 7, 56, 64),
-        (NEWID(), @TeamId8, '2022/2023', @LeagueId, 38, 12, 19, 7, 52, 66),
-        (NEWID(), @TeamId9, '2022/2023', @LeagueId, 38, 11, 20, 7, 48, 68),
-        (NEWID(), @TeamId10, '2022/2023', @LeagueId, 38, 10, 21, 7, 44, 70),
-        (NEWID(), @TeamId11, '2022/2023', @LeagueId, 38, 9, 22, 7, 40, 72),
-        (NEWID(), @TeamId12, '2022/2023', @LeagueId, 38, 8, 23, 7, 36, 74),
-        (NEWID(), @TeamId13, '2022/2023', @LeagueId, 38, 7, 24, 7, 32, 76),
-        (NEWID(), @TeamId14, '2022/2023', @LeagueId, 38, 6, 25, 7, 28, 78),
-        (NEWID(), @TeamId15, '2022/2023', @LeagueId, 38, 5, 26, 7, 24, 80),
+        (NEWID(), @TeamId2, '2024/2025', @LeagueId, 38, 28, 6, 4, 70, 20),
+        (NEWID(), @TeamId1, '2024/2025', @LeagueId, 38, 24, 8, 6, 75, 36),
+        (NEWID(), @TeamId3, '2024/2025', @LeagueId, 38, 23, 7, 8, 70, 33),
+        (NEWID(), @TeamId5, '2024/2025', @LeagueId, 38, 21, 9, 8, 51, 35),
+        (NEWID(), @TeamId7, '2022/2023', @LeagueId, 38, 19, 12, 7, 59, 40),
+        (NEWID(), @TeamId8, '2022/2023', @LeagueId, 38, 19, 12, 9, 46, 41),
+        (NEWID(), @TeamId10, '2022/2023', @LeagueId, 38, 15, 15, 8, 37, 42),
+        (NEWID(), @TeamId9, '2022/2023', @LeagueId, 38, 14, 15, 9, 47, 43),
+        (NEWID(), @TeamId12, '2022/2023', @LeagueId, 38, 14, 16, 8, 37, 43),
+        (NEWID(), @TeamId16, '2022/2023', @LeagueId, 38, 13, 15, 10, 58, 55),
+        (NEWID(), @TeamId15, '2022/2023', @LeagueId, 38, 13, 15, 10, 45, 53),
+        (NEWID(), @TeamId6, '2022/2023', @LeagueId, 38, 13, 15, 10, 47, 54),
+        (NEWID(), @TeamId11, '2022/2023', @LeagueId, 38, 11, 17, 10, 43, 53),
+        (NEWID(), @TeamId20, '2022/2023', @LeagueId, 38, 10, 16, 12, 30, 53),
+        (NEWID(), @TeamId14, '2022/2023', @LeagueId, 38, 10, 16, 12, 34, 45),
         (NEWID(), @TeamId16, '2022/2023', @LeagueId, 38, 4, 27, 7, 20, 82),
         (NEWID(), @TeamId17, '2022/2023', @LeagueId, 38, 3, 28, 7, 16, 84),
         (NEWID(), @TeamId18, '2022/2023', @LeagueId, 38, 2, 29, 7, 12, 86),
