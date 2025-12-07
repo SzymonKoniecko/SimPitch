@@ -38,6 +38,9 @@ DECLARE
     @StadiumId23 UNIQUEIDENTIFIER = NEWID(),   -- Elche CF (historical)
     @StadiumId24 UNIQUEIDENTIFIER = NEWID(),   -- Real Madrid Castilla (historical)
     @StadiumId25 UNIQUEIDENTIFIER = NEWID(),   -- Levante
+    @StadiumId26 UNIQUEIDENTIFIER = NEWID(),   -- 
+    @StadiumId27 UNIQUEIDENTIFIER = NEWID(),   -- 
+    @StadiumId28 UNIQUEIDENTIFIER = NEWID(),   -- 
 
     -- TEAMS (fixed IDs for consistency)
     @TeamId1 UNIQUEIDENTIFIER = 'c1a2b3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',   -- Real Madrid
@@ -63,11 +66,11 @@ DECLARE
     @TeamId21 UNIQUEIDENTIFIER = '9f4e3d2c-b1a0-0594-4e5d-2c1b0a9f8e7d',  -- RCD Espanyol
     @TeamId22 UNIQUEIDENTIFIER = '8e3d2c1b-a09f-0483-3d4c-1b0a9f8e7d6c',  -- Real Sociedad II
     @TeamId23 UNIQUEIDENTIFIER = '7d2c1b0a-9f8e-0372-2c3b-0a9f8e7d6c5b',  -- Elche CF
-    @TeamId24 UNIQUEIDENTIFIER = '6c1b0a9f-8e7d-0261-1b2a-9f8e7d6c5b4a';  -- Real Madrid Castilla
-    @TeamId25 UNIQUEIDENTIFIER = '0dd8d49f-1546-4938-af28-4b6243f3f424';  -- Levante
-    @TeamId26 UNIQUEIDENTIFIER = '053ed585-c601-4628-b650-f01c3e31142b';  -- Leganes
-    @TeamId26 UNIQUEIDENTIFIER = '4083f6b1-b562-401f-83a4-f21cc24ea347';  -- Almeria
-    @TeamId26 UNIQUEIDENTIFIER = '00f250fc-6d15-4ab5-a26d-2db1a19879ef';  -- Granada
+    @TeamId24 UNIQUEIDENTIFIER = '6c1b0a9f-8e7d-0261-1b2a-9f8e7d6c5b4a',  -- Real Madrid Castilla
+    @TeamId25 UNIQUEIDENTIFIER = '0dd8d49f-1546-4938-af28-4b6243f3f424',  -- Levante
+    @TeamId26 UNIQUEIDENTIFIER = '053ed585-c601-4628-b650-f01c3e31142b',  -- Leganes
+    @TeamId27 UNIQUEIDENTIFIER = '4083f6b1-b562-401f-83a4-f21cc24ea347',  -- Almeria
+    @TeamId28 UNIQUEIDENTIFIER = '00f250fc-6d15-4ab5-a26d-2db1a19879ef';  -- Granada
 
 SELECT 
     @CountryId = Id

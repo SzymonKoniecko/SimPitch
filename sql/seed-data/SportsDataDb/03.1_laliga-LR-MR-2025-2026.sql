@@ -16,17 +16,25 @@ DECLARE
     @TeamId7 UNIQUEIDENTIFIER = '7c8d9e0f-1a2b-3c4d-5e6f-7a8b9c0d1e2f',   -- Villarreal CF
     @TeamId8 UNIQUEIDENTIFIER = '6f7e8d9c-ab0f-1e2d-3c4b-5a6978879695',   -- Real Betis
     @TeamId9 UNIQUEIDENTIFIER = '5a4b3c2d-1e0f-9a8b-7c6d-5e4f3a2b1c0d',   -- Athletic Bilbao
-    @TeamId10 UNIQUEIDENTIFIER = '4f5e6d7c-8b9a-0f1e-2d3c-4b5a6f7e8d9c',  -- Osasuna
-    @TeamId11 UNIQUEIDENTIFIER = '3e4d5c6b-7a8f-9e0d-1c2b-3a4f5e6d7c8b',  -- Celta Vigo
+    @TeamId10 UNIQUEIDENTIFIER = '4f5e6d7c-8b9a-0f1e-2d3c-4b5a6f7e8d9c',  -- CA Osasuna
+    @TeamId11 UNIQUEIDENTIFIER = '3e4d5c6b-7a8f-9e0d-1c2b-3a4f5e6d7c8b',  -- RC Celta de Vigo
     @TeamId12 UNIQUEIDENTIFIER = '2d3c4b5a-6f7e-8d9c-0b1a-2f3e4d5c6b7a',  -- RCD Mallorca
     @TeamId13 UNIQUEIDENTIFIER = '1c2b3a4f-5e6d-7c8b-9a0f-1e2d3c4b5a6f',  -- Real Valladolid
     @TeamId14 UNIQUEIDENTIFIER = '0b1a2f3e-4d5c-6b7a-8f9e-0d1c2b3a4f5e',  -- Getafe CF
     @TeamId15 UNIQUEIDENTIFIER = 'f9e8d7c6-b5a4-3291-807f-6e5d4c3b2a19',  -- Rayo Vallecano
     @TeamId16 UNIQUEIDENTIFIER = 'e8d7c6b5-a4f3-2190-9f8e-7d6c5b4a3918',  -- Girona FC
     @TeamId17 UNIQUEIDENTIFIER = 'd7c6b5a4-f3e2-1908-8f7e-6d5c4b3a2917',  -- Real Oviedo
-    @TeamId18 UNIQUEIDENTIFIER = 'c6b5a4f3-e2d1-0897-7f6e-5d4c3b2a1916',  -- Las Palmas
-    @TeamId19 UNIQUEIDENTIFIER = 'b5a4f3e2-d1c0-0796-6f5e-4d3c2b1a0815',  -- Alavés
+    @TeamId18 UNIQUEIDENTIFIER = 'c6b5a4f3-e2d1-0897-7f6e-5d4c3b2a1916',  -- UD Las Palmas
+    @TeamId19 UNIQUEIDENTIFIER = 'b5a4f3e2-d1c0-0796-6f5e-4d3c2b1a0815',  -- Deportivo Alavés
     @TeamId20 UNIQUEIDENTIFIER = 'a4f3e2d1-c0b9-0695-5f4e-3d2c1b0a0f14',  -- Cádiz CF
+    @TeamId21 UNIQUEIDENTIFIER = '9f4e3d2c-b1a0-0594-4e5d-2c1b0a9f8e7d',  -- RCD Espanyol
+    @TeamId22 UNIQUEIDENTIFIER = '8e3d2c1b-a09f-0483-3d4c-1b0a9f8e7d6c',  -- Real Sociedad II
+    @TeamId23 UNIQUEIDENTIFIER = '7d2c1b0a-9f8e-0372-2c3b-0a9f8e7d6c5b',  -- Elche CF
+    @TeamId24 UNIQUEIDENTIFIER = '6c1b0a9f-8e7d-0261-1b2a-9f8e7d6c5b4a',  -- Real Madrid Castilla
+    @TeamId25 UNIQUEIDENTIFIER = '0dd8d49f-1546-4938-af28-4b6243f3f424',  -- Levante
+    @TeamId26 UNIQUEIDENTIFIER = '053ed585-c601-4628-b650-f01c3e31142b',  -- Leganes
+    @TeamId27 UNIQUEIDENTIFIER = '4083f6b1-b562-401f-83a4-f21cc24ea347',  -- Almeria
+    @TeamId28 UNIQUEIDENTIFIER = '00f250fc-6d15-4ab5-a26d-2db1a19879ef',  -- Granada
 
     -- Round IDs (38 rounds)
     @RoundId1 UNIQUEIDENTIFIER = NEWID(),
