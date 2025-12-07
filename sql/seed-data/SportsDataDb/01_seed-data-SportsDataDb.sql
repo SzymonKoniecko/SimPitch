@@ -2,11 +2,10 @@ USE SportsDataDb
 DECLARE 
     @CountryId1 UNIQUEIDENTIFIER = NEWID(), @CountryId2 UNIQUEIDENTIFIER = NEWID(),
     @CountryId3 UNIQUEIDENTIFIER = NEWID(), @CountryId4 UNIQUEIDENTIFIER = NEWID(),
-    @CountryId5 UNIQUEIDENTIFIER = NEWID(),
+    @CountryId5 UNIQUEIDENTIFIER = NEWID(), @CountryId6 UNIQUEIDENTIFIER = NEWID(),
     @LeagueId1 UNIQUEIDENTIFIER = NEWID(), @LeagueId2 UNIQUEIDENTIFIER = NEWID(),
     @LeagueId3 UNIQUEIDENTIFIER = NEWID(), @LeagueId4 UNIQUEIDENTIFIER = NEWID(),
     @LeagueId5 UNIQUEIDENTIFIER = NEWID(), @LeagueId6 UNIQUEIDENTIFIER = NEWID(),
-
 
     @CurrentDateTime DATETIME2 = GETDATE()
 
@@ -21,7 +20,8 @@ BEGIN TRY
         (@CountryId2, 'Germany', 'DE'),
         (@CountryId3, 'Spain', 'ES'),
         (@CountryId4, 'England', 'EN'),
-        (@CountryId5, 'Italy', 'IT');
+        (@CountryId5, 'Italy', 'IT'),
+        (@CountryId6, 'EUROPE', 'EUR');
 
     -- Insert into League
     IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.League)

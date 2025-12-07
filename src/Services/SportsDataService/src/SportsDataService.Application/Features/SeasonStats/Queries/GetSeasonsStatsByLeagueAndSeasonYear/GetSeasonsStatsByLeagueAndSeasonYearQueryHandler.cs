@@ -36,7 +36,7 @@ public class GetSeasonsStatsByLeagueAndSeasonYearQueryHandler : IRequestHandler<
         foreach (var team in teams)
         {
             var stats = await _seasonStatsReadRepository.GetSeasonsStatsByTeamIdAsync(team.Id, cancellationToken);
-            neededSeasonStats.AddRange(stats.Where(x => x.SeasonYear == query.seasonYear).Select(x => SeasonStatsMapper.ToDto(x)));
+            neededSeasonStats.AddRange(stats.Where(x => x.SeasonYear == query.seasonYear && x.LeagueId == query.leagueId).Select(x => SeasonStatsMapper.ToDto(x)));
         }
 
         return neededSeasonStats;
