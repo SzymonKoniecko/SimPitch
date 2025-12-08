@@ -147,460 +147,461 @@ BEGIN TRY
     INSERT INTO dbo.MatchRound (Id, RoundId, HomeTeamId, AwayTeamId, HomeGoals, AwayGoals, IsDraw, IsPlayed)
         VALUES 
         -- KOLEJKA 1 (@RoundId1)
-            (NEWID(), @RoundId1, @TeamId1, @TeamId19, 4, 1, 0, 1),  -- Real Madrid CF vs Deportivo Alavés
-            (NEWID(), @RoundId1, @TeamId2, @TeamId14, 2, 0, 0, 1),  -- FC Barcelona vs Getafe CF
-            (NEWID(), @RoundId1, @TeamId3, @TeamId6, 1, 1, 1, 1),   -- Atlético Madrid vs Sevilla FC
-            (NEWID(), @RoundId1, @TeamId5, @TeamId16, 2, 2, 1, 1),  -- Real Sociedad vs Girona FC
-            (NEWID(), @RoundId1, @TeamId4, @TeamId11, 1, 0, 0, 1),  -- Valencia CF vs RC Celta de Vigo
-            (NEWID(), @RoundId1, @TeamId8, @TeamId23, 3, 0, 0, 1),  -- Real Betis vs Elche CF
-            (NEWID(), @RoundId1, @TeamId7, @TeamId15, 2, 1, 0, 1),  -- Villarreal CF vs Rayo Vallecano
-            (NEWID(), @RoundId1, @TeamId9, @TeamId10, 0, 0, 1, 1),  -- Athletic Club Bilbao vs Osasuna Pampeluna
-            (NEWID(), @RoundId1, @TeamId12, @TeamId21, 1, 2, 0, 1), -- RCD Mallorca vs RCD Espanyol
-            (NEWID(), @RoundId1, @TeamId18, @TeamId13, 0, 1, 0, 1), -- UD Las Palmas vs Real Valladolid CF
+        (NEWID(), @RoundId1, @TeamId16, @TeamId15, 1, 3, 0, 1),  -- Girona 1-3 Rayo Vallecano
+        (NEWID(), @RoundId1, @TeamId7, @TeamId17, 2, 0, 0, 1),   -- Villarreal 2-0 R. Oviedo
+        (NEWID(), @RoundId1, @TeamId12, @TeamId2, 0, 3, 0, 1),   -- Mallorca 0-3 FC Barcelona
+        (NEWID(), @RoundId1, @TeamId18, @TeamId19, 2, 1, 0, 1),  -- Alavés 2-1 Levante
+        (NEWID(), @RoundId1, @TeamId4, @TeamId5, 1, 1, 1, 1),    -- Valencia 1-1 Real Sociedad (DRAW)
+        (NEWID(), @RoundId1, @TeamId11, @TeamId14, 0, 2, 0, 1),  -- Celta de Vigo 0-2 Getafe CF
+        (NEWID(), @RoundId1, @TeamId9, @TeamId6, 3, 2, 0, 1),    -- Athletic Bilbao 3-2 Sevilla
+        (NEWID(), @RoundId1, @TeamId21, @TeamId3, 2, 1, 0, 1),   -- Espanyol Barcelona 2-1 Atlético Madryt
+        (NEWID(), @RoundId1, @TeamId20, @TeamId8, 1, 1, 1, 1),   -- Elche CF 1-1 Betis Sevilla (DRAW)
+        (NEWID(), @RoundId1, @TeamId1, @TeamId10, 1, 0, 0, 1),   -- Real Madryt 1-0 Osasuna
 
         -- KOLEJKA 2 (@RoundId2)
-            (NEWID(), @RoundId2, @TeamId19, @TeamId2, 0, 3, 0, 1),  -- Deportivo Alavés vs FC Barcelona
-            (NEWID(), @RoundId2, @TeamId6, @TeamId1, 1, 2, 0, 1),   -- Sevilla FC vs Real Madrid CF
-            (NEWID(), @RoundId2, @TeamId14, @TeamId3, 0, 1, 0, 1),  -- Getafe CF vs Atlético Madrid
-            (NEWID(), @RoundId2, @TeamId16, @TeamId4, 1, 0, 0, 1),  -- Girona FC vs Valencia CF
-            (NEWID(), @RoundId2, @TeamId11, @TeamId5, 1, 1, 1, 1),  -- RC Celta de Vigo vs Real Sociedad
-            (NEWID(), @RoundId2, @TeamId23, @TeamId7, 0, 2, 0, 1),  -- Elche CF vs Villarreal CF
-            (NEWID(), @RoundId2, @TeamId15, @TeamId8, 2, 2, 1, 1),  -- Rayo Vallecano vs Real Betis
-            (NEWID(), @RoundId2, @TeamId10, @TeamId12, 1, 0, 0, 1), -- Osasuna Pampeluna vs RCD Mallorca
-            (NEWID(), @RoundId2, @TeamId21, @TeamId18, 2, 0, 0, 1), -- RCD Espanyol vs UD Las Palmas
-            (NEWID(), @RoundId2, @TeamId13, @TeamId9, 1, 3, 0, 1),  -- Real Valladolid CF vs Athletic Club Bilbao
+        (NEWID(), @RoundId2, @TeamId8, @TeamId18, 1, 0, 0, 1),   -- Betis Sevilla 1-0 Deportivo Alavés
+        (NEWID(), @RoundId2, @TeamId12, @TeamId11, 1, 1, 1, 1),  -- Mallorca 1-1 Celta de Vigo (DRAW)
+        (NEWID(), @RoundId2, @TeamId3, @TeamId20, 1, 1, 1, 1),   -- Atlético Madryt 1-1 Elche CF (DRAW)
+        (NEWID(), @RoundId2, @TeamId19, @TeamId2, 2, 3, 0, 1),   -- Levante 2-3 FC Barcelona
+        (NEWID(), @RoundId2, @TeamId10, @TeamId4, 1, 0, 0, 1),   -- Osasuna 1-0 Valencia
+        (NEWID(), @RoundId2, @TeamId5, @TeamId21, 2, 2, 1, 1),   -- Real Sociedad 2-2 Espanyol Barcelona (DRAW)
+        (NEWID(), @RoundId2, @TeamId7, @TeamId16, 5, 0, 0, 1),   -- Villarreal 5-0 Girona FC
+        (NEWID(), @RoundId2, @TeamId17, @TeamId1, 0, 3, 0, 1),   -- R. Oviedo 0-3 Real Madryt
+        (NEWID(), @RoundId2, @TeamId9, @TeamId15, 1, 0, 0, 1),   -- Athletic Bilbao 1-0 Rayo Vallecano
+        (NEWID(), @RoundId2, @TeamId6, @TeamId14, 1, 2, 0, 1),   -- Sevilla 1-2 Getafe CF
 
         -- KOLEJKA 3 (@RoundId3)
-            (NEWID(), @RoundId3, @TeamId1, @TeamId5, 3, 1, 0, 1),   -- Real Madrid CF vs Real Sociedad
-            (NEWID(), @RoundId3, @TeamId2, @TeamId6, 4, 2, 0, 1),   -- FC Barcelona vs Sevilla FC
-            (NEWID(), @RoundId3, @TeamId3, @TeamId19, 2, 0, 0, 1),  -- Atlético Madrid vs Deportivo Alavés
-            (NEWID(), @RoundId3, @TeamId9, @TeamId4, 1, 0, 0, 1),   -- Athletic Club Bilbao vs Valencia CF
-            (NEWID(), @RoundId3, @TeamId7, @TeamId8, 2, 2, 1, 1),   -- Villarreal CF vs Real Betis
-            (NEWID(), @RoundId3, @TeamId11, @TeamId16, 1, 2, 0, 1), -- RC Celta de Vigo vs Girona FC
-            (NEWID(), @RoundId3, @TeamId21, @TeamId14, 0, 0, 1, 1), -- RCD Espanyol vs Getafe CF
-            (NEWID(), @RoundId3, @TeamId23, @TeamId10, 0, 1, 0, 1), -- Elche CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId3, @TeamId13, @TeamId15, 1, 1, 1, 1), -- Real Valladolid CF vs Rayo Vallecano
-            (NEWID(), @RoundId3, @TeamId18, @TeamId12, 0, 0, 1, 1), -- UD Las Palmas vs RCD Mallorca
+        (NEWID(), @RoundId3, @TeamId20, @TeamId19, 2, 0, 0, 1),   -- Elche CF 2-0 Levante
+        (NEWID(), @RoundId3, @TeamId4, @TeamId14, 3, 0, 0, 1),    -- Valencia 3-0 Getafe CF
+        (NEWID(), @RoundId3, @TeamId18, @TeamId3, 1, 1, 1, 1),    -- Alavés 1-1 Atlético Madryt (DRAW)
+        (NEWID(), @RoundId3, @TeamId17, @TeamId5, 1, 0, 0, 1),    -- R. Oviedo 1-0 Real Sociedad (UPSET!)
+        (NEWID(), @RoundId3, @TeamId16, @TeamId6, 0, 2, 0, 1),    -- Girona FC 0-2 Sevilla
+        (NEWID(), @RoundId3, @TeamId1, @TeamId12, 2, 1, 0, 1),    -- Real Madryt 2-1 Mallorca
+        (NEWID(), @RoundId3, @TeamId11, @TeamId7, 1, 1, 1, 1),    -- Celta de Vigo 1-1 Villarreal (DRAW)
+        (NEWID(), @RoundId3, @TeamId8, @TeamId9, 1, 2, 0, 1),     -- Betis Sevilla 1-2 Athletic Bilbao
+        (NEWID(), @RoundId3, @TeamId21, @TeamId10, 1, 0, 0, 1),   -- Espanyol Barcelona 1-0 Osasuna
+        (NEWID(), @RoundId3, @TeamId15, @TeamId2, 1, 1, 1, 1),    -- Rayo Vallecano 1-1 FC Barcelona (DRAW)
 
         -- KOLEJKA 4 (@RoundId4)
-            (NEWID(), @RoundId4, @TeamId5, @TeamId2, 1, 2, 0, 1),   -- Real Sociedad vs FC Barcelona
-            (NEWID(), @RoundId4, @TeamId6, @TeamId3, 0, 1, 0, 1),   -- Sevilla FC vs Atlético Madrid
-            (NEWID(), @RoundId4, @TeamId4, @TeamId1, 2, 3, 0, 1),   -- Valencia CF vs Real Madrid CF
-            (NEWID(), @RoundId4, @TeamId16, @TeamId9, 0, 2, 0, 1),  -- Girona FC vs Athletic Club Bilbao
-            (NEWID(), @RoundId4, @TeamId8, @TeamId11, 3, 0, 0, 1),  -- Real Betis vs RC Celta de Vigo
-            (NEWID(), @RoundId4, @TeamId15, @TeamId7, 1, 1, 1, 1),  -- Rayo Vallecano vs Villarreal CF
-            (NEWID(), @RoundId4, @TeamId10, @TeamId21, 2, 1, 0, 1), -- Osasuna Pampeluna vs RCD Espanyol
-            (NEWID(), @RoundId4, @TeamId19, @TeamId23, 1, 0, 0, 1), -- Deportivo Alavés vs Elche CF
-            (NEWID(), @RoundId4, @TeamId12, @TeamId18, 1, 0, 0, 1), -- RCD Mallorca vs UD Las Palmas
-            (NEWID(), @RoundId4, @TeamId14, @TeamId13, 0, 0, 1, 1), -- Getafe CF vs Real Valladolid CF
+        (NEWID(), @RoundId4, @TeamId6, @TeamId20, 2, 2, 1, 1),   -- Sevilla 2-2 Elche CF (DRAW)
+        (NEWID(), @RoundId4, @TeamId14, @TeamId17, 2, 0, 0, 1),  -- Getafe CF 2-0 R. Oviedo
+        (NEWID(), @RoundId4, @TeamId5, @TeamId1, 1, 2, 0, 1),    -- Real Sociedad 1-2 Real Madryt
+        (NEWID(), @RoundId4, @TeamId9, @TeamId18, 0, 1, 0, 1),   -- Athletic Bilbao 0-1 Alaves
+        (NEWID(), @RoundId4, @TeamId3, @TeamId7, 2, 0, 0, 1),    -- Atlético Madryt 2-0 Villarreal
+        (NEWID(), @RoundId4, @TeamId11, @TeamId16, 1, 1, 1, 1),  -- Celta de Vigo 1-1 Girona FC (DRAW)
+        (NEWID(), @RoundId4, @TeamId19, @TeamId8, 2, 2, 1, 1),   -- Levante 2-2 Betis Sevilla (DRAW)
+        (NEWID(), @RoundId4, @TeamId10, @TeamId15, 2, 0, 0, 1),  -- Osasuna 2-0 Rayo Vallecano
+        (NEWID(), @RoundId4, @TeamId2, @TeamId4, 6, 0, 0, 1),    -- FC Barcelona 6-0 Valencia 
+        (NEWID(), @RoundId4, @TeamId21, @TeamId12, 3, 2, 0, 1),  -- Espanyol Barcelona 3-2 Mallorca
 
         -- KOLEJKA 5 (@RoundId5)
-            (NEWID(), @RoundId5, @TeamId1, @TeamId6, 2, 0, 0, 1),   -- Real Madrid CF vs Sevilla FC
-            (NEWID(), @RoundId5, @TeamId2, @TeamId4, 3, 1, 0, 1),   -- FC Barcelona vs Valencia CF
-            (NEWID(), @RoundId5, @TeamId3, @TeamId5, 1, 0, 0, 1),   -- Atlético Madrid vs Real Sociedad
-            (NEWID(), @RoundId5, @TeamId9, @TeamId8, 2, 1, 0, 1),   -- Athletic Club Bilbao vs Real Betis
-            (NEWID(), @RoundId5, @TeamId7, @TeamId16, 1, 1, 1, 1),  -- Villarreal CF vs Girona FC
-            (NEWID(), @RoundId5, @TeamId11, @TeamId15, 0, 2, 0, 1), -- RC Celta de Vigo vs Rayo Vallecano
-            (NEWID(), @RoundId5, @TeamId21, @TeamId19, 1, 0, 0, 1), -- RCD Espanyol vs Deportivo Alavés
-            (NEWID(), @RoundId5, @TeamId23, @TeamId14, 0, 0, 1, 1), -- Elche CF vs Getafe CF
-            (NEWID(), @RoundId5, @TeamId13, @TeamId10, 1, 2, 0, 1), -- Real Valladolid CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId5, @TeamId18, @TeamId12, 1, 1, 1, 1), -- UD Las Palmas vs RCD Mallorca
+        (NEWID(), @RoundId5, @TeamId8, @TeamId5, 3, 1, 0, 1),    -- Betis Sevilla 3-1 Real Sociedad
+        (NEWID(), @RoundId5, @TeamId16, @TeamId19, 0, 4, 0, 1),  -- Girona FC 0-4 Levante
+        (NEWID(), @RoundId5, @TeamId1, @TeamId21, 2, 0, 0, 1),   -- Real Madryt 2-0 Espanyol Barcelona
+        (NEWID(), @RoundId5, @TeamId7, @TeamId10, 2, 1, 0, 1),   -- Villarreal 2-1 Osasuna
+        (NEWID(), @RoundId5, @TeamId18, @TeamId6, 1, 2, 0, 1),   -- Alaves 1-2 Sevilla
+        (NEWID(), @RoundId5, @TeamId4, @TeamId9, 2, 0, 0, 1),    -- Valencia 2-0 Athletic Bilbao
+        (NEWID(), @RoundId5, @TeamId15, @TeamId11, 1, 1, 1, 1),  -- Rayo Vallecano 1-1 Celta de Vigo (DRAW)
+        (NEWID(), @RoundId5, @TeamId12, @TeamId3, 1, 1, 1, 1),   -- Mallorca 1-1 Atlético Madryt (DRAW)
+        (NEWID(), @RoundId5, @TeamId20, @TeamId17, 1, 0, 0, 1),  -- Elche CF 1-0 R. Oviedo
+        (NEWID(), @RoundId5, @TeamId2, @TeamId14, 3, 0, 0, 1),   -- FC Barcelona 3-0 Getafe CF
 
         -- KOLEJKA 6 (@RoundId6)
-            (NEWID(), @RoundId6, @TeamId6, @TeamId2, 1, 3, 0, 1),   -- Sevilla FC vs FC Barcelona
-            (NEWID(), @RoundId6, @TeamId5, @TeamId1, 0, 2, 0, 1),   -- Real Sociedad vs Real Madrid CF
-            (NEWID(), @RoundId6, @TeamId4, @TeamId3, 2, 2, 1, 1),   -- Valencia CF vs Atlético Madrid
-            (NEWID(), @RoundId6, @TeamId16, @TeamId9, 1, 0, 0, 1),  -- Girona FC vs Athletic Club Bilbao
-            (NEWID(), @RoundId6, @TeamId8, @TeamId7, 3, 1, 0, 1),   -- Real Betis vs Villarreal CF
-            (NEWID(), @RoundId6, @TeamId15, @TeamId11, 1, 0, 0, 1), -- Rayo Vallecano vs RC Celta de Vigo
-            (NEWID(), @RoundId6, @TeamId10, @TeamId23, 2, 0, 0, 1), -- Osasuna Pampeluna vs Elche CF
-            (NEWID(), @RoundId6, @TeamId19, @TeamId21, 1, 1, 1, 1), -- Deportivo Alavés vs RCD Espanyol
-            (NEWID(), @RoundId6, @TeamId12, @TeamId13, 0, 1, 0, 1), -- RCD Mallorca vs Real Valladolid CF
-            (NEWID(), @RoundId6, @TeamId14, @TeamId18, 0, 0, 1, 1), -- Getafe CF vs UD Las Palmas
+        (NEWID(), @RoundId6, @TeamId11, @TeamId8, 1, 1, 1, 1),   -- Celta de Vigo 1-1 Betis Sevilla (DRAW)
+        (NEWID(), @RoundId6, @TeamId9, @TeamId16, 1, 1, 1, 1),   -- Athletic Bilbao 1-1 Girona FC (DRAW)
+        (NEWID(), @RoundId6, @TeamId21, @TeamId4, 2, 2, 1, 1),   -- Espanyol Barcelona 2-2 Valencia (DRAW)
+        (NEWID(), @RoundId6, @TeamId19, @TeamId1, 1, 4, 0, 1),   -- Levante 1-4 Real Madryt
+        (NEWID(), @RoundId6, @TeamId6, @TeamId7, 1, 2, 0, 1),    -- Sevilla 1-2 Villarreal
+        (NEWID(), @RoundId6, @TeamId14, @TeamId18, 1, 1, 1, 1),  -- Getafe CF 1-1 Alaves (DRAW)
+        (NEWID(), @RoundId6, @TeamId5, @TeamId12, 1, 0, 0, 1),   -- Real Sociedad 1-0 Mallorca
+        (NEWID(), @RoundId6, @TeamId3, @TeamId15, 3, 2, 0, 1),   -- Atlético Madryt 3-2 Rayo Vallecano
+        (NEWID(), @RoundId6, @TeamId10, @TeamId20, 1, 1, 1, 1),  -- Osasuna 1-1 Elche CF (DRAW)
+        (NEWID(), @RoundId6, @TeamId17, @TeamId2, 1, 3, 0, 1),   -- R. Oviedo 1-3 FC Barcelona
 
         -- KOLEJKA 7 (@RoundId7)
-            (NEWID(), @RoundId7, @TeamId1, @TeamId3, 1, 1, 1, 1),   -- Real Madrid CF vs Atlético Madrid
-            (NEWID(), @RoundId7, @TeamId2, @TeamId5, 2, 0, 0, 1),   -- FC Barcelona vs Real Sociedad
-            (NEWID(), @RoundId7, @TeamId7, @TeamId4, 1, 0, 0, 1),   -- Villarreal CF vs Valencia CF
-            (NEWID(), @RoundId7, @TeamId9, @TeamId6, 3, 2, 0, 1),   -- Athletic Club Bilbao vs Sevilla FC
-            (NEWID(), @RoundId7, @TeamId11, @TeamId8, 0, 0, 1, 1),  -- RC Celta de Vigo vs Real Betis
-            (NEWID(), @RoundId7, @TeamId21, @TeamId16, 2, 1, 0, 1), -- RCD Espanyol vs Girona FC
-            (NEWID(), @RoundId7, @TeamId23, @TeamId15, 1, 2, 0, 1), -- Elche CF vs Rayo Vallecano
-            (NEWID(), @RoundId7, @TeamId13, @TeamId19, 0, 1, 0, 1), -- Real Valladolid CF vs Deportivo Alavés
-            (NEWID(), @RoundId7, @TeamId18, @TeamId10, 1, 3, 0, 1), -- UD Las Palmas vs Osasuna Pampeluna
-            (NEWID(), @RoundId7, @TeamId14, @TeamId12, 1, 1, 1, 1), -- Getafe CF vs RCD Mallorca
+        (NEWID(), @RoundId7, @TeamId16, @TeamId21, 0, 0, 1, 1),   -- Girona FC 0-0 Espanyol Barcelona (DRAW)
+        (NEWID(), @RoundId7, @TeamId14, @TeamId19, 1, 1, 1, 1),   -- Getafe CF 1-1 Levante (DRAW)
+        (NEWID(), @RoundId7, @TeamId3, @TeamId1, 5, 2, 0, 1),    -- Atlético Madryt 5-2 Real Madryt
+        (NEWID(), @RoundId7, @TeamId12, @TeamId18, 1, 0, 0, 1),  -- Mallorca 1-0 Alaves
+        (NEWID(), @RoundId7, @TeamId7, @TeamId9, 1, 0, 0, 1),    -- Villarreal 1-0 Athletic Bilbao
+        (NEWID(), @RoundId7, @TeamId15, @TeamId6, 0, 1, 0, 1),   -- Rayo Vallecano 0-1 Sevilla
+        (NEWID(), @RoundId7, @TeamId20, @TeamId11, 2, 1, 0, 1),  -- Elche CF 2-1 Celta de Vigo
+        (NEWID(), @RoundId7, @TeamId2, @TeamId5, 2, 1, 0, 1),    -- FC Barcelona 2-1 Real Sociedad
+        (NEWID(), @RoundId7, @TeamId8, @TeamId10, 2, 0, 0, 1),   -- Betis Sevilla 2-0 Osasuna
+        (NEWID(), @RoundId7, @TeamId4, @TeamId17, 1, 2, 0, 1),   -- Valencia 1-2 R. Oviedo
 
         -- KOLEJKA 8 (@RoundId8)
-            (NEWID(), @RoundId8, @TeamId3, @TeamId2, 1, 0, 0, 1),   -- Atlético Madrid vs FC Barcelona
-            (NEWID(), @RoundId8, @TeamId5, @TeamId1, 2, 1, 0, 1),   -- Real Sociedad vs Real Madrid CF
-            (NEWID(), @RoundId8, @TeamId4, @TeamId9, 0, 0, 1, 1),   -- Valencia CF vs Athletic Club Bilbao
-            (NEWID(), @RoundId8, @TeamId6, @TeamId7, 2, 2, 1, 1),   -- Sevilla FC vs Villarreal CF
-            (NEWID(), @RoundId8, @TeamId8, @TeamId14, 3, 0, 0, 1),  -- Real Betis vs Getafe CF
-            (NEWID(), @RoundId8, @TeamId16, @TeamId11, 1, 0, 0, 1), -- Girona FC vs RC Celta de Vigo
-            (NEWID(), @RoundId8, @TeamId15, @TeamId23, 2, 1, 0, 1), -- Rayo Vallecano vs Elche CF
-            (NEWID(), @RoundId8, @TeamId10, @TeamId18, 2, 0, 0, 1), -- Osasuna Pampeluna vs UD Las Palmas
-            (NEWID(), @RoundId8, @TeamId19, @TeamId13, 1, 1, 1, 1), -- Deportivo Alavés vs Real Valladolid CF
-            (NEWID(), @RoundId8, @TeamId12, @TeamId21, 0, 1, 0, 1), -- RCD Mallorca vs RCD Espanyol
+        (NEWID(), @RoundId8, @TeamId10, @TeamId14, 2, 1, 0, 1),   -- Osasuna 2-1 Getafe CF
+        (NEWID(), @RoundId8, @TeamId17, @TeamId19, 0, 2, 0, 1),   -- R. Oviedo 0-2 Levante
+        (NEWID(), @RoundId8, @TeamId16, @TeamId4, 2, 1, 0, 1),    -- Girona FC 2-1 Valencia
+        (NEWID(), @RoundId8, @TeamId9, @TeamId12, 2, 1, 0, 1),    -- Athletic Bilbao 2-1 Mallorca
+        (NEWID(), @RoundId8, @TeamId1, @TeamId7, 3, 1, 0, 1),     -- Real Madryt 3-1 Villarreal
+        (NEWID(), @RoundId8, @TeamId18, @TeamId20, 3, 1, 0, 1),   -- Alaves 3-1 Elche CF
+        (NEWID(), @RoundId8, @TeamId6, @TeamId2, 4, 1, 0, 1),     -- Sevilla 4-1 FC Barcelona
+        (NEWID(), @RoundId8, @TeamId21, @TeamId8, 1, 2, 0, 1),    -- Espanyol Barcelona 1-2 Betis Sevilla
+        (NEWID(), @RoundId8, @TeamId5, @TeamId15, 0, 1, 0, 1),    -- Real Sociedad 0-1 Rayo Vallecano
+        (NEWID(), @RoundId8, @TeamId11, @TeamId3, 1, 1, 1, 1),    -- Celta de Vigo 1-1 Atlético Madryt (DRAW)
 
         -- KOLEJKA 9 (@RoundId9)
-            (NEWID(), @RoundId9, @TeamId1, @TeamId7, 3, 0, 0, 1),   -- Real Madrid CF vs Villarreal CF
-            (NEWID(), @RoundId9, @TeamId2, @TeamId9, 4, 1, 0, 1),   -- FC Barcelona vs Athletic Club Bilbao
-            (NEWID(), @RoundId9, @TeamId3, @TeamId8, 2, 0, 0, 1),   -- Atlético Madrid vs Real Betis
-            (NEWID(), @RoundId9, @TeamId5, @TeamId4, 1, 1, 1, 1),   -- Real Sociedad vs Valencia CF
-            (NEWID(), @RoundId9, @TeamId6, @TeamId16, 3, 0, 0, 1),  -- Sevilla FC vs Girona FC
-            (NEWID(), @RoundId9, @TeamId11, @TeamId23, 2, 1, 0, 1), -- RC Celta de Vigo vs Elche CF
-            (NEWID(), @RoundId9, @TeamId21, @TeamId15, 0, 2, 0, 1), -- RCD Espanyol vs Rayo Vallecano
-            (NEWID(), @RoundId9, @TeamId13, @TeamId18, 1, 1, 1, 1), -- Real Valladolid CF vs UD Las Palmas
-            (NEWID(), @RoundId9, @TeamId14, @TeamId12, 1, 0, 0, 1), -- Getafe CF vs RCD Mallorca
-            (NEWID(), @RoundId9, @TeamId19, @TeamId10, 0, 0, 1, 1), -- Deportivo Alavés vs Osasuna Pampeluna
+        (NEWID(), @RoundId9, @TeamId17, @TeamId21, 0, 2, 0, 1),   -- R. Oviedo 0-2 Espanyol Barcelona
+        (NEWID(), @RoundId9, @TeamId6, @TeamId12, 1, 3, 0, 1),    -- Sevilla 1-3 Mallorca (UPSET!)
+        (NEWID(), @RoundId9, @TeamId2, @TeamId16, 2, 1, 0, 1),    -- FC Barcelona 2-1 Girona FC
+        (NEWID(), @RoundId9, @TeamId7, @TeamId8, 2, 2, 1, 1),     -- Villarreal 2-2 Betis Sevilla (DRAW)
+        (NEWID(), @RoundId9, @TeamId3, @TeamId10, 1, 0, 0, 1),    -- Atlético Madryt 1-0 Osasuna
+        (NEWID(), @RoundId9, @TeamId20, @TeamId9, 0, 0, 1, 1),    -- Elche CF 0-0 Athletic Bilbao (DRAW)
+        (NEWID(), @RoundId9, @TeamId11, @TeamId5, 1, 1, 1, 1),    -- Celta de Vigo 1-1 Real Sociedad (DRAW)
+        (NEWID(), @RoundId9, @TeamId19, @TeamId15, 0, 3, 0, 1),   -- Levante 0-3 Rayo Vallecano
+        (NEWID(), @RoundId9, @TeamId14, @TeamId1, 0, 1, 0, 1),    -- Getafe CF 0-1 Real Madryt
+        (NEWID(), @RoundId9, @TeamId18, @TeamId4, 0, 0, 1, 1),    -- Alaves 0-0 Valencia (DRAW)
 
         -- KOLEJKA 10 (@RoundId10)
-            (NEWID(), @RoundId10, @TeamId7, @TeamId2, 1, 2, 0, 1),   -- Villarreal CF vs FC Barcelona
-            (NEWID(), @RoundId10, @TeamId9, @TeamId1, 2, 2, 1, 1),   -- Athletic Club Bilbao vs Real Madrid CF
-            (NEWID(), @RoundId10, @TeamId4, @TeamId6, 1, 0, 0, 1),   -- Valencia CF vs Sevilla FC
-            (NEWID(), @RoundId10, @TeamId8, @TeamId5, 3, 1, 0, 1),   -- Real Betis vs Real Sociedad
-            (NEWID(), @RoundId10, @TeamId16, @TeamId3, 0, 1, 0, 1),  -- Girona FC vs Atlético Madrid
-            (NEWID(), @RoundId10, @TeamId15, @TeamId14, 2, 0, 0, 1), -- Rayo Vallecano vs Getafe CF
-            (NEWID(), @RoundId10, @TeamId10, @TeamId11, 1, 1, 1, 1), -- Osasuna Pampeluna vs RC Celta de Vigo
-            (NEWID(), @RoundId10, @TeamId23, @TeamId19, 0, 1, 0, 1), -- Elche CF vs Deportivo Alavés
-            (NEWID(), @RoundId10, @TeamId18, @TeamId21, 1, 0, 0, 1), -- UD Las Palmas vs RCD Espanyol
-            (NEWID(), @RoundId10, @TeamId12, @TeamId13, 0, 0, 1, 1),  -- RCD Mallorca vs Real Valladolid CF
+        (NEWID(), @RoundId10, @TeamId5, @TeamId6, 2, 1, 0, 1),    -- Real Sociedad 2-1 Sevilla
+        (NEWID(), @RoundId10, @TeamId16, @TeamId17, 3, 3, 1, 1),  -- Girona FC 3-3 R. Oviedo (DRAW)
+        (NEWID(), @RoundId10, @TeamId21, @TeamId20, 1, 0, 0, 1),  -- Espanyol Barcelona 1-0 Elche CF
+        (NEWID(), @RoundId10, @TeamId9, @TeamId14, 0, 1, 0, 1),   -- Athletic Bilbao 0-1 Getafe CF
+        (NEWID(), @RoundId10, @TeamId4, @TeamId7, 0, 2, 0, 1),    -- Valencia 0-2 Villarreal
+        (NEWID(), @RoundId10, @TeamId12, @TeamId19, 1, 1, 1, 1),  -- Mallorca 1-1 Levante (DRAW)
+        (NEWID(), @RoundId10, @TeamId1, @TeamId2, 2, 1, 0, 1),    -- Real Madryt 2-1 FC Barcelona
+        (NEWID(), @RoundId10, @TeamId10, @TeamId11, 2, 3, 0, 1),  -- Osasuna 2-3 Celta de Vigo
+        (NEWID(), @RoundId10, @TeamId15, @TeamId18, 1, 0, 0, 1),  -- Rayo Vallecano 1-0 Alaves
+        (NEWID(), @RoundId10, @TeamId8, @TeamId3, 0, 2, 0, 1),    -- Betis Sevilla 0-2 Atlético Madryt
 
         -- KOLEJKA 11 (@RoundId11) - Rozegrane
-            (NEWID(), @RoundId11, @TeamId1, @TeamId8, 3, 1, 0, 1),   -- Real Madrid CF vs Real Betis
-            (NEWID(), @RoundId11, @TeamId2, @TeamId7, 2, 0, 0, 1),   -- FC Barcelona vs Villarreal CF
-            (NEWID(), @RoundId11, @TeamId3, @TeamId9, 1, 1, 1, 1),   -- Atlético Madrid vs Athletic Club Bilbao
-            (NEWID(), @RoundId11, @TeamId5, @TeamId6, 1, 0, 0, 1),   -- Real Sociedad vs Sevilla FC
-            (NEWID(), @RoundId11, @TeamId4, @TeamId16, 2, 0, 0, 1),  -- Valencia CF vs Girona FC
-            (NEWID(), @RoundId11, @TeamId11, @TeamId15, 0, 1, 0, 1), -- RC Celta de Vigo vs Rayo Vallecano
-            (NEWID(), @RoundId11, @TeamId21, @TeamId23, 2, 2, 1, 1), -- RCD Espanyol vs Elche CF
-            (NEWID(), @RoundId11, @TeamId13, @TeamId10, 1, 0, 0, 1), -- Real Valladolid CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId11, @TeamId18, @TeamId19, 0, 0, 1, 1), -- UD Las Palmas vs Deportivo Alavés
-            (NEWID(), @RoundId11, @TeamId14, @TeamId12, 1, 2, 0, 1), -- Getafe CF vs RCD Mallorca
+        (NEWID(), @RoundId11, @TeamId14, @TeamId16, 2, 1, 0, 1),  -- Getafe CF 2-1 Girona FC
+        (NEWID(), @RoundId11, @TeamId7, @TeamId15, 4, 0, 0, 1),   -- Villarreal 4-0 Rayo Vallecano
+        (NEWID(), @RoundId11, @TeamId3, @TeamId6, 3, 0, 0, 1),    -- Atlético Madryt 3-0 Sevilla
+        (NEWID(), @RoundId11, @TeamId5, @TeamId9, 3, 2, 0, 1),    -- Real Sociedad 3-2 Athletic Bilbao
+        (NEWID(), @RoundId11, @TeamId1, @TeamId4, 4, 0, 0, 1),    -- Real Madryt 4-0 Valencia
+        (NEWID(), @RoundId11, @TeamId19, @TeamId11, 1, 2, 0, 1),  -- Levante 1-2 Celta de Vigo
+        (NEWID(), @RoundId11, @TeamId18, @TeamId21, 2, 1, 0, 1),  -- Alaves 2-1 Espanyol Barcelona
+        (NEWID(), @RoundId11, @TeamId2, @TeamId20, 3, 1, 0, 1),   -- FC Barcelona 3-1 Elche CF
+        (NEWID(), @RoundId11, @TeamId8, @TeamId12, 3, 0, 0, 1),   -- Betis Sevilla 3-0 Mallorca
+        (NEWID(), @RoundId11, @TeamId17, @TeamId10, 0, 0, 1, 1),  -- R. Oviedo 0-0 Osasuna (DRAW)
 
         -- KOLEJKA 12 (@RoundId12) - Rozegrane
-            (NEWID(), @RoundId12, @TeamId7, @TeamId1, 1, 3, 0, 1),   -- Villarreal CF vs Real Madrid CF
-            (NEWID(), @RoundId12, @TeamId8, @TeamId2, 1, 1, 1, 1),   -- Real Betis vs FC Barcelona
-            (NEWID(), @RoundId12, @TeamId9, @TeamId3, 0, 0, 1, 1),   -- Athletic Club Bilbao vs Atlético Madrid
-            (NEWID(), @RoundId12, @TeamId6, @TeamId5, 2, 1, 0, 1),   -- Sevilla FC vs Real Sociedad
-            (NEWID(), @RoundId12, @TeamId16, @TeamId4, 1, 0, 0, 1),  -- Girona FC vs Valencia CF
-            (NEWID(), @RoundId12, @TeamId15, @TeamId11, 2, 0, 0, 1), -- Rayo Vallecano vs RC Celta de Vigo
-            (NEWID(), @RoundId12, @TeamId23, @TeamId21, 0, 1, 0, 1), -- Elche CF vs RCD Espanyol
-            (NEWID(), @RoundId12, @TeamId10, @TeamId13, 2, 2, 1, 1), -- Osasuna Pampeluna vs Real Valladolid CF
-            (NEWID(), @RoundId12, @TeamId19, @TeamId18, 1, 0, 0, 1), -- Deportivo Alavés vs UD Las Palmas
-            (NEWID(), @RoundId12, @TeamId12, @TeamId14, 0, 0, 1, 1), -- RCD Mallorca vs Getafe CF
+        (NEWID(), @RoundId12, @TeamId20, @TeamId5, 1, 1, 1, 1),   -- Elche CF 1-1 Real Sociedad (DRAW)
+        (NEWID(), @RoundId12, @TeamId16, @TeamId18, 1, 0, 0, 1),  -- Girona FC 1-0 Alaves
+        (NEWID(), @RoundId12, @TeamId6, @TeamId10, 1, 0, 0, 1),   -- Sevilla 1-0 Osasuna
+        (NEWID(), @RoundId12, @TeamId3, @TeamId19, 3, 1, 0, 1),   -- Atlético Madryt 3-1 Levante
+        (NEWID(), @RoundId12, @TeamId21, @TeamId7, 0, 2, 0, 1),   -- Espanyol Barcelona 0-2 Villarreal
+        (NEWID(), @RoundId12, @TeamId9, @TeamId17, 1, 0, 0, 1),   -- Athletic Bilbao 1-0 R. Oviedo
+        (NEWID(), @RoundId12, @TeamId15, @TeamId1, 0, 0, 1, 1),   -- Rayo Vallecano 0-0 Real Madryt (DRAW)
+        (NEWID(), @RoundId12, @TeamId12, @TeamId14, 1, 0, 0, 1),  -- Mallorca 1-0 Getafe CF
+        (NEWID(), @RoundId12, @TeamId4, @TeamId8, 1, 1, 1, 1),    -- Valencia 1-1 Betis Sevilla (DRAW)
+        (NEWID(), @RoundId12, @TeamId11, @TeamId2, 2, 4, 0, 1),   -- Celta de Vigo 2-4 FC Barcelona
 
         -- KOLEJKA 13 (@RoundId13) - Rozegrane
-            (NEWID(), @RoundId13, @TeamId1, @TeamId2, 3, 2, 0, 1),   -- Real Madrid CF vs FC Barcelona (El Clásico)
-            (NEWID(), @RoundId13, @TeamId3, @TeamId7, 2, 1, 0, 1),   -- Atlético Madrid vs Villarreal CF
-            (NEWID(), @RoundId13, @TeamId5, @TeamId9, 1, 1, 1, 1),   -- Real Sociedad vs Athletic Club Bilbao
-            (NEWID(), @RoundId13, @TeamId6, @TeamId8, 3, 0, 0, 1),   -- Sevilla FC vs Real Betis
-            (NEWID(), @RoundId13, @TeamId4, @TeamId15, 1, 0, 0, 1),  -- Valencia CF vs Rayo Vallecano
-            (NEWID(), @RoundId13, @TeamId11, @TeamId21, 1, 2, 0, 1), -- RC Celta de Vigo vs RCD Espanyol
-            (NEWID(), @RoundId13, @TeamId23, @TeamId13, 0, 0, 1, 1), -- Elche CF vs Real Valladolid CF
-            (NEWID(), @RoundId13, @TeamId10, @TeamId14, 2, 1, 0, 1), -- Osasuna Pampeluna vs Getafe CF
-            (NEWID(), @RoundId13, @TeamId19, @TeamId16, 1, 0, 0, 1), -- Deportivo Alavés vs Girona FC
-            (NEWID(), @RoundId13, @TeamId18, @TeamId12, 1, 1, 1, 1), -- UD Las Palmas vs RCD Mallorca
+        (NEWID(), @RoundId13, @TeamId4, @TeamId19, 1, 0, 0, 1),   -- Valencia 1-0 Levante
+        (NEWID(), @RoundId13, @TeamId18, @TeamId11, 0, 1, 0, 1),  -- Alaves 0-1 Celta de Vigo
+        (NEWID(), @RoundId13, @TeamId2, @TeamId9, 4, 0, 0, 1),    -- FC Barcelona 4-0 Athletic Bilbao
+        (NEWID(), @RoundId13, @TeamId10, @TeamId5, 1, 3, 0, 1),   -- Osasuna 1-3 Real Sociedad
+        (NEWID(), @RoundId13, @TeamId7, @TeamId12, 2, 1, 0, 1),   -- Villarreal 2-1 Mallorca
+        (NEWID(), @RoundId13, @TeamId17, @TeamId15, 0, 0, 1, 1),  -- R. Oviedo 0-0 Rayo Vallecano (DRAW)
+        (NEWID(), @RoundId13, @TeamId8, @TeamId16, 1, 1, 1, 1),   -- Betis Sevilla 1-1 Girona FC (DRAW)
+        (NEWID(), @RoundId13, @TeamId14, @TeamId3, 0, 1, 0, 1),   -- Getafe CF 0-1 Atlético Madryt
+        (NEWID(), @RoundId13, @TeamId20, @TeamId1, 2, 2, 1, 1),   -- Elche CF 2-2 Real Madryt (DRAW - UPSET!)
+        (NEWID(), @RoundId13, @TeamId21, @TeamId6, 2, 1, 0, 1),   -- Espanyol Barcelona 2-1 Sevilla
 
         -- KOLEJKA 14 (@RoundId14) - Rozegrane
-            (NEWID(), @RoundId14, @TeamId2, @TeamId1, 1, 0, 0, 1),   -- FC Barcelona vs Real Madrid CF (El Clásico)
-            (NEWID(), @RoundId14, @TeamId7, @TeamId3, 0, 0, 1, 1),   -- Villarreal CF vs Atlético Madrid
-            (NEWID(), @RoundId14, @TeamId9, @TeamId5, 2, 1, 0, 1),   -- Athletic Club Bilbao vs Real Sociedad
-            (NEWID(), @RoundId14, @TeamId8, @TeamId6, 1, 1, 1, 1),   -- Real Betis vs Sevilla FC
-            (NEWID(), @RoundId14, @TeamId15, @TeamId4, 2, 0, 0, 1),  -- Rayo Vallecano vs Valencia CF
-            (NEWID(), @RoundId14, @TeamId21, @TeamId11, 3, 1, 0, 1), -- RCD Espanyol vs RC Celta de Vigo
-            (NEWID(), @RoundId14, @TeamId13, @TeamId23, 1, 0, 0, 1), -- Real Valladolid CF vs Elche CF
-            (NEWID(), @RoundId14, @TeamId14, @TeamId10, 0, 2, 0, 1), -- Getafe CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId14, @TeamId16, @TeamId19, 0, 0, 1, 1), -- Girona FC vs Deportivo Alavés
-            (NEWID(), @RoundId14, @TeamId12, @TeamId18, 1, 0, 0, 1), -- RCD Mallorca vs UD Las Palmas
+        (NEWID(), @RoundId14, @TeamId14, @TeamId20, 1, 0, 0, 1),  -- Getafe CF 1-0 Elche CF
+        (NEWID(), @RoundId14, @TeamId12, @TeamId10, 2, 2, 1, 1),  -- Mallorca 2-2 Osasuna (DRAW)
+        (NEWID(), @RoundId14, @TeamId2, @TeamId18, 3, 1, 0, 1),   -- FC Barcelona 3-1 Alaves
+        (NEWID(), @RoundId14, @TeamId19, @TeamId9, 0, 2, 0, 1),   -- Levante 0-2 Athletic Bilbao
+        (NEWID(), @RoundId14, @TeamId3, @TeamId17, 2, 0, 0, 1),   -- Atlético Madryt 2-0 R. Oviedo
+        (NEWID(), @RoundId14, @TeamId5, @TeamId7, 2, 3, 0, 1),    -- Real Sociedad 2-3 Villarreal (AWAY THRILLER!)
+        (NEWID(), @RoundId14, @TeamId6, @TeamId8, 0, 2, 0, 1),    -- Sevilla 0-2 Betis Sevilla (DERBY!)
+        (NEWID(), @RoundId14, @TeamId11, @TeamId21, 0, 1, 0, 1),  -- Celta de Vigo 0-1 Espanyol Barcelona
+        (NEWID(), @RoundId14, @TeamId16, @TeamId1, 1, 1, 1, 1),   -- Girona FC 1-1 Real Madryt (COMEBACK DRAW!)
+        (NEWID(), @RoundId14, @TeamId15, @TeamId4, 1, 1, 1, 1),   -- Rayo Vallecano 1-1 Valencia (DRAW)
 
         -- KOLEJKA 15 (@RoundId15) - Rozegrane
-            (NEWID(), @RoundId15, @TeamId1, @TeamId4, 4, 0, 0, 1),   -- Real Madrid CF vs Valencia CF
-            (NEWID(), @RoundId15, @TeamId3, @TeamId2, 1, 2, 0, 1),   -- Atlético Madrid vs FC Barcelona
-            (NEWID(), @RoundId15, @TeamId5, @TeamId7, 2, 2, 1, 1),   -- Real Sociedad vs Villarreal CF
-            (NEWID(), @RoundId15, @TeamId6, @TeamId9, 1, 0, 0, 1),   -- Sevilla FC vs Athletic Club Bilbao
-            (NEWID(), @RoundId15, @TeamId8, @TeamId16, 3, 1, 0, 1),  -- Real Betis vs Girona FC
-            (NEWID(), @RoundId15, @TeamId11, @TeamId19, 0, 1, 0, 1), -- RC Celta de Vigo vs Deportivo Alavés
-            (NEWID(), @RoundId15, @TeamId23, @TeamId21, 1, 0, 0, 1), -- Elche CF vs RCD Espanyol
-            (NEWID(), @RoundId15, @TeamId10, @TeamId15, 2, 1, 0, 1), -- Osasuna Pampeluna vs Rayo Vallecano
-            (NEWID(), @RoundId15, @TeamId18, @TeamId14, 0, 0, 1, 1), -- UD Las Palmas vs Getafe CF
-            (NEWID(), @RoundId15, @TeamId13, @TeamId12, 1, 0, 0, 1), -- Real Valladolid CF vs RCD Mallorca
+        (NEWID(), @RoundId15, @TeamId17, @TeamId12, 0, 0, 1, 1),  -- R. Oviedo 0-0 Mallorca (DRAW)
+        (NEWID(), @RoundId15, @TeamId7, @TeamId14, 2, 0, 0, 1),   -- Villarreal 2-0 Getafe CF
+        (NEWID(), @RoundId15, @TeamId18, @TeamId5, 1, 0, 0, 1),   -- Alaves 1-0 Real Sociedad
+        (NEWID(), @RoundId15, @TeamId8, @TeamId2, 3, 5, 0, 1),    -- Betis Sevilla 3-5 FC Barcelona (OFFENSIVE EXPLOSION!)
+        (NEWID(), @RoundId15, @TeamId9, @TeamId3, 1, 0, 0, 1),    -- Athletic Bilbao 1-0 Atlético Madryt
+        (NEWID(), @RoundId15, @TeamId20, @TeamId16, 3, 0, 0, 1),  -- Elche CF 3-0 Girona FC
+        (NEWID(), @RoundId15, @TeamId4, @TeamId6, 1, 1, 1, 1),    -- Valencia 1-1 Sevilla (DRAW)
+        (NEWID(), @RoundId15, @TeamId21, @TeamId15, 1, 0, 0, 1),  -- Espanyol Barcelona 1-0 Rayo Vallecano
+        (NEWID(), @RoundId15, @TeamId1, @TeamId11, 0, 2, 0, 1),   -- Real Madryt 0-2 Celta de Vigo (HUGE UPSET!)
+        (NEWID(), @RoundId15, @TeamId10, @TeamId19, 2, 0, 0, 1),  -- Osasuna 2-0 Levante
 
         -- KOLEJKA 16 (@RoundId16) - Rozegrane
-            (NEWID(), @RoundId16, @TeamId1, @TeamId11, 2, 0, 0, 1), -- Real Madrid CF vs RC Celta de Vigo
-            (NEWID(), @RoundId16, @TeamId2, @TeamId23, 5, 0, 0, 1), -- FC Barcelona vs Elche CF
-            (NEWID(), @RoundId16, @TeamId3, @TeamId16, 1, 0, 0, 1), -- Atlético Madrid vs Girona FC
-            (NEWID(), @RoundId16, @TeamId6, @TeamId8, 2, 2, 1, 1),  -- Sevilla FC vs Real Betis
-            (NEWID(), @RoundId16, @TeamId4, @TeamId7, 1, 2, 0, 1),  -- Valencia CF vs Villarreal CF
-            (NEWID(), @RoundId16, @TeamId5, @TeamId9, 0, 0, 1, 1),  -- Real Sociedad vs Athletic Club Bilbao
-            (NEWID(), @RoundId16, @TeamId19, @TeamId21, 1, 0, 0, 1),-- Deportivo Alavés vs RCD Espanyol
-            (NEWID(), @RoundId16, @TeamId14, @TeamId10, 0, 1, 0, 1),-- Getafe CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId16, @TeamId15, @TeamId18, 2, 1, 0, 1),-- Rayo Vallecano vs UD Las Palmas
-            (NEWID(), @RoundId16, @TeamId12, @TeamId13, 1, 1, 1, 1),-- RCD Mallorca vs Real Valladolid CF
+        (NEWID(), @RoundId16, @TeamId5, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId3, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId12, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId2, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId14, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId6, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId11, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId19, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId18, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId15, @TeamId8, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 17 (@RoundId17) - Nierozegrane (NULL)
-            (NEWID(), @RoundId17, @TeamId8, @TeamId1, NULL, NULL, NULL, 0),   -- Real Betis vs Real Madrid CF
-            (NEWID(), @RoundId17, @TeamId10, @TeamId2, NULL, NULL, NULL, 0),  -- Osasuna Pampeluna vs FC Barcelona
-            (NEWID(), @RoundId17, @TeamId7, @TeamId3, NULL, NULL, NULL, 0),   -- Villarreal CF vs Atlético Madrid
-            (NEWID(), @RoundId17, @TeamId21, @TeamId4, NULL, NULL, NULL, 0),  -- RCD Espanyol vs Valencia CF
-            (NEWID(), @RoundId17, @TeamId23, @TeamId5, NULL, NULL, NULL, 0),  -- Elche CF vs Real Sociedad
-            (NEWID(), @RoundId17, @TeamId16, @TeamId6, NULL, NULL, NULL, 0),  -- Girona FC vs Sevilla FC
-            (NEWID(), @RoundId17, @TeamId19, @TeamId9, NULL, NULL, NULL, 0),  -- Deportivo Alavés vs Athletic Club Bilbao
-            (NEWID(), @RoundId17, @TeamId14, @TeamId11, NULL, NULL, NULL, 0), -- Getafe CF vs RC Celta de Vigo
-            (NEWID(), @RoundId17, @TeamId13, @TeamId12, NULL, NULL, NULL, 0), -- Real Valladolid CF vs RCD Mallorca
-            (NEWID(), @RoundId17, @TeamId18, @TeamId15, NULL, NULL, NULL, 0), -- UD Las Palmas vs Rayo Vallecano
+        (NEWID(), @RoundId17, @TeamId1, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId4, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId10, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId9, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId17, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId8, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId16, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId7, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId19, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId20, @TeamId15, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 18 (@RoundId18) - Nierozegrane (NULL)
-            (NEWID(), @RoundId18, @TeamId1, @TeamId16, NULL, NULL, NULL, 0),  -- Real Madrid CF vs Girona FC
-            (NEWID(), @RoundId18, @TeamId2, @TeamId3, NULL, NULL, NULL, 0),   -- FC Barcelona vs Atlético Madrid
-            (NEWID(), @RoundId18, @TeamId5, @TeamId8, NULL, NULL, NULL, 0),   -- Real Sociedad vs Real Betis
-            (NEWID(), @RoundId18, @TeamId6, @TeamId21, NULL, NULL, NULL, 0),  -- Sevilla FC vs RCD Espanyol
-            (NEWID(), @RoundId18, @TeamId4, @TeamId13, NULL, NULL, NULL, 0),  -- Valencia CF vs Real Valladolid CF
-            (NEWID(), @RoundId18, @TeamId9, @TeamId18, NULL, NULL, NULL, 0),  -- Athletic Club Bilbao vs UD Las Palmas
-            (NEWID(), @RoundId18, @TeamId11, @TeamId7, NULL, NULL, NULL, 0),  -- RC Celta de Vigo vs Villarreal CF
-            (NEWID(), @RoundId18, @TeamId15, @TeamId10, NULL, NULL, NULL, 0), -- Rayo Vallecano vs Osasuna Pampeluna
-            (NEWID(), @RoundId18, @TeamId12, @TeamId19, NULL, NULL, NULL, 0), -- RCD Mallorca vs Deportivo Alavés
-            (NEWID(), @RoundId18, @TeamId23, @TeamId14, NULL, NULL, NULL, 0), -- Elche CF vs Getafe CF
+        (NEWID(), @RoundId18, @TeamId15, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId11, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId10, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId20, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId21, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId6, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId1, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId12, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId18, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId5, @TeamId3, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 19 (@RoundId19) - Nierozegrane (NULL)
-            (NEWID(), @RoundId19, @TeamId7, @TeamId10, NULL, NULL, NULL, 0),  -- Villarreal CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId19, @TeamId8, @TeamId12, NULL, NULL, NULL, 0),  -- Real Betis vs RCD Mallorca
-            (NEWID(), @RoundId19, @TeamId9, @TeamId11, NULL, NULL, NULL, 0),  -- Athletic Club Bilbao vs RC Celta de Vigo
-            (NEWID(), @RoundId19, @TeamId16, @TeamId2, NULL, NULL, NULL, 0),  -- Girona FC vs FC Barcelona
-            (NEWID(), @RoundId19, @TeamId19, @TeamId1, NULL, NULL, NULL, 0),  -- Deportivo Alavés vs Real Madrid CF
-            (NEWID(), @RoundId19, @TeamId21, @TeamId3, NULL, NULL, NULL, 0),  -- RCD Espanyol vs Atlético Madrid
-            (NEWID(), @RoundId19, @TeamId4, @TeamId18, NULL, NULL, NULL, 0),  -- Valencia CF vs UD Las Palmas
-            (NEWID(), @RoundId19, @TeamId5, @TeamId15, NULL, NULL, NULL, 0),  -- Real Sociedad vs Rayo Vallecano
-            (NEWID(), @RoundId19, @TeamId6, @TeamId13, NULL, NULL, NULL, 0),  -- Sevilla FC vs Real Valladolid CF
-            (NEWID(), @RoundId19, @TeamId14, @TeamId23, NULL, NULL, NULL, 0), -- Getafe CF vs Elche CF
+        (NEWID(), @RoundId19, @TeamId2, @TeamId3, 3, 1, 0, 1),     -- FC Barcelona 3-1 Atlético Madryt (PLAYED)
+        (NEWID(), @RoundId19, @TeamId9, @TeamId1, 0, 3, 0, 1),     -- Athletic Bilbao 0-3 Real Madryt (PLAYED)
+        (NEWID(), @RoundId19, @TeamId14, @TeamId5, NULL, NULL, NULL, 0), -- Getafe CF vs Real Sociedad (FUTURE)
+        (NEWID(), @RoundId19, @TeamId6, @TeamId11, NULL, NULL, NULL, 0), -- Sevilla vs Celta de Vigo (FUTURE)
+        (NEWID(), @RoundId19, @TeamId4, @TeamId20, NULL, NULL, NULL, 0), -- Valencia vs Elche CF (FUTURE)
+        (NEWID(), @RoundId19, @TeamId16, @TeamId10, NULL, NULL, NULL, 0), -- Girona FC vs Osasuna (FUTURE)
+        (NEWID(), @RoundId19, @TeamId15, @TeamId12, NULL, NULL, NULL, 0), -- Rayo Vallecano vs Mallorca (FUTURE)
+        (NEWID(), @RoundId19, @TeamId17, @TeamId8, NULL, NULL, NULL, 0),  -- R. Oviedo vs Betis Sevilla (FUTURE)
+        (NEWID(), @RoundId19, @TeamId19, @TeamId21, NULL, NULL, NULL, 0), -- Levante vs Espanyol Barcelona (FUTURE)
+        (NEWID(), @RoundId19, @TeamId7, @TeamId18, NULL, NULL, NULL, 0),  -- Villarreal vs Alaves (FUTURE)
 
         -- KOLEJKA 20 (@RoundId20) - Nierozegrane (NULL)
-            (NEWID(), @RoundId20, @TeamId1, @TeamId9, NULL, NULL, NULL, 0),   -- Real Madrid CF vs Athletic Club Bilbao
-            (NEWID(), @RoundId20, @TeamId2, @TeamId7, NULL, NULL, NULL, 0),   -- FC Barcelona vs Villarreal CF
-            (NEWID(), @RoundId20, @TeamId3, @TeamId10, NULL, NULL, NULL, 0),  -- Atlético Madrid vs Osasuna Pampeluna
-            (NEWID(), @RoundId20, @TeamId5, @TeamId16, NULL, NULL, NULL, 0),  -- Real Sociedad vs Girona FC
-            (NEWID(), @RoundId20, @TeamId4, @TeamId12, NULL, NULL, NULL, 0),  -- Valencia CF vs RCD Mallorca
-            (NEWID(), @RoundId20, @TeamId8, @TeamId21, NULL, NULL, NULL, 0),  -- Real Betis vs RCD Espanyol
-            (NEWID(), @RoundId20, @TeamId11, @TeamId6, NULL, NULL, NULL, 0),  -- RC Celta de Vigo vs Sevilla FC
-            (NEWID(), @RoundId20, @TeamId13, @TeamId14, NULL, NULL, NULL, 0), -- Real Valladolid CF vs Getafe CF
-            (NEWID(), @RoundId20, @TeamId18, @TeamId23, NULL, NULL, NULL, 0), -- UD Las Palmas vs Elche CF
-            (NEWID(), @RoundId20, @TeamId15, @TeamId19, NULL, NULL, NULL, 0),  -- Rayo Vallecano vs Deportivo Alavés
+        (NEWID(), @RoundId20, @TeamId1, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId11, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId8, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId21, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId5, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId10, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId20, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId3, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId14, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId12, @TeamId9, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 21 (@RoundId21) - Nierozegrane (NULL)
-            (NEWID(), @RoundId21, @TeamId7, @TeamId19, NULL, NULL, NULL, 0),  -- Villarreal CF vs Deportivo Alavés
-            (NEWID(), @RoundId21, @TeamId8, @TeamId10, NULL, NULL, NULL, 0),  -- Real Betis vs Osasuna Pampeluna
-            (NEWID(), @RoundId21, @TeamId9, @TeamId14, NULL, NULL, NULL, 0),  -- Athletic Club Bilbao vs Getafe CF
-            (NEWID(), @RoundId21, @TeamId16, @TeamId11, NULL, NULL, NULL, 0), -- Girona FC vs RC Celta de Vigo
-            (NEWID(), @RoundId21, @TeamId1, @TeamId23, NULL, NULL, NULL, 0),  -- Real Madrid CF vs Elche CF
-            (NEWID(), @RoundId21, @TeamId2, @TeamId5, NULL, NULL, NULL, 0),   -- FC Barcelona vs Real Sociedad
-            (NEWID(), @RoundId21, @TeamId3, @TeamId6, NULL, NULL, NULL, 0),   -- Atlético Madrid vs Sevilla FC
-            (NEWID(), @RoundId21, @TeamId4, @TeamId15, NULL, NULL, NULL, 0),  -- Valencia CF vs Rayo Vallecano
-            (NEWID(), @RoundId21, @TeamId13, @TeamId21, NULL, NULL, NULL, 0), -- Real Valladolid CF vs RCD Espanyol
-            (NEWID(), @RoundId21, @TeamId18, @TeamId12, NULL, NULL, NULL, 0), -- UD Las Palmas vs RCD Mallorca
+        (NEWID(), @RoundId21, @TeamId3, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId4, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId7, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId16, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId19, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId18, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId6, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId15, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId2, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId5, @TeamId11, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 22 (@RoundId22) - Nierozegrane (NULL)
-            (NEWID(), @RoundId22, @TeamId19, @TeamId7, NULL, NULL, NULL, 0),  -- Deportivo Alavés vs Villarreal CF
-            (NEWID(), @RoundId22, @TeamId10, @TeamId8, NULL, NULL, NULL, 0),  -- Osasuna Pampeluna vs Real Betis
-            (NEWID(), @RoundId22, @TeamId14, @TeamId9, NULL, NULL, NULL, 0),  -- Getafe CF vs Athletic Club Bilbao
-            (NEWID(), @RoundId22, @TeamId11, @TeamId16, NULL, NULL, NULL, 0), -- RC Celta de Vigo vs Girona FC
-            (NEWID(), @RoundId22, @TeamId23, @TeamId1, NULL, NULL, NULL, 0),  -- Elche CF vs Real Madrid CF
-            (NEWID(), @RoundId22, @TeamId5, @TeamId2, NULL, NULL, NULL, 0),   -- Real Sociedad vs FC Barcelona
-            (NEWID(), @RoundId22, @TeamId6, @TeamId3, NULL, NULL, NULL, 0),   -- Sevilla FC vs Atlético Madrid
-            (NEWID(), @RoundId22, @TeamId15, @TeamId4, NULL, NULL, NULL, 0),  -- Rayo Vallecano vs Valencia CF
-            (NEWID(), @RoundId22, @TeamId21, @TeamId13, NULL, NULL, NULL, 0), -- RCD Espanyol vs Real Valladolid CF
-            (NEWID(), @RoundId22, @TeamId12, @TeamId18, NULL, NULL, NULL, 0), -- RCD Mallorca vs UD Las Palmas
+        (NEWID(), @RoundId22, @TeamId8, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId20, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId1, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId19, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId12, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId14, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId9, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId17, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId10, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId21, @TeamId18, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 23 (@RoundId23) - Nierozegrane (NULL)
-            (NEWID(), @RoundId23, @TeamId1, @TeamId3, NULL, NULL, NULL, 0),   -- Real Madrid CF vs Atlético Madrid
-            (NEWID(), @RoundId23, @TeamId2, @TeamId14, NULL, NULL, NULL, 0),  -- FC Barcelona vs Getafe CF
-            (NEWID(), @RoundId23, @TeamId5, @TeamId19, NULL, NULL, NULL, 0),  -- Real Sociedad vs Deportivo Alavés
-            (NEWID(), @RoundId23, @TeamId6, @TeamId11, NULL, NULL, NULL, 0),  -- Sevilla FC vs RC Celta de Vigo
-            (NEWID(), @RoundId23, @TeamId4, @TeamId7, NULL, NULL, NULL, 0),   -- Valencia CF vs Villarreal CF
-            (NEWID(), @RoundId23, @TeamId8, @TeamId15, NULL, NULL, NULL, 0),  -- Real Betis vs Rayo Vallecano
-            (NEWID(), @RoundId23, @TeamId9, @TeamId10, NULL, NULL, NULL, 0),  -- Athletic Club Bilbao vs Osasuna Pampeluna
-            (NEWID(), @RoundId23, @TeamId16, @TeamId23, NULL, NULL, NULL, 0), -- Girona FC vs Elche CF
-            (NEWID(), @RoundId23, @TeamId12, @TeamId21, NULL, NULL, NULL, 0), -- RCD Mallorca vs RCD Espanyol
-            (NEWID(), @RoundId23, @TeamId13, @TeamId18, NULL, NULL, NULL, 0), -- Real Valladolid CF vs UD Las Palmas
+        (NEWID(), @RoundId23, @TeamId18, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId15, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId3, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId2, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId9, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId7, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId5, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId6, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId11, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId4, @TeamId1, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 24 (@RoundId24) - Nierozegrane (NULL)
-            (NEWID(), @RoundId24, @TeamId3, @TeamId1, NULL, NULL, NULL, 0),   -- Atlético Madrid vs Real Madrid CF
-            (NEWID(), @RoundId24, @TeamId14, @TeamId2, NULL, NULL, NULL, 0),  -- Getafe CF vs FC Barcelona
-            (NEWID(), @RoundId24, @TeamId19, @TeamId5, NULL, NULL, NULL, 0),  -- Deportivo Alavés vs Real Sociedad
-            (NEWID(), @RoundId24, @TeamId11, @TeamId6, NULL, NULL, NULL, 0),  -- RC Celta de Vigo vs Sevilla FC
-            (NEWID(), @RoundId24, @TeamId7, @TeamId4, NULL, NULL, NULL, 0),   -- Villarreal CF vs Valencia CF
-            (NEWID(), @RoundId24, @TeamId15, @TeamId8, NULL, NULL, NULL, 0),  -- Rayo Vallecano vs Real Betis
-            (NEWID(), @RoundId24, @TeamId10, @TeamId9, NULL, NULL, NULL, 0),  -- Osasuna Pampeluna vs Athletic Club Bilbao
-            (NEWID(), @RoundId24, @TeamId23, @TeamId16, NULL, NULL, NULL, 0), -- Elche CF vs Girona FC
-            (NEWID(), @RoundId24, @TeamId21, @TeamId12, NULL, NULL, NULL, 0), -- RCD Espanyol vs RCD Mallorca
-            (NEWID(), @RoundId24, @TeamId18, @TeamId13, NULL, NULL, NULL, 0), -- UD Las Palmas vs Real Valladolid CF
+        (NEWID(), @RoundId24, @TeamId20, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId14, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId17, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId16, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId21, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId1, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId19, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId15, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId12, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId6, @TeamId18, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 25 (@RoundId25) - Nierozegrane (NULL)
-            (NEWID(), @RoundId25, @TeamId1, @TeamId7, NULL, NULL, NULL, 0),   -- Real Madrid CF vs Villarreal CF
-            (NEWID(), @RoundId25, @TeamId2, @TeamId3, NULL, NULL, NULL, 0),   -- FC Barcelona vs Atlético Madrid
-            (NEWID(), @RoundId25, @TeamId5, @TeamId15, NULL, NULL, NULL, 0),  -- Real Sociedad vs Rayo Vallecano
-            (NEWID(), @RoundId25, @TeamId6, @TeamId9, NULL, NULL, NULL, 0),   -- Sevilla FC vs Athletic Club Bilbao
-            (NEWID(), @RoundId25, @TeamId4, @TeamId11, NULL, NULL, NULL, 0),  -- Valencia CF vs RC Celta de Vigo
-            (NEWID(), @RoundId25, @TeamId8, @TeamId19, NULL, NULL, NULL, 0),  -- Real Betis vs Deportivo Alavés
-            (NEWID(), @RoundId25, @TeamId10, @TeamId14, NULL, NULL, NULL, 0), -- Osasuna Pampeluna vs Getafe CF
-            (NEWID(), @RoundId25, @TeamId16, @TeamId23, NULL, NULL, NULL, 0), -- Girona FC vs Elche CF
-            (NEWID(), @RoundId25, @TeamId12, @TeamId21, NULL, NULL, NULL, 0), -- RCD Mallorca vs RCD Espanyol
-            (NEWID(), @RoundId25, @TeamId13, @TeamId18, NULL, NULL, NULL, 0), -- Real Valladolid CF vs UD Las Palmas
+        (NEWID(), @RoundId25, @TeamId10, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId3, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId9, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId7, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId14, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId11, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId5, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId18, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId2, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId8, @TeamId15, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 26 (@RoundId26) - Nierozegrane (NULL)
-            (NEWID(), @RoundId26, @TeamId7, @TeamId1, NULL, NULL, NULL, 0),   -- Villarreal CF vs Real Madrid CF
-            (NEWID(), @RoundId26, @TeamId3, @TeamId2, NULL, NULL, NULL, 0),   -- Atlético Madrid vs FC Barcelona
-            (NEWID(), @RoundId26, @TeamId15, @TeamId5, NULL, NULL, NULL, 0),  -- Rayo Vallecano vs Real Sociedad
-            (NEWID(), @RoundId26, @TeamId9, @TeamId6, NULL, NULL, NULL, 0),   -- Athletic Club Bilbao vs Sevilla FC
-            (NEWID(), @RoundId26, @TeamId11, @TeamId4, NULL, NULL, NULL, 0),  -- RC Celta de Vigo vs Valencia CF
-            (NEWID(), @RoundId26, @TeamId19, @TeamId8, NULL, NULL, NULL, 0),  -- Deportivo Alavés vs Real Betis
-            (NEWID(), @RoundId26, @TeamId14, @TeamId10, NULL, NULL, NULL, 0), -- Getafe CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId26, @TeamId23, @TeamId16, NULL, NULL, NULL, 0), -- Elche CF vs Girona FC
-            (NEWID(), @RoundId26, @TeamId21, @TeamId12, NULL, NULL, NULL, 0), -- RCD Espanyol vs RCD Mallorca
-            (NEWID(), @RoundId26, @TeamId18, @TeamId13, NULL, NULL, NULL, 0), -- UD Las Palmas vs Real Valladolid CF
+        (NEWID(), @RoundId26, @TeamId15, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId2, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId12, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId20, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId16, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId19, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId4, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId1, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId8, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId17, @TeamId3, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 27 (@RoundId27) - Nierozegrane (NULL)
-            (NEWID(), @RoundId27, @TeamId1, @TeamId9, NULL, NULL, NULL, 0),   -- Real Madrid CF vs Athletic Club Bilbao
-            (NEWID(), @RoundId27, @TeamId2, @TeamId8, NULL, NULL, NULL, 0),   -- FC Barcelona vs Real Betis
-            (NEWID(), @RoundId27, @TeamId5, @TeamId3, NULL, NULL, NULL, 0),   -- Real Sociedad vs Atlético Madrid
-            (NEWID(), @RoundId27, @TeamId6, @TeamId7, NULL, NULL, NULL, 0),   -- Sevilla FC vs Villarreal CF
-            (NEWID(), @RoundId27, @TeamId4, @TeamId10, NULL, NULL, NULL, 0),  -- Valencia CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId27, @TeamId11, @TeamId14, NULL, NULL, NULL, 0), -- RC Celta de Vigo vs Getafe CF
-            (NEWID(), @RoundId27, @TeamId23, @TeamId19, NULL, NULL, NULL, 0), -- Elche CF vs Deportivo Alavés
-            (NEWID(), @RoundId27, @TeamId16, @TeamId15, NULL, NULL, NULL, 0), -- Girona FC vs Rayo Vallecano
-            (NEWID(), @RoundId27, @TeamId12, @TeamId13, NULL, NULL, NULL, 0), -- RCD Mallorca vs Real Valladolid CF
-            (NEWID(), @RoundId27, @TeamId18, @TeamId21, NULL, NULL, NULL, 0), -- UD Las Palmas vs RCD Espanyol
+        (NEWID(), @RoundId27, @TeamId10, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId3, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId4, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId19, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId14, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId21, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId11, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId6, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId7, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId9, @TeamId2, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 28 (@RoundId28) - Nierozegrane (NULL)
-            (NEWID(), @RoundId28, @TeamId9, @TeamId1, NULL, NULL, NULL, 0),   -- Athletic Club Bilbao vs Real Madrid CF
-            (NEWID(), @RoundId28, @TeamId8, @TeamId2, NULL, NULL, NULL, 0),   -- Real Betis vs FC Barcelona
-            (NEWID(), @RoundId28, @TeamId3, @TeamId5, NULL, NULL, NULL, 0),   -- Atlético Madrid vs Real Sociedad
-            (NEWID(), @RoundId28, @TeamId7, @TeamId6, NULL, NULL, NULL, 0),   -- Villarreal CF vs Sevilla FC
-            (NEWID(), @RoundId28, @TeamId10, @TeamId4, NULL, NULL, NULL, 0),  -- Osasuna Pampeluna vs Valencia CF
-            (NEWID(), @RoundId28, @TeamId14, @TeamId11, NULL, NULL, NULL, 0), -- Getafe CF vs RC Celta de Vigo
-            (NEWID(), @RoundId28, @TeamId19, @TeamId23, NULL, NULL, NULL, 0), -- Deportivo Alavés vs Elche CF
-            (NEWID(), @RoundId28, @TeamId15, @TeamId16, NULL, NULL, NULL, 0), -- Rayo Vallecano vs Girona FC
-            (NEWID(), @RoundId28, @TeamId13, @TeamId12, NULL, NULL, NULL, 0), -- Real Valladolid CF vs RCD Mallorca
-            (NEWID(), @RoundId28, @TeamId21, @TeamId18, NULL, NULL, NULL, 0), -- RCD Espanyol vs UD Las Palmas
+        (NEWID(), @RoundId28, @TeamId1, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId8, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId17, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId5, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId18, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId16, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId12, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId3, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId2, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId15, @TeamId19, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 29 (@RoundId29) - Nierozegrane (NULL)
-            (NEWID(), @RoundId29, @TeamId1, @TeamId14, NULL, NULL, NULL, 0),  -- Real Madrid CF vs Getafe CF
-            (NEWID(), @RoundId29, @TeamId2, @TeamId10, NULL, NULL, NULL, 0),  -- FC Barcelona vs Osasuna Pampeluna
-            (NEWID(), @RoundId29, @TeamId3, @TeamId19, NULL, NULL, NULL, 0),  -- Atlético Madrid vs Deportivo Alavés
-            (NEWID(), @RoundId29, @TeamId5, @TeamId6, NULL, NULL, NULL, 0),   -- Real Sociedad vs Sevilla FC
-            (NEWID(), @RoundId29, @TeamId4, @TeamId8, NULL, NULL, NULL, 0),   -- Valencia CF vs Real Betis
-            (NEWID(), @RoundId29, @TeamId7, @TeamId16, NULL, NULL, NULL, 0),  -- Villarreal CF vs Girona FC
-            (NEWID(), @RoundId29, @TeamId9, @TeamId13, NULL, NULL, NULL, 0),  -- Athletic Club Bilbao vs Real Valladolid CF
-            (NEWID(), @RoundId29, @TeamId11, @TeamId23, NULL, NULL, NULL, 0), -- RC Celta de Vigo vs Elche CF
-            (NEWID(), @RoundId29, @TeamId15, @TeamId21, NULL, NULL, NULL, 0), -- Rayo Vallecano vs RCD Espanyol
-            (NEWID(), @RoundId29, @TeamId12, @TeamId18, NULL, NULL, NULL, 0), -- RCD Mallorca vs UD Las Palmas
+        (NEWID(), @RoundId29, @TeamId6, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId19, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId2, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId11, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId1, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId10, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId7, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId20, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId9, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId21, @TeamId14, NULL, NULL, NULL, 0),
+
 
         -- KOLEJKA 30 (@RoundId30) - Nierozegrane (NULL)
-            (NEWID(), @RoundId30, @TeamId14, @TeamId1, NULL, NULL, NULL, 0),  -- Getafe CF vs Real Madrid CF
-            (NEWID(), @RoundId30, @TeamId10, @TeamId2, NULL, NULL, NULL, 0),  -- Osasuna Pampeluna vs FC Barcelona
-            (NEWID(), @RoundId30, @TeamId19, @TeamId3, NULL, NULL, NULL, 0),  -- Deportivo Alavés vs Atlético Madrid
-            (NEWID(), @RoundId30, @TeamId6, @TeamId5, NULL, NULL, NULL, 0),   -- Sevilla FC vs Real Sociedad
-            (NEWID(), @RoundId30, @TeamId8, @TeamId4, NULL, NULL, NULL, 0),   -- Real Betis vs Valencia CF
-            (NEWID(), @RoundId30, @TeamId16, @TeamId7, NULL, NULL, NULL, 0),  -- Girona FC vs Villarreal CF
-            (NEWID(), @RoundId30, @TeamId13, @TeamId9, NULL, NULL, NULL, 0),  -- Real Valladolid CF vs Athletic Club Bilbao
-            (NEWID(), @RoundId30, @TeamId23, @TeamId11, NULL, NULL, NULL, 0), -- Elche CF vs RC Celta de Vigo
-            (NEWID(), @RoundId30, @TeamId21, @TeamId15, NULL, NULL, NULL, 0), -- RCD Espanyol vs Rayo Vallecano
-            (NEWID(), @RoundId30, @TeamId18, @TeamId12, NULL, NULL, NULL, 0), -- UD Las Palmas vs RCD Mallorca
+        (NEWID(), @RoundId30, @TeamId4, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId8, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId15, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId12, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId5, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId16, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId18, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId17, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId14, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId3, @TeamId2, NULL, NULL, NULL, 0),
             
             -- KOLEJKA 31 (@RoundId31) - Nierozegrane (NULL)
-            (NEWID(), @RoundId31, @TeamId1, @TeamId21, NULL, NULL, NULL, 0),  -- Real Madrid CF vs RCD Espanyol
-            (NEWID(), @RoundId31, @TeamId2, @TeamId15, NULL, NULL, NULL, 0),  -- FC Barcelona vs Rayo Vallecano
-            (NEWID(), @RoundId31, @TeamId3, @TeamId13, NULL, NULL, NULL, 0),  -- Atlético Madrid vs Real Valladolid CF
-            (NEWID(), @RoundId31, @TeamId5, @TeamId10, NULL, NULL, NULL, 0),  -- Real Sociedad vs Osasuna Pampeluna
-            (NEWID(), @RoundId31, @TeamId4, @TeamId6, NULL, NULL, NULL, 0),   -- Valencia CF vs Sevilla FC
-            (NEWID(), @RoundId31, @TeamId8, @TeamId7, NULL, NULL, NULL, 0),   -- Real Betis vs Villarreal CF
-            (NEWID(), @RoundId31, @TeamId9, @TeamId16, NULL, NULL, NULL, 0),  -- Athletic Club Bilbao vs Girona FC
-            (NEWID(), @RoundId31, @TeamId11, @TeamId19, NULL, NULL, NULL, 0), -- RC Celta de Vigo vs Deportivo Alavés
-            (NEWID(), @RoundId31, @TeamId14, @TeamId23, NULL, NULL, NULL, 0), -- Getafe CF vs Elche CF
-            (NEWID(), @RoundId31, @TeamId18, @TeamId12, NULL, NULL, NULL, 0), -- UD Las Palmas vs RCD Mallorca
+        (NEWID(), @RoundId31, @TeamId6, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId1, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId2, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId19, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId11, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId12, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId5, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId10, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId20, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId9, @TeamId7, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 32 (@RoundId32) - Nierozegrane (NULL)
-            (NEWID(), @RoundId32, @TeamId21, @TeamId1, NULL, NULL, NULL, 0),  -- RCD Espanyol vs Real Madrid CF
-            (NEWID(), @RoundId32, @TeamId15, @TeamId2, NULL, NULL, NULL, 0),  -- Rayo Vallecano vs FC Barcelona
-            (NEWID(), @RoundId32, @TeamId13, @TeamId3, NULL, NULL, NULL, 0),  -- Real Valladolid CF vs Atlético Madrid
-            (NEWID(), @RoundId32, @TeamId10, @TeamId5, NULL, NULL, NULL, 0),  -- Osasuna Pampeluna vs Real Sociedad
-            (NEWID(), @RoundId32, @TeamId6, @TeamId4, NULL, NULL, NULL, 0),   -- Sevilla FC vs Valencia CF
-            (NEWID(), @RoundId32, @TeamId7, @TeamId8, NULL, NULL, NULL, 0),   -- Villarreal CF vs Real Betis
-            (NEWID(), @RoundId32, @TeamId16, @TeamId9, NULL, NULL, NULL, 0),  -- Girona FC vs Athletic Club Bilbao
-            (NEWID(), @RoundId32, @TeamId19, @TeamId11, NULL, NULL, NULL, 0), -- Deportivo Alavés vs RC Celta de Vigo
-            (NEWID(), @RoundId32, @TeamId23, @TeamId14, NULL, NULL, NULL, 0), -- Elche CF vs Getafe CF
-            (NEWID(), @RoundId32, @TeamId12, @TeamId18, NULL, NULL, NULL, 0), -- RCD Mallorca vs UD Las Palmas
+        (NEWID(), @RoundId32, @TeamId21, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId10, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId4, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId8, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId14, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId17, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId18, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId15, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId7, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId3, @TeamId9, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 33 (@RoundId33) - Nierozegrane (NULL)
-            (NEWID(), @RoundId33, @TeamId1, @TeamId2, NULL, NULL, NULL, 0),   -- Real Madrid CF vs FC Barcelona
-            (NEWID(), @RoundId33, @TeamId3, @TeamId15, NULL, NULL, NULL, 0),  -- Atlético Madrid vs Rayo Vallecano
-            (NEWID(), @RoundId33, @TeamId5, @TeamId16, NULL, NULL, NULL, 0),  -- Real Sociedad vs Girona FC
-            (NEWID(), @RoundId33, @TeamId6, @TeamId19, NULL, NULL, NULL, 0),  -- Sevilla FC vs Deportivo Alavés
-            (NEWID(), @RoundId33, @TeamId4, @TeamId9, NULL, NULL, NULL, 0),   -- Valencia CF vs Athletic Club Bilbao
-            (NEWID(), @RoundId33, @TeamId8, @TeamId10, NULL, NULL, NULL, 0),  -- Real Betis vs Osasuna Pampeluna
-            (NEWID(), @RoundId33, @TeamId7, @TeamId14, NULL, NULL, NULL, 0),  -- Villarreal CF vs Getafe CF
-            (NEWID(), @RoundId33, @TeamId11, @TeamId21, NULL, NULL, NULL, 0), -- RC Celta de Vigo vs RCD Espanyol
-            (NEWID(), @RoundId33, @TeamId23, @TeamId13, NULL, NULL, NULL, 0), -- Elche CF vs Real Valladolid CF
-            (NEWID(), @RoundId33, @TeamId18, @TeamId12, NULL, NULL, NULL, 0), -- UD Las Palmas vs RCD Mallorca
+        (NEWID(), @RoundId33, @TeamId1, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId19, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId2, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId17, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId5, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId9, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId16, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId15, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId12, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId20, @TeamId3, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 34 (@RoundId34) - Nierozegrane (NULL)
-            (NEWID(), @RoundId34, @TeamId2, @TeamId1, NULL, NULL, NULL, 0),   -- FC Barcelona vs Real Madrid CF
-            (NEWID(), @RoundId34, @TeamId15, @TeamId3, NULL, NULL, NULL, 0),  -- Rayo Vallecano vs Atlético Madrid
-            (NEWID(), @RoundId34, @TeamId16, @TeamId5, NULL, NULL, NULL, 0),  -- Girona FC vs Real Sociedad
-            (NEWID(), @RoundId34, @TeamId19, @TeamId6, NULL, NULL, NULL, 0),  -- Deportivo Alavés vs Sevilla FC
-            (NEWID(), @RoundId34, @TeamId9, @TeamId4, NULL, NULL, NULL, 0),   -- Athletic Club Bilbao vs Valencia CF
-            (NEWID(), @RoundId34, @TeamId10, @TeamId8, NULL, NULL, NULL, 0),  -- Osasuna Pampeluna vs Real Betis
-            (NEWID(), @RoundId34, @TeamId14, @TeamId7, NULL, NULL, NULL, 0),  -- Getafe CF vs Villarreal CF
-            (NEWID(), @RoundId34, @TeamId21, @TeamId11, NULL, NULL, NULL, 0), -- RCD Espanyol vs RC Celta de Vigo
-            (NEWID(), @RoundId34, @TeamId13, @TeamId23, NULL, NULL, NULL, 0), -- Real Valladolid CF vs Elche CF
-            (NEWID(), @RoundId34, @TeamId12, @TeamId18, NULL, NULL, NULL, 0), -- RCD Mallorca vs UD Las Palmas
+        (NEWID(), @RoundId34, @TeamId21, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId6, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId7, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId14, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId8, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId4, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId16, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId10, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId18, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId11, @TeamId20, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 35 (@RoundId35) - Nierozegrane (NULL)
-            (NEWID(), @RoundId35, @TeamId1, @TeamId13, NULL, NULL, NULL, 0),  -- Real Madrid CF vs Real Valladolid CF
-            (NEWID(), @RoundId35, @TeamId2, @TeamId11, NULL, NULL, NULL, 0),  -- FC Barcelona vs RC Celta de Vigo
-            (NEWID(), @RoundId35, @TeamId3, @TeamId16, NULL, NULL, NULL, 0),  -- Atlético Madrid vs Girona FC
-            (NEWID(), @RoundId35, @TeamId5, @TeamId23, NULL, NULL, NULL, 0),  -- Real Sociedad vs Elche CF
-            (NEWID(), @RoundId35, @TeamId6, @TeamId15, NULL, NULL, NULL, 0),  -- Sevilla FC vs Rayo Vallecano
-            (NEWID(), @RoundId35, @TeamId4, @TeamId19, NULL, NULL, NULL, 0),  -- Valencia CF vs Deportivo Alavés
-            (NEWID(), @RoundId35, @TeamId8, @TeamId9, NULL, NULL, NULL, 0),   -- Real Betis vs Athletic Club Bilbao
-            (NEWID(), @RoundId35, @TeamId7, @TeamId10, NULL, NULL, NULL, 0),  -- Villarreal CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId35, @TeamId14, @TeamId12, NULL, NULL, NULL, 0), -- Getafe CF vs RCD Mallorca
-            (NEWID(), @RoundId35, @TeamId21, @TeamId18, NULL, NULL, NULL, 0), -- RCD Espanyol vs UD Las Palmas
+        (NEWID(), @RoundId35, @TeamId3, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId6, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId2, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId15, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId20, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId12, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId19, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId5, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId9, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId17, @TeamId14, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 36 (@RoundId36) - Nierozegrane (NULL)
-            (NEWID(), @RoundId36, @TeamId13, @TeamId1, NULL, NULL, NULL, 0),  -- Real Valladolid CF vs Real Madrid CF
-            (NEWID(), @RoundId36, @TeamId11, @TeamId2, NULL, NULL, NULL, 0),  -- RC Celta de Vigo vs FC Barcelona
-            (NEWID(), @RoundId36, @TeamId16, @TeamId3, NULL, NULL, NULL, 0),  -- Girona FC vs Atlético Madrid
-            (NEWID(), @RoundId36, @TeamId23, @TeamId5, NULL, NULL, NULL, 0),  -- Elche CF vs Real Sociedad
-            (NEWID(), @RoundId36, @TeamId15, @TeamId6, NULL, NULL, NULL, 0),  -- Rayo Vallecano vs Sevilla FC
-            (NEWID(), @RoundId36, @TeamId19, @TeamId4, NULL, NULL, NULL, 0),  -- Deportivo Alavés vs Valencia CF
-            (NEWID(), @RoundId36, @TeamId9, @TeamId8, NULL, NULL, NULL, 0),   -- Athletic Club Bilbao vs Real Betis
-            (NEWID(), @RoundId36, @TeamId10, @TeamId7, NULL, NULL, NULL, 0),  -- Osasuna Pampeluna vs Villarreal CF
-            (NEWID(), @RoundId36, @TeamId12, @TeamId14, NULL, NULL, NULL, 0), -- RCD Mallorca vs Getafe CF
-            (NEWID(), @RoundId36, @TeamId18, @TeamId21, NULL, NULL, NULL, 0), -- UD Las Palmas vs RCD Espanyol
+        (NEWID(), @RoundId36, @TeamId21, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId7, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId10, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId1, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId18, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId4, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId14, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId16, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId11, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId8, @TeamId20, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 37 (@RoundId37) - Nierozegrane (NULL)
-            (NEWID(), @RoundId37, @TeamId1, @TeamId18, NULL, NULL, NULL, 0),  -- Real Madrid CF vs UD Las Palmas
-            (NEWID(), @RoundId37, @TeamId2, @TeamId12, NULL, NULL, NULL, 0),  -- FC Barcelona vs RCD Mallorca
-            (NEWID(), @RoundId37, @TeamId3, @TeamId11, NULL, NULL, NULL, 0),  -- Atlético Madrid vs RC Celta de Vigo
-            (NEWID(), @RoundId37, @TeamId5, @TeamId14, NULL, NULL, NULL, 0),  -- Real Sociedad vs Getafe CF
-            (NEWID(), @RoundId37, @TeamId6, @TeamId23, NULL, NULL, NULL, 0),  -- Sevilla FC vs Elche CF
-            (NEWID(), @RoundId37, @TeamId4, @TeamId10, NULL, NULL, NULL, 0),  -- Valencia CF vs Osasuna Pampeluna
-            (NEWID(), @RoundId37, @TeamId8, @TeamId19, NULL, NULL, NULL, 0),  -- Real Betis vs Deportivo Alavés
-            (NEWID(), @RoundId37, @TeamId7, @TeamId9, NULL, NULL, NULL, 0),   -- Villarreal CF vs Athletic Club Bilbao
-            (NEWID(), @RoundId37, @TeamId16, @TeamId21, NULL, NULL, NULL, 0), -- Girona FC vs RCD Espanyol
-            (NEWID(), @RoundId37, @TeamId15, @TeamId13, NULL, NULL, NULL, 0), -- Rayo Vallecano vs Real Valladolid CF
+        (NEWID(), @RoundId37, @TeamId17, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId19, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId3, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId15, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId5, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId2, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId6, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId9, @TeamId11, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId10, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId20, @TeamId14, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 38 (@RoundId38) - Nierozegrane (NULL) - Ostatnia runda
-            (NEWID(), @RoundId38, @TeamId18, @TeamId1, NULL, NULL, NULL, 0),  -- UD Las Palmas vs Real Madrid CF
-            (NEWID(), @RoundId38, @TeamId12, @TeamId2, NULL, NULL, NULL, 0),  -- RCD Mallorca vs FC Barcelona
-            (NEWID(), @RoundId38, @TeamId11, @TeamId3, NULL, NULL, NULL, 0),  -- RC Celta de Vigo vs Atlético Madrid
-            (NEWID(), @RoundId38, @TeamId14, @TeamId5, NULL, NULL, NULL, 0),  -- Getafe CF vs Real Sociedad
-            (NEWID(), @RoundId38, @TeamId23, @TeamId6, NULL, NULL, NULL, 0),  -- Elche CF vs Sevilla FC
-            (NEWID(), @RoundId38, @TeamId10, @TeamId4, NULL, NULL, NULL, 0),  -- Osasuna Pampeluna vs Valencia CF
-            (NEWID(), @RoundId38, @TeamId19, @TeamId8, NULL, NULL, NULL, 0),  -- Deportivo Alavés vs Real Betis
-            (NEWID(), @RoundId38, @TeamId9, @TeamId7, NULL, NULL, NULL, 0),   -- Athletic Club Bilbao vs Villarreal CF
-            (NEWID(), @RoundId38, @TeamId21, @TeamId16, NULL, NULL, NULL, 0), -- RCD Espanyol vs Girona FC
-            (NEWID(), @RoundId38, @TeamId13, @TeamId15, NULL, NULL, NULL, 0);  -- Real Valladolid CF vs Rayo Vallecano
+        (NEWID(), @RoundId38, @TeamId8, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId14, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId1, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId7, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId11, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId16, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId4, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId18, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId21, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId12, @TeamId17, NULL, NULL, NULL, 0);
     -- ================================================================
     -- SEASON STATS (SeasonStats)
     -- ================================================================
