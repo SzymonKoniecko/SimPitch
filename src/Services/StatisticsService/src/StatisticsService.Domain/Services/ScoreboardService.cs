@@ -52,5 +52,18 @@ public class ScoreboardService
 
         return scoreboard;
     }
+    
+    public Scoreboard CalculateScoreboardForPlayedMatchRounds(List<MatchRound> playedMatchRounds)
+    {
+        Scoreboard scoreboard = new(Guid.NewGuid(), Guid.Empty, Guid.Empty, DateTime.Now);
+        scoreboard.AddTeamRange(
+            _scoreboardTeamStatsService.CalculateScoreboardTeamStats(
+                scoreboard.Id,
+                playedMatchRounds
+            )
+        );
+        scoreboard.SetRankings();
 
+        return scoreboard;
+    }
 }
