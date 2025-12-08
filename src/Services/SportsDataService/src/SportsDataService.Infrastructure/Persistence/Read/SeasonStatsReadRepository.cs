@@ -34,7 +34,7 @@ public class SeasonStatsReadRepository : ISeasonStatsReadRepository
 
         if (stats == null || !stats.Any())
         {
-            throw new KeyNotFoundException($"SeasonStats with TeamId '{teamId}' was not found.");
+            return null;
         }
 
         return stats;
