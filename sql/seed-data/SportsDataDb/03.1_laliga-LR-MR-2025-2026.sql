@@ -150,19 +150,19 @@ BEGIN TRY
         (NEWID(), @RoundId1, @TeamId16, @TeamId15, 1, 3, 0, 1),  -- Girona 1-3 Rayo Vallecano
         (NEWID(), @RoundId1, @TeamId7, @TeamId17, 2, 0, 0, 1),   -- Villarreal 2-0 R. Oviedo
         (NEWID(), @RoundId1, @TeamId12, @TeamId2, 0, 3, 0, 1),   -- Mallorca 0-3 FC Barcelona
-        (NEWID(), @RoundId1, @TeamId18, @TeamId19, 2, 1, 0, 1),  -- Alavés 2-1 Levante
+        (NEWID(), @RoundId1, @TeamId19, @TeamId25, 2, 1, 0, 1),  -- Alavés 2-1 Levante
         (NEWID(), @RoundId1, @TeamId4, @TeamId5, 1, 1, 1, 1),    -- Valencia 1-1 Real Sociedad (DRAW)
         (NEWID(), @RoundId1, @TeamId11, @TeamId14, 0, 2, 0, 1),  -- Celta de Vigo 0-2 Getafe CF
         (NEWID(), @RoundId1, @TeamId9, @TeamId6, 3, 2, 0, 1),    -- Athletic Bilbao 3-2 Sevilla
         (NEWID(), @RoundId1, @TeamId21, @TeamId3, 2, 1, 0, 1),   -- Espanyol Barcelona 2-1 Atlético Madryt
-        (NEWID(), @RoundId1, @TeamId20, @TeamId8, 1, 1, 1, 1),   -- Elche CF 1-1 Betis Sevilla (DRAW)
+        (NEWID(), @RoundId1, @TeamId23, @TeamId8, 1, 1, 1, 1),   -- Elche CF 1-1 Betis Sevilla (DRAW)
         (NEWID(), @RoundId1, @TeamId1, @TeamId10, 1, 0, 0, 1),   -- Real Madryt 1-0 Osasuna
 
         -- KOLEJKA 2 (@RoundId2)
-        (NEWID(), @RoundId2, @TeamId8, @TeamId18, 1, 0, 0, 1),   -- Betis Sevilla 1-0 Deportivo Alavés
+        (NEWID(), @RoundId2, @TeamId8, @TeamId19, 1, 0, 0, 1),   -- Betis Sevilla 1-0 Deportivo Alavés
         (NEWID(), @RoundId2, @TeamId12, @TeamId11, 1, 1, 1, 1),  -- Mallorca 1-1 Celta de Vigo (DRAW)
-        (NEWID(), @RoundId2, @TeamId3, @TeamId20, 1, 1, 1, 1),   -- Atlético Madryt 1-1 Elche CF (DRAW)
-        (NEWID(), @RoundId2, @TeamId19, @TeamId2, 2, 3, 0, 1),   -- Levante 2-3 FC Barcelona
+        (NEWID(), @RoundId2, @TeamId3, @TeamId23, 1, 1, 1, 1),   -- Atlético Madryt 1-1 Elche CF (DRAW)
+        (NEWID(), @RoundId2, @TeamId25, @TeamId2, 2, 3, 0, 1),   -- Levante 2-3 FC Barcelona
         (NEWID(), @RoundId2, @TeamId10, @TeamId4, 1, 0, 0, 1),   -- Osasuna 1-0 Valencia
         (NEWID(), @RoundId2, @TeamId5, @TeamId21, 2, 2, 1, 1),   -- Real Sociedad 2-2 Espanyol Barcelona (DRAW)
         (NEWID(), @RoundId2, @TeamId7, @TeamId16, 5, 0, 0, 1),   -- Villarreal 5-0 Girona FC
@@ -171,9 +171,9 @@ BEGIN TRY
         (NEWID(), @RoundId2, @TeamId6, @TeamId14, 1, 2, 0, 1),   -- Sevilla 1-2 Getafe CF
 
         -- KOLEJKA 3 (@RoundId3)
-        (NEWID(), @RoundId3, @TeamId20, @TeamId19, 2, 0, 0, 1),   -- Elche CF 2-0 Levante
+        (NEWID(), @RoundId3, @TeamId23, @TeamId25, 2, 0, 0, 1),   -- Elche CF 2-0 Levante
         (NEWID(), @RoundId3, @TeamId4, @TeamId14, 3, 0, 0, 1),    -- Valencia 3-0 Getafe CF
-        (NEWID(), @RoundId3, @TeamId18, @TeamId3, 1, 1, 1, 1),    -- Alavés 1-1 Atlético Madryt (DRAW)
+        (NEWID(), @RoundId3, @TeamId19, @TeamId3, 1, 1, 1, 1),    -- Alavés 1-1 Atlético Madryt (DRAW)
         (NEWID(), @RoundId3, @TeamId17, @TeamId5, 1, 0, 0, 1),    -- R. Oviedo 1-0 Real Sociedad (UPSET!)
         (NEWID(), @RoundId3, @TeamId16, @TeamId6, 0, 2, 0, 1),    -- Girona FC 0-2 Sevilla
         (NEWID(), @RoundId3, @TeamId1, @TeamId12, 2, 1, 0, 1),    -- Real Madryt 2-1 Mallorca
@@ -183,60 +183,60 @@ BEGIN TRY
         (NEWID(), @RoundId3, @TeamId15, @TeamId2, 1, 1, 1, 1),    -- Rayo Vallecano 1-1 FC Barcelona (DRAW)
 
         -- KOLEJKA 4 (@RoundId4)
-        (NEWID(), @RoundId4, @TeamId6, @TeamId20, 2, 2, 1, 1),   -- Sevilla 2-2 Elche CF (DRAW)
+        (NEWID(), @RoundId4, @TeamId6, @TeamId23, 2, 2, 1, 1),   -- Sevilla 2-2 Elche CF (DRAW)
         (NEWID(), @RoundId4, @TeamId14, @TeamId17, 2, 0, 0, 1),  -- Getafe CF 2-0 R. Oviedo
         (NEWID(), @RoundId4, @TeamId5, @TeamId1, 1, 2, 0, 1),    -- Real Sociedad 1-2 Real Madryt
-        (NEWID(), @RoundId4, @TeamId9, @TeamId18, 0, 1, 0, 1),   -- Athletic Bilbao 0-1 Alaves
+        (NEWID(), @RoundId4, @TeamId9, @TeamId19, 0, 1, 0, 1),   -- Athletic Bilbao 0-1 Alaves
         (NEWID(), @RoundId4, @TeamId3, @TeamId7, 2, 0, 0, 1),    -- Atlético Madryt 2-0 Villarreal
         (NEWID(), @RoundId4, @TeamId11, @TeamId16, 1, 1, 1, 1),  -- Celta de Vigo 1-1 Girona FC (DRAW)
-        (NEWID(), @RoundId4, @TeamId19, @TeamId8, 2, 2, 1, 1),   -- Levante 2-2 Betis Sevilla (DRAW)
+        (NEWID(), @RoundId4, @TeamId25, @TeamId8, 2, 2, 1, 1),   -- Levante 2-2 Betis Sevilla (DRAW)
         (NEWID(), @RoundId4, @TeamId10, @TeamId15, 2, 0, 0, 1),  -- Osasuna 2-0 Rayo Vallecano
         (NEWID(), @RoundId4, @TeamId2, @TeamId4, 6, 0, 0, 1),    -- FC Barcelona 6-0 Valencia 
         (NEWID(), @RoundId4, @TeamId21, @TeamId12, 3, 2, 0, 1),  -- Espanyol Barcelona 3-2 Mallorca
 
         -- KOLEJKA 5 (@RoundId5)
         (NEWID(), @RoundId5, @TeamId8, @TeamId5, 3, 1, 0, 1),    -- Betis Sevilla 3-1 Real Sociedad
-        (NEWID(), @RoundId5, @TeamId16, @TeamId19, 0, 4, 0, 1),  -- Girona FC 0-4 Levante
+        (NEWID(), @RoundId5, @TeamId16, @TeamId25, 0, 4, 0, 1),  -- Girona FC 0-4 Levante
         (NEWID(), @RoundId5, @TeamId1, @TeamId21, 2, 0, 0, 1),   -- Real Madryt 2-0 Espanyol Barcelona
         (NEWID(), @RoundId5, @TeamId7, @TeamId10, 2, 1, 0, 1),   -- Villarreal 2-1 Osasuna
-        (NEWID(), @RoundId5, @TeamId18, @TeamId6, 1, 2, 0, 1),   -- Alaves 1-2 Sevilla
+        (NEWID(), @RoundId5, @TeamId19, @TeamId6, 1, 2, 0, 1),   -- Alaves 1-2 Sevilla
         (NEWID(), @RoundId5, @TeamId4, @TeamId9, 2, 0, 0, 1),    -- Valencia 2-0 Athletic Bilbao
         (NEWID(), @RoundId5, @TeamId15, @TeamId11, 1, 1, 1, 1),  -- Rayo Vallecano 1-1 Celta de Vigo (DRAW)
         (NEWID(), @RoundId5, @TeamId12, @TeamId3, 1, 1, 1, 1),   -- Mallorca 1-1 Atlético Madryt (DRAW)
-        (NEWID(), @RoundId5, @TeamId20, @TeamId17, 1, 0, 0, 1),  -- Elche CF 1-0 R. Oviedo
+        (NEWID(), @RoundId5, @TeamId23, @TeamId17, 1, 0, 0, 1),  -- Elche CF 1-0 R. Oviedo
         (NEWID(), @RoundId5, @TeamId2, @TeamId14, 3, 0, 0, 1),   -- FC Barcelona 3-0 Getafe CF
 
         -- KOLEJKA 6 (@RoundId6)
         (NEWID(), @RoundId6, @TeamId11, @TeamId8, 1, 1, 1, 1),   -- Celta de Vigo 1-1 Betis Sevilla (DRAW)
         (NEWID(), @RoundId6, @TeamId9, @TeamId16, 1, 1, 1, 1),   -- Athletic Bilbao 1-1 Girona FC (DRAW)
         (NEWID(), @RoundId6, @TeamId21, @TeamId4, 2, 2, 1, 1),   -- Espanyol Barcelona 2-2 Valencia (DRAW)
-        (NEWID(), @RoundId6, @TeamId19, @TeamId1, 1, 4, 0, 1),   -- Levante 1-4 Real Madryt
+        (NEWID(), @RoundId6, @TeamId25, @TeamId1, 1, 4, 0, 1),   -- Levante 1-4 Real Madryt
         (NEWID(), @RoundId6, @TeamId6, @TeamId7, 1, 2, 0, 1),    -- Sevilla 1-2 Villarreal
-        (NEWID(), @RoundId6, @TeamId14, @TeamId18, 1, 1, 1, 1),  -- Getafe CF 1-1 Alaves (DRAW)
+        (NEWID(), @RoundId6, @TeamId14, @TeamId19, 1, 1, 1, 1),  -- Getafe CF 1-1 Alaves (DRAW)
         (NEWID(), @RoundId6, @TeamId5, @TeamId12, 1, 0, 0, 1),   -- Real Sociedad 1-0 Mallorca
         (NEWID(), @RoundId6, @TeamId3, @TeamId15, 3, 2, 0, 1),   -- Atlético Madryt 3-2 Rayo Vallecano
-        (NEWID(), @RoundId6, @TeamId10, @TeamId20, 1, 1, 1, 1),  -- Osasuna 1-1 Elche CF (DRAW)
+        (NEWID(), @RoundId6, @TeamId10, @TeamId23, 1, 1, 1, 1),  -- Osasuna 1-1 Elche CF (DRAW)
         (NEWID(), @RoundId6, @TeamId17, @TeamId2, 1, 3, 0, 1),   -- R. Oviedo 1-3 FC Barcelona
 
         -- KOLEJKA 7 (@RoundId7)
         (NEWID(), @RoundId7, @TeamId16, @TeamId21, 0, 0, 1, 1),   -- Girona FC 0-0 Espanyol Barcelona (DRAW)
-        (NEWID(), @RoundId7, @TeamId14, @TeamId19, 1, 1, 1, 1),   -- Getafe CF 1-1 Levante (DRAW)
+        (NEWID(), @RoundId7, @TeamId14, @TeamId25, 1, 1, 1, 1),   -- Getafe CF 1-1 Levante (DRAW)
         (NEWID(), @RoundId7, @TeamId3, @TeamId1, 5, 2, 0, 1),    -- Atlético Madryt 5-2 Real Madryt
-        (NEWID(), @RoundId7, @TeamId12, @TeamId18, 1, 0, 0, 1),  -- Mallorca 1-0 Alaves
+        (NEWID(), @RoundId7, @TeamId12, @TeamId19, 1, 0, 0, 1),  -- Mallorca 1-0 Alaves
         (NEWID(), @RoundId7, @TeamId7, @TeamId9, 1, 0, 0, 1),    -- Villarreal 1-0 Athletic Bilbao
         (NEWID(), @RoundId7, @TeamId15, @TeamId6, 0, 1, 0, 1),   -- Rayo Vallecano 0-1 Sevilla
-        (NEWID(), @RoundId7, @TeamId20, @TeamId11, 2, 1, 0, 1),  -- Elche CF 2-1 Celta de Vigo
+        (NEWID(), @RoundId7, @TeamId23, @TeamId11, 2, 1, 0, 1),  -- Elche CF 2-1 Celta de Vigo
         (NEWID(), @RoundId7, @TeamId2, @TeamId5, 2, 1, 0, 1),    -- FC Barcelona 2-1 Real Sociedad
         (NEWID(), @RoundId7, @TeamId8, @TeamId10, 2, 0, 0, 1),   -- Betis Sevilla 2-0 Osasuna
         (NEWID(), @RoundId7, @TeamId4, @TeamId17, 1, 2, 0, 1),   -- Valencia 1-2 R. Oviedo
 
         -- KOLEJKA 8 (@RoundId8)
         (NEWID(), @RoundId8, @TeamId10, @TeamId14, 2, 1, 0, 1),   -- Osasuna 2-1 Getafe CF
-        (NEWID(), @RoundId8, @TeamId17, @TeamId19, 0, 2, 0, 1),   -- R. Oviedo 0-2 Levante
+        (NEWID(), @RoundId8, @TeamId17, @TeamId25, 0, 2, 0, 1),   -- R. Oviedo 0-2 Levante
         (NEWID(), @RoundId8, @TeamId16, @TeamId4, 2, 1, 0, 1),    -- Girona FC 2-1 Valencia
         (NEWID(), @RoundId8, @TeamId9, @TeamId12, 2, 1, 0, 1),    -- Athletic Bilbao 2-1 Mallorca
         (NEWID(), @RoundId8, @TeamId1, @TeamId7, 3, 1, 0, 1),     -- Real Madryt 3-1 Villarreal
-        (NEWID(), @RoundId8, @TeamId18, @TeamId20, 3, 1, 0, 1),   -- Alaves 3-1 Elche CF
+        (NEWID(), @RoundId8, @TeamId19, @TeamId23, 3, 1, 0, 1),   -- Alaves 3-1 Elche CF
         (NEWID(), @RoundId8, @TeamId6, @TeamId2, 4, 1, 0, 1),     -- Sevilla 4-1 FC Barcelona
         (NEWID(), @RoundId8, @TeamId21, @TeamId8, 1, 2, 0, 1),    -- Espanyol Barcelona 1-2 Betis Sevilla
         (NEWID(), @RoundId8, @TeamId5, @TeamId15, 0, 1, 0, 1),    -- Real Sociedad 0-1 Rayo Vallecano
@@ -248,22 +248,22 @@ BEGIN TRY
         (NEWID(), @RoundId9, @TeamId2, @TeamId16, 2, 1, 0, 1),    -- FC Barcelona 2-1 Girona FC
         (NEWID(), @RoundId9, @TeamId7, @TeamId8, 2, 2, 1, 1),     -- Villarreal 2-2 Betis Sevilla (DRAW)
         (NEWID(), @RoundId9, @TeamId3, @TeamId10, 1, 0, 0, 1),    -- Atlético Madryt 1-0 Osasuna
-        (NEWID(), @RoundId9, @TeamId20, @TeamId9, 0, 0, 1, 1),    -- Elche CF 0-0 Athletic Bilbao (DRAW)
+        (NEWID(), @RoundId9, @TeamId23, @TeamId9, 0, 0, 1, 1),    -- Elche CF 0-0 Athletic Bilbao (DRAW)
         (NEWID(), @RoundId9, @TeamId11, @TeamId5, 1, 1, 1, 1),    -- Celta de Vigo 1-1 Real Sociedad (DRAW)
-        (NEWID(), @RoundId9, @TeamId19, @TeamId15, 0, 3, 0, 1),   -- Levante 0-3 Rayo Vallecano
+        (NEWID(), @RoundId9, @TeamId25, @TeamId15, 0, 3, 0, 1),   -- Levante 0-3 Rayo Vallecano
         (NEWID(), @RoundId9, @TeamId14, @TeamId1, 0, 1, 0, 1),    -- Getafe CF 0-1 Real Madryt
-        (NEWID(), @RoundId9, @TeamId18, @TeamId4, 0, 0, 1, 1),    -- Alaves 0-0 Valencia (DRAW)
+        (NEWID(), @RoundId9, @TeamId19, @TeamId4, 0, 0, 1, 1),    -- Alaves 0-0 Valencia (DRAW)
 
         -- KOLEJKA 10 (@RoundId10)
         (NEWID(), @RoundId10, @TeamId5, @TeamId6, 2, 1, 0, 1),    -- Real Sociedad 2-1 Sevilla
         (NEWID(), @RoundId10, @TeamId16, @TeamId17, 3, 3, 1, 1),  -- Girona FC 3-3 R. Oviedo (DRAW)
-        (NEWID(), @RoundId10, @TeamId21, @TeamId20, 1, 0, 0, 1),  -- Espanyol Barcelona 1-0 Elche CF
+        (NEWID(), @RoundId10, @TeamId21, @TeamId23, 1, 0, 0, 1),  -- Espanyol Barcelona 1-0 Elche CF
         (NEWID(), @RoundId10, @TeamId9, @TeamId14, 0, 1, 0, 1),   -- Athletic Bilbao 0-1 Getafe CF
         (NEWID(), @RoundId10, @TeamId4, @TeamId7, 0, 2, 0, 1),    -- Valencia 0-2 Villarreal
-        (NEWID(), @RoundId10, @TeamId12, @TeamId19, 1, 1, 1, 1),  -- Mallorca 1-1 Levante (DRAW)
+        (NEWID(), @RoundId10, @TeamId12, @TeamId25, 1, 1, 1, 1),  -- Mallorca 1-1 Levante (DRAW)
         (NEWID(), @RoundId10, @TeamId1, @TeamId2, 2, 1, 0, 1),    -- Real Madryt 2-1 FC Barcelona
         (NEWID(), @RoundId10, @TeamId10, @TeamId11, 2, 3, 0, 1),  -- Osasuna 2-3 Celta de Vigo
-        (NEWID(), @RoundId10, @TeamId15, @TeamId18, 1, 0, 0, 1),  -- Rayo Vallecano 1-0 Alaves
+        (NEWID(), @RoundId10, @TeamId15, @TeamId19, 1, 0, 0, 1),  -- Rayo Vallecano 1-0 Alaves
         (NEWID(), @RoundId10, @TeamId8, @TeamId3, 0, 2, 0, 1),    -- Betis Sevilla 0-2 Atlético Madryt
 
         -- KOLEJKA 11 (@RoundId11) - Rozegrane
@@ -272,17 +272,17 @@ BEGIN TRY
         (NEWID(), @RoundId11, @TeamId3, @TeamId6, 3, 0, 0, 1),    -- Atlético Madryt 3-0 Sevilla
         (NEWID(), @RoundId11, @TeamId5, @TeamId9, 3, 2, 0, 1),    -- Real Sociedad 3-2 Athletic Bilbao
         (NEWID(), @RoundId11, @TeamId1, @TeamId4, 4, 0, 0, 1),    -- Real Madryt 4-0 Valencia
-        (NEWID(), @RoundId11, @TeamId19, @TeamId11, 1, 2, 0, 1),  -- Levante 1-2 Celta de Vigo
-        (NEWID(), @RoundId11, @TeamId18, @TeamId21, 2, 1, 0, 1),  -- Alaves 2-1 Espanyol Barcelona
-        (NEWID(), @RoundId11, @TeamId2, @TeamId20, 3, 1, 0, 1),   -- FC Barcelona 3-1 Elche CF
+        (NEWID(), @RoundId11, @TeamId25, @TeamId11, 1, 2, 0, 1),  -- Levante 1-2 Celta de Vigo
+        (NEWID(), @RoundId11, @TeamId19, @TeamId21, 2, 1, 0, 1),  -- Alaves 2-1 Espanyol Barcelona
+        (NEWID(), @RoundId11, @TeamId2, @TeamId23, 3, 1, 0, 1),   -- FC Barcelona 3-1 Elche CF
         (NEWID(), @RoundId11, @TeamId8, @TeamId12, 3, 0, 0, 1),   -- Betis Sevilla 3-0 Mallorca
         (NEWID(), @RoundId11, @TeamId17, @TeamId10, 0, 0, 1, 1),  -- R. Oviedo 0-0 Osasuna (DRAW)
 
         -- KOLEJKA 12 (@RoundId12) - Rozegrane
-        (NEWID(), @RoundId12, @TeamId20, @TeamId5, 1, 1, 1, 1),   -- Elche CF 1-1 Real Sociedad (DRAW)
-        (NEWID(), @RoundId12, @TeamId16, @TeamId18, 1, 0, 0, 1),  -- Girona FC 1-0 Alaves
+        (NEWID(), @RoundId12, @TeamId23, @TeamId5, 1, 1, 1, 1),   -- Elche CF 1-1 Real Sociedad (DRAW)
+        (NEWID(), @RoundId12, @TeamId16, @TeamId19, 1, 0, 0, 1),  -- Girona FC 1-0 Alaves
         (NEWID(), @RoundId12, @TeamId6, @TeamId10, 1, 0, 0, 1),   -- Sevilla 1-0 Osasuna
-        (NEWID(), @RoundId12, @TeamId3, @TeamId19, 3, 1, 0, 1),   -- Atlético Madryt 3-1 Levante
+        (NEWID(), @RoundId12, @TeamId3, @TeamId25, 3, 1, 0, 1),   -- Atlético Madryt 3-1 Levante
         (NEWID(), @RoundId12, @TeamId21, @TeamId7, 0, 2, 0, 1),   -- Espanyol Barcelona 0-2 Villarreal
         (NEWID(), @RoundId12, @TeamId9, @TeamId17, 1, 0, 0, 1),   -- Athletic Bilbao 1-0 R. Oviedo
         (NEWID(), @RoundId12, @TeamId15, @TeamId1, 0, 0, 1, 1),   -- Rayo Vallecano 0-0 Real Madryt (DRAW)
@@ -291,22 +291,22 @@ BEGIN TRY
         (NEWID(), @RoundId12, @TeamId11, @TeamId2, 2, 4, 0, 1),   -- Celta de Vigo 2-4 FC Barcelona
 
         -- KOLEJKA 13 (@RoundId13) - Rozegrane
-        (NEWID(), @RoundId13, @TeamId4, @TeamId19, 1, 0, 0, 1),   -- Valencia 1-0 Levante
-        (NEWID(), @RoundId13, @TeamId18, @TeamId11, 0, 1, 0, 1),  -- Alaves 0-1 Celta de Vigo
+        (NEWID(), @RoundId13, @TeamId4, @TeamId25, 1, 0, 0, 1),   -- Valencia 1-0 Levante
+        (NEWID(), @RoundId13, @TeamId19, @TeamId11, 0, 1, 0, 1),  -- Alaves 0-1 Celta de Vigo
         (NEWID(), @RoundId13, @TeamId2, @TeamId9, 4, 0, 0, 1),    -- FC Barcelona 4-0 Athletic Bilbao
         (NEWID(), @RoundId13, @TeamId10, @TeamId5, 1, 3, 0, 1),   -- Osasuna 1-3 Real Sociedad
         (NEWID(), @RoundId13, @TeamId7, @TeamId12, 2, 1, 0, 1),   -- Villarreal 2-1 Mallorca
         (NEWID(), @RoundId13, @TeamId17, @TeamId15, 0, 0, 1, 1),  -- R. Oviedo 0-0 Rayo Vallecano (DRAW)
         (NEWID(), @RoundId13, @TeamId8, @TeamId16, 1, 1, 1, 1),   -- Betis Sevilla 1-1 Girona FC (DRAW)
         (NEWID(), @RoundId13, @TeamId14, @TeamId3, 0, 1, 0, 1),   -- Getafe CF 0-1 Atlético Madryt
-        (NEWID(), @RoundId13, @TeamId20, @TeamId1, 2, 2, 1, 1),   -- Elche CF 2-2 Real Madryt (DRAW - UPSET!)
+        (NEWID(), @RoundId13, @TeamId23, @TeamId1, 2, 2, 1, 1),   -- Elche CF 2-2 Real Madryt (DRAW - UPSET!)
         (NEWID(), @RoundId13, @TeamId21, @TeamId6, 2, 1, 0, 1),   -- Espanyol Barcelona 2-1 Sevilla
 
         -- KOLEJKA 14 (@RoundId14) - Rozegrane
-        (NEWID(), @RoundId14, @TeamId14, @TeamId20, 1, 0, 0, 1),  -- Getafe CF 1-0 Elche CF
+        (NEWID(), @RoundId14, @TeamId14, @TeamId23, 1, 0, 0, 1),  -- Getafe CF 1-0 Elche CF
         (NEWID(), @RoundId14, @TeamId12, @TeamId10, 2, 2, 1, 1),  -- Mallorca 2-2 Osasuna (DRAW)
-        (NEWID(), @RoundId14, @TeamId2, @TeamId18, 3, 1, 0, 1),   -- FC Barcelona 3-1 Alaves
-        (NEWID(), @RoundId14, @TeamId19, @TeamId9, 0, 2, 0, 1),   -- Levante 0-2 Athletic Bilbao
+        (NEWID(), @RoundId14, @TeamId2, @TeamId19, 3, 1, 0, 1),   -- FC Barcelona 3-1 Alaves
+        (NEWID(), @RoundId14, @TeamId25, @TeamId9, 0, 2, 0, 1),   -- Levante 0-2 Athletic Bilbao
         (NEWID(), @RoundId14, @TeamId3, @TeamId17, 2, 0, 0, 1),   -- Atlético Madryt 2-0 R. Oviedo
         (NEWID(), @RoundId14, @TeamId5, @TeamId7, 2, 3, 0, 1),    -- Real Sociedad 2-3 Villarreal (AWAY THRILLER!)
         (NEWID(), @RoundId14, @TeamId6, @TeamId8, 0, 2, 0, 1),    -- Sevilla 0-2 Betis Sevilla (DERBY!)
@@ -317,49 +317,49 @@ BEGIN TRY
         -- KOLEJKA 15 (@RoundId15) - Rozegrane
         (NEWID(), @RoundId15, @TeamId17, @TeamId12, 0, 0, 1, 1),  -- R. Oviedo 0-0 Mallorca (DRAW)
         (NEWID(), @RoundId15, @TeamId7, @TeamId14, 2, 0, 0, 1),   -- Villarreal 2-0 Getafe CF
-        (NEWID(), @RoundId15, @TeamId18, @TeamId5, 1, 0, 0, 1),   -- Alaves 1-0 Real Sociedad
+        (NEWID(), @RoundId15, @TeamId19, @TeamId5, 1, 0, 0, 1),   -- Alaves 1-0 Real Sociedad
         (NEWID(), @RoundId15, @TeamId8, @TeamId2, 3, 5, 0, 1),    -- Betis Sevilla 3-5 FC Barcelona (OFFENSIVE EXPLOSION!)
         (NEWID(), @RoundId15, @TeamId9, @TeamId3, 1, 0, 0, 1),    -- Athletic Bilbao 1-0 Atlético Madryt
-        (NEWID(), @RoundId15, @TeamId20, @TeamId16, 3, 0, 0, 1),  -- Elche CF 3-0 Girona FC
+        (NEWID(), @RoundId15, @TeamId23, @TeamId16, 3, 0, 0, 1),  -- Elche CF 3-0 Girona FC
         (NEWID(), @RoundId15, @TeamId4, @TeamId6, 1, 1, 1, 1),    -- Valencia 1-1 Sevilla (DRAW)
         (NEWID(), @RoundId15, @TeamId21, @TeamId15, 1, 0, 0, 1),  -- Espanyol Barcelona 1-0 Rayo Vallecano
         (NEWID(), @RoundId15, @TeamId1, @TeamId11, 0, 2, 0, 1),   -- Real Madryt 0-2 Celta de Vigo (HUGE UPSET!)
-        (NEWID(), @RoundId15, @TeamId10, @TeamId19, 2, 0, 0, 1),  -- Osasuna 2-0 Levante
+        (NEWID(), @RoundId15, @TeamId10, @TeamId25, 2, 0, 0, 1),  -- Osasuna 2-0 Levante
 
         -- KOLEJKA 16 (@RoundId16) - Rozegrane
         (NEWID(), @RoundId16, @TeamId5, @TeamId16, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId16, @TeamId3, @TeamId4, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId12, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId12, @TeamId23, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId16, @TeamId2, @TeamId10, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId16, @TeamId14, @TeamId21, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId16, @TeamId6, @TeamId17, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId16, @TeamId11, @TeamId9, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId19, @TeamId7, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId18, @TeamId1, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId25, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId16, @TeamId19, @TeamId1, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId16, @TeamId15, @TeamId8, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 17 (@RoundId17) - Nierozegrane (NULL)
         (NEWID(), @RoundId17, @TeamId1, @TeamId6, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId17, @TeamId4, @TeamId12, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId10, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId10, @TeamId19, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId17, @TeamId9, @TeamId21, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId17, @TeamId17, @TeamId11, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId17, @TeamId8, @TeamId14, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId17, @TeamId16, @TeamId3, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId17, @TeamId7, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId19, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId20, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId25, @TeamId5, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId17, @TeamId23, @TeamId15, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 18 (@RoundId18) - Nierozegrane (NULL)
         (NEWID(), @RoundId18, @TeamId15, @TeamId14, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId18, @TeamId11, @TeamId4, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId18, @TeamId10, @TeamId9, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId20, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId23, @TeamId7, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId18, @TeamId21, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId6, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId6, @TeamId25, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId18, @TeamId1, @TeamId8, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId18, @TeamId12, @TeamId16, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId18, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId18, @TeamId19, @TeamId17, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId18, @TeamId5, @TeamId3, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 19 (@RoundId19) - Nierozegrane (NULL)
@@ -367,22 +367,22 @@ BEGIN TRY
         (NEWID(), @RoundId19, @TeamId9, @TeamId1, 0, 3, 0, 1),     -- Athletic Bilbao 0-3 Real Madryt (PLAYED)
         (NEWID(), @RoundId19, @TeamId14, @TeamId5, NULL, NULL, NULL, 0), -- Getafe CF vs Real Sociedad (FUTURE)
         (NEWID(), @RoundId19, @TeamId6, @TeamId11, NULL, NULL, NULL, 0), -- Sevilla vs Celta de Vigo (FUTURE)
-        (NEWID(), @RoundId19, @TeamId4, @TeamId20, NULL, NULL, NULL, 0), -- Valencia vs Elche CF (FUTURE)
+        (NEWID(), @RoundId19, @TeamId4, @TeamId23, NULL, NULL, NULL, 0), -- Valencia vs Elche CF (FUTURE)
         (NEWID(), @RoundId19, @TeamId16, @TeamId10, NULL, NULL, NULL, 0), -- Girona FC vs Osasuna (FUTURE)
         (NEWID(), @RoundId19, @TeamId15, @TeamId12, NULL, NULL, NULL, 0), -- Rayo Vallecano vs Mallorca (FUTURE)
         (NEWID(), @RoundId19, @TeamId17, @TeamId8, NULL, NULL, NULL, 0),  -- R. Oviedo vs Betis Sevilla (FUTURE)
-        (NEWID(), @RoundId19, @TeamId19, @TeamId21, NULL, NULL, NULL, 0), -- Levante vs Espanyol Barcelona (FUTURE)
-        (NEWID(), @RoundId19, @TeamId7, @TeamId18, NULL, NULL, NULL, 0),  -- Villarreal vs Alaves (FUTURE)
+        (NEWID(), @RoundId19, @TeamId25, @TeamId21, NULL, NULL, NULL, 0), -- Levante vs Espanyol Barcelona (FUTURE)
+        (NEWID(), @RoundId19, @TeamId7, @TeamId19, NULL, NULL, NULL, 0),  -- Villarreal vs Alaves (FUTURE)
 
         -- KOLEJKA 20 (@RoundId20) - Nierozegrane (NULL)
-        (NEWID(), @RoundId20, @TeamId1, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId1, @TeamId25, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId20, @TeamId11, @TeamId15, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId20, @TeamId8, @TeamId7, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId20, @TeamId21, @TeamId16, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId20, @TeamId5, @TeamId2, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId20, @TeamId10, @TeamId17, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId20, @TeamId6, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId3, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId23, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId20, @TeamId3, @TeamId19, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId20, @TeamId14, @TeamId4, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId20, @TeamId12, @TeamId9, NULL, NULL, NULL, 0),
 
@@ -391,8 +391,8 @@ BEGIN TRY
         (NEWID(), @RoundId21, @TeamId4, @TeamId21, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId21, @TeamId7, @TeamId1, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId21, @TeamId16, @TeamId14, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId19, @TeamId20, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId18, @TeamId8, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId25, @TeamId23, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId21, @TeamId19, @TeamId8, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId21, @TeamId6, @TeamId9, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId21, @TeamId15, @TeamId10, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId21, @TeamId2, @TeamId17, NULL, NULL, NULL, 0),
@@ -400,59 +400,59 @@ BEGIN TRY
 
         -- KOLEJKA 22 (@RoundId22) - Nierozegrane (NULL)
         (NEWID(), @RoundId22, @TeamId8, @TeamId4, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId20, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId23, @TeamId2, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId22, @TeamId1, @TeamId15, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId19, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId25, @TeamId3, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId22, @TeamId12, @TeamId6, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId22, @TeamId14, @TeamId11, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId22, @TeamId9, @TeamId5, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId22, @TeamId17, @TeamId16, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId22, @TeamId10, @TeamId7, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId21, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId22, @TeamId21, @TeamId19, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 23 (@RoundId23) - Nierozegrane (NULL)
-        (NEWID(), @RoundId23, @TeamId18, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId19, @TeamId14, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId23, @TeamId15, @TeamId17, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId23, @TeamId3, @TeamId8, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId23, @TeamId2, @TeamId12, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId9, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId9, @TeamId25, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId23, @TeamId7, @TeamId21, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId5, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId23, @TeamId5, @TeamId23, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId23, @TeamId6, @TeamId16, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId23, @TeamId11, @TeamId10, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId23, @TeamId4, @TeamId1, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 24 (@RoundId24) - Nierozegrane (NULL)
-        (NEWID(), @RoundId24, @TeamId20, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId23, @TeamId10, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId24, @TeamId14, @TeamId7, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId24, @TeamId17, @TeamId9, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId24, @TeamId16, @TeamId2, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId24, @TeamId21, @TeamId11, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId24, @TeamId1, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId19, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId25, @TeamId4, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId24, @TeamId15, @TeamId3, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId24, @TeamId12, @TeamId8, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId6, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId24, @TeamId6, @TeamId19, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 25 (@RoundId25) - Nierozegrane (NULL)
         (NEWID(), @RoundId25, @TeamId10, @TeamId1, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId25, @TeamId3, @TeamId21, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId25, @TeamId9, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId9, @TeamId23, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId25, @TeamId7, @TeamId4, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId25, @TeamId14, @TeamId6, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId25, @TeamId11, @TeamId12, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId25, @TeamId5, @TeamId17, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId25, @TeamId18, @TeamId16, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId25, @TeamId2, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId19, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId25, @TeamId2, @TeamId25, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId25, @TeamId8, @TeamId15, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 26 (@RoundId26) - Nierozegrane (NULL)
         (NEWID(), @RoundId26, @TeamId15, @TeamId9, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId26, @TeamId2, @TeamId7, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId26, @TeamId12, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId26, @TeamId20, @TeamId21, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId23, @TeamId21, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId26, @TeamId16, @TeamId11, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId26, @TeamId19, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId26, @TeamId25, @TeamId19, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId26, @TeamId4, @TeamId10, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId26, @TeamId1, @TeamId14, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId26, @TeamId8, @TeamId6, NULL, NULL, NULL, 0),
@@ -461,36 +461,36 @@ BEGIN TRY
         -- KOLEJKA 27 (@RoundId27) - Nierozegrane (NULL)
         (NEWID(), @RoundId27, @TeamId10, @TeamId12, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId27, @TeamId3, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId27, @TeamId4, @TeamId18, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId27, @TeamId19, @TeamId16, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId4, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId25, @TeamId16, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId27, @TeamId14, @TeamId8, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId27, @TeamId21, @TeamId17, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId27, @TeamId11, @TeamId1, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId27, @TeamId6, @TeamId15, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId27, @TeamId7, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId27, @TeamId7, @TeamId23, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId27, @TeamId9, @TeamId2, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 28 (@RoundId28) - Nierozegrane (NULL)
-        (NEWID(), @RoundId28, @TeamId1, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId1, @TeamId23, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId28, @TeamId8, @TeamId11, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId28, @TeamId17, @TeamId4, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId28, @TeamId5, @TeamId10, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId28, @TeamId18, @TeamId7, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId19, @TeamId7, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId28, @TeamId16, @TeamId9, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId28, @TeamId12, @TeamId21, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId28, @TeamId3, @TeamId14, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId28, @TeamId2, @TeamId6, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId28, @TeamId15, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId28, @TeamId15, @TeamId25, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 29 (@RoundId29) - Nierozegrane (NULL)
         (NEWID(), @RoundId29, @TeamId6, @TeamId4, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId29, @TeamId19, @TeamId17, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId25, @TeamId17, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId29, @TeamId2, @TeamId15, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId29, @TeamId11, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId11, @TeamId19, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId29, @TeamId1, @TeamId3, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId29, @TeamId10, @TeamId16, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId29, @TeamId7, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId29, @TeamId20, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId29, @TeamId23, @TeamId12, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId29, @TeamId9, @TeamId8, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId29, @TeamId21, @TeamId14, NULL, NULL, NULL, 0),
 
@@ -498,11 +498,11 @@ BEGIN TRY
         -- KOLEJKA 30 (@RoundId30) - Nierozegrane (NULL)
         (NEWID(), @RoundId30, @TeamId4, @TeamId11, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId30, @TeamId8, @TeamId21, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId30, @TeamId15, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId15, @TeamId23, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId30, @TeamId12, @TeamId1, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId30, @TeamId5, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId5, @TeamId25, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId30, @TeamId16, @TeamId7, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId30, @TeamId18, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId30, @TeamId19, @TeamId10, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId30, @TeamId17, @TeamId6, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId30, @TeamId14, @TeamId9, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId30, @TeamId3, @TeamId2, NULL, NULL, NULL, 0),
@@ -511,29 +511,29 @@ BEGIN TRY
         (NEWID(), @RoundId31, @TeamId6, @TeamId3, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId31, @TeamId1, @TeamId16, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId31, @TeamId2, @TeamId21, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId31, @TeamId19, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId25, @TeamId14, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId31, @TeamId11, @TeamId17, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId31, @TeamId12, @TeamId15, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId31, @TeamId5, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId5, @TeamId19, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId31, @TeamId10, @TeamId8, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId31, @TeamId20, @TeamId4, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId31, @TeamId23, @TeamId4, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId31, @TeamId9, @TeamId7, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 32 (@RoundId32) - Nierozegrane (NULL)
-        (NEWID(), @RoundId32, @TeamId21, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId21, @TeamId25, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId32, @TeamId10, @TeamId6, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId32, @TeamId4, @TeamId16, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId32, @TeamId8, @TeamId1, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId32, @TeamId14, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId32, @TeamId17, @TeamId20, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId32, @TeamId18, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId17, @TeamId23, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId32, @TeamId19, @TeamId12, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId32, @TeamId15, @TeamId5, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId32, @TeamId7, @TeamId11, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId32, @TeamId3, @TeamId9, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 33 (@RoundId33) - Nierozegrane (NULL)
-        (NEWID(), @RoundId33, @TeamId1, @TeamId18, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId33, @TeamId19, @TeamId6, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId1, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId25, @TeamId6, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId33, @TeamId2, @TeamId11, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId33, @TeamId17, @TeamId7, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId33, @TeamId5, @TeamId14, NULL, NULL, NULL, 0),
@@ -541,28 +541,28 @@ BEGIN TRY
         (NEWID(), @RoundId33, @TeamId16, @TeamId8, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId33, @TeamId15, @TeamId21, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId33, @TeamId12, @TeamId4, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId33, @TeamId20, @TeamId3, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId33, @TeamId23, @TeamId3, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 34 (@RoundId34) - Nierozegrane (NULL)
         (NEWID(), @RoundId34, @TeamId21, @TeamId1, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId34, @TeamId6, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId34, @TeamId7, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId7, @TeamId25, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId34, @TeamId14, @TeamId15, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId34, @TeamId8, @TeamId17, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId34, @TeamId4, @TeamId3, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId34, @TeamId16, @TeamId12, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId34, @TeamId10, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId34, @TeamId18, @TeamId9, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId34, @TeamId11, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId19, @TeamId9, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId34, @TeamId11, @TeamId23, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 35 (@RoundId35) - Nierozegrane (NULL)
         (NEWID(), @RoundId35, @TeamId3, @TeamId11, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId35, @TeamId6, @TeamId21, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId35, @TeamId2, @TeamId1, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId35, @TeamId15, @TeamId16, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId35, @TeamId20, @TeamId18, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId23, @TeamId19, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId35, @TeamId12, @TeamId7, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId35, @TeamId19, @TeamId10, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId35, @TeamId25, @TeamId10, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId35, @TeamId5, @TeamId8, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId35, @TeamId9, @TeamId4, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId35, @TeamId17, @TeamId14, NULL, NULL, NULL, 0),
@@ -572,16 +572,16 @@ BEGIN TRY
         (NEWID(), @RoundId36, @TeamId7, @TeamId6, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId36, @TeamId10, @TeamId3, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId36, @TeamId1, @TeamId17, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId36, @TeamId18, @TeamId2, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId19, @TeamId2, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId36, @TeamId4, @TeamId15, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId36, @TeamId14, @TeamId12, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId36, @TeamId16, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId36, @TeamId11, @TeamId19, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId36, @TeamId8, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId11, @TeamId25, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId36, @TeamId8, @TeamId23, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 37 (@RoundId37) - Nierozegrane (NULL)
-        (NEWID(), @RoundId37, @TeamId17, @TeamId18, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId37, @TeamId19, @TeamId12, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId17, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId25, @TeamId12, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId37, @TeamId3, @TeamId16, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId37, @TeamId15, @TeamId7, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId37, @TeamId5, @TeamId4, NULL, NULL, NULL, 0),
@@ -589,17 +589,17 @@ BEGIN TRY
         (NEWID(), @RoundId37, @TeamId6, @TeamId1, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId37, @TeamId9, @TeamId11, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId37, @TeamId10, @TeamId21, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId37, @TeamId20, @TeamId14, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId37, @TeamId23, @TeamId14, NULL, NULL, NULL, 0),
 
         -- KOLEJKA 38 (@RoundId38) - Nierozegrane (NULL) - Ostatnia runda
-        (NEWID(), @RoundId38, @TeamId8, @TeamId19, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId8, @TeamId25, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId38, @TeamId14, @TeamId10, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId38, @TeamId1, @TeamId9, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId38, @TeamId7, @TeamId3, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId38, @TeamId11, @TeamId6, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId38, @TeamId16, @TeamId20, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId16, @TeamId23, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId38, @TeamId4, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId38, @TeamId18, @TeamId15, NULL, NULL, NULL, 0),
+        (NEWID(), @RoundId38, @TeamId19, @TeamId15, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId38, @TeamId21, @TeamId5, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId38, @TeamId12, @TeamId17, NULL, NULL, NULL, 0);
     -- ================================================================
