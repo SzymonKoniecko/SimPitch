@@ -25,7 +25,7 @@ public class SeasonStatsGrpcClient : ISeasonStatsGrpcClient
 
         var response = await _seasonStatsGrpcClient.GetSeasonsStatsByTeamIdAsync(grpcRequest, cancellationToken: cancellationToken);
         List<SeasonStatsDto> result = new();
-        result.AddRange(response.SeasonsStats?.Select(x => ProtoToDto(x)));
+        result.AddRange(response.SeasonsStats?.Select(x => ProtoToDto(x)) ?? Enumerable.Empty<SeasonStatsDto>());
 
         return result;
     }

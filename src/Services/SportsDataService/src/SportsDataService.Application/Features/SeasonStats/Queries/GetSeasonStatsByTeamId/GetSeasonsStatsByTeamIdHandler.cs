@@ -20,7 +20,7 @@ public class GetSeasonsStatsByTeamIdHandler : IRequestHandler<GetSeasonsStatsByT
         var stats = await _SeasonStatsRepository.GetSeasonsStatsByTeamIdAsync(request.teamId, cancellationToken);
         if (stats is null)
         {
-            throw new KeyNotFoundException($"Season stats with TeamId '{request.teamId}' was not found.");
+            return Enumerable.Empty<SeasonStatsDto>();
         }
         return stats.Select(x => SeasonStatsMapper.ToDto(x));
     }
