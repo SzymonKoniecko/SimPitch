@@ -8,7 +8,7 @@ namespace SimulationService.Tests.Features.Simulations.SimulationModels;
 public class SeasonStatsTests
 {
     [Fact]
-    public void Merge_ShouldSumStats_AndTakeNewLeagueStrength()
+    public void Merge_ShouldSumStats_AndTakeAvgLeagueStrength()
     {
         // Arrange: Scenariusz "Awans do silniejszej ligi"
         var teamId = Guid.NewGuid();
@@ -33,7 +33,7 @@ public class SeasonStatsTests
         Assert.Equal(25, result.GoalsFor); // 20 + 5 (BEZ SKALOWANIA!)
 
         // 2. Sprawdź kontekst (Musi wziąć z newData)
-        Assert.Equal(3.0f, result.LeagueStrength); // Nowa siła
+        Assert.Equal(2.5f, result.LeagueStrength); // Nowa siła
         Assert.Equal(SeasonEnum.Season2024_2025, result.SeasonYear); // Nowy rok
         Assert.Equal(newLeagueId, result.LeagueId); // Nowa liga
     }
