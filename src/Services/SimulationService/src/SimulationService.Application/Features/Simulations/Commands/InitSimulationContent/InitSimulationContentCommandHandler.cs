@@ -122,6 +122,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         contentResponse.PriorLeagueStrength = totalMatches > 0
             ? (float)totalGoals / totalMatches
             : 2.5f; // Fallback na typową średnią
+        contentResponse.LeagueStrengths.First(x => x.SeasonYear == SimulationConsts.CURRENT_SEASON).Strength = contentResponse.PriorLeagueStrength;
 
         // KROK 5: Oblicz Likelihood i Posterior dla każdej drużyny
         contentResponse.TeamsStrengthDictionary = contentResponse.TeamsStrengthDictionary

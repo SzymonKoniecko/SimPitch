@@ -101,7 +101,7 @@ public record SeasonStats
         if (accumulator.TeamId != newData.TeamId)
             throw new InvalidOperationException(
                 $"Cannot merge SeasonStats for different teams: {accumulator.TeamId} != {newData.TeamId}");
-
+        float newLeagueStrength = (accumulator.LeagueStrength + newData.LeagueStrength ) / 2;
         return accumulator with
         {
             MatchesPlayed = accumulator.MatchesPlayed + newData.MatchesPlayed,
@@ -111,7 +111,7 @@ public record SeasonStats
             GoalsFor = accumulator.GoalsFor + newData.GoalsFor,
             GoalsAgainst = accumulator.GoalsAgainst + newData.GoalsAgainst,
 
-            LeagueStrength = newData.LeagueStrength,
+            LeagueStrength = newLeagueStrength,
             SeasonYear = newData.SeasonYear,
             LeagueId = newData.LeagueId
         };
