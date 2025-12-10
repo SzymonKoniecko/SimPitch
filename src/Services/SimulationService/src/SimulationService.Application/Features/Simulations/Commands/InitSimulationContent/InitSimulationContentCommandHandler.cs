@@ -123,6 +123,15 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             ? (float)totalGoals / totalMatches
             : 2.5f; // Fallback na typową średnią
 
+        var currentSeasonStrength = contentResponse.LeagueStrengths
+            .FirstOrDefault(x => x.SeasonYear == SimulationConsts.CURRENT_SEASON);
+
+        if (currentSeasonStrength != null)
+            currentSeasonStrength.Strength = contentResponse.PriorLeagueStrength;
+        else
+            _logger.LogWarning("LeagueStrength entry for the current season was not found. Cannot update it with PriorLeagueStrength.");
+
+
         // KROK 5: Oblicz Likelihood i Posterior dla każdej drużyny
         contentResponse.TeamsStrengthDictionary = contentResponse.TeamsStrengthDictionary
             .ToDictionary(
