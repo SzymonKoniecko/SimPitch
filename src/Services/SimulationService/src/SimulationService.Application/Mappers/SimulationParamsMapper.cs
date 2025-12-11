@@ -14,7 +14,7 @@ public static class SimulationParamsMapper
         vo.Title = dto.Title;
         vo.SeasonYears = dto.SeasonYears;
         vo.LeagueId = dto.LeagueId;
-        vo.LeagueRoundId = dto.LeagueRoundId;
+        vo.LeagueRoundId = dto.LeagueRoundId ?? Guid.Empty;
         vo.TargetLeagueRoundId = dto.TargetLeagueRoundId;
         vo.Iterations = dto.Iterations;
         vo.Seed = dto.Seed;
