@@ -130,7 +130,7 @@ public record TeamStrength
     public TeamStrength EnsureThatUpdatedTeamStrengthNotHaveInitialStatsId()
     {
         var newSeasonStats = this.SeasonStats;
-        newSeasonStats.Id = Guid.NewGuid();
+        newSeasonStats.Id = Guid.Empty;
 
         return this with { SeasonStats = newSeasonStats };
     }

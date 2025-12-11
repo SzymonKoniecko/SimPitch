@@ -36,7 +36,7 @@ public class CreateSimulationStatsCommandHandler : IRequestHandler<CreateSimulat
         {
             return (true, command.SimulationId); // simulationTeamStats are already created
         }
-        var scoreboards = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(command.SimulationId, withTeamStats: false, cancellationToken);
+        var scoreboards = await _scoreboardReadRepository.GetScoreboardByQueryAsync(command.SimulationId, iterationResultId: Guid.Empty, withTeamStats: false, cancellationToken);
         List<ScoreboardTeamStats> scoreboardTeamStats = new();
 
         foreach (var scoreboard in scoreboards)

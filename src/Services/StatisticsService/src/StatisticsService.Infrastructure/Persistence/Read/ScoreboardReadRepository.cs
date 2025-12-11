@@ -16,11 +16,11 @@ public class ScoreboardReadRepository : IScoreboardReadRepository
         _scoreboardTeamStatsReadRepository = scoreboardTeamStatsReadRepository ?? throw new ArgumentNullException(nameof(scoreboardTeamStatsReadRepository));
     }
 
-    public async Task<IEnumerable<Scoreboard>> GetScoreboardBySimulationIdAsync(Guid simulationId, bool withTeamStats, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Scoreboard>> GetScoreboardByQueryAsync(Guid simulationId, Guid iterationResultId, bool withTeamStats, CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql = @"
+        string sql = @"
             SELECT *
             FROM Scoreboard
             WHERE SimulationId = @SimulationId
@@ -31,6 +31,21 @@ public class ScoreboardReadRepository : IScoreboardReadRepository
             parameters: new { SimulationId = simulationId },
             cancellationToken: cancellationToken
         );
+
+        if (iterationResultId != Guid.Empty) // filter for requested iteration result
+        {
+            sql = @"
+                SELECT *
+                FROM Scoreboard
+                WHERE SimulationId = @SimulationId AND IterationResultId = @IterationResultId
+            ";
+            command = new CommandDefinition(
+                commandText: sql,
+                parameters: new { SimulationId = simulationId, IterationResultId = iterationResultId},
+                cancellationToken: cancellationToken
+            );
+        }
+
 
         var results = await connection.QueryAsync<Scoreboard>(command);
 
@@ -44,7 +59,7 @@ public class ScoreboardReadRepository : IScoreboardReadRepository
 
         return results;
     }
-    
+
     public async Task<bool> ScoreboardsBySimulationIdExistsAsync(Guid simulationId, int expectedScoreboards, CancellationToken cancellationToken)
     {
         using var connection = _dbConnectionFactory.CreateConnection();

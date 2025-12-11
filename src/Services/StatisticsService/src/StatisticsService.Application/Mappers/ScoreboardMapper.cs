@@ -19,7 +19,7 @@ public static class ScoreboardMapper
             SimulationId = domain.SimulationId,
             IterationResultId = domain.IterationResultId,
             ScoreboardTeams = domain.ScoreboardTeams.Select(team => ScoreboardTeamStatsMapper.ToDto(team)).ToList(),
-            InitialScoreboardTeams = domain.ScoreboardTeams.Select(team => ScoreboardTeamStatsMapper.ToDto(team)).ToList(),
+            InitialScoreboardTeams = domain.ScoreboardTeamsInitialStats.Select(team => ScoreboardTeamStatsMapper.ToDto(team)).ToList(),
             CreatedAt = domain.CreatedAt
         };
         

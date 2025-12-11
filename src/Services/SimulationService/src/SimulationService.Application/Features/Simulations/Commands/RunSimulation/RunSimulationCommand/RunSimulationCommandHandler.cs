@@ -128,8 +128,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             await _mediator.Send(new CreateIterationResultCommand(itResultDto), cancellationToken);
 
             itResultDto.TeamStrengths.RemoveAll(
-                x => x.SeasonStats.Id != command.SimulationParamsDto.LeagueRoundId
-                  && x.SeasonStats.Id != command.SimulationParamsDto.LeagueId
+                x => x.SeasonStats.Id == Guid.Empty 
             );
             command.State.LastCompletedIteration = i;
             await _registry.SetStateAsync(command.simulationId, command.State.Update((float)i / command.SimulationParamsDto.Iterations * 100));

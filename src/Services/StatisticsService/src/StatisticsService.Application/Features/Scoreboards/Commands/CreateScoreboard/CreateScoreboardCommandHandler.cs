@@ -60,8 +60,8 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
         if (newScoreboards.Any())
             return newScoreboards.Select(ScoreboardMapper.ToDto);
 
-        var existing = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(
-            request.simulationId, withTeamStats: true, cancellationToken);
+        var existing = await _scoreboardReadRepository.GetScoreboardByQueryAsync(
+            request.simulationId, request.iterationResultId, withTeamStats: true, cancellationToken);
 
         if (existing == null)
             throw new InvalidOperationException("Cannot load created scoreboards; data inconsistency detected.");
