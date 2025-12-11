@@ -8,7 +8,7 @@ public class SimulationParams
     public List<string> SeasonYears { get; set; }
     public Guid LeagueId { get; set; }
     public int Iterations { get; set; }
-    public Guid? LeagueRoundId { get; set; }
+    public Guid LeagueRoundId { get; set; }
     public Guid? TargetLeagueRoundId { get; set; }
     public bool CreateScoreboardOnCompleteIteration { get; set; }
     public int Seed { get; set; }

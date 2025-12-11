@@ -197,7 +197,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             if (!contentResponse.TeamsStrengthDictionary.ContainsKey(teamId))
             {
                 var baseStrength = TeamStrength.Create(
-                    contentResponse.SimulationParams.LeagueRoundId ?? contentResponse.SimulationParams.LeagueId,
+                    (contentResponse.SimulationParams.LeagueRoundId != Guid.Empty) ? contentResponse.SimulationParams.LeagueRoundId : contentResponse.SimulationParams.LeagueId,
                     teamId,
                     currentSeasonEnum,
                     currentLeagueId,
@@ -307,7 +307,10 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         }
         else
         {
-            var newTeamStrength = TeamStrength.Create(response.SimulationParams.LeagueRoundId ?? response.SimulationParams.LeagueId, teamId, seasonEnum, leagueId, leagueStrength);
+            var newTeamStrength = TeamStrength.Create((
+                response.SimulationParams.LeagueRoundId != Guid.Empty) ? response.SimulationParams.LeagueRoundId : response.SimulationParams.LeagueId, 
+                teamId, seasonEnum, leagueId, leagueStrength
+            );
             var updatedStats = _seasonStatsService.CalculateSeasonStats(
                 matchRound,
                 newTeamStrength.SeasonStats,
