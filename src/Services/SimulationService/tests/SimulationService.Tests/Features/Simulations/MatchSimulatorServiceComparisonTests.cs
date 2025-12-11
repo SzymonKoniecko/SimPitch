@@ -27,13 +27,13 @@ public class MatchSimulatorServiceComparisonTests
         };
 
         // Tworzymy stan początkowy drużyn
-        var homeTeam = TeamStrength.Create(homeId, SeasonEnum.Season2023_2024, leagueId, leagueAvg)
+        var homeTeam = TeamStrength.Create(Guid.NewGuid(), homeId, SeasonEnum.Season2023_2024, leagueId, leagueAvg)
             with
-        { Posterior = (1.8f, 1.0f), SeasonStats = new SeasonStats(homeId, SeasonEnum.Season2023_2024, leagueId, leagueAvg, 5, 0, 0, 0, 0, 0) }; // Trochę historii dla Advanced
+        { Posterior = (1.8f, 1.0f), SeasonStats = new SeasonStats(Guid.NewGuid(), homeId, SeasonEnum.Season2023_2024, leagueId, leagueAvg, 5, 0, 0, 0, 0, 0) }; // Trochę historii dla Advanced
 
-        var awayTeam = TeamStrength.Create(awayId, SeasonEnum.Season2023_2024, leagueId, leagueAvg)
+        var awayTeam = TeamStrength.Create(Guid.NewGuid(), awayId, SeasonEnum.Season2023_2024, leagueId, leagueAvg)
             with
-        { Posterior = (1.0f, 1.5f), SeasonStats = new SeasonStats(awayId, SeasonEnum.Season2023_2024, leagueId, leagueAvg, 5, 0, 0, 0, 0, 0) };
+        { Posterior = (1.0f, 1.5f), SeasonStats = new SeasonStats(Guid.NewGuid(), awayId, SeasonEnum.Season2023_2024, leagueId, leagueAvg, 5, 0, 0, 0, 0, 0) };
 
         return new SimulationContent
         {

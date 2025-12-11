@@ -13,6 +13,7 @@ public class SeasonStatsService
         {
             var newLeagueStrength = (leagueStrength * seasonStats.LeagueStrength) / 2;
             seasonStats = SeasonStats.CreateNew(
+                seasonStats.Id,
                 teamId: isHomeTeam ? matchRound.HomeTeamId : matchRound.AwayTeamId,
                 seasonYear: season,
                 leagueId: leagueId,

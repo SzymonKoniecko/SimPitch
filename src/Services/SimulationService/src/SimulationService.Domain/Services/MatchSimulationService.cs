@@ -54,8 +54,11 @@ namespace SimulationService.Domain.Services
                 homeTeam = homeTeam with { SeasonStats = homeStatsUpdated };
                 awayTeam = awayTeam with { SeasonStats = awayStatsUpdated };
 
-                homeTeam = homeTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength, simulationContent.SimulationParams).UpdateTime().SetRoundId(match.RoundId);
-                awayTeam = awayTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength, simulationContent.SimulationParams).UpdateTime().SetRoundId(match.RoundId);
+                homeTeam = homeTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength, simulationContent.SimulationParams)
+                    .UpdateTime().SetRoundId(match.RoundId).EnsureThatUpdatedTeamStrengthNotHaveInitialStatsId();
+                awayTeam = awayTeam.WithLikelihood().WithPosterior(simulationContent.PriorLeagueStrength, simulationContent.SimulationParams)
+                    .UpdateTime().SetRoundId(match.RoundId).EnsureThatUpdatedTeamStrengthNotHaveInitialStatsId();
+
 
                 simulationContent.TeamsStrengthDictionary[homeTeam.TeamId].Add(homeTeam);
                 simulationContent.TeamsStrengthDictionary[awayTeam.TeamId].Add(awayTeam);

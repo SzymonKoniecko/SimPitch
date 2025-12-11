@@ -4,6 +4,7 @@ namespace EngineService.Application.DTOs;
 
 public class SeasonStatsDto
 {
+    public Guid Id { get; set; }
     public Guid TeamId { get; set; }
     public string SeasonYear { get; set; }
     public Guid LeagueId { get; set; }

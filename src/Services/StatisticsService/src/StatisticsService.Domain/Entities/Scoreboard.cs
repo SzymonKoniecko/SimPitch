@@ -9,6 +9,8 @@ public class Scoreboard
     public Guid IterationResultId { get; private set; }
     private readonly List<ScoreboardTeamStats> _teams = new();
     public IReadOnlyCollection<ScoreboardTeamStats> ScoreboardTeams => _teams.AsReadOnly();
+    private readonly List<ScoreboardTeamStats> _teamsInitialStats = new();
+    public IReadOnlyCollection<ScoreboardTeamStats> ScoreboardTeamsInitialStats => _teamsInitialStats.AsReadOnly();
     public DateTime CreatedAt { get; set; }
 
     private Scoreboard() { }
@@ -23,6 +25,15 @@ public class Scoreboard
 
     public void AddTeam(ScoreboardTeamStats team) => _teams.Add(team);
     public void AddTeamRange(IEnumerable<ScoreboardTeamStats> teams) => _teams.AddRange(teams);
+    public void AddTeamRangeInitialStats(IEnumerable<ScoreboardTeamStats> teams) => _teamsInitialStats.AddRange(teams);
+
+    public void SetInitialStatFlag()
+    {
+        foreach (var initialStat in _teamsInitialStats)
+        {
+            initialStat.SetInitialStatAsTrue();
+        }
+    }
 
     public void SetRankings()
     {

@@ -34,15 +34,12 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
 
         if (await _scoreboardReadRepository.ScoreboardsBySimulationIdExistsAsync(query.simulationId, simulationOverview.SimulationParams.Iterations, cancellationToken: cancellationToken))
         {
-            var scoreboards = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(query.simulationId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);
+            var scoreboards = await _scoreboardReadRepository.GetScoreboardByQueryAsync(query.simulationId, query.iterationResultId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);
 
             foreach (var scoreboard in scoreboards)
                 scoreboard.SortByRank();
 
-            if (query.iterationResultId != Guid.Empty) // filter for requested iteration result
-            {
-                scoreboards = scoreboards.Where(x => x.IterationResultId == query.iterationResultId).ToList();
-            }
+
 
             return scoreboards.Select(x => ScoreboardMapper.ToDto(x)).ToList();
         }
@@ -55,7 +52,7 @@ public class GetScoreboardsBySimulationIdQueryHandler : IRequestHandler<GetScore
                 await _mediator.Send(command, cancellationToken: cancellationToken);
             }
         }
-        var scoreboardsAfterAll = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(query.simulationId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);
+        var scoreboardsAfterAll = await _scoreboardReadRepository.GetScoreboardByQueryAsync(query.simulationId, query.iterationResultId, withTeamStats: query.withTeamStats, cancellationToken: cancellationToken);
 
         return scoreboardsAfterAll.Select(x => ScoreboardMapper.ToDto(x)).ToList();
     }

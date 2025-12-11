@@ -194,8 +194,8 @@ public class InitSimulationContentCommandHandlerTests
 
         // Historical Data (Season 2022/23: 10 goals scored)
         // Note: Returning SeasonStats object directly as DTO
-        var historyStatsHomeTeam = new SeasonStats(teamId, SeasonEnum.Season2022_2023, leagueId, 2.0f, 10, 5, 3, 2, 10, 5);
-        var historyStatsAwayTeam = new SeasonStats(currentMatch.AwayTeamId, SeasonEnum.Season2022_2023, leagueId, 2.0f, 12, 5, 3, 2, 10, 5);
+        var historyStatsHomeTeam = new SeasonStats(Guid.NewGuid(), teamId, SeasonEnum.Season2022_2023, leagueId, 2.0f, 10, 5, 3, 2, 10, 5);
+        var historyStatsAwayTeam = new SeasonStats(Guid.NewGuid(), currentMatch.AwayTeamId, SeasonEnum.Season2022_2023, leagueId, 2.0f, 12, 5, 3, 2, 10, 5);
         var league = new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>(){new LeagueStrength() { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = SeasonEnum.Season2022_2023, Strength = 1.0f}} }; // No strength in DB
 
         // Mocks
@@ -219,7 +219,7 @@ public class InitSimulationContentCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        var team = result.TeamsStrengthDictionary[teamId].First();
+        var team = result.TeamsStrengthDictionary[teamId].OrderBy(x => x.SeasonStats.MatchesPlayed).Last();
 
         // Check if Merge worked: 1 goal (current) + 10 goals (history) = 11
         Assert.Equal(11, team.SeasonStats.GoalsFor);

@@ -9,5 +9,6 @@ public class IterationResult
     public int SimulationIndex { get; set; }
     public DateTime StartDate { get; set; }
     public TimeSpan ExecutionTime { get; set; }
+    public List<TeamStrength> TeamStrengths { get; set; }
     public List<MatchRound> SimulatedMatchRounds { get; set; }
 }

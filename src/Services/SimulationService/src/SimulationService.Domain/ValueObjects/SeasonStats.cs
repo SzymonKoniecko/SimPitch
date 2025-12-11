@@ -6,6 +6,12 @@ namespace SimulationService.Domain.ValueObjects;
 
 public record SeasonStats
 {
+    /// <summary>
+    /// Id used as marker to indicate the INITIAL team SeasonStats BEFORE the simualtion
+    /// (LeagueRoundId or LeagueId)
+    /// If its a continuation of simulation - will be marked as Guid.Empty (when simulation is finished, that Guid.Empty is filtered out in mapper)  
+    /// </summary>
+    public Guid Id { get; set; }
     public Guid TeamId { get; init; }
     public SeasonEnum SeasonYear { get; init; }
     public Guid LeagueId { get; init; }
@@ -17,9 +23,10 @@ public record SeasonStats
     public int GoalsFor { get; init; }
     public int GoalsAgainst { get; init; }
 
-    public SeasonStats(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength, 
+    public SeasonStats(Guid Id, Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength, 
         int matchesPlayed, int wins, int losses, int draws, int goalsFor, int goalsAgainst)
     {
+        this.Id = Id;
         TeamId = teamId;
         SeasonYear = seasonYear;
         LeagueId = leagueId;
@@ -35,8 +42,8 @@ public record SeasonStats
     /// <summary>
     /// Factory
     /// </summary>
-    public static SeasonStats CreateNew(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength)
-        => new SeasonStats(teamId, seasonYear, leagueId, leagueStrength, 0, 0, 0, 0, 0, 0);
+    public static SeasonStats CreateNew(Guid Id, Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength)
+        => new SeasonStats(Id, teamId, seasonYear, leagueId, leagueStrength, 0, 0, 0, 0, 0, 0);
 
     public override string ToString() 
         => $"Team: {TeamId}, Season: {SeasonYear}, Wins: {Wins}, Draws: {Draws}, Losses: {Losses}, " +
@@ -104,6 +111,7 @@ public record SeasonStats
         float newLeagueStrength = (accumulator.LeagueStrength + newData.LeagueStrength ) / 2;
         return accumulator with
         {
+            Id = newData.Id,
             MatchesPlayed = accumulator.MatchesPlayed + newData.MatchesPlayed,
             Wins = accumulator.Wins + newData.Wins,
             Losses = accumulator.Losses + newData.Losses,

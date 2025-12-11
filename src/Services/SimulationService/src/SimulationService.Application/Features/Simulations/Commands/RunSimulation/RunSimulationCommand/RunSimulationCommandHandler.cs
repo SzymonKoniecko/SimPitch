@@ -81,7 +81,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         for (int i = 1; i <= command.SimulationParamsDto.Iterations; i++)
         {
             var (freshMatchRounds, freshTeamStrengths) = DeepCloneExtensions.CloneSimulationDataManual(
-                    initialMatchRounds, 
+                    initialMatchRounds,
                     initialTeamStrengths
             );
 
@@ -127,6 +127,9 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
 
             await _mediator.Send(new CreateIterationResultCommand(itResultDto), cancellationToken);
 
+            itResultDto.TeamStrengths.RemoveAll(
+                x => x.SeasonStats.Id == Guid.Empty 
+            );
             command.State.LastCompletedIteration = i;
             await _registry.SetStateAsync(command.simulationId, command.State.Update((float)i / command.SimulationParamsDto.Iterations * 100));
             await _simulationStateWriteRepository.UpdateOrCreateAsync(command.State, cancellationToken: cancellationToken);

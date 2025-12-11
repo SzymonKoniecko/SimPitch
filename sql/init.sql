@@ -211,7 +211,8 @@ BEGIN
         Losses INT NOT NULL,
         Draws INT NOT NULL,
         GoalsFor INT NOT NULL,
-        GoalsAgainst INT NOT NULL
+        GoalsAgainst INT NOT NULL,
+        IsInitialStat BIT NOT NULL
     );
 END
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SimulationTeamStats' AND xtype='U')

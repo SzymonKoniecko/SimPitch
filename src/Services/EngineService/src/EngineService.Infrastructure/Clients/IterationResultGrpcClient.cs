@@ -94,6 +94,8 @@ public class IterationResultGrpcClient : IIterationResultGrpcClient
             dto.TeamStrengths = JsonConvert.DeserializeObject<List<TeamStrengthDto>>(result.TeamStrengths);
             dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundDto>>(result.SimulatedMatchRounds);
 
+            dto.TeamStrengths.Where(x => x.SeasonStats.Id == Guid.Empty);
+
             dtos.Add(dto);
         }
 

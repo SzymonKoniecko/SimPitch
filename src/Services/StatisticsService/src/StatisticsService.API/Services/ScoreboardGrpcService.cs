@@ -108,6 +108,7 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
             SimulationId = dto.SimulationId.ToString(),
             IterationResultId = dto.IterationResultId.ToString(),
             ScoreboardTeams = { dto.ScoreboardTeams.Select(team => ScoreboardTeamStatsToGrpc(team)).OrderBy(x => x.Rank).ToList() },
+            InitialScoreboardTeams = { dto.InitialScoreboardTeams.Select(team => ScoreboardTeamStatsToGrpc(team)).OrderBy(x => x.Rank).ToList() },
             CreatedAt = dto.CreatedAt.ToString()
         };
 
@@ -129,6 +130,7 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
         grpc.Draws = dto.Draws;
         grpc.GoalsFor = dto.GoalsFor;
         grpc.GoalsAgainst = dto.GoalsAgainst;
+        grpc.IsInitialStats = dto.IsInitialStat;
 
         return grpc;
     }

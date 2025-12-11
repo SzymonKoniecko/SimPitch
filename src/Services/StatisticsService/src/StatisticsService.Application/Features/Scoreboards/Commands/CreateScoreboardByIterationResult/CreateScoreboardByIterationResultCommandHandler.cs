@@ -43,7 +43,7 @@ public class CreateScoreboardByIterationResultCommandHandler : IRequestHandler<C
     {
         var playedMatchRounds = await _scoreboardDataService.GetPlayedMatchRoundsAsync(command.Overview, cancellationToken);
 
-        var newScoreboard = await CreateMissingScoreboardAsync(IterationResultMapper.ToValueObject(command.iterationResultDto), playedMatchRounds, cancellationToken);
+        var newScoreboard = await CreateMissingScoreboardAsync(command.Overview.SimulationParams, IterationResultMapper.ToValueObject(command.iterationResultDto), playedMatchRounds, cancellationToken);
         
         if (newScoreboard == null)
             _logger.LogWarning($"Scoreboard calculation returned null value, check what happened-> IterationResultId:{command.iterationResultDto.Id}");
@@ -58,6 +58,7 @@ public class CreateScoreboardByIterationResultCommandHandler : IRequestHandler<C
     }
 
     private async Task<Scoreboard> CreateMissingScoreboardAsync(
+        SimulationParams simulationParams,
         IterationResult iterationResult,
         IEnumerable<MatchRoundDto> playedMatchRounds,
         CancellationToken ct
@@ -68,13 +69,18 @@ public class CreateScoreboardByIterationResultCommandHandler : IRequestHandler<C
             throw new Exception($"Tried to create a scoreboard for already exisiting copy. IterationResultId:{iterationResult.Id}");
         
         var scoreboard = _scoreboardService.CalculateSingleScoreboard(
+            simulationParams,
             iterationResult,
             playedMatchRounds.Select(MatchRoundMapper.ToValueObject).ToList());
 
         scoreboard.SetRankings();
 
         await _scoreboardWriteRepository.CreateScoreboardAsync(scoreboard, ct);
+
         await _scoreboardTeamStatsWriteRepository.CreateScoreboardTeamStatsBulkAsync(scoreboard.ScoreboardTeams, ct);
+        
+        scoreboard.SetInitialStatFlag();
+        await _scoreboardTeamStatsWriteRepository.CreateScoreboardTeamStatsBulkAsync(scoreboard.ScoreboardTeamsInitialStats, ct);
 
         return scoreboard;
     }

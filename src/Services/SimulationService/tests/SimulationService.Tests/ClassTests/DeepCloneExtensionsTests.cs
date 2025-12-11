@@ -98,8 +98,8 @@ public class DeepCloneExtensionsTests
             IsPlayed = false
         };
 
-        var team1 = TeamStrength.Create(teamId1, SeasonEnum.Season2023_2024, leagueId, 2.5f);
-        var team2 = TeamStrength.Create(teamId2, SeasonEnum.Season2023_2024, leagueId, 2.5f);
+        var team1 = TeamStrength.Create(Guid.NewGuid(), teamId1, SeasonEnum.Season2023_2024, leagueId, 2.5f);
+        var team2 = TeamStrength.Create(Guid.NewGuid(), teamId2, SeasonEnum.Season2023_2024, leagueId, 2.5f);
 
         var originalMatches = new List<MatchRound> { match };
         var originalTeams = new Dictionary<Guid, List<TeamStrength>>

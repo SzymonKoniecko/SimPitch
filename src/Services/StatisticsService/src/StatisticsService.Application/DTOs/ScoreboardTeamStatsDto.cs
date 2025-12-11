@@ -15,4 +15,5 @@ public class ScoreboardTeamStatsDto
     public int Draws { get; set; }
     public int GoalsFor { get; set; }
     public int GoalsAgainst { get; set; }
+    public bool IsInitialStat { get; set; }
 }

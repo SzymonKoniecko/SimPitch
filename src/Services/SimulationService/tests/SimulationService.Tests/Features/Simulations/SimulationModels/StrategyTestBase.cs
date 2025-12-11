@@ -21,8 +21,8 @@ public abstract class StrategyTestBase
         var leagueId = Guid.NewGuid();
 
         // Tworzymy bazowe obiekty
-        var baseHome = TeamStrength.Create(homeId, SeasonEnum.Season2023_2024, leagueId, LeagueAvgGoals);
-        var baseAway = TeamStrength.Create(awayId, SeasonEnum.Season2023_2024, leagueId, LeagueAvgGoals);
+        var baseHome = TeamStrength.Create(Guid.NewGuid(), homeId, SeasonEnum.Season2023_2024, leagueId, LeagueAvgGoals);
+        var baseAway = TeamStrength.Create(Guid.NewGuid(), awayId, SeasonEnum.Season2023_2024, leagueId, LeagueAvgGoals);
 
         // Konfigurujemy statystyki "na sztywno" dla testów
         // Posterior 1.5 oznacza atak o sile 1.5 gola/mecz (przy średniej przeciwnika)

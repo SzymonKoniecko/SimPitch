@@ -55,13 +55,13 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
                 .ToList();
         }
 
-        var newScoreboards = await CreateMissingScoreboardsAsync(iterationResults, playedMatchRounds, cancellationToken);
+        var newScoreboards = await CreateMissingScoreboardsAsync(simulationOverview.SimulationParams, iterationResults, playedMatchRounds, cancellationToken);
 
         if (newScoreboards.Any())
             return newScoreboards.Select(ScoreboardMapper.ToDto);
 
-        var existing = await _scoreboardReadRepository.GetScoreboardBySimulationIdAsync(
-            request.simulationId, withTeamStats: true, cancellationToken);
+        var existing = await _scoreboardReadRepository.GetScoreboardByQueryAsync(
+            request.simulationId, request.iterationResultId, withTeamStats: true, cancellationToken);
 
         if (existing == null)
             throw new InvalidOperationException("Cannot load created scoreboards; data inconsistency detected.");
@@ -75,6 +75,7 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
 
     private async Task<List<Scoreboard>> CreateMissingScoreboardsAsync
     (
+        SimulationParams simulationParams,
         IEnumerable<IterationResult> iterationResults,
         IEnumerable<MatchRoundDto> playedMatchRounds,
         CancellationToken ct
@@ -88,6 +89,7 @@ public class CreateScoreboardCommandHandler : IRequestHandler<CreateScoreboardCo
                 continue;
 
             var scoreboard = _scoreboardService.CalculateSingleScoreboard(
+                simulationParams,
                 result,
                 playedMatchRounds.Select(MatchRoundMapper.ToValueObject).ToList());
 

@@ -43,9 +43,9 @@ public record TeamStrength
     /// <summary>
     /// Factory method to create TeamStrength with SeasonStats.
     /// </summary>
-    public static TeamStrength Create(Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength)
+    public static TeamStrength Create(Guid Id, Guid teamId, SeasonEnum seasonYear, Guid leagueId, float leagueStrength)
     {
-        var seasonStats = SeasonStats.CreateNew(teamId, seasonYear, leagueId, leagueStrength);
+        var seasonStats = SeasonStats.CreateNew(Id, teamId, seasonYear, leagueId, leagueStrength);
         return new TeamStrength(teamId, seasonStats);
     }
 
@@ -120,6 +120,20 @@ public record TeamStrength
 
     public TeamStrength SetRoundId(Guid roundId)
         => this with { RoundId = roundId };
+
+    /// <summary>
+    /// Id used as marker to indicate the INITIAL team SeasonStats BEFORE the simualtion
+    /// (LeagueRoundId or LeagueId)
+    /// If its a continuation of simulation - will be marked as Guid.Empty (when simulation is finished, that Guid.Empty is filtered out in mapper)  
+    /// --- SO NEXT TEAM STRENGTH CANNOT HAVE LEAGUEID OR LEAGUEROUNDID
+    /// </summary>
+    public TeamStrength EnsureThatUpdatedTeamStrengthNotHaveInitialStatsId()
+    {
+        var newSeasonStats = this.SeasonStats;
+        newSeasonStats.Id = Guid.Empty;
+
+        return this with { SeasonStats = newSeasonStats };
+    }
 
     public TeamStrength DeepClone()
     {
