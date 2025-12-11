@@ -30,13 +30,20 @@ public class ScoreboardServiceTests
                     IsDraw = false,
                     IsPlayed = true
                 }
-            }
+            },
+            TeamStrengths = new List<TeamStrength> {new TeamStrength()
+            {
+                SeasonStats = new SeasonStats()
+                {
+                    Id = Guid.NewGuid()
+                }
+            }}
         };
 
         var playedRounds = new List<MatchRound>();
 
         // Act
-        var result = service.CalculateSingleScoreboard(IterationResult, playedRounds);
+        var result = service.CalculateSingleScoreboard(new SimulationParams() {LeagueId = Guid.NewGuid(), LeagueRoundId = Guid.NewGuid()}, IterationResult, playedRounds);
 
         // Assert
         Assert.NotNull(result);

@@ -15,12 +15,13 @@ public class ScoreboardTeamStats
     public int Draws { get; private set; }
     public int GoalsFor { get; private set; }
     public int GoalsAgainst { get; private set; }
+    public bool IsInitialStat { get; private set; }
 
     private ScoreboardTeamStats() { }
 
     public ScoreboardTeamStats(Guid id, Guid scoreboardId, Guid teamId, int rank, int points,
                           int matchPlayed, int wins, int losses, int draws,
-                          int goalsFor, int goalsAgainst)
+                          int goalsFor, int goalsAgainst, bool isInitialStat = false)
     {
         if (wins + draws + losses != matchPlayed)
             throw new ArgumentException(
@@ -45,11 +46,17 @@ public class ScoreboardTeamStats
         Draws = draws;
         GoalsFor = goalsFor;
         GoalsAgainst = goalsAgainst;
+        IsInitialStat = isInitialStat;
     }
 
     public void SetRanking(int rank)
     {
         this.Rank = rank;
+    }
+
+    public void SetInitialStatAsTrue()
+    {
+        this.IsInitialStat = true;
     }
 
     public void MergeMatchStats(ScoreboardTeamStats item)

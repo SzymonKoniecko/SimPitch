@@ -118,6 +118,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             var itResultDto = IterationResultMapper.SimulationToIterationResultDto
             (
                 command.simulationId,
+                command.SimulationParamsDto.LeagueRoundId ?? command.SimulationParamsDto.LeagueId,
                 simulationIndex,
                 startTime,
                 watch.Elapsed,

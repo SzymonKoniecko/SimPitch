@@ -197,6 +197,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             if (!contentResponse.TeamsStrengthDictionary.ContainsKey(teamId))
             {
                 var baseStrength = TeamStrength.Create(
+                    contentResponse.SimulationParams.LeagueRoundId ?? contentResponse.SimulationParams.LeagueId,
                     teamId,
                     currentSeasonEnum,
                     currentLeagueId,
@@ -306,7 +307,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         }
         else
         {
-            var newTeamStrength = TeamStrength.Create(teamId, seasonEnum, leagueId, leagueStrength);
+            var newTeamStrength = TeamStrength.Create(response.SimulationParams.LeagueRoundId ?? response.SimulationParams.LeagueId, teamId, seasonEnum, leagueId, leagueStrength);
             var updatedStats = _seasonStatsService.CalculateSeasonStats(
                 matchRound,
                 newTeamStrength.SeasonStats,
@@ -359,6 +360,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             foreach (var histSeason in filteredSeasons)
             {
                 var histStatsDto = new SeasonStats(
+                    Guid.Empty,
                     teamId,
                     histSeason.SeasonYear,
                     histSeason.LeagueId,
@@ -377,6 +379,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
 
                 // Tworzymy refreshed TeamStrength z aktualnym seasonStats
                 teamStrength = teamStrength
+                    .UpdateTime()
                     .WithSeasonStats(mergedStats)
                     .WithLikelihood() // Likelihood na podstawie sezonowych danych
                     .WithPosterior(histSeason.LeagueStrength, contentResponse.SimulationParams) // Posterior uwzględnia siłę ligi z danego sezonu
@@ -384,7 +387,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             }
 
             // Aktualizujemy słownik
-            contentResponse.TeamsStrengthDictionary[teamId] = new List<TeamStrength> { teamStrength };
+            contentResponse.TeamsStrengthDictionary[teamId].Add(teamStrength);
         }
 
         return (contentResponse, totalGoals);

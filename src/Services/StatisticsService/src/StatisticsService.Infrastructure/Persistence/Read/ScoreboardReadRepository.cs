@@ -36,7 +36,11 @@ public class ScoreboardReadRepository : IScoreboardReadRepository
 
         if (withTeamStats)
             foreach (var scoreboard in results)
-                scoreboard.AddTeamRange(await _scoreboardTeamStatsReadRepository.GetScoreboardByScoreboardIdAsync(scoreboard.Id, cancellationToken: cancellationToken));
+            {
+                var scoreboardStats = await _scoreboardTeamStatsReadRepository.GetScoreboardByScoreboardIdAsync(scoreboard.Id, cancellationToken: cancellationToken);
+                scoreboard.AddTeamRange(scoreboardStats.Where(x => x.IsInitialStat == false));
+                scoreboard.AddTeamRangeInitialStats(scoreboardStats.Where(x => x.IsInitialStat == true));
+            }
 
         return results;
     }

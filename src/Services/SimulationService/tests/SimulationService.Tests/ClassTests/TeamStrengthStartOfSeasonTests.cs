@@ -38,7 +38,7 @@ public class TeamStrengthStartOfSeasonTests
         var leagueId = Guid.NewGuid();
 
         // Act
-        var teamStrength = TeamStrength.Create(teamId, seasonEnum, leagueId, DefaultLeagueStrength);
+        var teamStrength = TeamStrength.Create(Guid.NewGuid(), teamId, seasonEnum, leagueId, DefaultLeagueStrength);
 
         // Assert
         Assert.NotNull(teamStrength);
@@ -60,7 +60,7 @@ public class TeamStrengthStartOfSeasonTests
     public void WithPosterior_OnStartOfSeason_ShouldReturnPriorValues()
     {
         // Arrange
-        var teamStrength = TeamStrength.Create(
+        var teamStrength = TeamStrength.Create(Guid.NewGuid(), 
             Guid.NewGuid(),
             SeasonEnum.Season2024_2025,
             Guid.NewGuid(),
@@ -92,7 +92,7 @@ public class TeamStrengthStartOfSeasonTests
     public void WithLikelihood_OnStartOfSeason_ShouldThrowException()
     {
         // Arrange
-        var teamStrength = TeamStrength.Create(
+        var teamStrength = TeamStrength.Create(Guid.NewGuid(), 
             Guid.NewGuid(),
             SeasonEnum.Season2024_2025,
             Guid.NewGuid(),
@@ -110,7 +110,7 @@ public class TeamStrengthStartOfSeasonTests
     public void WithPosterior_ShouldAutomaticallySetExpectedGoals()
     {
         // Arrange
-        var teamStrength = TeamStrength.Create(
+        var teamStrength = TeamStrength.Create(Guid.NewGuid(), 
             Guid.NewGuid(),
             SeasonEnum.Season2024_2025,
             Guid.NewGuid(),
@@ -137,7 +137,7 @@ public class TeamStrengthStartOfSeasonTests
     public void AfterFirstMatch_LikelihoodAndPosteriorShouldDiffer()
     {
         // Arrange
-        var teamStrength = TeamStrength.Create(
+        var teamStrength = TeamStrength.Create(Guid.NewGuid(), 
             Guid.NewGuid(),
             SeasonEnum.Season2024_2025,
             Guid.NewGuid(),
@@ -188,7 +188,7 @@ public class TeamStrengthStartOfSeasonTests
     public void WithPosterior_CalculationShouldFollowBayesianFormula()
     {
         // Arrange
-        var teamStrength = TeamStrength.Create(
+        var teamStrength = TeamStrength.Create(Guid.NewGuid(), 
             Guid.NewGuid(),
             SeasonEnum.Season2024_2025,
             Guid.NewGuid(),
@@ -232,7 +232,7 @@ public class TeamStrengthStartOfSeasonTests
     public void DeepClone_ShouldCreateIndependentCopy()
     {
         // Arrange
-        var teamStrength = TeamStrength.Create(
+        var teamStrength = TeamStrength.Create(Guid.NewGuid(), 
             Guid.NewGuid(),
             SeasonEnum.Season2024_2025,
             Guid.NewGuid(),
@@ -265,9 +265,9 @@ public class TeamStrengthStartOfSeasonTests
     public void MultipleTeams_OnStartOfSeason_ShouldHaveSamePosterior(float leagueStrength)
     {
         // Arrange
-        var team1 = TeamStrength.Create(Guid.NewGuid(), SeasonEnum.Season2024_2025, Guid.NewGuid(), leagueStrength);
-        var team2 = TeamStrength.Create(Guid.NewGuid(), SeasonEnum.Season2024_2025, Guid.NewGuid(), leagueStrength);
-        var team3 = TeamStrength.Create(Guid.NewGuid(), SeasonEnum.Season2024_2025, Guid.NewGuid(), leagueStrength);
+        var team1 = TeamStrength.Create(Guid.NewGuid(), Guid.NewGuid(), SeasonEnum.Season2024_2025, Guid.NewGuid(), leagueStrength);
+        var team2 = TeamStrength.Create(Guid.NewGuid(), Guid.NewGuid(), SeasonEnum.Season2024_2025, Guid.NewGuid(), leagueStrength);
+        var team3 = TeamStrength.Create(Guid.NewGuid(), Guid.NewGuid(), SeasonEnum.Season2024_2025, Guid.NewGuid(), leagueStrength);
 
         var simulationParams = CreateDefaultSimulationParams();
 
@@ -292,7 +292,7 @@ public class TeamStrengthStartOfSeasonTests
     public void SetRoundId_ShouldUpdateRoundIdForStartOfSeason()
     {
         // Arrange
-        var teamStrength = TeamStrength.Create(
+        var teamStrength = TeamStrength.Create(Guid.NewGuid(), 
             Guid.NewGuid(),
             SeasonEnum.Season2024_2025,
             Guid.NewGuid(),
@@ -320,7 +320,7 @@ public class TeamStrengthStartOfSeasonTests
         var simulationParams = CreateDefaultSimulationParams();
 
         // Start sezonu
-        var teamAtStart = TeamStrength.Create(teamId, SeasonEnum.Season2024_2025, leagueId, DefaultLeagueStrength);
+        var teamAtStart = TeamStrength.Create(Guid.NewGuid(), teamId, SeasonEnum.Season2024_2025, leagueId, DefaultLeagueStrength);
         var teamAfterStart = teamAtStart.WithPosterior(DefaultLeagueStrength, simulationParams);
 
         // Po meczu 1: wynik 3-1

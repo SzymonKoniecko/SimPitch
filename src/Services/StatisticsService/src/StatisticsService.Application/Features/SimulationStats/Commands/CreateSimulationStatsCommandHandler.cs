@@ -41,7 +41,8 @@ public class CreateSimulationStatsCommandHandler : IRequestHandler<CreateSimulat
 
         foreach (var scoreboard in scoreboards)
         {
-            scoreboardTeamStats.AddRange(await _scoreboardTeamStatsReadRepository.GetScoreboardByScoreboardIdAsync(scoreboard.Id, cancellationToken));
+            var teamStats = await _scoreboardTeamStatsReadRepository.GetScoreboardByScoreboardIdAsync(scoreboard.Id, cancellationToken);
+            scoreboardTeamStats.AddRange(teamStats.Where(x => x.IsInitialStat == false)); // only full teamStats are needed
         }
 
         List<SimulationTeamStats> simulationTeamStats = _simulationStatsService.CalculateSimulationStatsForTeams(scoreboardTeamStats.OrderBy(x => x.TeamId).ToList(), command.SimulationId);

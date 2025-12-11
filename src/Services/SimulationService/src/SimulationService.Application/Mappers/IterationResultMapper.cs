@@ -10,6 +10,7 @@ public static class IterationResultMapper
 {
     public static IterationResultDto SimulationToIterationResultDto(
         Guid simulationId,
+        Guid initialSeasonStatsId,
         int iterationIndex,
         DateTime simulationDate,
         TimeSpan executionTime,
@@ -28,7 +29,7 @@ public static class IterationResultMapper
         dto.TeamStrengths = new();
         foreach (var (key, value) in teamStrengthsDictionary)
         {
-            dto.TeamStrengths.AddRange(value.Select(x => TeamStrengthToDto(x)));
+            dto.TeamStrengths.AddRange(value.Where(x => x.SeasonStats.Id == initialSeasonStatsId).Select(x => TeamStrengthToDto(x)));
         }
 
         return dto;

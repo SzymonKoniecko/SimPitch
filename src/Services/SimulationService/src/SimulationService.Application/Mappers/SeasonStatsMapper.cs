@@ -8,13 +8,14 @@ public static class SeasonStatsMapper
 {
     public static SeasonStats DtoToValueObject(SeasonStatsDto dto, float leagueStrength)
     {
-        return new SeasonStats(dto.TeamId, dto.SeasonYear, dto.LeagueId, leagueStrength, dto.MatchesPlayed, dto.Wins, dto.Losses, dto.Draws, dto.GoalsFor, dto.GoalsAgainst);
+        return new SeasonStats(dto.Id, dto.TeamId, dto.SeasonYear, dto.LeagueId, leagueStrength, dto.MatchesPlayed, dto.Wins, dto.Losses, dto.Draws, dto.GoalsFor, dto.GoalsAgainst);
     }
 
     public static SeasonStatsDto VoToDto(SeasonStats valueObj)
     {
         var dto = new SeasonStatsDto();
 
+        dto.Id = valueObj.Id;
         dto.TeamId = valueObj.TeamId;
         dto.SeasonYear = valueObj.SeasonYear;
         dto.LeagueId = valueObj.LeagueId;

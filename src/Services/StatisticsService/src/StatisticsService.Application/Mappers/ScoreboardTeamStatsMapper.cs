@@ -22,6 +22,7 @@ public static class ScoreboardTeamStatsMapper
         dto.Draws = entity.Draws;
         dto.GoalsFor = entity.GoalsFor;
         dto.GoalsAgainst = entity.GoalsAgainst;
+        dto.IsInitialStat = entity.IsInitialStat;
 
         return dto;
     }

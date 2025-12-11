@@ -49,9 +49,9 @@ public class RunSimulationCommandHandlerTests
 
         var teamStrengthDict = new Dictionary<Guid, List<TeamStrength>>
         {
-            [homeTeamId] = new List<TeamStrength>{ TeamStrength.Create(homeTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
+            [homeTeamId] = new List<TeamStrength>{ TeamStrength.Create(Guid.NewGuid(), homeTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
                 .WithExpectedGoals(1.0f)},
-            [awayTeamId] = new List<TeamStrength>{TeamStrength.Create(awayTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
+            [awayTeamId] = new List<TeamStrength>{TeamStrength.Create(Guid.NewGuid(), awayTeamId, SeasonEnum.Season2022_2023, leagueId, leagueStrength)
                 .WithExpectedGoals(1.0f)}
         };
 

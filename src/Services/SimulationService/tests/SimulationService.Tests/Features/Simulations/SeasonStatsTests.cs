@@ -16,11 +16,11 @@ public class SeasonStatsTests
         var newLeagueId = Guid.NewGuid();
 
         // Historia (Słabsza liga, 2023/24)
-        var accumulator = new SeasonStats(teamId, SeasonEnum.Season2023_2024, oldLeagueId, 2.0f,
+        var accumulator = new SeasonStats(Guid.NewGuid(), teamId, SeasonEnum.Season2023_2024, oldLeagueId, 2.0f,
             matchesPlayed: 10, wins: 5, losses: 3, draws: 2, goalsFor: 20, goalsAgainst: 10);
 
         // Nowe dane (Silniejsza liga, 2024/25)
-        var newData = new SeasonStats(teamId, SeasonEnum.Season2024_2025, newLeagueId, 3.0f,
+        var newData = new SeasonStats(Guid.NewGuid(), teamId, SeasonEnum.Season2024_2025, newLeagueId, 3.0f,
             matchesPlayed: 5, wins: 1, losses: 2, draws: 2, goalsFor: 5, goalsAgainst: 8);
 
         // Act
@@ -42,8 +42,8 @@ public class SeasonStatsTests
     public void Merge_ShouldThrowException_WhenTeamIdsMismatch()
     {
         // Arrange
-        var stats1 = SeasonStats.CreateNew(Guid.NewGuid(), SeasonEnum.Season2023_2024, Guid.NewGuid(), 2.5f);
-        var stats2 = SeasonStats.CreateNew(Guid.NewGuid(), SeasonEnum.Season2023_2024, Guid.NewGuid(), 2.5f);
+        var stats1 = SeasonStats.CreateNew(Guid.NewGuid(), Guid.NewGuid(), SeasonEnum.Season2023_2024, Guid.NewGuid(), 2.5f);
+        var stats2 = SeasonStats.CreateNew(Guid.NewGuid(), Guid.NewGuid(), SeasonEnum.Season2023_2024, Guid.NewGuid(), 2.5f);
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => stats1.Merge(stats1, stats2));
@@ -54,7 +54,7 @@ public class SeasonStatsTests
     {
         // Arrange
         var teamId = Guid.NewGuid();
-        var stats = SeasonStats.CreateNew(teamId, SeasonEnum.Season2023_2024, Guid.NewGuid(), 2.5f);
+        var stats = SeasonStats.CreateNew(Guid.NewGuid(), teamId, SeasonEnum.Season2023_2024, Guid.NewGuid(), 2.5f);
         var match = new MatchRound
         {
             HomeTeamId = teamId,
