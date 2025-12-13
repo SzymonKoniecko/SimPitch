@@ -48,6 +48,8 @@ services:
       - ConnectionStrings__SportsDataDb=Server=mssql;Database=SportsDataDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
       - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - GrpcLogging__SourceName=SportsDataService
+      - ConnectionStrings__Redis=${REDIS_CONN_STRING}
+
       #- Kestrel__Endpoints__Grpc__Url=http://0.0.0.0:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
       #- Kestrel__Endpoints__Rest__Url=http://0.0.0.0:${SPORTSDATA_SERVICE_CONTAINER_PORT_REST}
     networks:

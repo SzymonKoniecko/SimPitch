@@ -1,7 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SportsDataService.Domain.Interfaces;
 using SportsDataService.Domain.Interfaces.Read;
 using SportsDataService.Domain.Interfaces.Write;
+using SportsDataService.Domain.Services;
 using SportsDataService.Infrastructure.Persistence.Read;
 using SportsDataService.Infrastructure.Persistence.Teams;
 using SportsDataService.Infrastructure.Persistence.Write;
@@ -12,7 +14,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        //  Database
         services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
+        services.AddScoped<IRedisRegistry, RedisRegistry>();
 
         // Read repositories
         services.AddTransient<ICountryReadRepository, CountryReadRepository>();
