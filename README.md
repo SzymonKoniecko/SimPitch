@@ -16,7 +16,7 @@ In main directory:
 
 ***If first time***
 ```
-% chmod +x scripts/generate-env.sh
+chmod +x scripts/generate-env.sh
 scripts/./generate-env.sh
 docker-compose up -d
 ```
