@@ -44,36 +44,6 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 | **Microsoft SQL Server** | Persistent database for input data, results, and configurations |
 | **MSelenium** | Test software |
 
-┌─────────────┐
-│   Frontend  │ (Vue 3 + Vite, port 5173)
-│ (Vue.js)    │
-└──────┬──────┘
-       │ HTTP/WebSocket
-       ▼
-┌─────────────────┐
-│  NGINX Gateway  │ (port 8080)
-└────────┬────────┘
-         │
-    ┌────┴────┬────────┬─────────┬───────────┐
-    ▼         ▼        ▼         ▼           ▼
-┌────────┐ ┌──────┐ ┌────────┐ ┌────────┐ ┌───────┐
-│Engine  │ │Sim.. │ │Stats   │ │Sports  │ │Logging│
-│Service │ │Serv  │ │Service │ │Data    │ │Service│
-│(REST)  │ │(gRPC)│ │(gRPC)  │ │(REST+  │ │(gRPC) │
-│5001    │ │5003  │ │5004    │ │gRPC)   │ │5005   │
-│        │ │      │ │        │ │5002    │ │       │
-└────────┘ └──────┘ └────────┘ └────────┘ └───────┘
-    │         │        │         │           │
-    └─────────┴────────┴─────────┴───────────┘
-              │
-         ┌────┴───────┐
-         ▼            ▼
-    ┌────────┐   ┌──────────┐
-    │ MSSQL  │   │  Redis   │
-    │ (1433) │   │ (6379)   │
-    └────────┘   └──────────┘
-
-
 ---
 
 ## Core Features
@@ -122,5 +92,21 @@ Simplifies monitoring, debugging, and system health tracking.
 
 - 🔹 **AI microservice (Python)** to introduce intelligent simulations and predictions  
 - 🔹 **Full Kubernetes migration** for scalability, auto-deployment, and high availability  
-- 🔹 **More content** 
+- 🔹 **More content**
+
+
+
+  
+
+## UI
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/main.png" >
+
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/prepare-laliga.png" >
+
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/legend.png" >
+
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/iteration-preview.png" >
+
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/match-result.png" >
+
 
