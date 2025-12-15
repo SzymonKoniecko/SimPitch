@@ -162,6 +162,7 @@ services:
       - backend_network
     depends_on:
       - mssql
+      - mssql-init
 
 
 networks:
