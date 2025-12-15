@@ -8,6 +8,25 @@ The project showcases how to combine modern technologies, scalable architecture,
 
 ---
 
+## Setup & Run Instructions
+
+You can run SimPitch locally or in a production-like environment using **Docker** and **Docker Compose**.
+
+In main directory:
+
+***If first time***
+```
+% chmod +x scripts/generate-env.sh
+scripts/./generate-env.sh
+docker-compose up -d
+```
+***Re-runs***
+set in .env file SEED_DATA as false!
+then
+```
+docker-compose up -d
+```
+
 ## Tech Stack & Architecture
 
 The system is built with **modern, battle-tested technologies**, **DDD + Strategy Pattern** and **clean architectural patterns**:
@@ -104,32 +123,3 @@ Simplifies monitoring, debugging, and system health tracking.
 - 🔹 **Full Kubernetes migration** for scalability, auto-deployment, and high availability  
 - 🔹 **More content** 
 
-
----
-
-## Setup & Run Instructions
-
-You can run SimPitch locally or in a production-like environment using **Docker** and **Docker Compose**.
-
-In main directory:
-
-***If first time***
-```
-% chmod +x scripts/generate-env.sh
-scripts/./generate-env.sh
-docker-compose up -d
-```
-***Re-runs***
-set in .env file SEED_DATA as false!
-then
-```
-docker-compose up -d
-```
-
-
-### **Requirements**
-
-- Docker & Docker Compose  
-- .NET SDK (for local backend development)  
-- Node.js + npm (for frontend development)  
-- Microsoft SQL Server
