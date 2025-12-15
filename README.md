@@ -6,7 +6,33 @@ SimPitch was created to demonstrate my skills in developing advanced web and mic
 It’s a comprehensive system for simulating sports matches using mathematical algorithms, with future plans to integrate AI-based predictive models.  
 The project showcases how to combine modern technologies, scalable architecture, and clean design principles to build a high-performance, extensible system.
 
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/main/sim-pitch-web/public/readme-assets/main.png" >
+---> (more images are at the end of readme) <---
 ---
+
+
+## 📂 Project Ecosystem
+
+The SimPitch solution is modularized into three distinct repositories to ensure a clean separation of concerns between the simulation engine, the user interface, and the data contracts.
+
+### 🧠 [SimPitch.Backend](https://github.com/SzymonKoniecko/SimPitch)
+**The Simulation Engine.**
+*   **Tech:** C# .NET 8, MediatR (CQRS), EF Core.
+*   **Role:** Executes the core mathematical logic (Poisson, Dixon-Coles, Momentum), manages the DDD domain state, and processes simulation strategies.
+
+### 🖥️ [SimPitch.Web](https://github.com/SzymonKoniecko/SimPitchWeb)
+**The Visualization Dashboard.**
+*   **Tech:** Vue 3, Vite, TypeScript.
+*   **Role:** Provides the UI for configuring `SimulationParams`, visualizing complex metrics (Posterior vs. Likelihood), and displaying league iterations.
+
+### 🔗 [SimPitch.Shared](https://github.com/SzymonKoniecko/SimPitchPROTOS)
+**The Contracts.**
+*   **Tech:** Protocol Buffers (.proto).
+*   **Role:** The **Single Source of Truth** for data structures. Defines the shared schemas for API communication to ensure type safety between the .NET backend and Vue frontend.
+
+
+### 🔗 [SimPitch.Selenium](https://github.com/SzymonKoniecko/SimPitchSelenium)
+**Automated tests.**
 
 ## Setup & Run Instructions
 
@@ -63,6 +89,8 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 
 ## Microservices Overview
 
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/main/sim-pitch-web/public/readme-assets/sys-diagram.png" >
+
 ### **SportDataService**
 Collects and maintains real sports data used as the foundation for simulations.  
 Ensures data integrity and freshness. 
@@ -99,14 +127,17 @@ Simplifies monitoring, debugging, and system health tracking.
   
 
 ## UI
-<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/main.png" >
+Dashboard & League Selection<br />
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/main/sim-pitch-web//public/readme-assets/main.png" alt="Main Dashboard" width="800">
 
-<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/prepare-laliga.png" >
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/main/sim-pitch-web//public/readme-assets/prepare-laliga.png" alt="Prepare Simulation" width="800">
 
-<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/legend.png" >
+Statistical Legend<br />
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/main/sim-pitch-web//public/readme-assets/legend.png" alt="Metrics Legend" width="600">
 
-<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/iteration-preview.png" >
+Iteration Preview<br />
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/main/sim-pitch-web//public/readme-assets/iteration-preview.png" alt="Iteration Preview" width="800">
 
-<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/readme-assets/sim-pitch-web/public/readme-assets/match-result.png" >
-
+Match Results<br />
+<img src="https://github.com/SzymonKoniecko/SimPitchWeb/blob/main/sim-pitch-web//public/readme-assets/match-result.png" alt="Match Results" width="800">
 
