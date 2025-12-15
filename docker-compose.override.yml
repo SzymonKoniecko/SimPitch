@@ -12,11 +12,15 @@ services:
       - mssql
   
   frontend:
+    ports: 
+      - "${WEB_DEV_PORT}:${WEB_DEV_PORT}"
     expose:
       - "${WEB_DEV_PORT}"
     environment:
-      - NODE_ENV=development
-      - VITE_API_TARGET=${VITE_API_URL}
+    - NODE_ENV=development
+    - VITE_API_TARGET=${VITE_API_TARGET}
+    - DOCKER_ENV=true
+    - HMR_HOST=localhost
     command: npm run dev -- --host --port ${WEB_DEV_PORT}
     restart: unless-stopped
     networks:
@@ -48,6 +52,8 @@ services:
       - ConnectionStrings__SportsDataDb=Server=mssql;Database=SportsDataDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
       - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - GrpcLogging__SourceName=SportsDataService
+      - ConnectionStrings__Redis=${REDIS_CONN_STRING}
+
       #- Kestrel__Endpoints__Grpc__Url=http://0.0.0.0:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
       #- Kestrel__Endpoints__Rest__Url=http://0.0.0.0:${SPORTSDATA_SERVICE_CONTAINER_PORT_REST}
     networks:

@@ -19,21 +19,21 @@ public class MatchRoundReadRepository : IMatchRoundReadRepository
         _DbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<IEnumerable<MatchRound>> GetMatchRoundsByRoundIdAsync(Guid roundId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<MatchRound>> GetMatchRoundsAsync(CancellationToken cancellationToken)
     {
         using var connection = _DbConnectionFactory.CreateConnection();
-        const string sql = "SELECT * FROM MatchRound WHERE RoundId = @roundId";
+        const string sql = "SELECT * FROM MatchRound";
 
         var command = new CommandDefinition(
             commandText: sql,
-            parameters: new { RoundId = roundId }
+            cancellationToken: cancellationToken
         );
 
         var MatchRounds = await connection.QueryAsync<MatchRound>(command);
 
         if (MatchRounds == null)
         {
-            throw new KeyNotFoundException($"MatchRounds with roundId '{roundId}' was not found.");
+            throw new KeyNotFoundException($"There is no match rounds - please execute scripts");
         }
 
         return MatchRounds;
