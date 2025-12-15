@@ -12,11 +12,15 @@ services:
       - mssql
   
   frontend:
+    ports: 
+      - "${WEB_DEV_PORT}:${WEB_DEV_PORT}"
     expose:
       - "${WEB_DEV_PORT}"
     environment:
-      - NODE_ENV=development
-      - VITE_API_TARGET=${VITE_API_URL}
+    - NODE_ENV=development
+    - VITE_API_TARGET=${VITE_API_TARGET}
+    - DOCKER_ENV=true
+    - HMR_HOST=localhost
     command: npm run dev -- --host --port ${WEB_DEV_PORT}
     restart: unless-stopped
     networks:

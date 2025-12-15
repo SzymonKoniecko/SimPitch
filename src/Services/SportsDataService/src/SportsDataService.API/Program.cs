@@ -5,6 +5,7 @@ using SportsDataService.Infrastructure.Middlewares;
 using SportsDataService.Application.Features;
 using SportsDataService.API;
 using StackExchange.Redis;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,9 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = ConfigHelper.GetRedisCacheConnectionString();
     options.InstanceName = "SportsDataCache";
 });
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    ConnectionMultiplexer.Connect(ConfigHelper.GetRedisCacheConnectionString())
+);
 
 builder.Services.AddMediatRServices();
 
