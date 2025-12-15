@@ -10,7 +10,7 @@ The project showcases how to combine modern technologies, scalable architecture,
 
 ## Tech Stack & Architecture
 
-The system is built with **modern, battle-tested technologies** and **clean architectural patterns**:
+The system is built with **modern, battle-tested technologies**, **DDD + Strategy Pattern** and **clean architectural patterns**:
 
 | Technology | Purpose |
 |-------------|----------|
@@ -22,6 +22,37 @@ The system is built with **modern, battle-tested technologies** and **clean arch
 | **gRPC** | Fast, strongly-typed communication between microservices and central logging service |
 | **Redis** | Background job processing and asynchronous task execution (e.g., iterative simulations) |
 | **Microsoft SQL Server** | Persistent database for input data, results, and configurations |
+| **MSelenium** | Test software |
+
+┌─────────────┐
+│   Frontend  │ (Vue 3 + Vite, port 5173)
+│ (Vue.js)    │
+└──────┬──────┘
+       │ HTTP/WebSocket
+       ▼
+┌─────────────────┐
+│  NGINX Gateway  │ (port 8080)
+└────────┬────────┘
+         │
+    ┌────┴────┬────────┬─────────┬───────────┐
+    ▼         ▼        ▼         ▼           ▼
+┌────────┐ ┌──────┐ ┌────────┐ ┌────────┐ ┌───────┐
+│Engine  │ │Sim.. │ │Stats   │ │Sports  │ │Logging│
+│Service │ │Serv  │ │Service │ │Data    │ │Service│
+│(REST)  │ │(gRPC)│ │(gRPC)  │ │(REST+  │ │(gRPC) │
+│5001    │ │5003  │ │5004    │ │gRPC)   │ │5005   │
+│        │ │      │ │        │ │5002    │ │       │
+└────────┘ └──────┘ └────────┘ └────────┘ └───────┘
+    │         │        │         │           │
+    └─────────┴────────┴─────────┴───────────┘
+              │
+         ┌────┴───────┐
+         ▼            ▼
+    ┌────────┐   ┌──────────┐
+    │ MSSQL  │   │  Redis   │
+    │ (1433) │   │ (6379)   │
+    └────────┘   └──────────┘
+
 
 ---
 
@@ -71,8 +102,6 @@ Simplifies monitoring, debugging, and system health tracking.
 
 - 🔹 **AI microservice (Python)** to introduce intelligent simulations and predictions  
 - 🔹 **Full Kubernetes migration** for scalability, auto-deployment, and high availability  
-- 🔹 **Enhanced frontend dashboards** with visualization, filtering, and export tools
-- 🔹 **CI / CD** test code by Selenium
 - 🔹 **More content** 
 
 
@@ -81,6 +110,22 @@ Simplifies monitoring, debugging, and system health tracking.
 ## Setup & Run Instructions
 
 You can run SimPitch locally or in a production-like environment using **Docker** and **Docker Compose**.
+
+In main directory:
+
+***If first time***
+```
+% chmod +x scripts/generate-env.sh
+scripts/./generate-env.sh
+docker-compose up -d
+```
+***Re-runs***
+set in .env file SEED_DATA as false!
+then
+```
+docker-compose up -d
+```
+
 
 ### **Requirements**
 
