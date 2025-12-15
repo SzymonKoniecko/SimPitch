@@ -21,7 +21,8 @@ scripts/./generate-env.sh
 docker-compose up -d
 ```
 ***Re-runs***
-set in .env file SEED_DATA as false!
+set in .env file variable: SEED_DATA=false 
+
 then
 ```
 docker-compose up -d
