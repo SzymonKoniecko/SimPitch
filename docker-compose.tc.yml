@@ -1,0 +1,32 @@
+# TC: docker-compose -f docker-compose.yml -f docker-compose.tc.yml up -d
+
+services:
+  logging-service:
+    restart: always
+
+  engine-service:
+    restart: always
+
+  sportsdata-service:
+    restart: always
+
+  simulation-service:
+    restart: always
+
+  statistics-service:
+    restart: always
+
+  frontend:
+    restart: always
+
+  gateway:
+    restart: always
+
+  redis-cache:
+    restart: always
+
+  mssql:
+    restart: always
+
+  seed-data:
+    restart: on-failure

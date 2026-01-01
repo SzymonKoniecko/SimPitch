@@ -1,0 +1,59 @@
+services:
+  # 1. Baza danych (SQL Server)
+  teamcity-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: teamcity-mssql
+    environment:
+      # Pamiętaj o silnym haśle (wymagane przez politykę MSSQL)
+      SA_PASSWORD: "Admin123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+    volumes:
+      - teamcity_db_data:/var/opt/mssql
+    networks:
+      - teamcity_infra_net
+    restart: always
+
+  # 2. Serwer TeamCity
+  teamcity-server:
+    image: jetbrains/teamcity-server:latest
+    container_name: teamcity-server
+    ports:
+      - "8111:8111"
+    volumes:
+      - teamcity_data:/data/teamcity_server/datadir
+      - teamcity_logs:/opt/teamcity/logs
+    networks:
+      - teamcity_infra_net
+    depends_on:
+      - teamcity-db
+
+  # 3. Agent TeamCity
+  teamcity-agent:
+    image: jetbrains/teamcity-agent:latest
+    container_name: teamcity-agent
+    user: root
+    environment:
+      - SERVER_URL=http://teamcity-server:8111
+      - TEAMCITY_GIT_PATH=/usr/bin/git -c safe.directory=* 
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - teamcity_agent_conf:/data/teamcity_agent/conf
+    networks:
+      - teamcity_infra_net
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    depends_on:
+      - teamcity-server
+
+networks:
+  teamcity_infra_net:
+    driver: bridge
+
+volumes:
+  teamcity_data:
+  teamcity_logs:
+  teamcity_agent_conf:
+  teamcity_db_data:

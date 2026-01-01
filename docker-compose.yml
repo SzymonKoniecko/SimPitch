@@ -1,0 +1,74 @@
+﻿services:
+  logging-service:
+    image: simpitch-logging:latest
+    networks:
+      - backend_network
+
+  engine-service:
+    image: simpitch-engine:latest
+    networks:
+      - backend_network
+
+  sportsdata-service:
+    image: simpitch-sportsdata:latest
+    networks:
+      - backend_network
+
+  simulation-service:
+    image: simpitch-simulation:latest
+    networks:
+      - backend_network
+
+  statistics-service:
+    image: simpitch-statistics:latest
+    networks:
+      - backend_network
+
+  frontend:
+    image: simpitch-frontend:latest
+    networks:
+      - backend_network
+
+  gateway:
+    image: nginx:1.25-alpine
+    networks:
+      - backend_network
+
+  redis-cache:
+    image: redis:6.2-alpine
+    networks:
+      - backend_network
+    volumes:
+      - cache:/data
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${DB_PASSWORD}
+    networks:
+      - backend_network
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+  mssql-init:
+    image: mcr.microsoft.com/mssql-tools
+    networks:
+      - backend_network
+    depends_on:
+      - mssql
+
+  seed-data:
+    image: simpitch-seed-data:latest
+    networks:
+      - backend_network
+    depends_on:
+      - mssql
+
+networks:
+  backend_network:
+    name: simpitch_backend_network
+
+volumes:
+  mssql_data:
+  cache:
