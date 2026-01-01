@@ -1,0 +1,8 @@
+FROM mcr.microsoft.com/mssql-tools:latest
+
+COPY *.sql /seed/
+
+COPY init-entrypoint.sh /init-entrypoint.sh
+RUN chmod +x /init-entrypoint.sh
+
+ENTRYPOINT ["/init-entrypoint.sh"]

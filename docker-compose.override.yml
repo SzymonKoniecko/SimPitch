@@ -141,18 +141,14 @@ services:
 
 
   mssql-init:
-    entrypoint: >
-      /bin/bash -c "
-        echo 'Waiting for SQL Server...';
-        sleep 3;
-        /opt/mssql-tools/bin/sqlcmd -S mssql -U ${DB_ADMIN} -P ${DB_PASSWORD} -d master -i /tmp/init.sql;
-      "
-    volumes:
-      - ./sql/init.sql:/tmp/init.sql
+    environment:
+      DB_ADMIN: ${DB_ADMIN}
+      SA_PASSWORD: ${DB_PASSWORD}
     networks:
       - backend_network
     depends_on:
       - mssql
+
   seed-data:
     environment:
       DB_ADMIN: ${DB_ADMIN}

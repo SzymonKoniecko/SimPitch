@@ -116,15 +116,10 @@ services:
 
 
   mssql-init:
-    image: mcr.microsoft.com/mssql-tools
-    entrypoint: >
-      /bin/bash -c "
-        echo 'Waiting for SQL Server...';
-        sleep 3;
-        /opt/mssql-tools/bin/sqlcmd -S mssql -U ${DB_ADMIN} -P ${DB_PASSWORD} -d master -i /tmp/init.sql;
-      "
-    volumes:
-      - ./sql/init.sql:/tmp/init.sql
+    image: simpitch-mssql-init:latest
+    environment:
+      DB_ADMIN: ${DB_ADMIN}
+      SA_PASSWORD: ${DB_PASSWORD}
     networks:
       - backend_network
     depends_on:
@@ -140,6 +135,7 @@ services:
       - backend_network
     depends_on:
       - mssql
+      - mssql-init
 
 
   frontend:

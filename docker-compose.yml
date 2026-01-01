@@ -42,7 +42,10 @@ services:
 
      
   mssql-init:
-    image: mcr.microsoft.com/mssql-tools
+    build:
+      context: sql/
+      dockerfile: Dockerfile.init
+  
   seed-data:
     build:
       context: sql/seed-data/
