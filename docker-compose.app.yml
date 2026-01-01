@@ -3,9 +3,6 @@ services:
     image: simpitch-logging:latest
     networks:
       - backend_network
-    build:
-      context: src/Services/LoggingService/
-      dockerfile: src/LoggingService.API/Dockerfile
     container_name: simpitch-logging
     ports:
       - "${LOGGING_SERVICE_HOST_PORT_GRPC:-5001}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC:-5001}"
