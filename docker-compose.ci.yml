@@ -2,11 +2,12 @@
 
 
 services:
+  # 1. (SQL Server)
   teamcity-db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: teamcity-mssql
     environment:
-      SA_PASSWORD: "Admin123!"
+      SA_PASSWORD: "Admin123!" 
       ACCEPT_EULA: "Y"
     ports:
       - "1434:1433"
@@ -16,6 +17,7 @@ services:
       - teamcity_infra_net
     restart: always
 
+  # 2. Serwer TeamCity
   teamcity-server:
     image: jetbrains/teamcity-server:latest
     container_name: teamcity-server
@@ -28,13 +30,8 @@ services:
       - teamcity_infra_net
     depends_on:
       - teamcity-db
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8111/"]
-      interval: 10s
-      timeout: 5s
-      retries: 30
-      start_period: 60s
 
+  # 3. Agent TeamCity
   teamcity-agent:
     image: jetbrains/teamcity-agent:latest
     container_name: teamcity-agent
@@ -51,18 +48,18 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     depends_on:
-      teamcity-server:
-        condition: service_healthy
+      - teamcity-server
     restart: unless-stopped
-    #  docker-compose
-    entrypoint: >
+    entrypoint: |
       /bin/bash -c "
         echo 'Installing Docker Compose v2...' &&
-        curl -L https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose &&
+        curl -sL https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose &&
         chmod +x /usr/local/bin/docker-compose &&
-        echo 'Docker Compose installed successfully' &&
+        echo 'Docker Compose v2 installed' &&
+        docker-compose --version &&
         exec /run-agent.sh
       "
+
 
 networks:
   teamcity_infra_net:
