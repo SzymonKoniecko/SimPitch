@@ -184,9 +184,8 @@ services:
       - mssql-init
 
 networks:
-  simpitch_backend:
+  backend_network:
     driver: bridge
-    name: simpitch_backend_network
 
 volumes:
   mssql_data:
