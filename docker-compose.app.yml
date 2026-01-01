@@ -111,7 +111,6 @@ services:
       - backend_network
     volumes:
       - mssql_data:/var/opt/mssql
-      - ./sql/init.sql:/tmp/init.sql
     restart: no
 
 
