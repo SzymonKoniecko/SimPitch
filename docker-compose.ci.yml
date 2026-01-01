@@ -1,4 +1,5 @@
-# docker-compose -f docker-compose.ci.yml up -d
+# # TeamCity stack: docker-compose -f docker-compose.ci.yml -p teamcity up -d
+
 
 
 services:
