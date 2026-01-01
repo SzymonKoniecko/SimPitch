@@ -165,8 +165,8 @@ services:
       - mssql-init
 
 
-# networks: useless due to TC init
-#   backend_network:
+networks:
+  backend_network:
 
 volumes:
   mssql_data:
