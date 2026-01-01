@@ -10,7 +10,7 @@ services:
       - backend_network
     depends_on:
       - mssql
-  
+
   frontend:
     ports: 
       - "${WEB_DEV_PORT}:${WEB_DEV_PORT}"
@@ -162,7 +162,6 @@ services:
       - backend_network
     depends_on:
       - mssql
-      - mssql-init
 
 
 networks:

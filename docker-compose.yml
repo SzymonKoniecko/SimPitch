@@ -1,5 +1,4 @@
-﻿#builds/images only
-
+﻿
 services:
   logging-service:
     build:
@@ -22,23 +21,37 @@ services:
       context: src/Services/StatisticsService/
       dockerfile: src/StatisticsService.API/Dockerfile
   frontend:
-    profiles:
-      - donotstart
+    #profiles:
+    #  - donotstart
     container_name: simpitchweb
     build:
       context: ./src/Frontend/sim-pitch-web
       dockerfile: Dockerfile.dev
+
   gateway:
     container_name: nginx-gateway
     image: nginx:1.25-alpine
   redis-cache:
     container_name: redis-service
     image: redis:6.2-alpine
+
+
+
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
+
+     
   mssql-init:
     image: mcr.microsoft.com/mssql-tools
   seed-data:
     build:
       context: sql/seed-data/
       dockerfile: Dockerfile.seed
+
+
+
+networks:
+  backend_network:
+volumes:
+  mssql_data:
+  cache_data:
