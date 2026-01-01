@@ -1,75 +1,44 @@
-﻿services:
+﻿#builds/images only
+
+services:
   logging-service:
-    image: simpitch-logging:latest
-    networks:
-      - backend_network
-
+    build:
+      context: src/Services/LoggingService/
+      dockerfile: src/LoggingService.API/Dockerfile
   engine-service:
-    image: simpitch-engine:latest
-    networks:
-      - backend_network
-
+    build:
+      context: src/Services/EngineService/
+      dockerfile: src/EngineService.API/Dockerfile
   sportsdata-service:
-    image: simpitch-sportsdata:latest
-    networks:
-      - backend_network
-
+    build:
+      context: src/Services/SportsDataService/
+      dockerfile: src/SportsDataService.API/Dockerfile
   simulation-service:
-    image: simpitch-simulation:latest
-    networks:
-      - backend_network
-
+    build:
+      context: src/Services/SimulationService/
+      dockerfile: src/SimulationService.API/Dockerfile
   statistics-service:
-    image: simpitch-statistics:latest
-    networks:
-      - backend_network
-
+    build:
+      context: src/Services/StatisticsService/
+      dockerfile: src/StatisticsService.API/Dockerfile
   frontend:
-    image: simpitch-frontend:latest
-    networks:
-      - backend_network
-
+    profiles:
+      - donotstart
+    container_name: simpitchweb
+    build:
+      context: ./src/Frontend/sim-pitch-web
+      dockerfile: Dockerfile.dev
   gateway:
+    container_name: nginx-gateway
     image: nginx:1.25-alpine
-    networks:
-      - backend_network
-
   redis-cache:
+    container_name: redis-service
     image: redis:6.2-alpine
-    networks:
-      - backend_network
-    volumes:
-      - cache:/data
-
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=${DB_PASSWORD}
-    networks:
-      - backend_network
-    volumes:
-      - mssql_data:/var/opt/mssql
-
   mssql-init:
     image: mcr.microsoft.com/mssql-tools
-    networks:
-      - backend_network
-    depends_on:
-      - mssql
-
   seed-data:
-    image: simpitch-seed-data:latest
-    networks:
-      - backend_network
-    depends_on:
-      - mssql
-
-networks:
-  simpitch_backend:
-    driver: bridge
-    name: simpitch_backend_network
-
-volumes:
-  mssql_data:
-  cache:
+    build:
+      context: sql/seed-data/
+      dockerfile: Dockerfile.seed
