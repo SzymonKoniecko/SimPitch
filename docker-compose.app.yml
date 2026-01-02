@@ -169,7 +169,7 @@ services:
 
 
   selenium:
-    image: selenium/standalone-chrome:latest
+    image: selenium/standalone-chromium:latest
     shm_size: 2gb
     networks:
       - backend_network
