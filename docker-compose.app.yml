@@ -168,17 +168,17 @@ services:
     restart: unless-stopped
 
 
-selenium:
-  image: selenium/standalone-chrome:latest
-  shm_size: 2gb
-  networks:
-    - backend_network
-  depends_on:
-    - gateway
-    - engine-service
-    - logging-service
-    - statistics-service
-    - simulation-service
+  selenium:
+    image: selenium/standalone-chrome:latest
+    shm_size: 2gb
+    networks:
+      - backend_network
+    depends_on:
+      - gateway
+      - engine-service
+      - logging-service
+      - statistics-service
+      - simulation-service
 
 
 networks:
