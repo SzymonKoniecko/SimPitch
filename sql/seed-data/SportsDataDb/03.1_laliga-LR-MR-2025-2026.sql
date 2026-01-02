@@ -1,11 +1,9 @@
-USE SportsDataDb;
-GO
+USE SportsDataDb
 
 DECLARE 
     @CountryId UNIQUEIDENTIFIER, 
     @LeagueId UNIQUEIDENTIFIER,
     @CurrentDateTime DATETIME2 = GETDATE(),
-
     -- Team IDs (20 drużyn)
     @TeamId1 UNIQUEIDENTIFIER = 'c1a2b3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',   -- Real Madrid
     @TeamId2 UNIQUEIDENTIFIER = 'f8e7d6c5-b4a3-2109-8f7e-6d5c4b3a2918',   -- FC Barcelona
@@ -74,18 +72,17 @@ DECLARE
     @RoundId35 UNIQUEIDENTIFIER = NEWID(),
     @RoundId36 UNIQUEIDENTIFIER = NEWID(),
     @RoundId37 UNIQUEIDENTIFIER = NEWID(),
-    @RoundId38 UNIQUEIDENTIFIER = NEWID();
+    @RoundId38 UNIQUEIDENTIFIER = NEWID()
 
 -- Get Country and League IDs
-SELECT 
-    @CountryId = Id
-FROM dbo.Country
-WHERE [Code] = 'ES'
+SELECT @CountryId = Id
+FROM SportsDataDb.dbo.Country
+WHERE Code = 'ES'
 
-SELECT
-    @LeagueId = Id
-FROM dbo.League
-WHERE [Name] = 'La Liga' AND CountryId = @CountryId
+SELECT @LeagueId = Id
+FROM SportsDataDb.dbo.League
+WHERE Name = 'La Liga'
+  AND CountryId = @CountryId
 
 BEGIN TRANSACTION
 
@@ -601,12 +598,12 @@ BEGIN TRY
         (NEWID(), @RoundId38, @TeamId4, @TeamId2, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId38, @TeamId19, @TeamId15, NULL, NULL, NULL, 0),
         (NEWID(), @RoundId38, @TeamId21, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId38, @TeamId12, @TeamId17, NULL, NULL, NULL, 0);
+        (NEWID(), @RoundId38, @TeamId12, @TeamId17, NULL, NULL, NULL, 0)
     -- ================================================================
     -- SEASON STATS (SeasonStats)
     -- ================================================================
 
-    IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.SeasonStats WHERE SeasonYear = '2025/2026' AND LeagueId = @LeagueId)
+    IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.SeasonStats WHERE SeasonYear IN ('2024/2025', '2023/2024', '2022/2023') AND LeagueId = @LeagueId)
     INSERT INTO dbo.SeasonStats (Id, TeamId, SeasonYear, LeagueId, MatchesPlayed, Wins, Losses, Draws, GoalsFor, GoalsAgainst)
         VALUES
         -- 2024/2025 Season
@@ -675,7 +672,7 @@ BEGIN TRY
         (NEWID(), @TeamId27, '2022/2023', @LeagueId, 38, 11, 19, 8, 49, 65),  -- 17. Almeria
         (NEWID(), @TeamId13, '2022/2023', @LeagueId, 38, 11, 20, 7, 33, 63),  -- 18. Real Valladolid
         (NEWID(), @TeamId21, '2022/2023', @LeagueId, 38, 8, 17, 13, 52, 69),  -- 19. Espanyol
-        (NEWID(), @TeamId23, '2022/2023', @LeagueId, 38, 5, 23, 10, 30, 67);   -- 20. Elche
+        (NEWID(), @TeamId23, '2022/2023', @LeagueId, 38, 5, 23, 10, 30, 67)   -- 20. Elche
 
     COMMIT TRANSACTION
     PRINT '✅ SUCCESS! La Liga 2025/2026'
@@ -686,7 +683,7 @@ BEGIN TRY
     PRINT '   - Status:'
     PRINT '     • played rounds: 1-17'
     PRINT '     • not played rounds: 18-38'
-    PRINT '   - last update 06.12.2025'
+    PRINT '   - last update 2.01.2026'
     PRINT '//////'
 
 END TRY
@@ -695,5 +692,3 @@ BEGIN CATCH
     PRINT '❌ Cannot insert! La Liga 2025/2026'
     PRINT 'Error: ' + ERROR_MESSAGE()
 END CATCH
-
-GO
