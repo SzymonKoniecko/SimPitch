@@ -1,5 +1,5 @@
 # # TeamCity stack: docker-compose -f docker-compose.ci.yml -p teamcity up -d
-
+# build: docker-compose -f docker-compose.ci.yml -p teamcity up -d --build
 
 
 services:
@@ -53,12 +53,30 @@ services:
     restart: unless-stopped
     entrypoint: |
       /bin/bash -c "
-        echo 'Installing Docker Compose v2...' &&
-        curl -sL https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose &&
-        chmod +x /usr/local/bin/docker-compose &&
-        echo 'Docker Compose v2 installed' &&
-        docker-compose --version &&
-        exec /run-agent.sh
+      set -e
+      
+      echo '=== Installing Docker Compose v2 ===' &&
+      curl -sL https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose &&
+      chmod +x /usr/local/bin/docker-compose &&
+      echo '✓ Docker Compose v2 installed' &&
+      docker-compose --version &&
+      
+      echo '' &&
+      echo '=== Installing .NET 9.0 SDK ===' &&
+      apt-get update &&
+      apt-get install -y wget &&
+      wget -q https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh &&
+      chmod +x /tmp/dotnet-install.sh &&
+      /tmp/dotnet-install.sh --channel 9.0 --install-dir /usr/local/dotnet --architecture arm64 &&
+      ln -sf /usr/local/dotnet/dotnet /usr/local/bin/dotnet &&
+      rm /tmp/dotnet-install.sh &&
+      echo '✓ .NET 9.0 SDK installed' &&
+      dotnet --version &&
+      dotnet --list-sdks &&
+      
+      echo '' &&
+      echo '=== Starting TeamCity Agent ===' &&
+      exec /run-agent.sh
       "
 
 

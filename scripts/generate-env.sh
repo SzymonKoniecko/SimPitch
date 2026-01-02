@@ -10,20 +10,51 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+SEED_DATA_VALUE="true"
+
+usage() {
+  echo "Usage: $0 [--seed true|false]"
+  exit 1
+}
+
+# Parse args: --seed true|false
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --seed)
+      shift
+      [[ -z "${1:-}" ]] && usage
+      SEED_DATA_VALUE="$1"
+      shift
+      ;;
+    -h|--help)
+      usage
+      ;;
+    *)
+      echo "Unknown argument: $1"
+      usage
+      ;;
+  esac
+done
+
+if [[ "$SEED_DATA_VALUE" != "true" && "$SEED_DATA_VALUE" != "false" ]]; then
+  echo -e "${YELLOW}Error: --seed must be 'true' or 'false'${NC}"
+  exit 1
+fi
+
 echo -e "${BLUE}=== SimPitch - .env Generator ===${NC}\n"
 
 # Check if .env already exists
 if [ -f "$ENV_FILE" ]; then
-    echo -e "${YELLOW}Warning: $ENV_FILE already exists${NC}"
-    read -p "Do you want to overwrite it? (y/N) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo -e "${YELLOW}Aborted. Using existing $ENV_FILE${NC}"
-        exit 0
-    fi
+  echo -e "${YELLOW}Warning: $ENV_FILE already exists${NC}"
+  read -p "Do you want to overwrite it? (y/N) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo -e "${YELLOW}Aborted. Using existing $ENV_FILE${NC}"
+    exit 0
+  fi
 fi
 
-cat > "$ENV_FILE" << 'EOF'
+cat > "$ENV_FILE" <<EOF
 ################################################################################
 # SimPitch - Environment Variables
 # Generated: $(date)
@@ -35,12 +66,11 @@ cat > "$ENV_FILE" << 'EOF'
 # ============================================================================
 
 # Seed data initialization (set to true to auto-populate database)
-SEED_DATA=true
+SEED_DATA=$SEED_DATA_VALUE
 
 # ASP.NET Core settings
 ASPNETCORE_URL=http://0.0.0.0
 ASPNETCORE_ENVIRONMENT=Development
-
 
 # ============================================================================
 # SPORTSDATA SERVICE CONFIGURATION
@@ -55,7 +85,6 @@ SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC=81
 SPORTSDATA_SERVICE_HOST_PORT_REST=4001
 SPORTSDATA_SERVICE_CONTAINER_PORT_REST=80
 
-
 # ============================================================================
 # LOGGING SERVICE CONFIGURATION
 # gRPC-based centralized logging service
@@ -64,7 +93,6 @@ SPORTSDATA_SERVICE_CONTAINER_PORT_REST=80
 LOGGING_SERVICE_HOST_PORT_GRPC=40022
 LOGGING_SERVICE_CONTAINER_PORT_GRPC=81
 LOGGING_SERVICE_NAME="logging-service"
-
 
 # ============================================================================
 # SIMULATION SERVICE CONFIGURATION
@@ -75,7 +103,6 @@ SIMULATION_SERVICE_HOST_PORT_GRPC=40033
 SIMULATION_SERVICE_CONTAINER_PORT_GRPC=81
 SIMULATION_SERVICE_NAME="simulation-service"
 
-
 # ============================================================================
 # STATISTICS SERVICE CONFIGURATION
 # gRPC service for statistical analysis and predictions
@@ -84,7 +111,6 @@ SIMULATION_SERVICE_NAME="simulation-service"
 STATISTICS_SERVICE_HOST_PORT_GRPC=40044
 STATISTICS_SERVICE_CONTAINER_PORT_GRPC=81
 STATISTICS_SERVICE_NAME="statistics-service"
-
 
 # ============================================================================
 # ENGINE SERVICE CONFIGURATION
@@ -95,13 +121,11 @@ ENGINE_SERVICE_HOST_PORT_REST=4005
 ENGINE_SERVICE_CONTAINER_PORT_REST=80
 ENGINE_SERVICE_NAME="engine-service"
 
-
 # ============================================================================
 # SPORTSDATA SERVICE NAME
 # ============================================================================
 
 SPORTSDATA_SERVICE_NAME="sportsdata-service"
-
 
 # ============================================================================
 # REDIS CACHE CONFIGURATION
@@ -112,7 +136,6 @@ REDIS_PORT=6379
 REDIS_PASS=MySuperSecretPassword
 REDIS_CONN_STRING="redis-cache:6379,password=MySuperSecretPassword,abortConnect=false"
 REDIS_SERVICE_NAME="redis-cache"
-
 
 # ============================================================================
 # DATABASE CONFIGURATION
@@ -127,7 +150,6 @@ REDIS_SERVICE_NAME="redis-cache"
 DB_ADMIN=sa
 DB_PASSWORD=Zaq1@wsx
 
-
 # ============================================================================
 # FRONTEND CONFIGURATION (Vue 3 + Vite)
 # Development server settings
@@ -139,7 +161,6 @@ DOCKER_ENV=true
 HMR_HOST=localhost
 WEB_DEV_PORT=5173
 
-
 # ============================================================================
 # NGINX GATEWAY CONFIGURATION
 # API Gateway for routing requests to microservices
@@ -147,7 +168,6 @@ WEB_DEV_PORT=5173
 
 GATEWAY_HOST_PORT=8080
 GATEWAY_SERVICE_CONTAINER_PORT=80
-
 
 # ============================================================================
 # INTERNAL SERVICE COMMUNICATION
@@ -166,14 +186,9 @@ EOF
 echo -e "${GREEN}✓ Successfully created $ENV_FILE${NC}\n"
 
 echo -e "${BLUE}Configuration Summary:${NC}"
-echo -e "  ${GREEN}✓${NC} SEED_DATA: false"
-echo -e "  ${GREEN}✓${NC} Database: MSSQL (5 databases)"
-echo -e "  ${GREEN}✓${NC} Cache: Redis"
-echo -e "  ${GREEN}✓${NC} Services: 5 microservices (Engine, Simulation, Statistics, SportsData, Logging)"
-echo -e "  ${GREEN}✓${NC} Gateway: NGINX (port 8080)"
-echo -e "  ${GREEN}✓${NC} Frontend: Vue 3 + Vite (port 5173)"
-echo ""
+echo -e "  ${GREEN}✓${NC} SEED_DATA: $SEED_DATA_VALUE"
 
+echo " * * * * "
 echo -e "${BLUE}Port Mapping:${NC}"
 echo -e "  Frontend:           ${GREEN}http://localhost:5173${NC}"
 echo -e "  NGINX Gateway:      ${GREEN}http://localhost:8080${NC}"
@@ -186,6 +201,5 @@ echo -e "  Statistics gRPC:    ${GREEN}grpc://localhost:40044${NC}"
 echo -e "  MSSQL Database:     ${GREEN}localhost:1433${NC}"
 echo -e "  Redis Cache:        ${GREEN}localhost:6379${NC}"
 echo ""
-
 
 echo -e "${GREEN}Setup complete!${NC}\n"
