@@ -51,6 +51,8 @@ services:
     depends_on:
       - teamcity-server
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     entrypoint: |
       /bin/bash -c "
       set -e
