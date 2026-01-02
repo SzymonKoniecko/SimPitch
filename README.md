@@ -40,10 +40,10 @@ You can run SimPitch locally or in a production-like environment using **Docker*
 
 In main directory:
 
-***If first time***
+***If first time: --seed true***
 ```
 chmod +x scripts/generate-env.sh
-scripts/./generate-env.sh
+scripts/./generate-env.sh --seed false
 docker-compose up -d
 ```
 ***Re-runs***
