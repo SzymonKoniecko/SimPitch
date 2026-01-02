@@ -10,7 +10,6 @@ object Build : BuildType({
     vcs {
         root(HttpsGithubComSzymonKonieckoSimPitchRefsHeadsMain)
     }
-
     steps {
         script {
             name = "CleanUp builds and env"
@@ -57,7 +56,7 @@ object Build : BuildType({
                 
                 if [ -f "scripts/generate-env.sh" ]; then
                   chmod +x scripts/generate-env.sh
-                  ./scripts/generate-env.sh
+                  ./scripts/generate-env.sh --seed true
                 else
                   echo "WARNING: scripts/generate-env.sh not found"
                 fi
@@ -109,7 +108,6 @@ object Build : BuildType({
             """.trimIndent()
         }
     }
-
     features {
         perfmon {
         }

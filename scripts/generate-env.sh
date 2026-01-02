@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# chmod +x scripts/generate-env.sh 
+# scripts/./generate-env.sh --seed false
 
 set -e
 
