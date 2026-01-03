@@ -88,27 +88,32 @@ object Selenium : BuildType({
             """.trimIndent()
         }
         script {
-            name = "Run single test"
+            name = "Run single test or all"
             id = "Run_test"
             scriptContent = """
                 #!/bin/bash
                 set -e
                 
+                # TeamCity config parameter (can be empty / special value)
                 TEST_NAME="%TEST_NAME%"
-                
-                if [ -z "${'$'}TEST_NAME" ]; then
-                  echo "Missing TEST_NAME (ParameterDisplay.PROMPT). Add value before the build."
-                  exit 1
-                fi
                 
                 echo "=== Copying TC appsettings ==="
                 cp src/Selenium/SimPitchSelenium/appsettings.tc.json src/Selenium/SimPitchSelenium/appsettings.json
                 
-                echo "=== Running Selenium Test: ${'$'}{TEST_NAME} ==="
-                dotnet test src/Selenium/SimPitchSelenium/SimPitchSelenium.csproj \
-                  --configuration Release \
-                  --filter "Name=${'$'}{TEST_NAME}" \
-                  --logger "trx;LogFileName=TestResults.trx"
+                # If TEST_NAME is empty or equals 'ALL' (case-insensitive), run the whole test project.
+                # Otherwise, run only the selected test by name using --filter.
+                if [ -z "${'$'}TEST_NAME" ] || [ "${'$'}TEST_NAME" = "ALL" ] || [ "${'$'}TEST_NAME" = "all" ]; then
+                  echo "=== Running Selenium Tests: ALL ==="
+                  dotnet test src/Selenium/SimPitchSelenium/SimPitchSelenium.csproj \
+                    --configuration Release \
+                    --logger "trx;LogFileName=TestResults/TestResults.trx"
+                else
+                  echo "=== Running Selenium Test: ${'$'}{TEST_NAME} ==="
+                  dotnet test src/Selenium/SimPitchSelenium/SimPitchSelenium.csproj \
+                    --configuration Release \
+                    --filter "Name=${'$'}{TEST_NAME}" \
+                    --logger "trx;LogFileName=TestResults/TestResults.trx"
+                fi
                 
                 echo "✓ Test completed"
             """.trimIndent()
