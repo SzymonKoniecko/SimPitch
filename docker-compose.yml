@@ -27,6 +27,12 @@ services:
     build:
       context: ./src/Frontend/sim-pitch-web
       dockerfile: Dockerfile.dev
+  xgboost-service:
+    #profiles:
+    #  - donotstart
+    build:
+      context: ./src/ML/
+      dockerfile: Dockerfile
 
   gateway:
     build:

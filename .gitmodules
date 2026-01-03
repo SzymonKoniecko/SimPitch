@@ -19,3 +19,6 @@
 [submodule "src/Selenium"]
 	path = src/Selenium
 	url = https://github.com/SzymonKoniecko/SimPitchSelenium.git
+[submodule "src/ML"]
+	path = src/ML
+	url = https://github.com/SzymonKoniecko/SimPitchML.git

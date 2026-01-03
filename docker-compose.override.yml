@@ -27,6 +27,27 @@ services:
       - backend_network
     depends_on:
       - logging-service
+  
+  xgboost-service:
+    ports: 
+      - "${XGBOOST_SERVICE_HOST_PORT_GRPC}:${XGBOOST_SERVICE_CONTAINER_PORT_GRPC}"
+    environment:
+      - MODEL_PATH=/app/models/xgboost_model.pkl
+      - MODEL_VERSION=1.0.0
+      - ENVIRONMENT=development
+      - LOG_LEVEL=INFO
+      - MAX_WORKERS=10
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    networks:
+      - backend_network
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   gateway:
     ports:
