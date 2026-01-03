@@ -130,6 +130,13 @@ ENGINE_SERVICE_NAME="engine-service"
 SPORTSDATA_SERVICE_NAME="sportsdata-service"
 
 # ============================================================================
+# XGBOOST SERVICE NAME - from SimPitchML repo
+# ============================================================================
+
+XGBOOST_SERVICE_HOST_PORT_GRPC=40055
+XGBOOST_SERVICE_CONTAINER_PORT_GRPC=81
+
+# ============================================================================
 # REDIS CACHE CONFIGURATION
 # Used for caching team data, match results (TTL: 24h)
 # ============================================================================
@@ -200,6 +207,7 @@ echo -e "  SportsData gRPC:    ${GREEN}grpc://localhost:40011${NC}"
 echo -e "  Logging gRPC:       ${GREEN}grpc://localhost:40022${NC}"
 echo -e "  Simulation gRPC:    ${GREEN}grpc://localhost:40033${NC}"
 echo -e "  Statistics gRPC:    ${GREEN}grpc://localhost:40044${NC}"
+echo -e "  XGBOOST gRPC:       ${GREEN}grpc://localhost:40055${NC}"
 echo -e "  MSSQL Database:     ${GREEN}localhost:1433${NC}"
 echo -e "  Redis Cache:        ${GREEN}localhost:6379${NC}"
 echo ""
