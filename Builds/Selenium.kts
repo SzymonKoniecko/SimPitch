@@ -1,21 +1,38 @@
 package _Self.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.buildFeatures.XmlReport
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
+import jetbrains.buildServer.configs.kotlin.buildFeatures.xmlReport
+import jetbrains.buildServer.configs.kotlin.buildSteps.nunitConsole
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
 object Selenium : BuildType({
     name = "Selenium"
 
+    artifactRules = """
+        src/Selenium/SimPitchSelenium/bin/Release/net9.0/Reports/**/*
+        src/Selenium/SimPitchSelenium/TestResults/**/*
+    """.trimIndent()
+
+    params {
+        text("TEST_NAME", "PrepareSimulation_Should_Create_ALL_Simulation", label = "Choose the test value", display = ParameterDisplay.PROMPT, allowEmpty = true)
+    }
+
     vcs {
         root(HttpsGithubComSzymonKonieckoSimPitchRefsHeadsMain)
     }
-
     steps {
+        script {
+            name = "Inspect network"
+            id = "Inspect_network"
+            scriptContent = "docker network inspect simpitch-tc_backend_network"
+        }
         script {
             name = "Install 9.0 DOTNET"
             id = "Install_9_0_DOTNET"
+            enabled = false
             scriptContent = """
                 #!/bin/bash
                 set -e
@@ -71,26 +88,39 @@ object Selenium : BuildType({
             """.trimIndent()
         }
         script {
-            name = "Run test"
+            name = "Run single test"
             id = "Run_test"
             scriptContent = """
                 #!/bin/bash
                 set -e
                 
-                echo "=== Copying TC appsettings ==="
-                #cp tests/SimPitchSelenium/appsettings.tc.json tests/SimPitchSelenium/appsettings.json
+                TEST_NAME="%TEST_NAME%"
                 
-                echo "=== Running Selenium Test: Nav_Should_Each_Element_Work==="
+                if [ -z "${'$'}TEST_NAME" ]; then
+                  echo "Missing TEST_NAME (ParameterDisplay.PROMPT). Add value before the build."
+                  exit 1
+                fi
+                
+                echo "=== Copying TC appsettings ==="
+                cp src/Selenium/SimPitchSelenium/appsettings.tc.json src/Selenium/SimPitchSelenium/appsettings.json
+                
+                echo "=== Running Selenium Test: ${'$'}{TEST_NAME} ==="
                 dotnet test src/Selenium/SimPitchSelenium/SimPitchSelenium.csproj \
                   --configuration Release \
-                  --filter "Name=Nav_Should_Each_Element_Work" \
+                  --filter "Name=${'$'}{TEST_NAME}" \
                   --logger "trx;LogFileName=TestResults.trx"
                 
                 echo "✓ Test completed"
             """.trimIndent()
         }
+        nunitConsole {
+            name = "Run NUnit Selenium Tests"
+            id = "Run_NUnit_Selenium_Tests"
+            enabled = false
+            nunitPath = "%teamcity.tool.NUnit.Console.3.21.1%"
+            includeTests = "**/SimPitchSelenium.dll"
+        }
     }
-
     triggers {
         vcs {
             enabled = false
@@ -99,6 +129,10 @@ object Selenium : BuildType({
 
     features {
         perfmon {
+        }
+        xmlReport {
+            reportType = XmlReport.XmlReportType.TRX
+            rules = "+:**/TestResults.trx"
         }
     }
 })
