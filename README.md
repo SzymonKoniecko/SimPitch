@@ -24,6 +24,13 @@ The SimPitch solution is modularized into three distinct repositories to ensure 
 **The Visualization Dashboard.**
 *   **Tech:** Vue 3, Vite, TypeScript.
 *   **Role:** Provides the UI for configuring `SimulationParams`, visualizing complex metrics (Posterior vs. Likelihood), and displaying league iterations.
+https://github.com/SzymonKoniecko/SimPitchAI
+
+### 🔗 [SimPitch.ML](https://github.com/SzymonKoniecko/SimPitchML)
+**ML worker in XGBOOST (in development)**
+*   **Tech:** SimPitch simulations by machine learning (XGBOOST)
+*   **Role:** Simulate the results by XGBOOST ML
+
 
 ### 🔗 [SimPitch.Shared](https://github.com/SzymonKoniecko/SimPitchPROTOS)
 **The Contracts.**
