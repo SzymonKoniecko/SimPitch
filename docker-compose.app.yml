@@ -154,6 +154,31 @@ services:
       - backend_network
     depends_on:
       - logging-service
+  
+  simpitch-ml-service:
+    image: simpitch-ml-service:latest
+    ports:
+      - "${SIMPITCHML_SERVICE_HOST_PORT_REST}:${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}"
+      # - "${SIMPITCHML_SERVICE_HOST_PORT_GRPC}:${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}"
+    
+    environment:
+      - SIMULATION_GRPC_SERVER_HOST=${SIMULATION_SERVICE_NAME}
+      - SIMULATION_GRPC_SERVER_PORT=${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
+      - SIMULATION_GRPC_TIMEOUT=${SIMULATION_GRPC_TIMEOUT}
+      - FASTAPI_SEVER_HOST=0.0.0.0
+      - FASTAPI_SEVER_PORT=${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}
+      - ENVIRONMENT=${ENVIRONMENT}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
+    #extra_hosts:
+    #  - "host.docker.internal:host-gateway"
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    networks:
+      - backend_network
+    restart: unless-stopped
+  
   gateway:
     image: simpitch-gateway:latest
     ports:

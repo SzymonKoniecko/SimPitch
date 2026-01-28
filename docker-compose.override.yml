@@ -32,7 +32,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: simpitch_ml_service
     ports:
       - "${SIMPITCHML_SERVICE_HOST_PORT_REST}:${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}"
       # - "${SIMPITCHML_SERVICE_HOST_PORT_GRPC}:${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}"
