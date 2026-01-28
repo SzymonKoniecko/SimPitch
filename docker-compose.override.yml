@@ -28,7 +28,7 @@ services:
     depends_on:
       - logging-service
   
-  simPitchML-service:
+  simpitch-ml-service:
     build:
       context: .
       dockerfile: Dockerfile
