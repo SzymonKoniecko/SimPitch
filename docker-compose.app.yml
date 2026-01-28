@@ -172,9 +172,9 @@ services:
       - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
     #extra_hosts:
     #  - "host.docker.internal:host-gateway"
-    volumes:
-      - ./models:/app/models
-      - ./logs:/app/logs
+    #volumes:
+    #  - ./models:/app/models
+    #  - ./logs:/app/logs
     networks:
       - backend_network
     restart: unless-stopped
