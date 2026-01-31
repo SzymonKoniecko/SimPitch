@@ -170,14 +170,14 @@ services:
       - ENVIRONMENT=${ENVIRONMENT}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
-      - STORAGE_DIR=/app/models_data 
+      - STORAGE_DIR=/app/data_storage 
     #extra_hosts:
     #  - "host.docker.internal:host-gateway"
     #volumes:
     #  - ./models:/app/models
     #  - ./logs:/app/logs
     volumes:
-    - ./sim_pitch_models:/app/models_data
+    - ./data_storage:/app/data_storage
     networks:
       - backend_network
     restart: unless-stopped
