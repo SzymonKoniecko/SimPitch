@@ -177,7 +177,7 @@ services:
     #  - ./models:/app/models
     #  - ./logs:/app/logs
     volumes:
-    - ./data_storage:/app/data_storage
+      - simpitch_ml_data:/app/data_storage
     networks:
       - backend_network
     restart: unless-stopped
@@ -218,3 +218,4 @@ volumes:
   mssql_data:
   cache:
     driver: local
+  simpitch_ml_data:
