@@ -105,6 +105,9 @@ SIMULATION_SERVICE_HOST_PORT_GRPC=40033
 SIMULATION_SERVICE_CONTAINER_PORT_GRPC=81
 SIMULATION_SERVICE_NAME="simulation-service"
 
+# for SimPitchML
+SIMULATION_GRPC_TIMEOUT=30
+
 # ============================================================================
 # STATISTICS SERVICE CONFIGURATION
 # gRPC service for statistical analysis and predictions
@@ -130,11 +133,14 @@ ENGINE_SERVICE_NAME="engine-service"
 SPORTSDATA_SERVICE_NAME="sportsdata-service"
 
 # ============================================================================
-# XGBOOST SERVICE NAME - from SimPitchML repo
+# SimPitchML SERVICE NAME - from SimPitchML repo
 # ============================================================================
 
-XGBOOST_SERVICE_HOST_PORT_GRPC=40055
-XGBOOST_SERVICE_CONTAINER_PORT_GRPC=81
+SIMPITCHML_SERVICE_HOST_PORT_REST=4006
+SIMPITCHML_SERVICE_CONTAINER_PORT_REST=80
+
+SIMPITCHML_SERVICE_HOST_PORT_GRPC=40066
+SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC=81
 
 # ============================================================================
 # REDIS CACHE CONFIGURATION
@@ -207,7 +213,8 @@ echo -e "  SportsData gRPC:    ${GREEN}grpc://localhost:40011${NC}"
 echo -e "  Logging gRPC:       ${GREEN}grpc://localhost:40022${NC}"
 echo -e "  Simulation gRPC:    ${GREEN}grpc://localhost:40033${NC}"
 echo -e "  Statistics gRPC:    ${GREEN}grpc://localhost:40044${NC}"
-echo -e "  XGBOOST gRPC:       ${GREEN}grpc://localhost:40055${NC}"
+echo -e "  SIMPITCHML gRPC:       ${GREEN}grpc://localhost:40066${NC}"
+echo -e "  SIMPITCHML FASTAPI:       ${GREEN}grpc://localhost:40066${NC}"
 echo -e "  MSSQL Database:     ${GREEN}localhost:1433${NC}"
 echo -e "  Redis Cache:        ${GREEN}localhost:6379${NC}"
 echo ""

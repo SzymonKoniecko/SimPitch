@@ -66,4 +66,27 @@ public class SimulationOverviewReadRepository : ISimulationOverviewReadRepositor
 
         return await connection.ExecuteScalarAsync<int>(command);
     }
+
+    public async Task<List<Guid>> GetSimulationIdsByDateAsync(DateTime requestedDate, CancellationToken cancellationToken)
+    {
+
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = @"
+            SELECT Id
+            FROM SimulationOverview
+            WHERE CreatedDate > @date;
+        ";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { date = requestedDate },
+            cancellationToken: cancellationToken
+        );
+
+        var guids = await connection.QueryAsync<Guid>(command);
+
+
+        return guids == null ? new List<Guid>() : guids.ToList();
+    }
 }

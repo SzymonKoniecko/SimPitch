@@ -1,6 +1,6 @@
 services:
   logging-service:
-    image: simpitch-logging-service:latest
+    image: simpitch-tc-logging-service:latest
     ports:
       - "${LOGGING_SERVICE_HOST_PORT_GRPC}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}"
     environment:
@@ -13,7 +13,7 @@ services:
       - mssql
 
   sportsdata-service:
-    image: simpitch-sportsdata-service:latest
+    image: simpitch-tc-sportsdata-service:latest
     ports:
       - "${SPORTSDATA_SERVICE_HOST_PORT_REST}:${SPORTSDATA_SERVICE_CONTAINER_PORT_REST}"
       - "${SPORTSDATA_SERVICE_HOST_PORT_GRPC}:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}"
@@ -33,7 +33,7 @@ services:
       - logging-service
 
   engine-service:
-    image: simpitch-engine-service:latest
+    image: simpitch-tc-engine-service:latest
     ports:
       - "${ENGINE_SERVICE_HOST_PORT_REST}:${ENGINE_SERVICE_CONTAINER_PORT_REST}"
     environment:
@@ -53,7 +53,7 @@ services:
       - simulation-service
 
   simulation-service:
-    image: simpitch-simulation-service:latest
+    image: simpitch-tc-simulation-service:latest
     ports:
       - "${SIMULATION_SERVICE_HOST_PORT_GRPC}:${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}"
     environment:
@@ -72,7 +72,7 @@ services:
       - logging-service
 
   statistics-service:
-    image: simpitch-statistics-service:latest
+    image: simpitch-tc-statistics-service:latest
     ports:
       - "${STATISTICS_SERVICE_HOST_PORT_GRPC}:${STATISTICS_SERVICE_CONTAINER_PORT_GRPC}"
     environment:
@@ -115,7 +115,7 @@ services:
 
 
   mssql-init:
-    image: simpitch-mssql-init:latest
+    image: simpitch-tc-mssql-init:latest
     environment:
       DB_ADMIN: ${DB_ADMIN}
       SA_PASSWORD: ${DB_PASSWORD}
@@ -125,7 +125,7 @@ services:
       - mssql
   
   seed-data:
-    image: simpitch-seed-data:latest
+    image: simpitch-tc-seed-data:latest
     environment:
       DB_ADMIN: ${DB_ADMIN}
       SA_PASSWORD: ${DB_PASSWORD}
@@ -138,7 +138,7 @@ services:
 
 
   frontend:
-    image: simpitch-frontend:latest
+    image: simpitch-tc-frontend:latest
     ports: 
       - "${WEB_DEV_PORT}:${WEB_DEV_PORT}"
     expose:
@@ -154,8 +154,33 @@ services:
       - backend_network
     depends_on:
       - logging-service
+  
+  simpitch-ml-service:
+    image: simpitch-tc-simpitch-ml-service:latest
+    ports:
+      - "${SIMPITCHML_SERVICE_HOST_PORT_REST}:${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}"
+      # - "${SIMPITCHML_SERVICE_HOST_PORT_GRPC}:${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}"
+    
+    environment:
+      - SIMULATION_GRPC_SERVER_HOST=${SIMULATION_SERVICE_NAME}
+      - SIMULATION_GRPC_SERVER_PORT=${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
+      - SIMULATION_GRPC_TIMEOUT=${SIMULATION_GRPC_TIMEOUT}
+      - FASTAPI_SEVER_HOST=0.0.0.0
+      - FASTAPI_SEVER_PORT=${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}
+      - ENVIRONMENT=${ENVIRONMENT}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
+    #extra_hosts:
+    #  - "host.docker.internal:host-gateway"
+    #volumes:
+    #  - ./models:/app/models
+    #  - ./logs:/app/logs
+    networks:
+      - backend_network
+    restart: unless-stopped
+  
   gateway:
-    image: simpitch-gateway:latest
+    image: simpitch-tc-gateway:latest
     ports:
       - "${GATEWAY_HOST_PORT}:${GATEWAY_SERVICE_CONTAINER_PORT}"
     depends_on:
