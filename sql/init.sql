@@ -230,3 +230,21 @@ BEGIN
         AverangeGoalsAgainst FLOAT NOT NULL,
     );
 END
+----SimPitchMl Initialization Script----
+--DATABASES
+IF DB_ID('SimPitchMl') IS NULL
+BEGIN
+    CREATE DATABASE SimPitchMl;
+END
+GO
+
+USE SimPitchMl;
+GO
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Synchronization' AND xtype='U')
+BEGIN
+    CREATE TABLE Synchronization (
+        Id UNIQUEIDENTIFIER PRIMARY KEY,
+        LastSyncDate DATETIME2 NOT NULL,
+        AddedSimulations INT NOT NULL
+    );
+END

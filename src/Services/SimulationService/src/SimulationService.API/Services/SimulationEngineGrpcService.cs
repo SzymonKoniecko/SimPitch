@@ -11,6 +11,7 @@ using SimulationService.Application.Common.Pagination;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
 using SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 using SimulationService.Application.Features.Simulations.Commands.StopSimulation;
+using SimulationService.Application.Features.Simulations.Queries.GetSimulationIdsByDate;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviewById;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationOverviews;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationStateBySimulationId;
@@ -78,6 +79,18 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
         return new SimulationStateResponse
         {
             SimulationState = SimulationEngineMapper.StateToGrpc(response)
+        };
+    }
+
+    public override async Task<SimulationIdsResponse> GetLatestSimulationIds(GetLatestSimulationIdsRequest request, ServerCallContext context)
+    {
+        var query = new GetSimulationIdsByDateQuery(DateTime.Parse(request.Date));
+
+        var response = await _mediator.Send(query, context.CancellationToken);
+
+        return new SimulationIdsResponse
+        {
+            SimulationIds = { response.Select(x => x)}
         };
     }
     

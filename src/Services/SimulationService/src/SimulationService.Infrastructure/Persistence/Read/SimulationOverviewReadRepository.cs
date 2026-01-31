@@ -66,4 +66,34 @@ public class SimulationOverviewReadRepository : ISimulationOverviewReadRepositor
 
         return await connection.ExecuteScalarAsync<int>(command);
     }
+
+    public async Task<string[]> GetSimulationIdsByDateAsync(DateTime requestedDate, CancellationToken cancellationToken)
+    {
+
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = @"
+            SELECT Id
+            FROM SimulationOverview
+            WHERE CreatedDate > @date;
+        ";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { date = requestedDate },
+            cancellationToken: cancellationToken
+        );
+
+        var result = await connection.QuerySingleOrDefaultAsync<string[]>(command);
+        if (result == null)
+        {
+            var retryResult = await connection.QuerySingleOrDefaultAsync<string[]>(command);
+            if (retryResult == null)
+            {
+                throw new KeyNotFoundException("No simulation overviews for given ID");
+            }
+            return retryResult;
+        }
+        return result;
+    }
 }

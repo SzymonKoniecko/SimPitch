@@ -12,6 +12,7 @@ using SimulationService.Application.Features.Simulations.Queries.GetSimulationOv
 using SimulationService.Application.Features.IterationResults.Queries.GetIterationResultById;
 using SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 using SimulationService.Application.Features.Scoreboards.Commands;
+using SimulationService.Application.Features.Simulations.Queries.GetSimulationIdsByDate;
 namespace SimulationService.Application.Features;
 
 public static class MediatrServicesExtension
@@ -40,6 +41,7 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(GetIterationResultsBySimulationIdQuery).Assembly);
         services.AddMediatR(typeof(GetSimulationOverviewByIdQuery).Assembly);
         services.AddMediatR(typeof(GetAllSimulationOverviewsQuery).Assembly);
+        services.AddMediatR(typeof(GetSimulationIdsByDateQuery).Assembly);
 
         // Query Handlers
         services.AddMediatR(typeof(GetLeagueRoundsByParamsGrpcHandler).Assembly);
@@ -49,6 +51,7 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(GetIterationResultsBySimulationIdQueryHandler).Assembly);
         services.AddMediatR(typeof(GetSimulationOverviewByIdQueryHandler).Assembly);
         services.AddMediatR(typeof(GetAllSimulationOverviewsQueryHandler).Assembly);
+        services.AddMediatR(typeof(GetSimulationIdsByDateQueryHandler).Assembly);
 
         // Validators
         services.AddTransient<RunSimulationCommandValidator>();
