@@ -4,7 +4,7 @@ using SimulationService.Domain.Interfaces.Read;
 
 namespace SimulationService.Application.Features.Simulations.Queries.GetSimulationIdsByDate;
 
-public class GetSimulationIdsByDateQueryHandler : IRequestHandler<GetSimulationIdsByDateQuery, List<string>>
+public class GetSimulationIdsByDateQueryHandler : IRequestHandler<GetSimulationIdsByDateQuery, List<Guid>>
 {
     private readonly ISimulationOverviewReadRepository _simulationOverviewReadRepository;
 
@@ -12,7 +12,7 @@ public class GetSimulationIdsByDateQueryHandler : IRequestHandler<GetSimulationI
     {
         _simulationOverviewReadRepository = simulationOverviewReadRepository;
     }
-    public async Task<List<string>> Handle(GetSimulationIdsByDateQuery query, CancellationToken cancellationToken)
+    public async Task<List<Guid>> Handle(GetSimulationIdsByDateQuery query, CancellationToken cancellationToken)
     {
         var result = await _simulationOverviewReadRepository.GetSimulationIdsByDateAsync(query.requestedDate, cancellationToken);
         

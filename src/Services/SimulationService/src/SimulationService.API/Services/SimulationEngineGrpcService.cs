@@ -90,7 +90,7 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
 
         return new SimulationIdsResponse
         {
-            SimulationIds = { response.Select(x => x)}
+            SimulationIds = { response.Select(x => x.ToString())}
         };
     }
     
