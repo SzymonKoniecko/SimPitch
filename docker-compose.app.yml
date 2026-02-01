@@ -176,7 +176,7 @@ services:
       - ENVIRONMENT=${ENVIRONMENT}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
-      - CONNECTION_STRING=Driver={ODBC Driver 17 for SQL Server};Server=localhost;Database=SimulationDb;Uid=sa;Pwd=Zaq1@wsx;
+      - CONNECTION_STRING=Driver={ODBC Driver 17 for SQL Server};Server=mssql;Database=SimPitchMl;Uid=sa;Pwd=Zaq1@wsx;
       - STORAGE_DIR=/app/data_storage 
     #extra_hosts:
     #  - "host.docker.internal:host-gateway"
