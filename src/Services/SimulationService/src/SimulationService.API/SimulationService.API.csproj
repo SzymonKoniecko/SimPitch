@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <Protobuf Include="..\SimPitchProtos\logging.proto" GrpcServices="Client" ProtoRoot="..\SimPitchProtos" />
-    <Protobuf Include="..\SimPitchProtos\SimulationService\SimulationEngine\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SimulationService" />
-    <Protobuf Include="..\SimPitchProtos\SimulationService\IterationResult\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos\SimulationService" />
-    <Protobuf Include="..\SimPitchProtos\SimulationService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos\SimulationService" />
+    <Protobuf Include="..\SimPitchProtos\SimulationService\SimulationEngine\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos" />
+    <Protobuf Include="..\SimPitchProtos\SimulationService\IterationResult\*.proto" GrpcServices="Server" ProtoRoot="..\SimPitchProtos" />
+    <Protobuf Include="..\SimPitchProtos\SimulationService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos" />
   </ItemGroup>
 
   <ItemGroup>
