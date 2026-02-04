@@ -142,6 +142,9 @@ SIMPITCHML_SERVICE_CONTAINER_PORT_REST=80
 SIMPITCHML_SERVICE_HOST_PORT_GRPC=40066
 SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC=81
 
+GRPC_TIMEOUT=90
+GRPC_PAGINATION_LIMIT=50
+
 # ============================================================================
 # REDIS CACHE CONFIGURATION
 # Used for caching team data, match results (TTL: 24h)
@@ -213,8 +216,8 @@ echo -e "  SportsData gRPC:    ${GREEN}grpc://localhost:40011${NC}"
 echo -e "  Logging gRPC:       ${GREEN}grpc://localhost:40022${NC}"
 echo -e "  Simulation gRPC:    ${GREEN}grpc://localhost:40033${NC}"
 echo -e "  Statistics gRPC:    ${GREEN}grpc://localhost:40044${NC}"
-echo -e "  SIMPITCHML gRPC:       ${GREEN}grpc://localhost:40066${NC}"
-echo -e "  SIMPITCHML FASTAPI:       ${GREEN}grpc://localhost:40066${NC}"
+echo -e "  SIMPITCHML gRPC:    ${GREEN}grpc://localhost:40066${NC}"
+echo -e "  SIMPITCHML FASTAPI: ${GREEN}grpc://localhost:4006${NC}"
 echo -e "  MSSQL Database:     ${GREEN}localhost:1433${NC}"
 echo -e "  Redis Cache:        ${GREEN}localhost:6379${NC}"
 echo ""

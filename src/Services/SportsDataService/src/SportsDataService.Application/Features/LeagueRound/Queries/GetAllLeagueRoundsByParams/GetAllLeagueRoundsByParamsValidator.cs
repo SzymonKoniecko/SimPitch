@@ -9,11 +9,12 @@ public class GetAllLeagueRoundsByParamsValidator : AbstractValidator<GetAllLeagu
     public GetAllLeagueRoundsByParamsValidator()
     {
         RuleFor(x => x.leagueRoundFilterDto.SeasonYear)
-            .NotEmpty().WithMessage("SeasonYear is required.")
-             .Matches(@"^\d{4}/\d{4}$").WithMessage("SeasonYear must be in format YYYY/YYYY");
+            .Matches(@"^\d{4}/\d{4}$")
+            .When(x => !string.IsNullOrEmpty(x.leagueRoundFilterDto.SeasonYear))
+            .WithMessage("SeasonYear must be in format YYYY/YYYY");
 
         RuleFor(x => x.leagueRoundFilterDto.LeagueId)
-                .Must(league => league != null)
-                .WithMessage("If provided, LeagueId must be filled in!");
+            .Must(league => league != null)
+            .WithMessage("If provided, LeagueId must be filled in!");
     }
 }

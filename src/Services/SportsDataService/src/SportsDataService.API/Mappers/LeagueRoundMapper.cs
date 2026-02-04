@@ -25,7 +25,7 @@ public static class LeagueRoundMapper
     public static LeagueRoundFilterDto LeagueRoundProtoRequestToDto(LeagueRoundsByParamsRequest request)
     {
         var dto = new LeagueRoundFilterDto();
-        dto.SeasonYear = request.SeasonYear;
+        dto.SeasonYear = request.HasSeasonYear ? request.SeasonYear : String.Empty;
         dto.LeagueId = Guid.Parse(request.LeagueId);
         dto.LeagueRoundId = request.HasLeagueRoundId ? Guid.Parse(request.LeagueRoundId) : Guid.Empty;
 

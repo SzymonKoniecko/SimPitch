@@ -6,4 +6,5 @@ namespace SportsDataService.Domain.Interfaces.Read;
 public interface ILeagueRoundReadRepository
 {
     Task<IEnumerable<LeagueRound>> GetLeagueRoundsBySeasonYearAsync(string seasonYear, CancellationToken cancellationToken);
+    Task<IEnumerable<LeagueRound>> GetLeagueRoundsByLeagueIdAsync(Guid leagueId, CancellationToken cancellationToken);
 }

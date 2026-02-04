@@ -39,4 +39,25 @@ public class LeagueRoundReadRepository : ILeagueRoundReadRepository
 
         return leagueRounds;
     }
+
+    public async Task<IEnumerable<LeagueRound>> GetLeagueRoundsByLeagueIdAsync(Guid leagueId, CancellationToken cancellationToken)
+    {
+        using var connection = _DbConnectionFactory.CreateConnection();
+        const string sql = "SELECT * FROM LeagueRound WHERE LeagueId = @leagueid";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { leagueid = leagueId },
+            cancellationToken: cancellationToken
+        );
+
+        var leagueRounds = await connection.QueryAsync<LeagueRound>(command);
+
+        if (leagueRounds == null || leagueRounds.Count() == 0)
+        {
+            throw new KeyNotFoundException($"LeagueRounds with leagueId '{leagueId}' was not found.");
+        }
+
+        return leagueRounds;
+    }
 }
