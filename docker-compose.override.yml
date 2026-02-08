@@ -64,6 +64,7 @@ services:
       - logging-service
       - statistics-service
       - simulation-service
+      - sportsdata-service
     networks:
       - backend_network
     restart: unless-stopped
