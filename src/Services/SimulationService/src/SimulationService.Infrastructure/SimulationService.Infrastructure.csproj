@@ -16,8 +16,11 @@
     <Protobuf Include="..\SimPitchProtos\SportsDataService\League\*.proto" GrpcServices="Client" ProtoRoot="..\SimPitchProtos" />
     <Protobuf Include="..\SimPitchProtos\SportsDataService\SeasonStats\*.proto" GrpcServices="Client" ProtoRoot="..\SimPitchProtos" />
 
+    <Protobuf Include="..\SimPitchProtos\SimPitchMl\Predict\*.proto" GrpcServices="Client" ProtoRoot="..\SimPitchProtos" />
+
     <Protobuf Include="..\SimPitchProtos\StatisticsService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos" />
     <Protobuf Include="..\SimPitchProtos\SportsDataService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos" />
+    <Protobuf Include="..\SimPitchProtos\SimPitchMl\commonTypes.proto" GrpcServices="None" ProtoRoot="..\SimPitchProtos" />
 
   </ItemGroup>
 

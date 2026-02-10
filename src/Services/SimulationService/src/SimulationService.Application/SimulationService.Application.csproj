@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="DTOs/" />
+    <Folder Include="Features/Predict/Commands/" />
   </ItemGroup>
 
   <PropertyGroup>

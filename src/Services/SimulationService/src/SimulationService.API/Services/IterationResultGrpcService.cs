@@ -13,6 +13,8 @@ using SimulationService.Application.Common.Pagination;
 using SimulationService.Application.Mappers;
 using IterationResultMapper = SimulationService.API.Mappers.IterationResultMapper;
 using SimulationService.Domain.Consts;
+using Google.Protobuf.WellKnownTypes;
+using SimulationService.Application.Features.IterationResults.Commands.CreateIterationResultCommand;
 
 namespace SimulationService.API.Services;
 
@@ -55,7 +57,7 @@ public class IterationResultGrpcService : IterationResultService.IterationResult
         );
 
         var (results, details) = await _mediator.Send(query, cancellationToken: context.CancellationToken);
-        
+
         await GrpcStreamHelper.StreamListAsync(
             results.Select(IterationResultMapper.ToProto),
             responseStream,
@@ -69,5 +71,14 @@ public class IterationResultGrpcService : IterationResultService.IterationResult
         );
 
         _logger.LogInformation($"Streamed {results.Count} iteration results for simulation {simulationId} (total={details.TotalCount})");
+    }
+
+    public override async Task<Empty> SaveIterationResult(SaveIterationResultRequest request, ServerCallContext context)
+    {
+        var command = new CreateIterationResultCommand(IterationResultMapper.ToDto(request.IterationResultGrpc));
+
+        await _mediator.Send(command, cancellationToken: context.CancellationToken);
+
+        return new Empty { };
     }
 }
