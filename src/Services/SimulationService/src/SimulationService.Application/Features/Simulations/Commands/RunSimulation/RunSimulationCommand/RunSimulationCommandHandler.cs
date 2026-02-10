@@ -25,7 +25,6 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
     private readonly ISimulationStateWriteRepository _simulationStateWriteRepository;
     private readonly ISimulationStateReadRepository _simulationStateReadRepository;
     private readonly ISimulationOverviewWriteRepository _simulationOverviewWriteRepository;
-    private readonly IIterationResultReadRepository _iterationResultReadRepository;
     private MatchSimulatorService _matchSimulator;
 
 
@@ -35,8 +34,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         ILogger<RunSimulationCommandHandler> logger,
         ISimulationStateWriteRepository simulationStateWriteRepository,
         ISimulationStateReadRepository simulationStateReadRepository,
-        ISimulationOverviewWriteRepository simulationOverviewWriteRepository,
-        IIterationResultReadRepository iterationResultReadRepository)
+        ISimulationOverviewWriteRepository simulationOverviewWriteRepository)
     {
         _mediator = mediator;
         _registry = registry;
@@ -44,7 +42,6 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         _simulationStateWriteRepository = simulationStateWriteRepository;
         _simulationStateReadRepository = simulationStateReadRepository;
         _simulationOverviewWriteRepository = simulationOverviewWriteRepository;
-        this._iterationResultReadRepository = iterationResultReadRepository;
         _matchSimulator = new MatchSimulatorService();
     }
     public async Task<Guid> Handle(RunSimulationCommand command, CancellationToken cancellationToken)
