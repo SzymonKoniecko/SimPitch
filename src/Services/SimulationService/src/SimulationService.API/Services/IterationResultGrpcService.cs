@@ -14,7 +14,7 @@ using SimulationService.Application.Mappers;
 using IterationResultMapper = SimulationService.API.Mappers.IterationResultMapper;
 using SimulationService.Domain.Consts;
 using Google.Protobuf.WellKnownTypes;
-using SimulationService.Application.Features.IterationResults.Commands.CreateIterationResultCommand;
+using SimulationService.Application.Features.Predict.Commands.SyncPredictionIterationResultCommand;
 
 namespace SimulationService.API.Services;
 
@@ -75,7 +75,7 @@ public class IterationResultGrpcService : IterationResultService.IterationResult
 
     public override async Task<Empty> SaveIterationResult(SaveIterationResultRequest request, ServerCallContext context)
     {
-        var command = new CreateIterationResultCommand(IterationResultMapper.ToDto(request.IterationResultGrpc));
+        var command = new SyncPredictionIterationResultCommand(IterationResultMapper.ToDto(request.IterationResultGrpc));
 
         await _mediator.Send(command, cancellationToken: context.CancellationToken);
 

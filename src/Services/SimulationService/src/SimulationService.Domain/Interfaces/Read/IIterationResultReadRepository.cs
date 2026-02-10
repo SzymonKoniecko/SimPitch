@@ -8,5 +8,7 @@ public interface IIterationResultReadRepository
 {
     Task<IterationResult> GetIterationResultByIdAsync(Guid iterationId, CancellationToken cancellationToken);
     Task<IEnumerable<IterationResult>> GetIterationResultsBySimulationIdAsync(Guid simulationId, PagedRequest PagedRequest, CancellationToken cancellationToken);
+    Task<int> GetIterationResultsCountBySimulationId_AndStateAsync(Guid simulationId, CancellationToken cancellationToken);
     Task<int> GetIterationResultsCountBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken);
+    Task<IterationResult> GetLatestIterationResultBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken);
 }

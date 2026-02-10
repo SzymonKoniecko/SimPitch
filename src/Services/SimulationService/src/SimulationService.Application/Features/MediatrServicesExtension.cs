@@ -14,6 +14,8 @@ using SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 using SimulationService.Application.Features.Scoreboards.Commands;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationIdsByDate;
 using SimulationService.Application.Features.Predict.Commands;
+using SimulationService.Application.Features.Predict.Commands.StartPredictionCommand;
+using SimulationService.Application.Features.Predict.Commands.SyncPredictionIterationResultCommand;
 namespace SimulationService.Application.Features;
 
 public static class MediatrServicesExtension
@@ -27,6 +29,7 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(CreateIterationResultCommand).Assembly);
         services.AddMediatR(typeof(CreateScoreboardByIterationResultCommand).Assembly);
         services.AddMediatR(typeof(StartPredictionCommand).Assembly);
+        services.AddMediatR(typeof(SyncPredictionIterationResultCommand).Assembly);
         
         // Commands handlers
         services.AddMediatR(typeof(InitSimulationContentCommandHandler).Assembly);
@@ -35,6 +38,7 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(CreateIterationResultCommandHandler).Assembly);
         services.AddMediatR(typeof(CreateScoreboardByIterationResultCommandHandler).Assembly);
         services.AddMediatR(typeof(StartPredictionCommandHandler).Assembly);
+        services.AddMediatR(typeof(SyncPredictionIterationResultCommandHandler).Assembly);
 
         // Queries
         services.AddMediatR(typeof(GetLeagueRoundsByParamsGrpcQuery).Assembly);

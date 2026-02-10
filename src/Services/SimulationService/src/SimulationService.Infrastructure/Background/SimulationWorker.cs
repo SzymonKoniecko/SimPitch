@@ -101,6 +101,12 @@ namespace SimulationService.Infrastructure.Background
 
                 await mediator.Send(cmd, linkedCts.Token);
 
+                while (await stateReadRepo.IsSimulationStateRunning(job.SimulationId, stoppingToken)) // To cover Ml async adding of IterationResults
+                {
+                    await Task.Delay(5000);
+                    _logger.LogWarning("Simulation {SimulationId} has been DELAYED. [Still state:running]", job.SimulationId);
+                }
+
                 if (await stateReadRepo.IsSimulationStateCancelled(job.SimulationId, stoppingToken))
                 {
                     _logger.LogInformation("Simulation {SimulationId} has been cancelled.", job.SimulationId);
@@ -112,7 +118,7 @@ namespace SimulationService.Infrastructure.Background
                     await registry.SetStateAsync(job.SimulationId, completedState, stoppingToken);
 
                     await stateRepo.ChangeStatusAsync(job.SimulationId, SimulationStatus.Completed, stoppingToken);
-                    _logger.LogInformation("Simulation {SimulationId} completed successfully.", job.SimulationId);
+                    _logger.LogInformation("Simulation {SimulationId} completed successfully. [Finished by SimulationWorker]", job.SimulationId);
                 }
             }
             catch (Exception ex)

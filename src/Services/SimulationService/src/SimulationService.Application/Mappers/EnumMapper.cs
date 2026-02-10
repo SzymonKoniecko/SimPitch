@@ -98,6 +98,9 @@ public static class EnumMapper
             return SimulationModelType.BivariatePoisson;
         if ("Advanced" == model)
             return SimulationModelType.Advanced;
+        if ("XgBoost" == model)
+            return SimulationModelType.XgBoost;
+            
         throw new ArgumentException($"Invalid simulation model string type. Provided {model}");
     }
 }

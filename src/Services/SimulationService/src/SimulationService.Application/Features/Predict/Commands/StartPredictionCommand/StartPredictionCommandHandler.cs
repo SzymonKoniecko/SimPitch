@@ -3,7 +3,7 @@ using MediatR;
 using SimulationService.Application.Features.Predict.DTOs;
 using SimulationService.Application.Interfaces;
 
-namespace SimulationService.Application.Features.Predict.Commands;
+namespace SimulationService.Application.Features.Predict.Commands.StartPredictionCommand;
 
 public class StartPredictionCommandHandler : IRequestHandler<StartPredictionCommand, PredictResponseDto>
 {
