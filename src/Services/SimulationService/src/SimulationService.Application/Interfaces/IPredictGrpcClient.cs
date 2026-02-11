@@ -5,5 +5,5 @@ namespace SimulationService.Application.Interfaces;
 
 public interface IPredictGrpcClient
 {
-    Task<PredictResponseDto> StartPredictionAsync(PredictRequestDto predictRequest, CancellationToken cancellationToken);
+    Task<PredictResponseDto> StreamPredictionAsync(PredictRequestDto predictRequest, CancellationToken cancellationToken);
 }

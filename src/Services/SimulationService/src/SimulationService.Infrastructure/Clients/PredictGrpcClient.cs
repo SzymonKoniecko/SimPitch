@@ -1,33 +1,57 @@
 using System;
+using Grpc.Core;
+using MediatR;
 using Newtonsoft.Json;
 using SimPitchProtos.SimPitchMl;
 using SimPitchProtos.SimPitchMl.Predict;
+using SimulationService.Application.Features.IterationResults.DTOs;
+using SimulationService.Application.Features.MatchRounds.DTOs;
+using SimulationService.Application.Features.Predict.Commands.SyncPredictionIterationResultCommand;
 using SimulationService.Application.Features.Predict.DTOs;
 using SimulationService.Application.Interfaces;
+using SimulationService.Application.Mappers;
 
 namespace SimulationService.Infrastructure.Clients;
 
 public class PredictGrpcClient : IPredictGrpcClient
 {
     private readonly PredictService.PredictServiceClient _predictServiceClient;
+    private readonly IMediator _mediator;
 
-    public PredictGrpcClient(PredictService.PredictServiceClient predictServiceClient)
+    public PredictGrpcClient(
+        PredictService.PredictServiceClient predictServiceClient, IMediator mediator)
     {
         this._predictServiceClient = predictServiceClient;
+        this._mediator = mediator;
     }
 
-    public async Task<PredictResponseDto> StartPredictionAsync(PredictRequestDto predictRequest, CancellationToken cancellationToken)
+    public async Task<PredictResponseDto> StreamPredictionAsync(PredictRequestDto predictRequest, CancellationToken cancellationToken)
     {
         var grpcRequest = new PredictRequest();
         grpcRequest.Predict = ToGrpc(predictRequest);
-        File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"predict.json"), JsonConvert.SerializeObject(grpcRequest.Predict));
+        File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "predict.json"), JsonConvert.SerializeObject(grpcRequest.Predict));
 
-        var response = await _predictServiceClient.StartPredictionAsync(grpcRequest, cancellationToken: cancellationToken);
+        using var call = _predictServiceClient.StreamPrediction(grpcRequest, cancellationToken: cancellationToken);
+
+        string status = String.Empty;
+        int current_counter = 0;
+        await foreach (var response in call.ResponseStream.ReadAllAsync(cancellationToken))
+        {
+            if (response != null && response?.IterationResult != null && current_counter != response?.PredictedIterations)
+            {
+                status = response?.Status ?? "MISSING_STATUS";
+                current_counter = response?.PredictedIterations ?? current_counter;
+
+                var command = new SyncPredictionIterationResultCommand(ToDto(response?.IterationResult));
+
+                await _mediator.Send(command, cancellationToken: cancellationToken);
+            }
+        }
 
         return new PredictResponseDto
         {
-            Status = response.Status,
-            IterationCount = response.PredictedIterations
+            Status = status,//response.Status,
+            IterationCount = current_counter//response.PredictedIterations
         };
     }
 
@@ -46,5 +70,20 @@ public class PredictGrpcClient : IPredictGrpcClient
         grpc.TrainRatio = predictRequest.TrainRatio ?? 0.8f;
 
         return grpc;
+    }
+
+    public static IterationResultDto ToDto(IterationResultGrpc grpc)
+    {
+        var dto = new IterationResultDto();
+
+        dto.Id = Guid.Parse(grpc.Id);
+        dto.SimulationId = Guid.Parse(grpc.SimulationId);
+        dto.IterationIndex = grpc.HasIterationIndex ? grpc.IterationIndex : 0;
+        dto.StartDate = DateTime.Parse(grpc.StartDate);
+        dto.ExecutionTime = TimeSpan.Parse(grpc.ExecutionTime);
+        dto.TeamStrengths = JsonConvert.DeserializeObject<List<TeamStrengthDto>>(grpc.TeamStrengths) ?? throw new NullReferenceException("Missing TeamStrengths for IterationResultGrpc");
+        dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundDto>>(grpc.SimulatedMatchRounds) ?? throw new NullReferenceException("Missing SimulatedMatchRounds for IterationResultGrpc");
+
+        return dto;
     }
 }

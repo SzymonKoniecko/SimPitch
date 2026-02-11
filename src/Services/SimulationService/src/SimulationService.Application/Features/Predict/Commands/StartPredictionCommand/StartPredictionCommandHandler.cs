@@ -16,9 +16,9 @@ public class StartPredictionCommandHandler : IRequestHandler<StartPredictionComm
 
     public async Task<PredictResponseDto> Handle(StartPredictionCommand command, CancellationToken cancellationToken)
     {
-        var response = await _predictGrpcClient.StartPredictionAsync(command.PredictRequest, cancellationToken);
+        var response = await _predictGrpcClient.StreamPredictionAsync(command.PredictRequest, cancellationToken);
 
-        if (response.Status != "RUNNING")
+        if (response.Status != "RUNNING" && response.Status != "COMPLETED")
         {
             throw new Exception($"Prediction failed, returned status {response.Status} for simulationId: {command.PredictRequest.SimulationId}");
         }
