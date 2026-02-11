@@ -18,7 +18,7 @@ public class StartPredictionCommandHandler : IRequestHandler<StartPredictionComm
     {
         var response = await _predictGrpcClient.StartPredictionAsync(command.PredictRequest, cancellationToken);
 
-        if (response.Status != "Completed")
+        if (response.Status != "RUNNING")
         {
             throw new Exception($"Prediction failed, returned status {response.Status} for simulationId: {command.PredictRequest.SimulationId}");
         }

@@ -41,8 +41,8 @@ public class PredictGrpcClient : IPredictGrpcClient
         grpc.MatchesToSimulate = JsonConvert.SerializeObject(predictRequest.MatchesToSimulate);
         grpc.TrainUntilRoundNo = predictRequest.TrainUntilRoundNumber;
         grpc.LeagueAvgStrength = predictRequest.LeagueAverangeStrength ?? 1.7f;
-        grpc.Seed = (int)predictRequest.Seed;
-        grpc.TrainRatio = (float)predictRequest.TrainRatio;
+        grpc.Seed = predictRequest.Seed ?? 0;
+        grpc.TrainRatio = predictRequest.TrainRatio ?? 0.8f;
 
         return grpc;
     }

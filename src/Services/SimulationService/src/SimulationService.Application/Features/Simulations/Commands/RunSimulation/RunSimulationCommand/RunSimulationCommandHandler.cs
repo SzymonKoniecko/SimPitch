@@ -77,7 +77,7 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
         if (command.SimulationParamsDto.ModelType == SimulationService.Domain.Enums.SimulationModelType.XgBoost)
         {
             var startPredictionCommand = new StartPredictionCommand(PredictMapper.CreatePredictRequest(command.Overview, simulationContent));
-            await _mediator.Send(command, cancellationToken);
+            await _mediator.Send(startPredictionCommand, cancellationToken);
         }
         else
         {
