@@ -20,6 +20,7 @@ public class PredictGrpcClient : IPredictGrpcClient
     {
         var grpcRequest = new PredictRequest();
         grpcRequest.Predict = ToGrpc(predictRequest);
+        File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"predict.json"), JsonConvert.SerializeObject(grpcRequest.Predict));
 
         var response = await _predictServiceClient.StartPredictionAsync(grpcRequest, cancellationToken: cancellationToken);
 
