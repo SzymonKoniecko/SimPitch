@@ -174,7 +174,7 @@ services:
 
       - FASTAPI_SEVER_HOST=0.0.0.0
       - FASTAPI_SEVER_PORT=${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}
-      - ENVIRONMENT=${ENVIRONMENT}
+      - ENVIRONMENT=development
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - IS_RELOAD=False
       - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
