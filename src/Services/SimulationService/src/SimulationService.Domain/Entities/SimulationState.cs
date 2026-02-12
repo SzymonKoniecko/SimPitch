@@ -51,6 +51,13 @@ public class SimulationState
         return this;
     }
 
+    public SimulationState SetRunning()
+    {
+        this.State = SimulationStatus.Running;
+        this.UpdatedAt = DateTime.Now;
+        return this;
+    }
+
     public SimulationState SetCompleted()
     {
         this.State = SimulationStatus.Completed;

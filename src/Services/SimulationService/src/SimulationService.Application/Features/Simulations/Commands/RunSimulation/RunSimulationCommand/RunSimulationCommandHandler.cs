@@ -71,6 +71,8 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
         await _simulationOverviewWriteRepository.CreateSimulationOverviewAsync(command.Overview, cancellationToken);
+        command.State.SetRunning();
+        await _simulationStateWriteRepository.UpdateOrCreateAsync(command.State, cancellationToken: cancellationToken);
 
 
         // SimPitchMl

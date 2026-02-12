@@ -25,35 +25,57 @@ public class PredictGrpcClient : IPredictGrpcClient
         this._mediator = mediator;
     }
 
-    public async Task<PredictResponseDto> StreamPredictionAsync(PredictRequestDto predictRequest, CancellationToken cancellationToken)
+    public async Task<PredictResponseDto> StreamPredictionAsync(
+    PredictRequestDto predictRequest,
+    CancellationToken cancellationToken)
     {
-        var grpcRequest = new PredictRequest();
-        grpcRequest.Predict = ToGrpc(predictRequest);
-        File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "predict.json"), JsonConvert.SerializeObject(grpcRequest.Predict));
+        var grpcRequest = new PredictRequest
+        {
+            Predict = ToGrpc(predictRequest)
+        };
+
+        // File.WriteAllText(
+        //     Path.Combine(AppContext.BaseDirectory, "predict.json"),
+        //     JsonConvert.SerializeObject(grpcRequest.Predict));
 
         using var call = _predictServiceClient.StreamPrediction(grpcRequest, cancellationToken: cancellationToken);
 
-        string status = String.Empty;
-        int current_counter = 0;
-        await foreach (var response in call.ResponseStream.ReadAllAsync(cancellationToken))
+        string status = "STARTED";
+        int currentCounter = 0;
+
+        try
         {
-            if (response != null && response?.IterationResult != null && current_counter != response?.PredictedIterations)
+            await foreach (var response in call.ResponseStream.ReadAllAsync(cancellationToken))
             {
-                status = response?.Status ?? "MISSING_STATUS";
-                current_counter = response?.PredictedIterations ?? current_counter;
+                if (response is null) continue;
 
-                var command = new SyncPredictionIterationResultCommand(ToDto(response?.IterationResult));
+                status = response.Status ?? status;
+                currentCounter = response.PredictedIterations; // zawsze aktualizuj
 
-                await _mediator.Send(command, cancellationToken: cancellationToken);
+                if (response.IterationResult is not null)
+                {
+                    var command = new SyncPredictionIterationResultCommand(ToDto(response.IterationResult));
+                    await _mediator.Send(command, cancellationToken);
+                }
+
+                if (string.Equals(status, "COMPLETED", StringComparison.OrdinalIgnoreCase))
+                {
+                    break;
+                }
             }
+        }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.Cancelled)
+        {
+            status = "CANCELLED";
         }
 
         return new PredictResponseDto
         {
-            Status = status,//response.Status,
-            IterationCount = current_counter//response.PredictedIterations
+            Status = status,
+            IterationCount = currentCounter
         };
     }
+
 
     private PredictGrpc ToGrpc(PredictRequestDto predictRequest)
     {

@@ -104,7 +104,7 @@ namespace SimulationService.Infrastructure.Background
                 while (await stateReadRepo.IsSimulationStateRunning(job.SimulationId, stoppingToken)) // To cover Ml async adding of IterationResults
                 {
                     await Task.Delay(5000);
-                    _logger.LogWarning("Simulation {SimulationId} has been DELAYED. [Still state:running]", job.SimulationId);
+                    _logger.LogWarning($"Simulation {job.SimulationId} has been DELAYED {5000}ms. [Still state:running]");
                 }
 
                 if (await stateReadRepo.IsSimulationStateCancelled(job.SimulationId, stoppingToken))

@@ -100,8 +100,7 @@ public class IterationResultReadRepository : IIterationResultReadRepository
         const string sql = @"
             SELECT COUNT(*)
             FROM IterationResult
-            WHERE SimulationId = @SimulationId
-            AND IterationIndex <= @MaxIndex;
+            WHERE SimulationId = @SimulationId;
         ";
 
         var command = new CommandDefinition(
