@@ -19,6 +19,7 @@ public static class PredictMapper
         dto.LeagueAverangeStrength = overview.PriorLeagueStrength;
         dto.Seed = simulationContent.SimulationParams.Seed;
         dto.TrainRatio = null;
+        dto.GamesToReachTrust = simulationContent.SimulationParams.GamesToReachTrust;
         return dto;
     }
 }

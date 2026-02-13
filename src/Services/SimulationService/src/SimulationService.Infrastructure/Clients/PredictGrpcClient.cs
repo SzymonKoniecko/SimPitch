@@ -90,6 +90,7 @@ public class PredictGrpcClient : IPredictGrpcClient
         grpc.LeagueAvgStrength = predictRequest.LeagueAverangeStrength ?? 1.7f;
         grpc.Seed = predictRequest.Seed ?? 0;
         grpc.TrainRatio = predictRequest.TrainRatio ?? 0.8f;
+        grpc.GamesToReachTrust = predictRequest.GamesToReachTrust ?? 25;
 
         return grpc;
     }

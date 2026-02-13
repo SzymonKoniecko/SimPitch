@@ -17,4 +17,5 @@ public class PredictRequestDto
     public float? LeagueAverangeStrength { get; set; }
     public int? Seed { get; set; }
     public float? TrainRatio { get; set; }
+    public int? GamesToReachTrust { get; set; }
 }
