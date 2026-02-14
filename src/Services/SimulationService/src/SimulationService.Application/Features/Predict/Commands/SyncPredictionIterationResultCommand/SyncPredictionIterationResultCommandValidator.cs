@@ -15,7 +15,7 @@ public class SyncPredictionIterationResultCommandValidator : AbstractValidator<S
 
         RuleFor(x => x.IterationResult)
             .NotNull()
-            .SetValidator(new IterationResultDtoValidator()); // [web:598]
+            .SetValidator(new IterationResultDtoValidator());
     }
 }
 
@@ -161,9 +161,6 @@ public sealed class SeasonStatsDtoValidator : AbstractValidator<SeasonStatsDto>
     public SeasonStatsDtoValidator()
     {
         RuleFor(x => x).NotNull();
-
-        RuleFor(x => x.Id)
-            .NotEqual(Guid.Empty).WithMessage("SeasonStats.Id must not be empty.");
 
         RuleFor(x => x.TeamId)
             .NotEqual(Guid.Empty).WithMessage("SeasonStats.TeamId must not be empty.");

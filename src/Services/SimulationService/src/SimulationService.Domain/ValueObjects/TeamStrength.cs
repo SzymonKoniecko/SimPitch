@@ -121,6 +121,69 @@ public record TeamStrength
     public TeamStrength SetRoundId(Guid roundId)
         => this with { RoundId = roundId };
 
+    public static List<TeamStrength> MergeAll(IEnumerable<TeamStrength> items)
+    {
+        if (items == null)
+            throw new ArgumentNullException(nameof(items));
+
+        using var enumerator = items.GetEnumerator();
+
+        if (!enumerator.MoveNext())
+            throw new InvalidOperationException("Cannot merge empty collection.");
+
+        var first = enumerator.Current;
+
+        float likelihoodOff = 0f;
+        float likelihoodDef = 0f;
+        float posteriorOff = 0f;
+        float posteriorDef = 0f;
+        float expectedGoals = 0f;
+
+        int count = 0;
+
+        SeasonStats? seasonAccumulator = null;
+
+        do
+        {
+            var current = enumerator.Current;
+
+            if (current.TeamId != first.TeamId)
+                throw new InvalidOperationException(
+                    $"Cannot merge TeamStrength for different teams: {first.TeamId} != {current.TeamId}");
+
+            likelihoodOff += current.Likelihood.Offensive;
+            likelihoodDef += current.Likelihood.Defensive;
+            posteriorOff += current.Posterior.Offensive;
+            posteriorDef += current.Posterior.Defensive;
+            expectedGoals += current.ExpectedGoals;
+
+            seasonAccumulator = seasonAccumulator == null
+                ? current.SeasonStats
+                : seasonAccumulator.Merge(seasonAccumulator, current.SeasonStats);
+
+            count++;
+
+        } while (enumerator.MoveNext());
+
+        return new List<TeamStrength>()
+            {first with
+            {
+                Likelihood = new(
+                    likelihoodOff / count,
+                    likelihoodDef / count
+                ),
+                Posterior = new(
+                    posteriorOff / count,
+                    posteriorDef / count
+                ),
+                ExpectedGoals = expectedGoals / count,
+                LastUpdate = DateTime.Now,
+                RoundId = null,
+                SeasonStats = seasonAccumulator!
+        }};
+    }
+
+
     /// <summary>
     /// Id used as marker to indicate the INITIAL team SeasonStats BEFORE the simualtion
     /// (LeagueRoundId or LeagueId)

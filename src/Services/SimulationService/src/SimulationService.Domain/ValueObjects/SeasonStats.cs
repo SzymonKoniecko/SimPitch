@@ -1,4 +1,5 @@
 using System;
+using SimulationService.Domain.Consts;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
 
@@ -120,7 +121,9 @@ public record SeasonStats
             GoalsAgainst = accumulator.GoalsAgainst + newData.GoalsAgainst,
 
             LeagueStrength = newLeagueStrength,
-            SeasonYear = newData.SeasonYear,
+            // IDK if ok, but we are making simulations only for current, 
+            // so historic also should be marked as CURRENT_SEASON [in simulation]
+            SeasonYear = SimulationConsts.CURRENT_SEASON, 
             LeagueId = newData.LeagueId
         };
     }
