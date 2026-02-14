@@ -101,11 +101,11 @@ namespace SimulationService.Infrastructure.Background
 
                 await mediator.Send(cmd, linkedCts.Token);
 
-                while (await stateReadRepo.IsSimulationStateRunning(job.SimulationId, stoppingToken)) // To cover Ml async adding of IterationResults
-                {
-                    await Task.Delay(1000);
-                    _logger.LogWarning($"Simulation {job.SimulationId} has been DELAYED {1000}ms. [Still state:running]");
-                }
+                // while (await stateReadRepo.IsSimulationStateRunning(job.SimulationId, stoppingToken)) // To cover Ml async adding of IterationResults
+                // {
+                //     await Task.Delay(500);
+                //     _logger.LogWarning($"Simulation {job.SimulationId} has been DELAYED {500}ms. [Still state:running]");
+                // }
 
                 if (await stateReadRepo.IsSimulationStateCancelled(job.SimulationId, stoppingToken))
                 {
