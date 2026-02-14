@@ -3,6 +3,8 @@ using SimulationService.Application.Features.MatchRounds.DTOs;
 using SimulationService.Application.Features.IterationResults.DTOs;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.ValueObjects;
+using SimulationService.Application.Features.Predict.DTOs.PythonSnakeCaseContracts;
+using SimulationService.Application.Features.SeasonsStats.DTOs;
 
 namespace SimulationService.Application.Mappers;
 
@@ -96,4 +98,73 @@ public static class IterationResultMapper
 
         return dto;
     }
+
+    #region SnakeCaseToPascalCase
+    public static IterationResultDto SnakeCaseToPascalCase(IterationResultContractDto iterationResultContractDto)
+    {
+        var itResult = new IterationResultDto();
+        itResult.Id = iterationResultContractDto.Id;
+        itResult.SimulationId = iterationResultContractDto.SimulationId;
+        itResult.IterationIndex = iterationResultContractDto.IterationIndex;
+        itResult.StartDate = iterationResultContractDto.StartDate;
+        itResult.ExecutionTime = iterationResultContractDto.ExecutionTime;
+        itResult.TeamStrengths = iterationResultContractDto.TeamStrengths.Select(x => SnakeCaseToPascalCase(x)).ToList();
+        itResult.SimulatedMatchRounds = iterationResultContractDto.SimulatedMatchRounds.Select(x => SnakeCaseToPascalCase(x)).ToList();
+
+        return itResult;
+    }
+
+    public static TeamStrengthDto SnakeCaseToPascalCase(TeamStrengthContractDto teamStrength)
+    {
+        var dto = new TeamStrengthDto();
+
+        dto.TeamId = teamStrength.TeamId;
+        dto.Likelihood = new();
+        dto.Likelihood.Offensive = teamStrength.Likelihood.Offensive;
+        dto.Likelihood.Defensive = teamStrength.Likelihood.Defensive;
+        dto.Posterior = new();
+        dto.Posterior.Offensive = teamStrength.Posterior.Offensive;
+        dto.Posterior.Defensive = teamStrength.Posterior.Defensive;
+        dto.ExpectedGoals = teamStrength.ExpectedGoals;
+        dto.LastUpdate = teamStrength.LastUpdate;
+        dto.RoundId = teamStrength.RoundId;
+        dto.SeasonStats = SnakeCaseToPascalCase(teamStrength.SeasonStats);
+
+        return dto;
+    }
+
+    public static SeasonStatsDto SnakeCaseToPascalCase(SeasonStatsContractDto seasonStats)
+    {
+        var dto = new SeasonStatsDto();
+
+        dto.Id = seasonStats.Id;
+        dto.TeamId = seasonStats.TeamId;
+        dto.SeasonYear = seasonStats.SeasonYear;
+        dto.LeagueId = seasonStats.LeagueId;
+        dto.LeagueStrength = seasonStats.LeagueStrength;
+        dto.MatchesPlayed = seasonStats.MatchesPlayed;
+        dto.Wins = seasonStats.Wins;
+        dto.Losses = seasonStats.Losses;
+        dto.Draws = seasonStats.Draws;
+        dto.GoalsFor = seasonStats.GoalsFor;
+        dto.GoalsAgainst = seasonStats.GoalsAgainst;
+
+        return dto;
+    }
+
+    public static MatchRoundDto SnakeCaseToPascalCase(MatchRoundContractDto contractDto)
+    {
+        var dto = new MatchRoundDto();
+        dto.Id = contractDto.Id;
+        dto.RoundId = contractDto.RoundId;
+        dto.HomeTeamId = contractDto.HomeTeamId;
+        dto.AwayTeamId = contractDto.AwayTeamId;
+        dto.HomeGoals = contractDto.HomeGoals;
+        dto.AwayGoals = contractDto.AwayGoals;
+        dto.IsDraw = contractDto.IsDraw;
+        dto.IsPlayed = contractDto.IsPlayed;
+
+        return dto;
+    }
+    #endregion
 }

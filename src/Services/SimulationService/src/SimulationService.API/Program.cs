@@ -44,6 +44,7 @@ builder.Services.AddGrpc(options =>
 
 builder.Services.AddSportsDataGrpcClient(ConfigHelper.GetSportsDataAddress());
 builder.Services.AddStatisticsGrpcClient(ConfigHelper.GetStatisticsAddress());
+builder.Services.AddSimPitchMlGrpcClient(ConfigHelper.GetSimPitchMlAddress());
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

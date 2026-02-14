@@ -44,6 +44,27 @@ public static class ConfigHelper
         }
         return statisticsAddress;
     }
+
+    public static string GetSimPitchMlAddress()
+    {
+        string statisticsAddress = Environment.GetEnvironmentVariable("SimPitchMl__Address");
+
+        if (string.IsNullOrEmpty(statisticsAddress))
+        {
+            if (!File.Exists("/.dockerenv"))
+            {
+                var config = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
+                    .Build();
+
+                statisticsAddress = config["SimPitchMl:Address"];
+            }
+            else
+                throw new SystemException("SimPitchMl address is not declared!");
+        }
+        return statisticsAddress;
+    }
     
     internal static string GetLoggerSourceName()
     {

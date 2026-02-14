@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 using SimulationService.Domain.Enums;
 
 namespace SimulationService.Application.Features.SeasonsStats.DTOs;

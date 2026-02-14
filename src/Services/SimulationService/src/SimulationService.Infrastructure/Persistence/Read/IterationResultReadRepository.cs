@@ -65,9 +65,9 @@ public class IterationResultReadRepository : IIterationResultReadRepository
         return results;
     }
 
-    public async Task<int> GetIterationResultsCountBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    public async Task<int> GetIterationResultsCountBySimulationId_AndStateAsync(Guid simulationId, CancellationToken cancellationToken)
     {
-        var simulationState = await _simulationStateReadRepository
+        var simulationState = await _simulationStateReadRepository // idk why are using it (maybe to prevent the issue with checking the simulation results WHEN SIMULATION IS IN PROGRESS)
             .GetSimulationStateBySimulationIdAsync(simulationId, cancellationToken);
 
         using var connection = _dbConnectionFactory.CreateConnection();
@@ -90,5 +90,54 @@ public class IterationResultReadRepository : IIterationResultReadRepository
         );
 
         return await connection.ExecuteScalarAsync<int>(command);
+    }
+
+    public async Task<int> GetIterationResultsCountBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    {
+
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = @"
+            SELECT COUNT(*)
+            FROM IterationResult
+            WHERE SimulationId = @SimulationId;
+        ";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new
+            {
+                SimulationId = simulationId,
+            },
+            cancellationToken: cancellationToken
+        );
+
+        return await connection.ExecuteScalarAsync<int>(command);
+    }
+
+    public async Task<IterationResult> GetLatestIterationResultBySimulationIdAsync(Guid simulationId, CancellationToken cancellationToken)
+    {
+
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = @"
+            SELECT Id, SimulationId, IterationIndex, StartDate, ExecutionTime, TeamStrengths, 
+            SimulatedMatchRounds
+            FROM IterationResult
+            WHERE Id = @SimulationId
+            ORDER BY IterationIndex DESC;
+        ";
+
+        var command = new CommandDefinition(
+            commandText: sql,
+            parameters: new { SimulationId = simulationId },
+            cancellationToken: cancellationToken
+        );
+
+
+        var result = await connection.QuerySingleOrDefaultAsync<IterationResult>(command);
+        if (result == null) throw new KeyNotFoundException("No latest iteration result for given ID");
+
+        return result;
     }
 }

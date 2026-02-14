@@ -42,7 +42,7 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
                 IterationResults.Select(sr => IterationResultMapper.ToDto(sr)).ToList(),
                 new PagedResponseDetails()
                 {
-                    TotalCount = await _IterationResultReadRepository.GetIterationResultsCountBySimulationIdAsync(query.SimulationId, cancellationToken),
+                    TotalCount = await _IterationResultReadRepository.GetIterationResultsCountBySimulationId_AndStateAsync(query.SimulationId, cancellationToken),
                     PageNumber = (query.PagedRequest.Offset / query.PagedRequest.PageSize) + 1,
                     PageSize = query.PagedRequest.PageSize,
                     SortingOption = query.PagedRequest.SortingMethod.SortingOption,
@@ -55,7 +55,7 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
             cachedResults.Select(sr => IterationResultMapper.ToDto(sr)).ToList(),
             new PagedResponseDetails()
             {
-                TotalCount = await _IterationResultReadRepository.GetIterationResultsCountBySimulationIdAsync(query.SimulationId, cancellationToken),
+                TotalCount = await _IterationResultReadRepository.GetIterationResultsCountBySimulationId_AndStateAsync(query.SimulationId, cancellationToken),
                 PageNumber = (query.PagedRequest.Offset / query.PagedRequest.PageSize) + 1,
                 PageSize = query.PagedRequest.PageSize,
                 SortingOption = query.PagedRequest.SortingMethod.SortingOption,

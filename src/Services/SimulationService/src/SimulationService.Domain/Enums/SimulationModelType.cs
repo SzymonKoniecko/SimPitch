@@ -5,5 +5,6 @@ public enum SimulationModelType
     StandardPoisson,
     DixonColes,
     BivariatePoisson,
-    Advanced
+    Advanced,
+    XgBoost
 }

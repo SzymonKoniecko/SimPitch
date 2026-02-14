@@ -12,13 +12,12 @@ public class TeamStrengthDto
     public StrengthItemDto Posterior { get; set; }
     public float ExpectedGoals { get; set; }
     public DateTime LastUpdate { get; set; } = DateTime.Now;
+
     /// <summary>
-    /// Indicate the roundId in which these stats has been updated
-    /// 
-    /// If null, its before the first match
+    /// Indicate the roundId in which these stats has been updated.
+    /// If null, it's before the first match.
     /// </summary>
-    
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("RoundId", NullValueHandling = NullValueHandling.Ignore)]
     public Guid? RoundId { get; set; } = null;
     public SeasonStatsDto SeasonStats { get; set; }
 }

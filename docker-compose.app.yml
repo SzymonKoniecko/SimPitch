@@ -65,6 +65,7 @@ services:
       - GrpcLogging__SourceName=SimulationService
       - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
       - StatisticsService__Address=http://${STATISTICS_SERVICE_NAME}:${STATISTICS_SERVICE_CONTAINER_PORT_GRPC}
+      - SimPitchMl__Address=http://${SIMPITCHML_SERVICE_NAME}:${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}
     networks:
       - backend_network
     depends_on:
@@ -159,12 +160,17 @@ services:
     image: simpitch-tc-simpitch-ml-service:latest
     ports:
       - "${SIMPITCHML_SERVICE_HOST_PORT_REST}:${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}"
-      # - "${SIMPITCHML_SERVICE_HOST_PORT_GRPC}:${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}"
+      - "${SIMPITCHML_SERVICE_HOST_PORT_GRPC}:${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}"
     
     environment:
       - SIMULATION_GRPC_SERVER_HOST=${SIMULATION_SERVICE_NAME}
       - SIMULATION_GRPC_SERVER_PORT=${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
       - SIMULATION_GRPC_TIMEOUT=${GRPC_TIMEOUT}
+
+      - SIMPITCHML_SERVICE_HOST_PORT_REST=${SIMPITCHML_SERVICE_HOST_PORT_REST}
+      - SIMPITCHML_SERVICE_HOST_PORT_GRPC=${SIMPITCHML_SERVICE_HOST_PORT_GRPC}
+      - SIMPITCHML_SERVICE_CONTAINER_PORT_REST=${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}
+      - SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC=${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}
       
       - SPORTSDATA_GRPC_SERVER_HOST=${SPORTSDATA_SERVICE_NAME}
       - SPORTSDATA_GRPC_SERVER_PORT=${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
@@ -173,15 +179,11 @@ services:
 
       - FASTAPI_SEVER_HOST=0.0.0.0
       - FASTAPI_SEVER_PORT=${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}
-      - ENVIRONMENT=${ENVIRONMENT}
+      - ENVIRONMENT=development
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - IS_RELOAD=False
       - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
       - STORAGE_DIR=/app/data_storage 
-    #extra_hosts:
-    #  - "host.docker.internal:host-gateway"
-    #volumes:
-    #  - ./models:/app/models
-    #  - ./logs:/app/logs
     volumes:
       - simpitch_ml_data:/app/data_storage
     networks:

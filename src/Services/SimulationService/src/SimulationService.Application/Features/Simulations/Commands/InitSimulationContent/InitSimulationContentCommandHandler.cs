@@ -136,7 +136,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         contentResponse.TeamsStrengthDictionary = contentResponse.TeamsStrengthDictionary
             .ToDictionary(
                 kvp => kvp.Key,
-                kvp => kvp.Value.Select(teamStrength =>
+                kvp => TeamStrength.MergeAll(kvp.Value.Select(teamStrength =>
                 {
                     var updatedTeam = teamStrength;
 
@@ -151,7 +151,8 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                         contentResponse.SimulationParams);
 
                     return updatedTeam;
-                }).ToList()
+                }
+                ))
             );
 
 
@@ -190,7 +191,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
             .FirstOrDefault(x => x.SeasonYear == currentSeasonEnum)?.Strength
             ?? 2.5f;
         }
-        
+
 
         foreach (var teamId in allTeamIds)
         {
@@ -236,12 +237,13 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                 leagueRound.Id);
             leagueStrength = 2.5f;
             contentResponse.LeagueStrengths.Add(
-                new LeagueStrength() { 
+                new LeagueStrength()
+                {
                     Id = Guid.Empty,
                     LeagueId = leagueRound.LeagueId,
                     SeasonYear = seasonEnum,
                     Strength = leagueStrength
-            });
+                });
         }
 
         foreach (var matchRound in matchRounds)
@@ -308,7 +310,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         else
         {
             var newTeamStrength = TeamStrength.Create((
-                response.SimulationParams.LeagueRoundId != Guid.Empty) ? response.SimulationParams.LeagueRoundId : response.SimulationParams.LeagueId, 
+                response.SimulationParams.LeagueRoundId != Guid.Empty) ? response.SimulationParams.LeagueRoundId : response.SimulationParams.LeagueId,
                 teamId, seasonEnum, leagueId, leagueStrength
             );
             var updatedStats = _seasonStatsService.CalculateSeasonStats(
@@ -397,4 +399,3 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
     }
 
 }
- 

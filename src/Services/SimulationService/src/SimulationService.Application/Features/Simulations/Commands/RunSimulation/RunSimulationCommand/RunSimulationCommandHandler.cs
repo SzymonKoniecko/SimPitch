@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SimulationService.Application.DomainValidators;
 using SimulationService.Application.Extensions;
 using SimulationService.Application.Features.IterationResults.Commands.CreateIterationResultCommand;
+using SimulationService.Application.Features.Predict.Commands.StartPredictionCommand;
 using SimulationService.Application.Features.Scoreboards.Commands;
 using SimulationService.Application.Features.Simulations.Commands.InitSimulationContent;
 using SimulationService.Application.Features.Simulations.Commands.RunSimulation.RunSimulationCommand;
@@ -70,76 +71,95 @@ public class RunSimulationCommandHandler : IRequestHandler<RunSimulationCommand,
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
         await _simulationOverviewWriteRepository.CreateSimulationOverviewAsync(command.Overview, cancellationToken);
-        int simulationIndex = 0;
+        command.State.SetRunning();
+        await _simulationStateWriteRepository.UpdateOrCreateAsync(command.State, cancellationToken: cancellationToken);
 
-        var (initialMatchRounds, initialTeamStrengths) =
-            DeepCloneExtensions.CloneSimulationDataManual(
-                simulationContent.MatchRoundsToSimulate,
-                simulationContent.TeamsStrengthDictionary
-        );
 
-        for (int i = 1; i <= command.SimulationParamsDto.Iterations; i++)
+        // SimPitchMl
+        if (command.SimulationParamsDto.ModelType == SimulationService.Domain.Enums.SimulationModelType.XgBoost)
         {
-            var (freshMatchRounds, freshTeamStrengths) = DeepCloneExtensions.CloneSimulationDataManual(
-                    initialMatchRounds,
-                    initialTeamStrengths
+            var startPredictionCommand = new StartPredictionCommand(PredictMapper.CreatePredictRequest(command.Overview, simulationContent));
+            await _mediator.Send(startPredictionCommand, cancellationToken);
+        }
+        else
+        {
+            // Start simulation fer each iteration result
+            int simulationIndex = 0;
+            var (initialMatchRounds, initialTeamStrengths) =
+                DeepCloneExtensions.CloneSimulationDataManual(
+                    simulationContent.MatchRoundsToSimulate,
+                    simulationContent.TeamsStrengthDictionary
             );
-
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            if (await _simulationStateReadRepository.IsSimulationStateCancelled(command.simulationId, cancellationToken))
+            for (int i = 1; i <= command.SimulationParamsDto.Iterations; i++)
             {
-                _logger.LogInformation($"////Cancelled simulation before iteration: {i} -- simulationId: {command.simulationId}////");
-                break;
-            }
+                var (freshMatchRounds, freshTeamStrengths) = DeepCloneExtensions.CloneSimulationDataManual(
+                        initialMatchRounds,
+                        initialTeamStrengths
+                );
 
 
-            _logger.LogInformation(
-            "Simulation content initialized. Teams: {TeamCount}, Matches to simulate: {MatchCount}, " +
-            "Prior League Strength: {PriorStrength:F2}",
-            simulationContent.TeamsStrengthDictionary.Count,
-            simulationContent.MatchRoundsToSimulate.Count,
-            simulationContent.PriorLeagueStrength);
+                cancellationToken.ThrowIfCancellationRequested();
 
-            DateTime startTime = DateTime.Now;
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-
-            // the be sure that new iteration is not inheriting the values from previous iterations.
-            simulationContent.MatchRoundsToSimulate = freshMatchRounds;
-            simulationContent.TeamsStrengthDictionary = freshTeamStrengths;
-
-            simulationContent = _matchSimulator.SimulationWorkflow(simulationContent);
-            watch.Stop();
+                if (await _simulationStateReadRepository.IsSimulationStateCancelled(command.simulationId, cancellationToken))
+                {
+                    _logger.LogInformation($"////Cancelled simulation before iteration: {i} -- simulationId: {command.simulationId}////");
+                    break;
+                }
 
 
-            simulationIndex++;
+                _logger.LogInformation(
+                "Simulation content initialized. Teams: {TeamCount}, Matches to simulate: {MatchCount}, " +
+                "Prior League Strength: {PriorStrength:F2}",
+                simulationContent.TeamsStrengthDictionary.Count,
+                simulationContent.MatchRoundsToSimulate.Count,
+                simulationContent.PriorLeagueStrength);
 
-            var itResultDto = IterationResultMapper.SimulationToIterationResultDto
-            (
-                command.simulationId,
-                simulationIndex,
-                startTime,
-                watch.Elapsed,
-                simulationContent.MatchRoundsToSimulate,
-                simulationContent.TeamsStrengthDictionary
-            );
+                DateTime startTime = DateTime.Now;
+                var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            await _mediator.Send(new CreateIterationResultCommand(itResultDto), cancellationToken);
+                // the be sure that new iteration is not inheriting the values from previous iterations.
+                simulationContent.MatchRoundsToSimulate = freshMatchRounds;
+                simulationContent.TeamsStrengthDictionary = freshTeamStrengths;
 
-            itResultDto.TeamStrengths.RemoveAll(
-                x => x.SeasonStats.Id == Guid.Empty 
-            );
-            command.State.LastCompletedIteration = i;
-            await _registry.SetStateAsync(command.simulationId, command.State.Update((float)i / command.SimulationParamsDto.Iterations * 100));
-            await _simulationStateWriteRepository.UpdateOrCreateAsync(command.State, cancellationToken: cancellationToken);
+                simulationContent = _matchSimulator.SimulationWorkflow(simulationContent);
+                watch.Stop();
 
-            if (command.SimulationParamsDto.CreateScoreboardOnCompleteIteration)
-            {
-                if (await _mediator.Send(new CreateScoreboardByIterationResultCommand(SimulationOverviewMapper.ToDto(command.Overview), itResultDto), cancellationToken) == false)
-                    _logger.LogError($"Scoreboard is not created-> IterationResultId:{itResultDto.Id}, SimulationId: {itResultDto.SimulationId}");
+
+                simulationIndex++;
+
+                var itResultDto = IterationResultMapper.SimulationToIterationResultDto
+                (
+                    command.simulationId,
+                    simulationIndex,
+                    startTime,
+                    watch.Elapsed,
+                    simulationContent.MatchRoundsToSimulate,
+                    simulationContent.TeamsStrengthDictionary
+                );
+
+                await _mediator.Send(new CreateIterationResultCommand(itResultDto), cancellationToken);
+
+                itResultDto.TeamStrengths.RemoveAll(
+                    x => x.SeasonStats.Id == Guid.Empty
+                );
+
+                command.State.LastCompletedIteration = i;
+                await UpdateStates(command.simulationId, command.SimulationParamsDto.Iterations, command.State, cancellationToken);
+
+                if (command.SimulationParamsDto.CreateScoreboardOnCompleteIteration)
+                {
+                    if (await _mediator.Send(new CreateScoreboardByIterationResultCommand(SimulationOverviewMapper.ToDto(command.Overview), itResultDto), cancellationToken) == false)
+                        _logger.LogError($"Scoreboard is not created-> IterationResultId:{itResultDto.Id}, SimulationId: {itResultDto.SimulationId}");
+                }
             }
         }
+
         return command.simulationId;
+    }
+
+    private async Task UpdateStates(Guid simulationId, int maxIterations, SimulationState state, CancellationToken cancellationToken)
+    {
+        await _registry.SetStateAsync(simulationId, state.Update((float)state.LastCompletedIteration / maxIterations * 100));
+        await _simulationStateWriteRepository.UpdateOrCreateAsync(state, cancellationToken: cancellationToken);
     }
 }

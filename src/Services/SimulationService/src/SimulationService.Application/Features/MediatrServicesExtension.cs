@@ -13,6 +13,13 @@ using SimulationService.Application.Features.IterationResults.Queries.GetIterati
 using SimulationService.Application.Features.Simulations.Commands.SetSimulation;
 using SimulationService.Application.Features.Scoreboards.Commands;
 using SimulationService.Application.Features.Simulations.Queries.GetSimulationIdsByDate;
+using SimulationService.Application.Features.Predict.Commands;
+using SimulationService.Application.Features.Predict.Commands.StartPredictionCommand;
+using SimulationService.Application.Features.Predict.Commands.SyncPredictionIterationResultCommand;
+using FluentValidation;
+using SimulationService.Application.Features.IterationResults.DTOs;
+using SimulationService.Application.Features.MatchRounds.DTOs;
+using SimulationService.Application.Features.SeasonsStats.DTOs;
 namespace SimulationService.Application.Features;
 
 public static class MediatrServicesExtension
@@ -25,6 +32,8 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(SetSimulationCommand).Assembly);
         services.AddMediatR(typeof(CreateIterationResultCommand).Assembly);
         services.AddMediatR(typeof(CreateScoreboardByIterationResultCommand).Assembly);
+        services.AddMediatR(typeof(StartPredictionCommand).Assembly);
+        services.AddMediatR(typeof(SyncPredictionIterationResultCommand).Assembly);
         
         // Commands handlers
         services.AddMediatR(typeof(InitSimulationContentCommandHandler).Assembly);
@@ -32,6 +41,8 @@ public static class MediatrServicesExtension
         services.AddMediatR(typeof(SetSimulationCommandHandler).Assembly);
         services.AddMediatR(typeof(CreateIterationResultCommandHandler).Assembly);
         services.AddMediatR(typeof(CreateScoreboardByIterationResultCommandHandler).Assembly);
+        services.AddMediatR(typeof(StartPredictionCommandHandler).Assembly);
+        services.AddMediatR(typeof(SyncPredictionIterationResultCommandHandler).Assembly);
 
         // Queries
         services.AddMediatR(typeof(GetLeagueRoundsByParamsGrpcQuery).Assembly);
@@ -55,6 +66,12 @@ public static class MediatrServicesExtension
 
         // Validators
         services.AddTransient<RunSimulationCommandValidator>();
+        services.AddTransient<IValidator<SyncPredictionIterationResultCommand>, SyncPredictionIterationResultCommandValidator>();
+        services.AddTransient<IValidator<IterationResultDto>, IterationResultDtoValidator>();
+        services.AddTransient<IValidator<StrengthItemDto>, StrengthItemDtoValidator>();
+        services.AddTransient<IValidator<TeamStrengthDto>, TeamStrengthDtoValidator>();
+        services.AddTransient<IValidator<MatchRoundDto>, MatchRoundDtoValidator>();
+        services.AddTransient<IValidator<SeasonStatsDto>, SeasonStatsDtoValidator>();
 
         return services;
     }
