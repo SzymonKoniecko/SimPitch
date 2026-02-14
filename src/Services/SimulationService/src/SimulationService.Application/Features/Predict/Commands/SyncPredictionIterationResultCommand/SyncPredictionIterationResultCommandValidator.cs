@@ -15,7 +15,7 @@ public class SyncPredictionIterationResultCommandValidator : AbstractValidator<S
 
         RuleFor(x => x.IterationResult)
             .NotNull()
-            .SetValidator(new IterationResultDtoValidator());
+            .SetValidator(new IterationResultDtoValidator()).WithMessage(x => $"IterationResultId: {x.IterationResult.Id}");
     }
 }
 
