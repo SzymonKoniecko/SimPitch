@@ -70,10 +70,10 @@ public sealed class StrengthItemDtoValidator : AbstractValidator<StrengthItemDto
             .WithMessage("Defensive must be a finite number.");
 
         RuleFor(x => x.Offensive)
-            .GreaterThan(0f).WithMessage("Offensive must be > 0.");
+            .GreaterThanOrEqualTo(0.0f).WithMessage("Offensive must be >= 0.");
 
         RuleFor(x => x.Defensive)
-            .GreaterThan(0f).WithMessage("Defensive must be > 0.");
+            .GreaterThanOrEqualTo(0.0f).WithMessage("Defensive must be >= 0.");
     }
 }
 

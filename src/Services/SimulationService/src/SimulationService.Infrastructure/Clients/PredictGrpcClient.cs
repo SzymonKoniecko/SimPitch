@@ -8,6 +8,7 @@ using SimulationService.Application.Features.IterationResults.DTOs;
 using SimulationService.Application.Features.MatchRounds.DTOs;
 using SimulationService.Application.Features.Predict.Commands.SyncPredictionIterationResultCommand;
 using SimulationService.Application.Features.Predict.DTOs;
+using SimulationService.Application.Features.Predict.DTOs.PythonSnakeCaseContracts;
 using SimulationService.Application.Interfaces;
 using SimulationService.Application.Mappers;
 
@@ -54,7 +55,10 @@ public class PredictGrpcClient : IPredictGrpcClient
 
                 if (response.IterationResult is not null)
                 {
-                    var command = new SyncPredictionIterationResultCommand(ToDto(response.IterationResult));
+                    var command = new SyncPredictionIterationResultCommand(
+                        IterationResultMapper.SnakeCaseToPascalCase(
+                            ToContractDto(response.IterationResult
+                    )));
                     await _mediator.Send(command, cancellationToken);
                 }
 
@@ -95,17 +99,17 @@ public class PredictGrpcClient : IPredictGrpcClient
         return grpc;
     }
 
-    public static IterationResultDto ToDto(IterationResultGrpc grpc)
+    public static IterationResultContractDto ToContractDto(IterationResultGrpc grpc)
     {
-        var dto = new IterationResultDto();
+        var dto = new IterationResultContractDto();
 
         dto.Id = Guid.Parse(grpc.Id);
         dto.SimulationId = Guid.Parse(grpc.SimulationId);
         dto.IterationIndex = grpc.HasIterationIndex ? grpc.IterationIndex : 0;
         dto.StartDate = DateTime.Parse(grpc.StartDate);
         dto.ExecutionTime = TimeSpan.Parse(grpc.ExecutionTime);
-        dto.TeamStrengths = JsonConvert.DeserializeObject<List<TeamStrengthDto>>(grpc.TeamStrengths) ?? throw new NullReferenceException("Missing TeamStrengths for IterationResultGrpc");
-        dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundDto>>(grpc.SimulatedMatchRounds) ?? throw new NullReferenceException("Missing SimulatedMatchRounds for IterationResultGrpc");
+        dto.TeamStrengths = JsonConvert.DeserializeObject<List<TeamStrengthContractDto>>(grpc.TeamStrengths) ?? throw new NullReferenceException("Missing TeamStrengths for IterationResultGrpc");
+        dto.SimulatedMatchRounds = JsonConvert.DeserializeObject<List<MatchRoundContractDto>>(grpc.SimulatedMatchRounds) ?? throw new NullReferenceException("Missing SimulatedMatchRounds for IterationResultGrpc");
 
         return dto;
     }
