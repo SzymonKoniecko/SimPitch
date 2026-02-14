@@ -1,4 +1,5 @@
 using System;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SimulationService.Application.Features.IterationResults.Commands.CreateIterationResultCommand;
@@ -15,6 +16,7 @@ namespace SimulationService.Application.Features.Predict.Commands.SyncPrediction
 
 public class SyncPredictionIterationResultCommandHandler : IRequestHandler<SyncPredictionIterationResultCommand, bool>
 {
+    private readonly IValidator<SyncPredictionIterationResultCommand> _validator;
     private readonly IMediator _mediator;
     private readonly IRedisSimulationRegistry _registry;
     private readonly ILogger<SyncPredictionIterationResultCommandHandler> _logger;
@@ -22,12 +24,14 @@ public class SyncPredictionIterationResultCommandHandler : IRequestHandler<SyncP
     private readonly ISimulationStateWriteRepository _simulationStateWriteRepository;
 
     public SyncPredictionIterationResultCommandHandler(
+        IValidator<SyncPredictionIterationResultCommand> validator,
         IMediator mediator,
         IRedisSimulationRegistry registry,
         ILogger<SyncPredictionIterationResultCommandHandler> logger,
         ISimulationStateReadRepository simulationStateReadRepository,
         ISimulationStateWriteRepository simulationStateWriteRepository)
     {
+        _validator = validator;
         _mediator = mediator;
         _registry = registry;
         _logger = logger;
@@ -37,6 +41,7 @@ public class SyncPredictionIterationResultCommandHandler : IRequestHandler<SyncP
 
     public async Task<bool> Handle(SyncPredictionIterationResultCommand command, CancellationToken cancellationToken)
     {
+        await _validator.ValidateAndThrowAsync(command, cancellationToken);
 
         var commandIterationResult = new CreateIterationResultCommand(command.IterationResult);
         await _mediator.Send(commandIterationResult, cancellationToken: cancellationToken);

@@ -16,6 +16,10 @@ using SimulationService.Application.Features.Simulations.Queries.GetSimulationId
 using SimulationService.Application.Features.Predict.Commands;
 using SimulationService.Application.Features.Predict.Commands.StartPredictionCommand;
 using SimulationService.Application.Features.Predict.Commands.SyncPredictionIterationResultCommand;
+using FluentValidation;
+using SimulationService.Application.Features.IterationResults.DTOs;
+using SimulationService.Application.Features.MatchRounds.DTOs;
+using SimulationService.Application.Features.SeasonsStats.DTOs;
 namespace SimulationService.Application.Features;
 
 public static class MediatrServicesExtension
@@ -62,6 +66,12 @@ public static class MediatrServicesExtension
 
         // Validators
         services.AddTransient<RunSimulationCommandValidator>();
+        services.AddTransient<IValidator<SyncPredictionIterationResultCommand>, SyncPredictionIterationResultCommandValidator>();
+        services.AddTransient<IValidator<IterationResultDto>, IterationResultDtoValidator>();
+        services.AddTransient<IValidator<StrengthItemDto>, StrengthItemDtoValidator>();
+        services.AddTransient<IValidator<TeamStrengthDto>, TeamStrengthDtoValidator>();
+        services.AddTransient<IValidator<MatchRoundDto>, MatchRoundDtoValidator>();
+        services.AddTransient<IValidator<SeasonStatsDto>, SeasonStatsDtoValidator>();
 
         return services;
     }
