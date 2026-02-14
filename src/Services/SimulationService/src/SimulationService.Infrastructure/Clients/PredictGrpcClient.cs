@@ -53,6 +53,11 @@ public class PredictGrpcClient : IPredictGrpcClient
                 status = response.Status ?? status;
                 currentCounter = response.PredictedIterations; // zawsze aktualizuj
 
+                if (string.Equals(status, "COMPLETED", StringComparison.OrdinalIgnoreCase))
+                {
+                    break;
+                }
+
                 if (response.IterationResult is not null)
                 {
                     var command = new SyncPredictionIterationResultCommand(
@@ -60,11 +65,6 @@ public class PredictGrpcClient : IPredictGrpcClient
                             ToContractDto(response.IterationResult
                     )));
                     await _mediator.Send(command, cancellationToken);
-                }
-
-                if (string.Equals(status, "COMPLETED", StringComparison.OrdinalIgnoreCase))
-                {
-                    break;
                 }
             }
         }
@@ -105,7 +105,7 @@ public class PredictGrpcClient : IPredictGrpcClient
 
         dto.Id = Guid.Parse(grpc.Id);
         dto.SimulationId = Guid.Parse(grpc.SimulationId);
-        dto.IterationIndex = grpc.HasIterationIndex ? grpc.IterationIndex : 0;
+        dto.IterationIndex = grpc.HasIterationIndex ? grpc.IterationIndex : 0; // SyncPredictionIterationResultCommand will set a proper value
         dto.StartDate = DateTime.Parse(grpc.StartDate);
         dto.ExecutionTime = TimeSpan.Parse(grpc.ExecutionTime);
         dto.TeamStrengths = JsonConvert.DeserializeObject<List<TeamStrengthContractDto>>(grpc.TeamStrengths) ?? throw new NullReferenceException("Missing TeamStrengths for IterationResultGrpc");
