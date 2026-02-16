@@ -328,7 +328,7 @@ BEGIN TRY
         (NEWID(), @RoundId16, @TeamId3, @TeamId4, 2, 1, 0, 1),   -- Atlético Madrid 2-1 Valencia CF
         (NEWID(), @RoundId16, @TeamId12, @TeamId23, 3, 1, 0, 1), -- RCD Mallorca 3-1 Elche CF
         (NEWID(), @RoundId16, @TeamId2, @TeamId10, 2, 0, 0, 1),  -- FC Barcelona 2-0 CA Osasuna
-        (NEWID(), @RoundId16, @TeamId14, @TeamId21, 0, 1, 1, 1), -- Getafe CF 0-1 RCD Espanyol
+        (NEWID(), @RoundId16, @TeamId14, @TeamId21, 0, 1, 0, 1), -- Getafe CF 0-1 RCD Espanyol
         (NEWID(), @RoundId16, @TeamId6, @TeamId17, 4, 0, 0, 1),  -- Sevilla FC 4-0 Real Oviedo
         (NEWID(), @RoundId16, @TeamId11, @TeamId9, 2, 0, 0, 1),  -- Celta Vigo 2-0 Athletic Bilbao
         (NEWID(), @RoundId16, @TeamId25, @TeamId7, null, null, null, 0),  -- Levante X-X Villarreal CF
