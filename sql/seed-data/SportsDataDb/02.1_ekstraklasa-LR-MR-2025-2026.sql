@@ -368,11 +368,11 @@ BEGIN TRY
         (NEWID(), @RoundId21, @TeamId12, @TeamId10,  2, 3, 0, 1),  -- Motor Lublin 2-3 Lechia Gdańsk
         (NEWID(), @RoundId21, @TeamId11, @TeamId15,  0, 2, 0, 1),  -- Radomiak Radom 0-2 Korona Kielce
         (NEWID(), @RoundId21, @TeamId7, @TeamId1,    0, 0, 1, 1),  -- Cracovia 0-0 Jagiellonia Białystok
-        (NEWID(), @RoundId21, @TeamId14, @TeamId5,   0, 0, 1 1),  -- Zagłębie Lubin 0-0 Raków Częstochowa
+        (NEWID(), @RoundId21, @TeamId14, @TeamId5,   0, 0, 1, 1),  -- Zagłębie Lubin 0-0 Raków Częstochowa
         (NEWID(), @RoundId21, @TeamId13, @TeamId2,   1, 1, 1, 1),  -- GKS Katowice 1-1 Legia Warszawa
         (NEWID(), @RoundId21, @TeamId3, @TeamId16,   3, 0, 0, 1),  -- Lech Poznań 3-0 Piast Gliwice
         (NEWID(), @RoundId21, @TeamId6, @TeamId18,   1, 0, 0, 1),  -- Pogoń Szczecin 1-0 Arka Gdynia
-        (NEWID(), @RoundId21, @TeamId17, @TeamId8,   1, 1, 1, 1);  -- Bruk-Bet Termalica 1-1 Górnik Zabrze
+        (NEWID(), @RoundId21, @TeamId17, @TeamId8,   1, 1, 1, 1),  -- Bruk-Bet Termalica 1-1 Górnik Zabrze
 
          -- Kolejka 22 (2 stycznia 2026)
         (NEWID(), @RoundId22, @TeamId6, @TeamId4, null, null, null, 0),
@@ -580,7 +580,19 @@ BEGIN TRY
          -- downgraded
          (NEWID(), @TeamId9, '2022/2023', @LeagueId,   34, 10,  7, 17,  41, 50), --wisla plock
          (NEWID(), @TeamId10, '2022/2023', @LeagueId,   34, 8,  6, 20,  28, 56), --lechia gdansk
-         (NEWID(), @TeamId25, '2022/2023', @LeagueId,   34, 4,  11,  19,  33, 55); --miedz legnica
+         (NEWID(), @TeamId25, '2022/2023', @LeagueId,   34, 4,  11,  19,  33, 55) --miedz legnica
+
+        -- ================================================================
+        -- 1) Rozegrane: ustaw 1/0 wg goli
+        UPDATE mr
+        SET mr.IsDraw = CASE WHEN mr.HomeGoals = mr.AwayGoals THEN 1 ELSE 0 END
+        FROM dbo.MatchRound AS mr
+        JOIN dbo.LeagueRound AS lr ON lr.Id = mr.RoundId
+        WHERE lr.LeagueId = @LeagueId
+        AND lr.SeasonYear = '2025/2026'
+        AND mr.IsPlayed = 1
+        AND mr.HomeGoals IS NOT NULL
+        AND mr.AwayGoals IS NOT NULL;
 
     COMMIT TRANSACTION
     PRINT '✅ SUKCES! Ekstraklasa 2025/2026'
