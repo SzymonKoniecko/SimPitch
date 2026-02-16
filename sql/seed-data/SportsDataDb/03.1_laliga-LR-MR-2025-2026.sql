@@ -323,113 +323,119 @@ BEGIN TRY
         (NEWID(), @RoundId15, @TeamId1, @TeamId11, 0, 2, 0, 1),   -- Real Madryt 0-2 Celta de Vigo (HUGE UPSET!)
         (NEWID(), @RoundId15, @TeamId10, @TeamId25, 2, 0, 0, 1),  -- Osasuna 2-0 Levante
 
-        -- KOLEJKA 16 (@RoundId16) - Rozegrane
-        (NEWID(), @RoundId16, @TeamId5, @TeamId16, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId3, @TeamId4, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId12, @TeamId23, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId2, @TeamId10, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId14, @TeamId21, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId6, @TeamId17, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId11, @TeamId9, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId25, @TeamId7, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId19, @TeamId1, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId16, @TeamId15, @TeamId8, NULL, NULL, NULL, 0),
+                -- KOLEJKA 16 (@RoundId16) - Rozegrane (13-15 grudnia 2025)
+        (NEWID(), @RoundId16, @TeamId5, @TeamId16, 2, 1, 0, 1),  -- Real Sociedad 1-2 Girona FC
+        (NEWID(), @RoundId16, @TeamId3, @TeamId4, 2, 1, 0, 1),   -- Atlético Madrid 2-1 Valencia CF
+        (NEWID(), @RoundId16, @TeamId12, @TeamId23, 3, 1, 0, 1), -- RCD Mallorca 3-1 Elche CF
+        (NEWID(), @RoundId16, @TeamId2, @TeamId10, 2, 0, 0, 1),  -- FC Barcelona 2-0 CA Osasuna
+        (NEWID(), @RoundId16, @TeamId14, @TeamId21, 0, 1, 0, 1), -- Getafe CF 0-1 RCD Espanyol
+        (NEWID(), @RoundId16, @TeamId6, @TeamId17, 4, 0, 0, 1),  -- Sevilla FC 4-0 Real Oviedo
+        (NEWID(), @RoundId16, @TeamId11, @TeamId9, 2, 0, 0, 1),  -- Celta Vigo 2-0 Athletic Bilbao
+        (NEWID(), @RoundId16, @TeamId25, @TeamId7, null, null, null, 0),  -- Levante X-X Villarreal CF
+        (NEWID(), @RoundId16, @TeamId19, @TeamId1, 1, 2, 0, 1),  -- Alavés 1-2 Real Madrid
+        (NEWID(), @RoundId16, @TeamId15, @TeamId8, 0, 0, 1, 1),  -- Rayo Vallecano 0-0 Real Betis
 
-        -- KOLEJKA 17 (@RoundId17) - Nierozegrane (NULL)
-        (NEWID(), @RoundId17, @TeamId1, @TeamId6, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId4, @TeamId12, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId10, @TeamId19, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId9, @TeamId21, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId17, @TeamId11, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId8, @TeamId14, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId16, @TeamId3, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId7, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId25, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId17, @TeamId23, @TeamId15, NULL, NULL, NULL, 0),
 
-        -- KOLEJKA 18 (@RoundId18) - Nierozegrane (NULL)
-        (NEWID(), @RoundId18, @TeamId15, @TeamId14, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId11, @TeamId4, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId10, @TeamId9, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId23, @TeamId7, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId21, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId6, @TeamId25, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId1, @TeamId8, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId12, @TeamId16, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId19, @TeamId17, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId18, @TeamId5, @TeamId3, NULL, NULL, NULL, 0),
+        -- KOLEJKA 17 (@RoundId17) - Rozegrane (20-22 grudnia 2025)
+        (NEWID(), @RoundId17, @TeamId1, @TeamId6, 2, 0, 0, 1),   -- Real Madrid 2-0 Sevilla FC
+        (NEWID(), @RoundId17, @TeamId4, @TeamId12, 1, 1, 1, 1),  -- Valencia CF 1-1 RCD Mallorca
+        (NEWID(), @RoundId17, @TeamId10, @TeamId19, 3, 0, 0, 1), -- CA Osasuna 3-0 Alavés
+        (NEWID(), @RoundId17, @TeamId9, @TeamId21, 1, 2, 0, 1),  -- Athletic Bilbao 1-2 RCD Espanyol
+        (NEWID(), @RoundId17, @TeamId17, @TeamId11, 0, 0, 1, 1), -- Real Oviedo 0-0 Celta Vigo
+        (NEWID(), @RoundId17, @TeamId8, @TeamId14, 4, 0, 0, 1),  -- Real Betis 4-0 Getafe CF
+        (NEWID(), @RoundId17, @TeamId16, @TeamId3, 0, 3, 0, 1),  -- Girona FC 0-3 Atlético Madrid
+        (NEWID(), @RoundId17, @TeamId7, @TeamId2, 0, 2, 0, 1),   -- Villarreal CF 0-2 FC Barcelona
+        (NEWID(), @RoundId17, @TeamId25, @TeamId5, 1, 1, 1, 1),  -- Levante 1-1 Real Sociedad
+        (NEWID(), @RoundId17, @TeamId23, @TeamId15, 4, 0, 0, 1), -- Elche CF 4-0 Rayo Vallecano
 
-        -- KOLEJKA 19 (@RoundId19) - Nierozegrane (NULL)
-        (NEWID(), @RoundId19, @TeamId2, @TeamId3, 3, 1, 0, 1),     -- FC Barcelona 3-1 Atlético Madryt (PLAYED)
-        (NEWID(), @RoundId19, @TeamId9, @TeamId1, 0, 3, 0, 1),     -- Athletic Bilbao 0-3 Real Madryt (PLAYED)
-        (NEWID(), @RoundId19, @TeamId14, @TeamId5, NULL, NULL, NULL, 0), -- Getafe CF vs Real Sociedad (FUTURE)
-        (NEWID(), @RoundId19, @TeamId6, @TeamId11, NULL, NULL, NULL, 0), -- Sevilla vs Celta de Vigo (FUTURE)
-        (NEWID(), @RoundId19, @TeamId4, @TeamId23, NULL, NULL, NULL, 0), -- Valencia vs Elche CF (FUTURE)
-        (NEWID(), @RoundId19, @TeamId16, @TeamId10, NULL, NULL, NULL, 0), -- Girona FC vs Osasuna (FUTURE)
-        (NEWID(), @RoundId19, @TeamId15, @TeamId12, NULL, NULL, NULL, 0), -- Rayo Vallecano vs Mallorca (FUTURE)
-        (NEWID(), @RoundId19, @TeamId17, @TeamId8, NULL, NULL, NULL, 0),  -- R. Oviedo vs Betis Sevilla (FUTURE)
-        (NEWID(), @RoundId19, @TeamId25, @TeamId21, NULL, NULL, NULL, 0), -- Levante vs Espanyol Barcelona (FUTURE)
-        (NEWID(), @RoundId19, @TeamId7, @TeamId19, NULL, NULL, NULL, 0),  -- Villarreal vs Alaves (FUTURE)
 
-        -- KOLEJKA 20 (@RoundId20) - Nierozegrane (NULL)
-        (NEWID(), @RoundId20, @TeamId1, @TeamId25, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId11, @TeamId15, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId8, @TeamId7, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId21, @TeamId16, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId5, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId10, @TeamId17, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId23, @TeamId6, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId3, @TeamId19, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId14, @TeamId4, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId20, @TeamId12, @TeamId9, NULL, NULL, NULL, 0),
+        -- KOLEJKA 18 (@RoundId18) - Rozegrane (10-12 stycznia 2026)
+        (NEWID(), @RoundId18, @TeamId15, @TeamId14, 1, 1, 1, 1), -- Rayo Vallecano 1-1 Getafe CF
+        (NEWID(), @RoundId18, @TeamId11, @TeamId4, 4, 1, 0, 1),  -- Celta Vigo 4-1 Valencia CF
+        (NEWID(), @RoundId18, @TeamId10, @TeamId9, 1, 1, 1, 1),  -- CA Osasuna 1-1 Athletic Bilbao
+        (NEWID(), @RoundId18, @TeamId23, @TeamId7, 1, 3, 0, 1),  -- Elche CF 1-3 Villarreal CF
+        (NEWID(), @RoundId18, @TeamId21, @TeamId2, 0, 2, 0, 1),  -- RCD Espanyol 0-2 FC Barcelona
+        (NEWID(), @RoundId18, @TeamId6, @TeamId25, 0, 3, 0, 1),  -- Sevilla FC 0-3 Levante
+        (NEWID(), @RoundId18, @TeamId1, @TeamId8, 5, 1, 0, 1),   -- Real Madrid 5-1 Real Betis
+        (NEWID(), @RoundId18, @TeamId12, @TeamId16, 1, 2, 0, 1), -- RCD Mallorca 1-2 Girona FC
+        (NEWID(), @RoundId18, @TeamId19, @TeamId17, 1, 1, 1, 1), -- Alavés 1-1 Real Oviedo
+        (NEWID(), @RoundId18, @TeamId5, @TeamId3, 1, 1, 1, 1),   -- Real Sociedad 1-1 Atlético Madrid
 
-        -- KOLEJKA 21 (@RoundId21) - Nierozegrane (NULL)
-        (NEWID(), @RoundId21, @TeamId3, @TeamId12, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId4, @TeamId21, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId7, @TeamId1, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId16, @TeamId14, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId25, @TeamId23, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId19, @TeamId8, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId6, @TeamId9, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId15, @TeamId10, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId2, @TeamId17, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId21, @TeamId5, @TeamId11, NULL, NULL, NULL, 0),
 
-        -- KOLEJKA 22 (@RoundId22) - Nierozegrane (NULL)
-        (NEWID(), @RoundId22, @TeamId8, @TeamId4, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId23, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId1, @TeamId15, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId25, @TeamId3, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId12, @TeamId6, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId14, @TeamId11, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId9, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId17, @TeamId16, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId10, @TeamId7, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId22, @TeamId21, @TeamId19, NULL, NULL, NULL, 0),
+        -- KOLEJKA 19 (@RoundId19)
+        (NEWID(), @RoundId19, @TeamId2, @TeamId3, 3, 1, 0, 1),   -- FC Barcelona 3-1 Atlético Madrid
+        (NEWID(), @RoundId19, @TeamId9, @TeamId1, 0, 3, 0, 1),   -- Athletic Bilbao 0-3 Real Madrid
+        (NEWID(), @RoundId19, @TeamId14, @TeamId5, 1, 2, 0, 1),  -- Getafe CF 1-2 Real Sociedad
+        (NEWID(), @RoundId19, @TeamId6, @TeamId11, 0, 1, 0, 1),  -- Sevilla FC 0-1 Celta Vigo
+        (NEWID(), @RoundId19, @TeamId4, @TeamId23, 1, 1, 1, 1),  -- Valencia CF 1-1 Elche CF
+        (NEWID(), @RoundId19, @TeamId16, @TeamId10, 1, 0, 0, 1), -- Girona FC 1-0 CA Osasuna
+        (NEWID(), @RoundId19, @TeamId15, @TeamId12, 2, 1, 0, 1), -- Rayo Vallecano 2-1 RCD Mallorca
+        (NEWID(), @RoundId19, @TeamId17, @TeamId8, 1, 1, 1, 1),  -- Real Oviedo 1-1 Real Betis
+        (NEWID(), @RoundId19, @TeamId25, @TeamId21, 1, 1, 1, 1), -- Levante 1-1 RCD Espanyol
+        (NEWID(), @RoundId19, @TeamId7, @TeamId19, 3, 1, 0, 1),  -- Villarreal CF 3-1 Alavés
 
-        -- KOLEJKA 23 (@RoundId23) - Nierozegrane (NULL)
-        (NEWID(), @RoundId23, @TeamId19, @TeamId14, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId15, @TeamId17, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId3, @TeamId8, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId2, @TeamId12, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId9, @TeamId25, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId7, @TeamId21, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId5, @TeamId23, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId6, @TeamId16, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId11, @TeamId10, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId23, @TeamId4, @TeamId1, NULL, NULL, NULL, 0),
 
-        -- KOLEJKA 24 (@RoundId24) - Nierozegrane (NULL)
-        (NEWID(), @RoundId24, @TeamId23, @TeamId10, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId14, @TeamId7, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId17, @TeamId9, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId16, @TeamId2, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId21, @TeamId11, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId1, @TeamId5, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId25, @TeamId4, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId15, @TeamId3, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId12, @TeamId8, NULL, NULL, NULL, 0),
-        (NEWID(), @RoundId24, @TeamId6, @TeamId19, NULL, NULL, NULL, 0),
+        -- KOLEJKA 20 (@RoundId20) - Rozegrane (24-26 stycznia 2026)
+        (NEWID(), @RoundId20, @TeamId1, @TeamId25, 2, 0, 0, 1),  -- Real Madrid 2-0 Levante
+        (NEWID(), @RoundId20, @TeamId11, @TeamId15, 3, 0, 0, 1), -- Celta Vigo 3-0 Rayo Vallecano
+        (NEWID(), @RoundId20, @TeamId8, @TeamId7, 2, 0, 0, 1),   -- Real Betis 2-0 Villarreal CF
+        (NEWID(), @RoundId20, @TeamId21, @TeamId16, 0, 2, 0, 1), -- RCD Espanyol 0-2 Girona FC
+        (NEWID(), @RoundId20, @TeamId5, @TeamId2, 2, 1, 0, 1),   -- Real Sociedad 2-1 FC Barcelona
+        (NEWID(), @RoundId20, @TeamId10, @TeamId17, 3, 2, 0, 1), -- CA Osasuna 3-2 Real Oviedo
+        (NEWID(), @RoundId20, @TeamId23, @TeamId6, 2, 2, 1, 1),  -- Elche CF 2-2 Sevilla FC
+        (NEWID(), @RoundId20, @TeamId3, @TeamId19, 1, 0, 0, 1),  -- Atlético Madrid 1-0 Alavés
+        (NEWID(), @RoundId20, @TeamId14, @TeamId4, 0, 1, 0, 1),  -- Getafe CF 0-1 Valencia CF
+        (NEWID(), @RoundId20, @TeamId12, @TeamId9, 3, 2, 0, 1),  -- RCD Mallorca 3-2 Athletic Bilbao
+
+
+        -- KOLEJKA 21 (@RoundId21) - Rozegrane (ok. 24-26 stycznia 2026)
+        (NEWID(), @RoundId21, @TeamId3, @TeamId12, 3, 0, 0, 1),  -- Atlético Madrid 3-0 RCD Mallorca
+        (NEWID(), @RoundId21, @TeamId4, @TeamId21, 3, 2, 0, 1),  -- Valencia CF 3-2 RCD Espanyol
+        (NEWID(), @RoundId21, @TeamId7, @TeamId1, 0, 2, 0, 1),   -- Villarreal CF 0-2 Real Madrid 
+        (NEWID(), @RoundId21, @TeamId16, @TeamId14, 1, 1, 1, 1), -- Girona FC 1-1 Getafe CF
+        (NEWID(), @RoundId21, @TeamId25, @TeamId23, 3, 2, 0, 1), -- Levante 3-2 Elche CF
+        (NEWID(), @RoundId21, @TeamId19, @TeamId8, 2, 1, 0, 1),  -- Alavés 2-1 Real Betis
+        (NEWID(), @RoundId21, @TeamId6, @TeamId9, 2, 1, 0, 1),   -- Sevilla FC 2-1 Athletic Bilbao
+        (NEWID(), @RoundId21, @TeamId15, @TeamId10, 1, 3, 0, 1), -- Rayo Vallecano 1-3 CA Osasuna
+        (NEWID(), @RoundId21, @TeamId2, @TeamId17, 3, 0, 0, 1),  -- FC Barcelona 3-0 Real Oviedo
+        (NEWID(), @RoundId21, @TeamId5, @TeamId11, 3, 1, 0, 1),  -- Real Sociedad 3-1 Celta Vigo
+
+        -- KOLEJKA 22 (@RoundId22) - Rozegrane (ok. 31 stycznia - 2 lutego 2026)
+        (NEWID(), @RoundId22, @TeamId8, @TeamId4, 2, 1, 0, 1),   -- Real Betis 2-1 Valencia CF
+        (NEWID(), @RoundId22, @TeamId23, @TeamId2, 1, 3, 0, 1),  -- Elche CF 1-3 FC Barcelona
+        (NEWID(), @RoundId22, @TeamId1, @TeamId15, 2, 1, 0, 1),  -- Real Madrid 2-1 Rayo Vallecano
+        (NEWID(), @RoundId22, @TeamId25, @TeamId3, 0, 0, 1, 1),  -- Levante 0-0 Atlético Madrid 
+        (NEWID(), @RoundId22, @TeamId12, @TeamId6, 4, 1, 0, 1),  -- RCD Mallorca 4-1 Sevilla FC
+        (NEWID(), @RoundId22, @TeamId14, @TeamId11, 0, 0, 1, 1), -- Getafe CF 0-0 Celta Vigo
+        (NEWID(), @RoundId22, @TeamId9, @TeamId5, 1, 1, 1, 1),   -- Athletic Bilbao 1-1 Real Sociedad
+        (NEWID(), @RoundId22, @TeamId17, @TeamId16, 1, 0, 0, 1), -- Real Oviedo 1-0 Girona FC
+        (NEWID(), @RoundId22, @TeamId10, @TeamId7, 2, 2, 1, 1),  -- CA Osasuna 2-2 Villarreal CF
+        (NEWID(), @RoundId22, @TeamId21, @TeamId19, 1, 2, 0, 1), -- RCD Espanyol 1-2 Alavés
+
+        -- KOLEJKA 23 (@RoundId23) - Rozegrane (ok. 7-9 lutego 2026)
+        (NEWID(), @RoundId23, @TeamId19, @TeamId14, 0, 2, 0, 1), -- Alavés 0-2 Getafe CF
+        (NEWID(), @RoundId23, @TeamId15, @TeamId17, NULL, NULL, NULL, 0), -- Rayo Vallecano 3-1 Real Oviedo
+        (NEWID(), @RoundId23, @TeamId3, @TeamId8, 0, 1, 0, 1),   -- Atlético Madrid 0-1 Real Betis
+        (NEWID(), @RoundId23, @TeamId2, @TeamId12, 3, 0, 0, 1),  -- FC Barcelona 3-0 RCD Mallorca
+        (NEWID(), @RoundId23, @TeamId9, @TeamId25, 4, 2, 0, 1),  -- Athletic Bilbao 4-2 Levante
+        (NEWID(), @RoundId23, @TeamId7, @TeamId21, 4, 1, 0, 1),  -- Villarreal CF 4-1 RCD Espanyol
+        (NEWID(), @RoundId23, @TeamId5, @TeamId23, 3, 1, 0, 1),  -- Real Sociedad 3-1 Elche CF
+        (NEWID(), @RoundId23, @TeamId6, @TeamId16, 1, 1, 1, 1),  -- Sevilla FC 1-1 Girona FC
+        (NEWID(), @RoundId23, @TeamId11, @TeamId10, 1, 2, 0, 1), -- Celta Vigo 1-2 CA Osasuna
+        (NEWID(), @RoundId23, @TeamId4, @TeamId1, 0, 2, 0, 1),   -- Valencia CF 0-2 Real Madrid
+
+        -- KOLEJKA 24 (@RoundId24) 
+        (NEWID(), @RoundId24, @TeamId23, @TeamId10, 0, 0, 1, 1), -- Elche CF 0-0 CA Osasuna
+        (NEWID(), @RoundId24, @TeamId14, @TeamId7, 2, 1, 0, 1),  -- Getafe CF 2-1 Villarreal CF
+        (NEWID(), @RoundId24, @TeamId17, @TeamId9, 1, 2, 0, 1),  -- Real Oviedo 1-2 Athletic Bilbao
+        (NEWID(), @RoundId24, @TeamId16, @TeamId2, 2, 1, 0, 0), -- Girona FC vs FC Barcelona 
+        (NEWID(), @RoundId24, @TeamId21, @TeamId11, 2, 2, 1, 1), -- RCD Espanyol 2-2 Celta Vigo
+        (NEWID(), @RoundId24, @TeamId1, @TeamId5, 4, 1, 0, 1),   -- Real Madrid 4-1 Real Sociedad
+        (NEWID(), @RoundId24, @TeamId25, @TeamId4, 0, 2, 0, 1),  -- Levante 0-2 Valencia CF
+        (NEWID(), @RoundId24, @TeamId15, @TeamId3, 3, 0, 0, 1),  -- Rayo Vallecano 3-0 Atlético Madrid
+        (NEWID(), @RoundId24, @TeamId12, @TeamId8, 1, 2, 0, 1),  -- RCD Mallorca 1-2 Real Betis
+        (NEWID(), @RoundId24, @TeamId6, @TeamId19, 1, 1, 1, 1),  -- Sevilla FC 1-1 Alavés
+
 
         -- KOLEJKA 25 (@RoundId25) - Nierozegrane (NULL)
         (NEWID(), @RoundId25, @TeamId10, @TeamId1, NULL, NULL, NULL, 0),
@@ -681,9 +687,9 @@ BEGIN TRY
     PRINT '   - teams: 20'
     PRINT '   - Seasons: 2025/2026 + historical data (2024/2025, 2023/2024, 2022/2023)'
     PRINT '   - Status:'
-    PRINT '     • played rounds: 1-17'
-    PRINT '     • not played rounds: 18-38'
-    PRINT '   - last update 2.01.2026'
+    PRINT '     • played rounds: 1-24'
+    PRINT '     • not played rounds: 25-38'
+    PRINT '   - last update 16.02.2026'
     PRINT '//////'
 
 END TRY
