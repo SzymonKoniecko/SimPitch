@@ -2,7 +2,8 @@
 
 if [ "$SEED_DATA" = "true" ]; then
   echo 'Waiting for SQL Server...'
-  sleep 10
+  echo '60 seconds to start.....'
+  sleep 60
   echo "Seeding data into SportsDataDb..."
 
   for sql_file in /seed/*.sql; do

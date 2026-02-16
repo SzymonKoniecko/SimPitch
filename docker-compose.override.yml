@@ -1,3 +1,5 @@
+# use .app.yml instead
+
 services:
   logging-service:
     ports:
@@ -10,72 +12,6 @@ services:
       - backend_network
     depends_on:
       - mssql
-
-  frontend:
-    ports: 
-      - "${WEB_DEV_PORT}:${WEB_DEV_PORT}"
-    expose:
-      - "${WEB_DEV_PORT}"
-    environment:
-    - NODE_ENV=development
-    - VITE_API_TARGET=${VITE_API_TARGET}
-    - DOCKER_ENV=true
-    - HMR_HOST=localhost
-    command: npm run dev -- --host --port ${WEB_DEV_PORT}
-    restart: unless-stopped
-    networks:
-      - backend_network
-    depends_on:
-      - logging-service
-  
-  simpitch-ml-service:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "${SIMPITCHML_SERVICE_HOST_PORT_REST}:${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}"
-      - "${SIMPITCHML_SERVICE_HOST_PORT_GRPC}:${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}"
-    
-    environment:
-      - SIMULATION_GRPC_SERVER_HOST=${SIMULATION_SERVICE_NAME}
-      - SIMULATION_GRPC_SERVER_PORT=${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
-      - SIMULATION_GRPC_TIMEOUT=${SIMULATION_GRPC_TIMEOUT}
-
-      - SIMPITCHML_SERVICE_HOST_PORT_REST=${SIMPITCHML_SERVICE_HOST_PORT_REST}
-      - SIMPITCHML_SERVICE_HOST_PORT_GRPC=${SIMPITCHML_SERVICE_HOST_PORT_GRPC}
-      - SIMPITCHML_SERVICE_CONTAINER_PORT_REST=${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}
-      - SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC=${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}
-      
-      - FASTAPI_SEVER_HOST=0.0.0.0
-      - FASTAPI_SEVER_PORT=${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}
-      - ENVIRONMENT=development
-      - IS_RELOAD=False
-      - LOG_LEVEL=${LOG_LEVEL:-INFO}
-      - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
-    #extra_hosts:
-    #  - "host.docker.internal:host-gateway"
-    volumes:
-      - ./models:/app/models
-      - ./logs:/app/logs
-    networks:
-      - backend_network
-    restart: unless-stopped
-
-  gateway:
-    ports:
-      - "${GATEWAY_HOST_PORT}:${GATEWAY_SERVICE_CONTAINER_PORT}"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - engine-service
-      - logging-service
-      - statistics-service
-      - simulation-service
-      - sportsdata-service
-    networks:
-      - backend_network
-    restart: unless-stopped
-
 
   sportsdata-service:
     ports:
@@ -192,6 +128,73 @@ services:
       - backend_network
     depends_on:
       - mssql
+      - mssql-init
+
+  frontend:
+    ports: 
+      - "${WEB_DEV_PORT}:${WEB_DEV_PORT}"
+    expose:
+      - "${WEB_DEV_PORT}"
+    environment:
+    - NODE_ENV=development
+    - VITE_API_TARGET=${VITE_API_TARGET}
+    - DOCKER_ENV=true
+    - HMR_HOST=localhost
+    command: npm run dev -- --host --port ${WEB_DEV_PORT}
+    restart: unless-stopped
+    networks:
+      - backend_network
+    depends_on:
+      - logging-service
+  
+  simpitch-ml-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${SIMPITCHML_SERVICE_HOST_PORT_REST}:${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}"
+      - "${SIMPITCHML_SERVICE_HOST_PORT_GRPC}:${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}"
+    
+    environment:
+      - SIMULATION_GRPC_SERVER_HOST=${SIMULATION_SERVICE_NAME}
+      - SIMULATION_GRPC_SERVER_PORT=${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
+      - SIMULATION_GRPC_TIMEOUT=${SIMULATION_GRPC_TIMEOUT}
+
+      - SIMPITCHML_SERVICE_HOST_PORT_REST=${SIMPITCHML_SERVICE_HOST_PORT_REST}
+      - SIMPITCHML_SERVICE_HOST_PORT_GRPC=${SIMPITCHML_SERVICE_HOST_PORT_GRPC}
+      - SIMPITCHML_SERVICE_CONTAINER_PORT_REST=${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}
+      - SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC=${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}
+      
+      - FASTAPI_SEVER_HOST=0.0.0.0
+      - FASTAPI_SEVER_PORT=${SIMPITCHML_SERVICE_CONTAINER_PORT_REST}
+      - ENVIRONMENT=development
+      - IS_RELOAD=False
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
+    #extra_hosts:
+    #  - "host.docker.internal:host-gateway"
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    networks:
+      - backend_network
+    restart: unless-stopped
+
+  gateway:
+    ports:
+      - "${GATEWAY_HOST_PORT}:${GATEWAY_SERVICE_CONTAINER_PORT}"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - engine-service
+      - logging-service
+      - statistics-service
+      - simulation-service
+      - sportsdata-service
+    networks:
+      - backend_network
+    restart: unless-stopped
+
 
 
 networks:

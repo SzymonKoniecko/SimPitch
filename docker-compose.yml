@@ -47,17 +47,16 @@ services:
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
 
-     
   mssql-init:
     build:
       context: sql/
       dockerfile: Dockerfile.init
+
   
   seed-data:
     build:
       context: sql/seed-data/
       dockerfile: Dockerfile.seed
-
 
 
 networks:

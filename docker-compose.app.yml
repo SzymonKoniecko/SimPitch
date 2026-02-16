@@ -1,3 +1,7 @@
+# Build & Run : docker compose -p sim-pitch-stack -f docker-compose.yml -f docker-compose.app.yml  up -d --build
+
+
+
 services:
   logging-service:
     image: simpitch-tc-logging-service:latest
