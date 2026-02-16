@@ -463,7 +463,7 @@ BEGIN TRY
         (NEWID(), @RoundId28, @TeamId7, @TeamId5, 0, 2, 0, 1),    -- Cracovia 0-2 Raków Częstochowa
         (NEWID(), @RoundId28, @TeamId18, @TeamId4, 1, 2, 0, 1),   -- Arka Gdynia 1-2 Widzew Łódź
         (NEWID(), @RoundId28, @TeamId12, @TeamId9, 1, 1, 1, 1),   -- Motor Lublin 1-1 Wisła Płock
-        (NEWID(), @RoundId28, @TeamId15, @TeamId2, 0, 3, 0, 1)    -- Korona Kielce 0-3 Legia Warszawa
+        (NEWID(), @RoundId28, @TeamId15, @TeamId2, 0, 3, 0, 1),    -- Korona Kielce 0-3 Legia Warszawa
 
         -- Kolejka 29 (20 lutego 2026)
         (NEWID(), @RoundId29, @TeamId4, @TeamId6, null, null, null, 0),

@@ -434,7 +434,7 @@ BEGIN TRY
         (NEWID(), @RoundId24, @TeamId25, @TeamId4, 0, 2, 0, 1),  -- Levante 0-2 Valencia CF
         (NEWID(), @RoundId24, @TeamId15, @TeamId3, 3, 0, 0, 1),  -- Rayo Vallecano 3-0 Atlético Madrid
         (NEWID(), @RoundId24, @TeamId12, @TeamId8, 1, 2, 0, 1),  -- RCD Mallorca 1-2 Real Betis
-        (NEWID(), @RoundId24, @TeamId6, @TeamId19, 1, 1, 1, 1);  -- Sevilla FC 1-1 Alavés
+        (NEWID(), @RoundId24, @TeamId6, @TeamId19, 1, 1, 1, 1),  -- Sevilla FC 1-1 Alavés
 
 
         -- KOLEJKA 25 (@RoundId25) - Nierozegrane (NULL)
