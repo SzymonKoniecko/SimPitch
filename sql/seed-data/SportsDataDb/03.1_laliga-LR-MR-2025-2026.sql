@@ -414,7 +414,7 @@ BEGIN TRY
 
         -- KOLEJKA 23 (@RoundId23) - Rozegrane (ok. 7-9 lutego 2026)
         (NEWID(), @RoundId23, @TeamId19, @TeamId14, 0, 2, 0, 1), -- Alavés 0-2 Getafe CF
-        (NEWID(), @RoundId23, @TeamId15, @TeamId17, NULL, NULL, 0, 0), -- Rayo Vallecano 3-1 Real Oviedo
+        (NEWID(), @RoundId23, @TeamId15, @TeamId17, NULL, NULL, NULL, 0), -- Rayo Vallecano 3-1 Real Oviedo
         (NEWID(), @RoundId23, @TeamId3, @TeamId8, 0, 1, 0, 1),   -- Atlético Madrid 0-1 Real Betis
         (NEWID(), @RoundId23, @TeamId2, @TeamId12, 3, 0, 0, 1),  -- FC Barcelona 3-0 RCD Mallorca
         (NEWID(), @RoundId23, @TeamId9, @TeamId25, 4, 2, 0, 1),  -- Athletic Bilbao 4-2 Levante
@@ -428,7 +428,7 @@ BEGIN TRY
         (NEWID(), @RoundId24, @TeamId23, @TeamId10, 0, 0, 1, 1), -- Elche CF 0-0 CA Osasuna
         (NEWID(), @RoundId24, @TeamId14, @TeamId7, 2, 1, 0, 1),  -- Getafe CF 2-1 Villarreal CF
         (NEWID(), @RoundId24, @TeamId17, @TeamId9, 1, 2, 0, 1),  -- Real Oviedo 1-2 Athletic Bilbao
-        (NEWID(), @RoundId24, @TeamId16, @TeamId2, NULL, NULL, 0, 0), -- Girona FC vs FC Barcelona 
+        (NEWID(), @RoundId24, @TeamId16, @TeamId2, NULL, NULL, NULL, 0), -- Girona FC vs FC Barcelona 
         (NEWID(), @RoundId24, @TeamId21, @TeamId11, 2, 2, 1, 1), -- RCD Espanyol 2-2 Celta Vigo
         (NEWID(), @RoundId24, @TeamId1, @TeamId5, 4, 1, 0, 1),   -- Real Madrid 4-1 Real Sociedad
         (NEWID(), @RoundId24, @TeamId25, @TeamId4, 0, 2, 0, 1),  -- Levante 0-2 Valencia CF
@@ -687,9 +687,9 @@ BEGIN TRY
     PRINT '   - teams: 20'
     PRINT '   - Seasons: 2025/2026 + historical data (2024/2025, 2023/2024, 2022/2023)'
     PRINT '   - Status:'
-    PRINT '     • played rounds: 1-17'
-    PRINT '     • not played rounds: 18-38'
-    PRINT '   - last update 2.01.2026'
+    PRINT '     • played rounds: 1-24'
+    PRINT '     • not played rounds: 25-38'
+    PRINT '   - last update 16.02.2026'
     PRINT '//////'
 
 END TRY
