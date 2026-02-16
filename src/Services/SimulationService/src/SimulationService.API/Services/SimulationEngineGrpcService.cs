@@ -81,7 +81,9 @@ public class SimulationEngineGrpcService : SimulationEngineService.SimulationEng
             SimulationState = SimulationEngineMapper.StateToGrpc(response)
         };
     }
-
+    /// <summary>
+    /// Nowaydays it will return only completed simulations
+    /// </summary>
     public override async Task<SimulationIdsResponse> GetLatestSimulationIds(GetLatestSimulationIdsRequest request, ServerCallContext context)
     {
         var query = new GetSimulationIdsByDateQuery(DateTime.Parse(request.Date));
