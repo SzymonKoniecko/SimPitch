@@ -428,7 +428,7 @@ BEGIN TRY
         (NEWID(), @RoundId24, @TeamId23, @TeamId10, 0, 0, 1, 1), -- Elche CF 0-0 CA Osasuna
         (NEWID(), @RoundId24, @TeamId14, @TeamId7, 2, 1, 0, 1),  -- Getafe CF 2-1 Villarreal CF
         (NEWID(), @RoundId24, @TeamId17, @TeamId9, 1, 2, 0, 1),  -- Real Oviedo 1-2 Athletic Bilbao
-        (NEWID(), @RoundId24, @TeamId16, @TeamId2, NULL, NULL, NULL, 0), -- Girona FC vs FC Barcelona 
+        (NEWID(), @RoundId24, @TeamId16, @TeamId2, 2, 1, 0, 0), -- Girona FC vs FC Barcelona 
         (NEWID(), @RoundId24, @TeamId21, @TeamId11, 2, 2, 1, 1), -- RCD Espanyol 2-2 Celta Vigo
         (NEWID(), @RoundId24, @TeamId1, @TeamId5, 4, 1, 0, 1),   -- Real Madrid 4-1 Real Sociedad
         (NEWID(), @RoundId24, @TeamId25, @TeamId4, 0, 2, 0, 1),  -- Levante 0-2 Valencia CF
