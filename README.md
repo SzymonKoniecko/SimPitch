@@ -47,18 +47,22 @@ You can run SimPitch locally or in a production-like environment using **Docker*
 
 In main directory:
 
-***If first time: --seed true***
+***[BUILD] If first time: --seed true ***
+```
+chmod +x scripts/generate-env.sh
+scripts/./generate-env.sh --seed true
+docker compose -f docker-compose.yml -p sim-pitch-stack build
+```
+***[BUILD] Re-runs ***
+generate-env.sh change to '--seed false' -> execute
 ```
 chmod +x scripts/generate-env.sh
 scripts/./generate-env.sh --seed false
-docker-compose up -d
+docker compose -f docker-compose.yml -p sim-pitch-stack build
 ```
-***Re-runs***
-set in .env file variable: SEED_DATA=false 
-
-then
+***[RUN] anytime ***
 ```
-docker-compose up -d
+docker compose -f docker-compose.app.yml -p sim-pitch-stack up -d
 ```
 
 ## Tech Stack & Architecture
