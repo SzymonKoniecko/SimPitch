@@ -27,9 +27,9 @@ The SimPitch solution is modularized into three distinct repositories to ensure 
 https://github.com/SzymonKoniecko/SimPitchAI
 
 ### 🔗 [SimPitch.ML](https://github.com/SzymonKoniecko/SimPitchML)
-**ML worker in XGBOOST (in development)**
+**ML worker in XGBOOST (almost completed)**
 *   **Tech:** SimPitch simulations by machine learning (XGBOOST)
-*   **Role:** Simulate the results by XGBOOST ML
+*   **Role:** AI microservice (Python) to introduce intelligent simulations and predictions  
 
 
 ### 🔗 [SimPitch.Shared](https://github.com/SzymonKoniecko/SimPitchPROTOS)
@@ -51,18 +51,16 @@ In main directory:
 ```
 chmod +x scripts/generate-env.sh
 scripts/./generate-env.sh --seed true
-docker compose -f docker-compose.yml -p sim-pitch-stack build
 ```
 ***[BUILD] Re-runs ***
 generate-env.sh change to '--seed false' -> execute
 ```
 chmod +x scripts/generate-env.sh
 scripts/./generate-env.sh --seed false
-docker compose -f docker-compose.yml -p sim-pitch-stack build
 ```
 ***[RUN] anytime ***
 ```
-docker compose -f docker-compose.app.yml -p sim-pitch-stack up -d
+docker compose -p sim-pitch-stack -f docker-compose.yml -f docker-compose.app.yml  up -d --build
 ```
 
 ## Tech Stack & Architecture
@@ -80,6 +78,7 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 | **Redis** | Background job processing and asynchronous task execution (e.g., iterative simulations) |
 | **Microsoft SQL Server** | Persistent database for input data, results, and configurations |
 | **MSelenium** | Test software |
+| **XgBoost** | Machine learning library to predict match results |
 
 ---
 
@@ -129,7 +128,6 @@ Simplifies monitoring, debugging, and system health tracking.
 
 ## Development Roadmap
 
-- 🔹 **AI microservice (Python)** to introduce intelligent simulations and predictions  
 - 🔹 **Full Kubernetes migration** for scalability, auto-deployment, and high availability  
 - 🔹 **More content**
 
