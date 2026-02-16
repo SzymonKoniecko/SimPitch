@@ -580,19 +580,8 @@ BEGIN TRY
          -- downgraded
          (NEWID(), @TeamId9, '2022/2023', @LeagueId,   34, 10,  7, 17,  41, 50), --wisla plock
          (NEWID(), @TeamId10, '2022/2023', @LeagueId,   34, 8,  6, 20,  28, 56), --lechia gdansk
-         (NEWID(), @TeamId25, '2022/2023', @LeagueId,   34, 4,  11,  19,  33, 55) --miedz legnica
+         (NEWID(), @TeamId25, '2022/2023', @LeagueId,   34, 4,  11,  19,  33, 55); --miedz legnica
 
-        -- ================================================================
-        -- 1) Rozegrane: ustaw 1/0 wg goli
-        UPDATE mr
-        SET mr.IsDraw = CASE WHEN mr.HomeGoals = mr.AwayGoals THEN 1 ELSE 0 END
-        FROM dbo.MatchRound AS mr
-        JOIN dbo.LeagueRound AS lr ON lr.Id = mr.RoundId
-        WHERE lr.LeagueId = @LeagueId
-        AND lr.SeasonYear = '2025/2026'
-        AND mr.IsPlayed = 1
-        AND mr.HomeGoals IS NOT NULL
-        AND mr.AwayGoals IS NOT NULL;
 
     COMMIT TRANSACTION
     PRINT '✅ SUKCES! Ekstraklasa 2025/2026'
