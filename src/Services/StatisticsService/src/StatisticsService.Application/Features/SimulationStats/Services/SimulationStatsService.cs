@@ -14,6 +14,7 @@ public class SimulationStatsService : ISimulationStatsService
     {
         _logger = logger;
     }
+
     public List<SimulationTeamStats> CalculateSimulationStatsForTeams(List<ScoreboardTeamStats> scoreboardTeamStats, Guid simulationId)
     {
         List<SimulationTeamStats> simulationTeamStats = new();
