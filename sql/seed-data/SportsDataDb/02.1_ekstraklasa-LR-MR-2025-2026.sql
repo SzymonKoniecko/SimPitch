@@ -316,7 +316,7 @@ BEGIN TRY
         (NEWID(), @RoundId16, @TeamId3, @TeamId11, 4, 1, 0, 1),
         (NEWID(), @RoundId16, @TeamId4, @TeamId15, 1, 3, 0, 1),
         (NEWID(), @RoundId16, @TeamId6, @TeamId14, 5, 1, 0, 1),
-        (NEWID(), @RoundId16, @TeamId1, @TeamId13, null, null, null, 0), -- Jaga vs GKS
+        (NEWID(), @RoundId16, @TeamId1, @TeamId13, 2, 1, 0, 1), -- Jaga vs GKS
 
         -- Kolejka 17 
         (NEWID(), @RoundId17, @TeamId16, @TeamId4, 0, 2, 0, 1),
@@ -361,10 +361,10 @@ BEGIN TRY
         (NEWID(), @RoundId20, @TeamId6,  @TeamId17,  1, 1, 1, 1), -- Pogoń 1-1 Termalica
         (NEWID(), @RoundId20, @TeamId5,  @TeamId11,  0, 0, 1, 1), -- Raków 0-0 Radomiak
         (NEWID(), @RoundId20, @TeamId13, @TeamId4,   1, 0, 0, 1), -- GKS Katowice 1-0 Widzew
-        (NEWID(), @RoundId20, @TeamId9,  @TeamId16,  1, 0, 0, 1), -- Wisła Płock 1-0 Piast
+        (NEWID(), @RoundId20, @TeamId16, @TeamId9,  1, 0, 0, 1), -- Piast 1-0 Wisła Płock
 
         -- Kolejka 21
-        (NEWID(), @RoundId21, @TeamId9, @TeamId4,    0, 2, 0, 1),  -- Wisła Płock 0-2 Widzew Łódź
+        (NEWID(), @RoundId21, @TeamId9,  @TeamId4,    0, 2, 0, 1),  -- Piast 0-2 Widzew Łódź
         (NEWID(), @RoundId21, @TeamId12, @TeamId10,  2, 3, 0, 1),  -- Motor Lublin 2-3 Lechia Gdańsk
         (NEWID(), @RoundId21, @TeamId11, @TeamId15,  0, 2, 0, 1),  -- Radomiak Radom 0-2 Korona Kielce
         (NEWID(), @RoundId21, @TeamId7, @TeamId1,    0, 0, 1, 1),  -- Cracovia 0-0 Jagiellonia Białystok
@@ -374,82 +374,82 @@ BEGIN TRY
         (NEWID(), @RoundId21, @TeamId6, @TeamId18,   1, 0, 0, 1),  -- Pogoń Szczecin 1-0 Arka Gdynia
         (NEWID(), @RoundId21, @TeamId17, @TeamId8,   1, 1, 1, 1),  -- Bruk-Bet Termalica 1-1 Górnik Zabrze
 
-         -- Kolejka 22 (2 stycznia 2026)
-        (NEWID(), @RoundId22, @TeamId6, @TeamId4, null, null, null, 0),
-        (NEWID(), @RoundId22, @TeamId13, @TeamId9, null, null, null, 0),
-        (NEWID(), @RoundId22, @TeamId12, @TeamId15, null, null, null, 0),
-        (NEWID(), @RoundId22, @TeamId1, @TeamId16, null, null, null, 0),
-        (NEWID(), @RoundId22, @TeamId3, @TeamId18, null, null, null, 0),
-        (NEWID(), @RoundId22, @TeamId11, @TeamId2, null, null, null, 0),
-        (NEWID(), @RoundId22, @TeamId7, @TeamId10, null, null, null, 0),
-        (NEWID(), @RoundId22, @TeamId17, @TeamId5, null, null, null, 0),
-        (NEWID(), @RoundId22, @TeamId8, @TeamId14, null, null, null, 0),
+        -- Kolejka 22
+        (NEWID(), @RoundId22, @TeamId10, @TeamId14, 0, 2, 0, 1),  -- Lechia Gdańsk 0-2 Zagłębie Lubin
+        (NEWID(), @RoundId22, @TeamId15, @TeamId3,  1, 2, 0, 1),  -- Korona Kielce 1-2 Lech Poznań
+        (NEWID(), @RoundId22, @TeamId1,  @TeamId11, 1, 1, 1, 1),  -- Jagiellonia Białystok 1-1 Radomiak Radom
+        (NEWID(), @RoundId22, @TeamId18, @TeamId13, 2, 1, 0, 1),  -- Arka Gdynia 2-1 GKS Katowice
+        (NEWID(), @RoundId22, @TeamId2,  @TeamId9,  2, 1, 0, 1),  -- Legia Warszawa 2-1 Wisła Płock
+        (NEWID(), @RoundId22, @TeamId8,  @TeamId6,  0, 1, 0, 1),  -- Górnik Zabrze 0-1 Pogoń Szczecin
+        (NEWID(), @RoundId22, @TeamId5,  @TeamId17, 1, 0, 0, 1),  -- Raków Częstochowa 1-0 Termalica Nieciecza
+        (NEWID(), @RoundId22, @TeamId4,  @TeamId7,  0, 0, 1, 1),  -- Widzew Łódź 0-0 Cracovia
+        (NEWID(), @RoundId22, @TeamId16, @TeamId12, 1, 2, 0, 1),  -- Piast Gliwice 1-2 Motor Lublin
 
-        -- Kolejka 23 (9 stycznia 2026)
-        (NEWID(), @RoundId23, @TeamId4, @TeamId13, null, null, null, 0),
-        (NEWID(), @RoundId23, @TeamId10, @TeamId6, null, null, null, 0),
-        (NEWID(), @RoundId23, @TeamId15, @TeamId1, null, null, null, 0),
-        (NEWID(), @RoundId23, @TeamId18, @TeamId11, null, null, null, 0),
-        (NEWID(), @RoundId23, @TeamId5, @TeamId8, null, null, null, 0),
-        (NEWID(), @RoundId23, @TeamId9, @TeamId17, null, null, null, 0),
-        (NEWID(), @RoundId23, @TeamId14, @TeamId12, null, null, null, 0),
-        (NEWID(), @RoundId23, @TeamId2, @TeamId7, null, null, null, 0),
-        (NEWID(), @RoundId23, @TeamId16, @TeamId3, null, null, null, 0),
+        -- Kolejka 23
+        (NEWID(), @RoundId23, @TeamId14, @TeamId9,   2, 0, 0, 1),  -- Zagłębie Lubin 2-0 Wisła Płock
+        (NEWID(), @RoundId23, @TeamId3, @TeamId5,    4, 3, 0, 1),  -- Lech Poznań 4-3 Raków Częstochowa
+        (NEWID(), @RoundId23, @TeamId1, @TeamId2,    2, 2, 1, 1),  -- Jagiellonia Białystok 2-2 Legia Warszawa
+        (NEWID(), @RoundId23, @TeamId17, @TeamId11,  1, 1, 1, 1),  -- Bruk-Bet Termalica Nieciecza 1-1 Radomiak Radom
+        (NEWID(), @RoundId23, @TeamId13, @TeamId8,   3, 1, 0, 1),  -- GKS Katowice 3-1 Górnik Zabrze
+        (NEWID(), @RoundId23, @TeamId12, @TeamId15,  2, 0, 0, 1),  -- Motor Lublin 2-0 Korona Kielce
+        (NEWID(), @RoundId23, @TeamId6, @TeamId4,    1, 0, 0, 1),  -- Pogoń Szczecin 1-0 Widzew Łódź
+        (NEWID(), @RoundId23, @TeamId18, @TeamId10,  2, 2, 1, 1),  -- Arka Gdynia 2-2 Lechia Gdańsk
+        (NEWID(), @RoundId23, @TeamId7, @TeamId16,   2, 3, 0, 1),  -- Cracovia 2-3 Piast Gliwice
 
-        -- Kolejka 24 (16 stycznia 2026)
-        (NEWID(), @RoundId24, @TeamId9, @TeamId10, null, null, null, 0),
-        (NEWID(), @RoundId24, @TeamId7, @TeamId4, null, null, null, 0),
-        (NEWID(), @RoundId24, @TeamId17, @TeamId16, null, null, null, 0),
-        (NEWID(), @RoundId24, @TeamId1, @TeamId18, null, null, null, 0),
-        (NEWID(), @RoundId24, @TeamId13, @TeamId12, null, null, null, 0),
-        (NEWID(), @RoundId24, @TeamId11, @TeamId15, null, null, null, 0),
-        (NEWID(), @RoundId24, @TeamId3, @TeamId14, null, null, null, 0),
-        (NEWID(), @RoundId24, @TeamId6, @TeamId5, null, null, null, 0),
-        (NEWID(), @RoundId24, @TeamId8, @TeamId2, null, null, null, 0),
+        -- Kolejka 24
+        (NEWID(), @RoundId24, @TeamId9, @TeamId18,   0, 3, 0, 1),  -- Wisła Płock 0-3 Arka Gdynia
+        (NEWID(), @RoundId24, @TeamId2, @TeamId7,    1, 0, 0, 1),  -- Legia Warszawa 1-0 Cracovia
+        (NEWID(), @RoundId24, @TeamId5, @TeamId6,    2, 0, 0, 1),  -- Raków Częstochowa 2-0 Pogoń Szczecin
+        (NEWID(), @RoundId24, @TeamId11, @TeamId13,  0, 1, 0, 1),  -- Radomiak Radom 0-1 GKS Katowice
+        (NEWID(), @RoundId24, @TeamId12, @TeamId8,   0, 0, 1, 1),  -- Motor Lublin 0-0 Górnik Zabrze
+        (NEWID(), @RoundId24, @TeamId4, @TeamId3,    2, 1, 0, 1),  -- Widzew Łódź 2-1 Lech Poznań
+        (NEWID(), @RoundId24, @TeamId16, @TeamId14,  1, 3, 0, 1),  -- Piast Gliwice 1-3 Zagłębie Lubin
+        (NEWID(), @RoundId24, @TeamId15, @TeamId17,  2, 1, 0, 1),  -- Korona Kielce 2-1 Bruk-Bet Termalica Nieciecza
+        (NEWID(), @RoundId24, @TeamId10, @TeamId1,   3, 0, 0, 1),  -- Lechia Gdańsk 3-0 Jagiellonia Białystok
 
-        -- Kolejka 25 (23 stycznia 2026)
-        (NEWID(), @RoundId25, @TeamId5, @TeamId11, null, null, null, 0),
-        (NEWID(), @RoundId25, @TeamId16, @TeamId9, null, null, null, 0),
-        (NEWID(), @RoundId25, @TeamId12, @TeamId1, null, null, null, 0),
-        (NEWID(), @RoundId25, @TeamId10, @TeamId7, null, null, null, 0),
-        (NEWID(), @RoundId25, @TeamId15, @TeamId18, null, null, null, 0),
-        (NEWID(), @RoundId25, @TeamId4, @TeamId17, null, null, null, 0),
-        (NEWID(), @RoundId25, @TeamId14, @TeamId6, null, null, null, 0),
-        (NEWID(), @RoundId25, @TeamId2, @TeamId13, null, null, null, 0),
-        (NEWID(), @RoundId25, @TeamId3, @TeamId8, null, null, null, 0),
+        -- Kolejka 25
+        (NEWID(), @RoundId25, @TeamId6, @TeamId15,   2, 1, 0, 1),  -- Pogoń Szczecin 2-1 Korona Kielce
+        (NEWID(), @RoundId25, @TeamId8, @TeamId5,    3, 1, 0, 1),  -- Górnik Zabrze 3-1 Raków Częstochowa
+        (NEWID(), @RoundId25, @TeamId14, @TeamId3,   0, 1, 0, 1),  -- Zagłębie Lubin 0-1 Lech Poznań
+        (NEWID(), @RoundId25, @TeamId18, @TeamId4,   0, 0, 1, 1),  -- Arka Gdynia 0-0 Widzew Łódź
+        (NEWID(), @RoundId25, @TeamId7, @TeamId9,    1, 2, 0, 1),  -- Cracovia 1-2 Wisła Płock
+        (NEWID(), @RoundId25, @TeamId13, @TeamId10,  2, 0, 0, 1),  -- GKS Katowice 2-0 Lechia Gdańsk
+        (NEWID(), @RoundId25, @TeamId1, @TeamId16,   1, 2, 0, 1),  -- Jagiellonia Białystok 1-2 Piast Gliwice
+        (NEWID(), @RoundId25, @TeamId11, @TeamId2,   1, 1, 1, 1),  -- Radomiak Radom 1-1 Legia Warszawa
+        (NEWID(), @RoundId25, @TeamId17, @TeamId12,  1, 2, 0, 1),  -- Bruk-Bet Termalica Nieciecza 1-2 Motor Lublin
 
-        -- Kolejka 26 (30 stycznia 2026)
-        (NEWID(), @RoundId26, @TeamId13, @TeamId5, null, null, null, 0),
-        (NEWID(), @RoundId26, @TeamId6, @TeamId10, null, null, null, 0),
-        (NEWID(), @RoundId26, @TeamId18, @TeamId9, null, null, null, 0),
-        (NEWID(), @RoundId26, @TeamId1, @TeamId14, null, null, null, 0),
-        (NEWID(), @RoundId26, @TeamId8, @TeamId4, null, null, null, 0),
-        (NEWID(), @RoundId26, @TeamId11, @TeamId3, null, null, null, 0),
-        (NEWID(), @RoundId26, @TeamId7, @TeamId16, null, null, null, 0),
-        (NEWID(), @RoundId26, @TeamId17, @TeamId15, null, null, null, 0),
-        (NEWID(), @RoundId26, @TeamId12, @TeamId2, null, null, null, 0),
+        -- Kolejka 26
+        (NEWID(), @RoundId26, @TeamId2, @TeamId5,    1, 1, 1, 1),  -- Legia Warszawa 1-1 Raków Częstochowa
+        (NEWID(), @RoundId26, @TeamId4, @TeamId8,    0, 0, 1, 1),  -- Widzew Łódź 0-0 Górnik Zabrze
+        (NEWID(), @RoundId26, @TeamId3, @TeamId17,   4, 1, 0, 1),  -- Lech Poznań 4-1 Bruk-Bet Termalica Nieciecza
+        (NEWID(), @RoundId26, @TeamId15, @TeamId18,  3, 0, 0, 1),  -- Korona Kielce 3-0 Arka Gdynia
+        (NEWID(), @RoundId26, @TeamId1, @TeamId9,    1, 2, 0, 1),  -- Jagiellonia Białystok 1-2 Wisła Płock
+        (NEWID(), @RoundId26, @TeamId10, @TeamId6,   2, 1, 0, 1),  -- Lechia Gdańsk 2-1 Pogoń Szczecin
+        (NEWID(), @RoundId26, @TeamId7, @TeamId13,   1, 0, 0, 1),  -- Cracovia 1-0 GKS Katowice
+        (NEWID(), @RoundId26, @TeamId12, @TeamId14,  1, 0, 0, 1),  -- Motor Lublin 1-0 Zagłębie Lubin
+        (NEWID(), @RoundId26, @TeamId16, @TeamId11,  3, 1, 0, 1),  -- Piast Gliwice 3-1 Radomiak Radom
 
-        -- Kolejka 27 (6 lutego 2026)
-        (NEWID(), @RoundId27, @TeamId15, @TeamId8, null, null, null, 0),
-        (NEWID(), @RoundId27, @TeamId9, @TeamId1, null, null, null, 0),
-        (NEWID(), @RoundId27, @TeamId16, @TeamId6, null, null, null, 0),
-        (NEWID(), @RoundId27, @TeamId3, @TeamId7, null, null, null, 0),
-        (NEWID(), @RoundId27, @TeamId10, @TeamId13, null, null, null, 0),
-        (NEWID(), @RoundId27, @TeamId5, @TeamId18, null, null, null, 0),
-        (NEWID(), @RoundId27, @TeamId4, @TeamId11, null, null, null, 0),
-        (NEWID(), @RoundId27, @TeamId2, @TeamId17, null, null, null, 0),
-        (NEWID(), @RoundId27, @TeamId14, @TeamId12, null, null, null, 0),
+        -- Kolejka 27
+        (NEWID(), @RoundId27, @TeamId18, @TeamId14,  3, 1, 0, 1),  -- Arka Gdynia 3-1 Zagłębie Lubin
+        (NEWID(), @RoundId27, @TeamId10, @TeamId15,  4, 2, 0, 1),  -- Lechia Gdańsk 4-2 Korona Kielce
+        (NEWID(), @RoundId27, @TeamId6, @TeamId2,    0, 2, 0, 1),  -- Pogoń Szczecin 0-2 Legia Warszawa
+        (NEWID(), @RoundId27, @TeamId11, @TeamId12,  1, 1, 1, 1),  -- Radomiak Radom 1-1 Motor Lublin
+        (NEWID(), @RoundId27, @TeamId17, @TeamId16,  3, 2, 0, 1),  -- Bruk-Bet Termalica Nieciecza 3-2 Piast Gliwice
+        (NEWID(), @RoundId27, @TeamId1, @TeamId3,    0, 0, 1, 1),  -- Jagiellonia Białystok 0-0 Lech Poznań
+        (NEWID(), @RoundId27, @TeamId8, @TeamId7,    3, 0, 0, 1),  -- Górnik Zabrze 3-0 Cracovia
+        (NEWID(), @RoundId27, @TeamId5, @TeamId4,    1, 1, 1, 1),  -- Raków Częstochowa 1-1 Widzew Łódź
+        (NEWID(), @RoundId27, @TeamId13, @TeamId9,   1, 0, 0, 1),  -- GKS Katowice 1-0 Wisła Płock
 
-        -- Kolejka 28 (13 lutego 2026)
-        (NEWID(), @RoundId28, @TeamId11, @TeamId16, null, null, null, 0),
-        (NEWID(), @RoundId28, @TeamId6, @TeamId3, null, null, null, 0),
-        (NEWID(), @RoundId28, @TeamId13, @TeamId17, null, null, null, 0),
-        (NEWID(), @RoundId28, @TeamId1, @TeamId10, null, null, null, 0),
-        (NEWID(), @RoundId28, @TeamId8, @TeamId16, null, null, null, 0),
-        (NEWID(), @RoundId28, @TeamId7, @TeamId5, null, null, null, 0),
-        (NEWID(), @RoundId28, @TeamId18, @TeamId4, null, null, null, 0),
-        (NEWID(), @RoundId28, @TeamId12, @TeamId9, null, null, null, 0),
-        (NEWID(), @RoundId28, @TeamId15, @TeamId2, null, null, null, 0),
+        -- Kolejka 28
+        (NEWID(), @RoundId28, @TeamId16, @TeamId6,   0, 2, 0, 1),  -- Piast Gliwice 0-2 Pogoń Szczecin
+        (NEWID(), @RoundId28, @TeamId3, @TeamId13,   3, 3, 1, 1),  -- Lech Poznań 3-3 GKS Katowice
+        (NEWID(), @RoundId28, @TeamId12, @TeamId5,   1, 1, 1, 1),  -- Motor Lublin 1-1 Raków Częstochowa
+        (NEWID(), @RoundId28, @TeamId7, @TeamId18,   2, 2, 1, 1),  -- Cracovia 2-2 Arka Gdynia
+        (NEWID(), @RoundId28, @TeamId2, @TeamId8,    1, 1, 1, 1),  -- Legia Warszawa 1-1 Górnik Zabrze
+        (NEWID(), @RoundId28, @TeamId14, @TeamId11,  1, 0, 0, 1),  -- Zagłębie Lubin 1-0 Radomiak Radom
+        (NEWID(), @RoundId28, @TeamId4, @TeamId17,   1, 0, 0, 1),  -- Widzew Łódź 1-0 Bruk-Bet Termalica Nieciecza
+        (NEWID(), @RoundId28, @TeamId15, @TeamId1,   1, 1, 1, 1),  -- Korona Kielce 1-1 Jagiellonia Białystok
+        (NEWID(), @RoundId28, @TeamId9, @TeamId10,   1, 0, 0, 1),  -- Wisła Płock 1-0 Lechia Gdańsk
 
         -- Kolejka 29 (20 lutego 2026)
         (NEWID(), @RoundId29, @TeamId4, @TeamId6, null, null, null, 0),
@@ -590,9 +590,9 @@ BEGIN TRY
     PRINT '   - teams: 18'
     PRINT '   - Sezon: 2025/2026 SeasonStats 2024/2025 & 2023/2024 & 2022/2023'
     PRINT '   - Status:'
-    PRINT '     • played rounds 1-21:'
-    PRINT '     • not played rounds 22-34:'
-    PRINT '   - last update 17.02.2026'
+    PRINT '     • played rounds 1-28:'
+    PRINT '     • not played rounds 29-34:'
+    PRINT '   - last update 15.04.2026'
     PRINT '//////'
 
 END TRY
