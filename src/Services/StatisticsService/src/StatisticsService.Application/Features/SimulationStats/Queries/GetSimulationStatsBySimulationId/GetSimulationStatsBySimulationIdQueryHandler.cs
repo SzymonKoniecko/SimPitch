@@ -18,10 +18,7 @@ public class GetSimulationStatsBySimulationIdQueryHandler : IRequestHandler<GetS
     public async Task<IEnumerable<SimulationTeamStatsDto>> Handle(GetSimulationStatsBySimulationIdQuery query, CancellationToken cancellationToken)
     {
         var results = await _simulationTeamStatsReadRepository.GetSimulationTeamStatsBySimulationIdAsync(query.SimulationId, cancellationToken);
-        if (results.Count() % 2 == 0)
-        {
-            return new List<SimulationTeamStatsDto>();
-        }
+        
         return results.Select(x => SimulationTeamStatsMapper.ToDto(x));
     }
 }
