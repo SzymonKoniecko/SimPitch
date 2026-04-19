@@ -6,6 +6,7 @@ using StatisticsService.Domain.ValueObjects;
 using Xunit;
 
 namespace StatisticsService.Tests;
+
 public class ScoreboardServiceTests
 {
     [Fact]
@@ -43,7 +44,7 @@ public class ScoreboardServiceTests
         var playedRounds = new List<MatchRound>();
 
         // Act
-        var result = service.CalculateSingleScoreboard(new SimulationParams() {LeagueId = Guid.NewGuid(), LeagueRoundId = Guid.NewGuid()}, IterationResult, playedRounds);
+        var result = service.CalculateSingleScoreboard(new SimulationParams() { LeagueId = Guid.NewGuid(), LeagueRoundId = Guid.NewGuid() }, IterationResult, playedRounds);
 
         // Assert
         Assert.NotNull(result);
