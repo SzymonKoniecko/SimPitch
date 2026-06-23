@@ -31,6 +31,8 @@ services:
       - teamcity_infra_net
     depends_on:
       - teamcity-db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   # 3. Agent TeamCity
   teamcity-agent:
