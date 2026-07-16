@@ -1,6 +1,8 @@
 # # TeamCity stack: docker-compose -f docker-compose.ci.yml -p teamcity up -d
 # build: docker-compose -f docker-compose.ci.yml -p teamcity up -d --build
 
+# for ml-predictor: docker network create shared_net
+
 
 services:
   # 1. (SQL Server)
@@ -29,6 +31,9 @@ services:
       - teamcity_logs:/opt/teamcity/logs
     networks:
       - teamcity_infra_net
+      - shared_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - teamcity-db
 
@@ -85,6 +90,8 @@ services:
 networks:
   teamcity_infra_net:
     driver: bridge
+  shared_net:
+    external: true
 
 volumes:
   teamcity_data:
