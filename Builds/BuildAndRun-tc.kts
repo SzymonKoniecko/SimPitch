@@ -3,17 +3,26 @@ package _Self.buildTypes
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
 object Build : BuildType({
-    name = "Build And Run"
+    name = "Build"
+
+    params {
+        checkbox("env.IS_FORCE_UPDATE", "", display = ParameterDisplay.PROMPT,
+                  checked = "true", unchecked = "false")
+        text("env.PREDICTED_TESTS_API", "http://host.docker.internal:8888/api/v1/prediction/", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        checkbox("env.PREDICTION_ALLOWED", "", display = ParameterDisplay.PROMPT,
+                  checked = "true", unchecked = "false")
+    }
 
     vcs {
-        root(HttpsGithubComSzymonKonieckoSimPitchRefsHeadsMain)
+        root(HttpsGithubComSzymonKonieckoSimPitchGitRefsHeadsStabilizeSeleniumTests)
     }
     steps {
         script {
-            name = "CleanUp builds and env"
-            id = "CleanUp_builds_and_env"
+            name = "cleanup"
+            id = "simpleRunner"
             scriptContent = """
                 #!/bin/bash
                 # scripts/cleanup.sh - Czyści wszystkie SimPitch buildy i pliki
@@ -34,8 +43,8 @@ object Build : BuildType({
             """.trimIndent()
         }
         script {
-            name = "Build Project"
-            id = "Build_Project"
+            name = "build-project"
+            id = "build_project"
             scriptContent = """
                 #!/bin/bash
                 # scripts/build-project.sh - Buduje wszystkie Docker images z tagami
@@ -79,35 +88,42 @@ object Build : BuildType({
                 #!/bin/bash
                 set -e
                 
-                echo "🐳 Building SimPitch images (APP)"
+                echo "Building SimPitch images (APP)"
                 
-                docker compose -f docker-compose.yml build
+                docker compose -f docker-compose.yml -p simpitch-tc build
                 
-                echo "📦 Images built:"
+                echo "Images built:"
                 docker images | grep simpitch
             """.trimIndent()
         }
         script {
-            name = "Run Services"
-            id = "Run_Services"
+            name = "Running APP stack"
+            id = "Running_APP_stack"
             scriptContent = """
                 #!/bin/bash
                 set -e
                 
-                echo "🚀 Running APP stack"
+                echo "Running APP stack"
+                
                 
                 docker compose \
                   -f docker-compose.app.yml \
                   -p simpitch-tc \
                   up -d
                 
-                echo "⏳ Waiting for containers"
+                
+                echo "Waiting for containers"
                 sleep 20
                 
                 docker ps
             """.trimIndent()
         }
     }
+    triggers {
+        vcs {
+        }
+    }
+
     features {
         perfmon {
         }

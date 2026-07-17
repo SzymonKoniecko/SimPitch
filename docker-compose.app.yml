@@ -214,6 +214,11 @@ services:
     shm_size: 2gb
     ports:
       - "4444:4444"
+    environment:
+      - SE_VNC_NO_PASSWORD=false
+      - SE_VNC_PASSWORD=simpitch
+      - SE_NODE_MAX_SESSIONS=4
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
     networks:
       - backend_network
     depends_on:
