@@ -13,13 +13,15 @@
         echo "=== Running Selenium Tests: ALL ==="
         dotnet test SimPitchSelenium/SimPitchSelenium.csproj \
         --configuration Release \
-        --logger "trx;LogFileName=TestResults/TestResults.trx"
+        --logger "trx;LogFileName=TestResults/TestResults.trx" \
+        --logger "teamcity"
     else
         echo "=== Running Selenium Test: $TEST_NAME ==="
         dotnet test SimPitchSelenium/SimPitchSelenium.csproj \
         --configuration Release \
         --filter "Name=$TEST_NAME" \
-        --logger "trx;LogFileName=TestResults/TestResults.trx"
+        --logger "trx;LogFileName=TestResults/TestResults.trx" \
+        --logger "teamcity"
     fi
     
     echo "✓ Test completed"
