@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Running APP stack"
+echo "Running APP stack"
 
 
 docker compose \
@@ -10,7 +10,7 @@ docker compose \
   up -d
 
 
-echo "⏳ Waiting for containers"
+echo "Waiting for containers"
 sleep 20
 
 docker ps
