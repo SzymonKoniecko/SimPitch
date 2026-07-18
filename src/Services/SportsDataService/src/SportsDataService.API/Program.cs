@@ -60,3 +60,5 @@ app.MapGet("/", () => "Use gRPC clients for communication");
 
 
 app.Run();
+
+public partial class Program { }
