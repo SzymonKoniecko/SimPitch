@@ -54,8 +54,8 @@ object Build : BuildType({
                 BUILD_NUMBER=${'$'}{BUILD_NUMBER:-local}
                 
                 echo "=== Building SimPitch Docker Images ==="
-                echo "Build Number: ${'$'}{BUILD_NUMBER}"
-                echo "Current directory: ${'$'}(pwd)"
+                #echo "Build Number: ${'$'}{BUILD_NUMBER}"
+                #echo "Current directory: ${'$'}(pwd)"
                 
                 # ============================================
                 # 1. Generowanie .env
