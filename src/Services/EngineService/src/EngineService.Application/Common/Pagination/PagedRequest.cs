@@ -6,7 +6,7 @@ namespace EngineService.Application.Common.Pagination;
 
 public class PagedRequest
 {
-    public int Offset { get; set; } = 1;
+    public int Offset { get; set; } = 1; // Default offset
     public int PageSize { get; set; } = -1;
     public SortingMethod SortingMethod { get; set; }
 
