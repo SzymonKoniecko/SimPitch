@@ -94,7 +94,7 @@ namespace EngineService.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("stop/{simulationId}")]
+        [HttpDelete("stop_broken/{simulationId}")]
         public async Task<ActionResult<SimulationDto>> StopSimulationBySimulationIdAsync(
             [FromRoute] Guid simulationId,
             CancellationToken cancellationToken = default)
