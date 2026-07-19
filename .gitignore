@@ -63,3 +63,4 @@ dist/
 
 apply_mutations.py
 mutations_plan.json
+.mutation_state
