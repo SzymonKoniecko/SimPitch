@@ -7,7 +7,7 @@ namespace EngineService.Application.Common.Pagination;
 public class PagedRequest
 {
     public int Offset { get; set; } = 1;
-    public int PageSize { get; set; } = 10;
+    public int PageSize { get; set; } = -1;
     public SortingMethod SortingMethod { get; set; }
 
     public PagedRequest(int offset, int pageSize, string sortingOptionEnum, string condition, string order)
