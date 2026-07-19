@@ -30,8 +30,8 @@ namespace EngineService.API.Controllers
             [FromBody] SimulationParamsDto simulationParamsDto,
             CancellationToken cancellationToken = default)
         {
-            // if (simulationParamsDto is null)
-                // throw new ValidationException("Simulation parameters cannot be null or empty.");
+            if (simulationParamsDto is null)
+                throw new ValidationException("Simulation parameters cannot be null or empty.");
 
             var result = await mediator.Send(new CreateSimulationCommand(simulationParamsDto), cancellationToken);
             if (result is null)
