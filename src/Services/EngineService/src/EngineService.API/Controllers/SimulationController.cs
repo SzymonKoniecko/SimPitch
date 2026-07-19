@@ -48,7 +48,7 @@ namespace EngineService.API.Controllers
             var result = await mediator.Send(
                 new GetSimulationOverviewBySimulationIdQuery(simulationId), 
                 cancellationToken);
-            if (result is not null)
+            if (result is null)
                 return NotFound("No simulation overview or something went wrong");
             return Ok(result);
         }
