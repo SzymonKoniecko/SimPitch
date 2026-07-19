@@ -63,7 +63,6 @@ namespace EngineService.API.Controllers
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
-            pageSize = 0;
             var result = await mediator.Send(
                 new GetAllSimulationOverviewsQuery(
                     new PagedRequest((pageNumber - 1) * pageSize, pageSize, sortingOption, condition, order)
