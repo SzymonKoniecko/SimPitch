@@ -19,7 +19,7 @@ public static class SimulationMapper
         dto.Id = simulationId;
         dto.State = stateDto;
         dto.SimulationParams = simulationParamsDto;
-        dto.IterationPreviews = iterationPreviewList;
+        dto.IterationPreviews = null;
         dto.SimulatedMatches = simulatedMatches;
         dto.LeagueStrengths = leagueStrengthDtos;
         dto.PriorLeagueStrength = priorLeagueStrength;
