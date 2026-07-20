@@ -7,6 +7,9 @@ namespace EngineService.Application.Common.Pagination;
 /// <summary>
 /// Paged Request Dto
 /// </summary>
+/// <summary>
+/// Paged Request Dto
+/// </summary>
 public class PagedRequest
 {
     public int Offset { get; set; } = 0; // Default offset // Default offset
