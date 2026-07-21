@@ -62,7 +62,7 @@ namespace EngineService.API.Controllers
         public async Task<ActionResult<PagedResponse<SimulationOverviewDto>>> GetAllAsync(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 0,
-            [FromQuery] string sortingOption = "CreatedDate", // default sorting // default sorting
+            [FromQuery] string sortingOption = "CreatedDate", // default sorting // default sorting // default sorting
             [FromQuery] string condition = "",
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
@@ -84,7 +84,7 @@ namespace EngineService.API.Controllers
             [FromRoute] Guid simulationId,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 0,
-            [FromQuery] string sortingOption = "CreatedDate", // default sorting // default sorting
+            [FromQuery] string sortingOption = "CreatedDate", // default sorting // default sorting // default sorting
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
