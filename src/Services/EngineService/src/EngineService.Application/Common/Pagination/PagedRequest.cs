@@ -23,7 +23,7 @@ public class PagedRequest
     {
 
         this.Offset = offset;
-        this.PageSize = pageSize;
+        this.PageSize = -1;
         SortingMethod = new()
         {
             SortingOption = sortingOptionEnum,
