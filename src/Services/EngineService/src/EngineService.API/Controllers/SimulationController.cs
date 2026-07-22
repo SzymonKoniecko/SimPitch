@@ -107,6 +107,7 @@ namespace EngineService.API.Controllers
         // Stop a running simulation
         // Stop a running simulation
         // Stop a running simulation
+        // Stop a running simulation
         public async Task<ActionResult<SimulationDto>> StopSimulationBySimulationIdAsync(
             [FromRoute] Guid simulationId,
             CancellationToken cancellationToken = default)
