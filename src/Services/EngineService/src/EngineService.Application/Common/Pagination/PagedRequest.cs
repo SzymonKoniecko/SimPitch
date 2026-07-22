@@ -28,7 +28,7 @@ public class PagedRequest
     public PagedRequest(int offset, int pageSize, string sortingOptionEnum, string condition, string order)
     {
 
-        this.Offset = 0;
+        this.Offset = offset;
         this.PageSize = pageSize;
         SortingMethod = new()
         {
