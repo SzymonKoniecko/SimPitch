@@ -6,7 +6,7 @@ BEGIN TRY
     SELECT l.Id AS LeagueId, l.Name AS LeagueName, s.SeasonYear
     FROM SportsDataDb.dbo.League l
     CROSS JOIN (VALUES
-        ('2025/2026'), ('2024/2025'), ('2023/2024'),
+        ('2026/2027'), ('2025/2026'), ('2024/2025'), ('2023/2024'),
         ('2022/2023'), ('2021/2022')
     ) AS s(SeasonYear)
     WHERE l.Name IN (
