@@ -24,7 +24,7 @@ namespace EngineService.API.Controllers
             CancellationToken cancellationToken = default)
         {
             var query = new GetIterationResultByIdQuery(iterationId);
-
+            // single iteration result
             var response = await _mediator.Send(query, cancellationToken);
             if (response == null) return NotFound();
             return Ok(response);

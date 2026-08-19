@@ -4,9 +4,24 @@ using EngineService.Application.Common.Sorting;
 namespace EngineService.Application.Common.Pagination;
 
 
+/// <summary>
+/// Paged Request Dto
+/// </summary>
+/// <summary>
+/// Paged Request Dto
+/// </summary>
+/// <summary>
+/// Paged Request Dto
+/// </summary>
+/// <summary>
+/// Paged Request Dto
+/// </summary>
+/// <summary>
+/// Paged Request Dto
+/// </summary>
 public class PagedRequest
 {
-    public int Offset { get; set; } = 1;
+    public int Offset { get; set; } = 1; // Default offset // Default offset // Default offset // Default offset // Default offset
     public int PageSize { get; set; } = 10;
     public SortingMethod SortingMethod { get; set; }
 
@@ -14,7 +29,7 @@ public class PagedRequest
     {
 
         this.Offset = offset;
-        this.PageSize = pageSize;
+        this.PageSize = -1;
         SortingMethod = new()
         {
             SortingOption = sortingOptionEnum,

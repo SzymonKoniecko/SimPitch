@@ -25,6 +25,11 @@ namespace EngineService.API.Controllers
         }
 
         [HttpPost]
+        // Route for creating simulation
+        // Route for creating simulation
+        // Route for creating simulation
+        // Route for creating simulation
+        // Route for creating simulation
         public async Task<ActionResult<string>> CreateSimulationAsync(
             [FromBody] SimulationParamsDto simulationParamsDto,
             CancellationToken cancellationToken = default)
@@ -40,6 +45,11 @@ namespace EngineService.API.Controllers
         }
         
         [HttpGet("overview/{simulationId}")]
+        // Fetch simulation overview
+        // Fetch simulation overview
+        // Fetch simulation overview
+        // Fetch simulation overview
+        // Fetch simulation overview
         public async Task<ActionResult<SimulationOverviewDto>> GetSimulationOverviewAsync(
             [FromRoute] Guid simulationId,
             CancellationToken cancellationToken = default)
@@ -56,7 +66,7 @@ namespace EngineService.API.Controllers
         public async Task<ActionResult<PagedResponse<SimulationOverviewDto>>> GetAllAsync(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
-            [FromQuery] string sortingOption = "CreatedDate",
+            [FromQuery] string sortingOption = "CreatedDate", // default sorting // default sorting // default sorting // default sorting // default sorting
             [FromQuery] string condition = "",
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
@@ -77,7 +87,7 @@ namespace EngineService.API.Controllers
             [FromRoute] Guid simulationId,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
-            [FromQuery] string sortingOption = "CreatedDate",
+            [FromQuery] string sortingOption = "CreatedDate", // default sorting // default sorting // default sorting // default sorting // default sorting
             [FromQuery] string order = "DESC",
             CancellationToken cancellationToken = default)
         {
@@ -93,6 +103,11 @@ namespace EngineService.API.Controllers
         }
 
         [HttpDelete("stop/{simulationId}")]
+        // Stop a running simulation
+        // Stop a running simulation
+        // Stop a running simulation
+        // Stop a running simulation
+        // Stop a running simulation
         public async Task<ActionResult<SimulationDto>> StopSimulationBySimulationIdAsync(
             [FromRoute] Guid simulationId,
             CancellationToken cancellationToken = default)
