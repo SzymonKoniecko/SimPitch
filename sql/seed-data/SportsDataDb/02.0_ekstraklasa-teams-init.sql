@@ -61,9 +61,9 @@ DECLARE
     @TeamId22 UNIQUEIDENTIFIER = 'f7bf7c73-4609-48bf-b8db-66abdaf8c79c',  -- Warta Poznan
     @TeamId23 UNIQUEIDENTIFIER = '015f9edb-00f6-4e63-8a03-ee77348e6572',  -- Ruch Chorzow
     @TeamId24 UNIQUEIDENTIFIER = '823587b3-3b37-4c48-b202-f281d150d49c',  -- LKS Lodz
-    @TeamId25 UNIQUEIDENTIFIER = '445cfbe0-607e-4b79-9c83-18dcc7abe73f';  -- Miedz Legnica
+    @TeamId25 UNIQUEIDENTIFIER = '445cfbe0-607e-4b79-9c83-18dcc7abe73f',  -- Miedz Legnica
 
-    @TeamId26 UNIQUEIDENTIFIER = 'a1fd8510-34ec-4cf8-8e49-c6147da036ab';  -- Wieczysta Krakow
+    @TeamId26 UNIQUEIDENTIFIER = 'a1fd8510-34ec-4cf8-8e49-c6147da036ab',  -- Wieczysta Krakow
     @TeamId27 UNIQUEIDENTIFIER = 'f29d0263-a534-4e3d-94c6-e1f5ea4a903c';  -- Wisla Krakow
 SELECT 
     @CountryId = Id
@@ -106,8 +106,8 @@ BEGIN TRY
         (@StadiumId22, 'Warta Poznań Stadium (Dębińska Road Stadium)', 2813),       -- Warta Poznań (Ogródek)
         (@StadiumId23, 'Silesian Stadium', 54378),                     -- Ruch Chorzów (Obiekt domowy w 2025)
         (@StadiumId24, 'Stadion Miejski im. Władysława Króla', 18029),-- ŁKS Łódź
-        (@StadiumId25, 'Stadion Miejski im. Orła Białego', 6156);
-        (@StadiumId26, 'Stadion Wieczystej Kraków', 1485);
+        (@StadiumId25, 'Stadion Miejski im. Orła Białego', 6156),
+        (@StadiumId26, 'Stadion Wieczystej Kraków', 1485),
         (@StadiumId27, 'Synerise Arena Kraków', 33130);
 
     IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.Team)
@@ -138,7 +138,7 @@ BEGIN TRY
         (@TeamId22, 'Warta Poznań', @CountryId, @StadiumId22, 'WAR'),
         (@TeamId23, 'Ruch Chorzów', @CountryId, @StadiumId23, 'RCH'),
         (@TeamId24, 'ŁKS Łódź', @CountryId, @StadiumId24, 'LKS'),
-        (@TeamId25, 'Miedź Legnica', @CountryId, @StadiumId25, 'MIE');
+        (@TeamId25, 'Miedź Legnica', @CountryId, @StadiumId25, 'MIE'),
 
         (@TeamId26, 'Wieczysta Krakow', @CountryId, @StadiumId26, 'WIE'),
         (@TeamId27, 'Wisla Krakow', @CountryId, @StadiumId27, 'WIS');

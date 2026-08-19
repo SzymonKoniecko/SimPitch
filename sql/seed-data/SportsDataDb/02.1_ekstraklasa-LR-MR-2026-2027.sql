@@ -1,5 +1,5 @@
 -- ================================================================
--- EKSTRAKLASA 2026/2027 - (full 1-21)
+-- EKSTRAKLASA 2026/2027 - (full 1-4)
 -- ================================================================
 -- Created: 19.08.2026
 
@@ -38,8 +38,8 @@ DECLARE
     @TeamId24 UNIQUEIDENTIFIER = '823587b3-3b37-4c48-b202-f281d150d49c',  -- LKS Lodz
     @TeamId25 UNIQUEIDENTIFIER = '445cfbe0-607e-4b79-9c83-18dcc7abe73f',  -- Miedz Legnica
 
-    @TeamId26 UNIQUEIDENTIFIER = 'a1fd8510-34ec-4cf8-8e49-c6147da036ab';  -- Wieczysta Krakow
-    @TeamId27 UNIQUEIDENTIFIER = 'f29d0263-a534-4e3d-94c6-e1f5ea4a903c';  -- Wisla Krakow
+    @TeamId26 UNIQUEIDENTIFIER = 'a1fd8510-34ec-4cf8-8e49-c6147da036ab',  -- Wieczysta Krakow
+    @TeamId27 UNIQUEIDENTIFIER = 'f29d0263-a534-4e3d-94c6-e1f5ea4a903c',  -- Wisla Krakow
 
     -- Round IDs
     @RoundId1 UNIQUEIDENTIFIER = NEWID(),
@@ -519,87 +519,21 @@ BEGIN TRY
     (NEWID(), @RoundId34, @TeamId8,  @TeamId6,  NULL, NULL, 0, 0), -- Górnik Zabrze - Pogoń Szczecin
     (NEWID(), @RoundId34, @TeamId3,  @TeamId12, NULL, NULL, 0, 0)  -- Lech Poznań - Motor Lublin
 
-        IF NOT EXISTS (SELECT 1 FROM SportsDataDb.dbo.SeasonStats)
-    INSERT INTO dbo.SeasonStats (Id, TeamId, SeasonYear, LeagueId, MatchesPlayed, Wins, Losses, Draws, GoalsFor, GoalsAgainst)
-        VALUES
-    	 (NEWID(), @TeamId3, '2024/2025', @LeagueId, 34, 22, 8, 4, 68, 31),
-         (NEWID(), @TeamId5, '2024/2025', @LeagueId, 34, 20, 5, 9, 51, 23),
-         (NEWID(), @TeamId1, '2024/2025', @LeagueId, 34, 17, 7, 10, 56, 42),
-         (NEWID(), @TeamId6, '2024/2025', @LeagueId, 34, 17, 10, 7, 59, 40),
-         (NEWID(), @TeamId2, '2024/2025', @LeagueId, 34, 15, 10, 9, 60, 45),
-         (NEWID(), @TeamId7, '2024/2025', @LeagueId, 34, 14, 11, 9, 58, 53),
-         (NEWID(), @TeamId12, '2024/2025', @LeagueId, 34, 14, 13, 7, 48, 59),
-         (NEWID(), @TeamId13, '2024/2025', @LeagueId, 34, 14, 13, 7, 49, 47),
-         (NEWID(), @TeamId8, '2024/2025', @LeagueId, 34, 13, 13, 8, 43, 39),
-         (NEWID(), @TeamId16, '2024/2025', @LeagueId, 34, 11, 11, 12, 37, 36),
-         (NEWID(), @TeamId15, '2024/2025', @LeagueId, 34, 11, 11, 12, 37, 45),
-         (NEWID(), @TeamId11, '2024/2025', @LeagueId, 34, 11, 15, 8, 48, 52),
-         (NEWID(), @TeamId4, '2024/2025', @LeagueId, 34, 11, 16, 7, 38, 49),
-         (NEWID(), @TeamId10, '2024/2025', @LeagueId, 34, 10, 17, 7, 44, 59),
-         (NEWID(), @TeamId14, '2024/2025', @LeagueId, 34, 10, 18, 6, 33, 51),
-        -- downgraded
-         (NEWID(), @TeamId19, '2024/2025', @LeagueId, 34, 7, 17, 10, 39, 56),
-         (NEWID(), @TeamId20, '2024/2025', @LeagueId, 34, 6, 16, 12, 38, 53),
-         (NEWID(), @TeamId21, '2024/2025', @LeagueId, 34, 6, 18, 10, 37, 63),
-
-
-    	 (NEWID(), @TeamId1, '2023/2024', @LeagueId,  34, 18, 7,   9, 77,  45),
-         (NEWID(), @TeamId20, '2023/2024', @LeagueId, 34, 18, 7,   9, 50,  31),
-         (NEWID(), @TeamId2, '2023/2024', @LeagueId,  34, 16,  7,  11, 51, 39),
-         (NEWID(), @TeamId6, '2023/2024', @LeagueId,  34, 16, 11,  7,  59, 38),
-         (NEWID(), @TeamId3, '2023/2024', @LeagueId,  34, 14,  9,  11, 47, 41),
-         (NEWID(), @TeamId8, '2023/2024', @LeagueId,  34, 15, 11,  8,  45, 41),
-         (NEWID(), @TeamId5, '2023/2024', @LeagueId,  34, 14, 10,  10, 54, 39),
-         (NEWID(), @TeamId14, '2023/2024', @LeagueId, 34, 13, 13,  8,  43, 50),
-         (NEWID(), @TeamId4, '2023/2024', @LeagueId,  34, 13, 14,  7,  45, 46),
-         (NEWID(), @TeamId16, '2023/2024', @LeagueId, 34, 9,  9,  16, 38,  35),
-         (NEWID(), @TeamId19, '2023/2024', @LeagueId, 34, 11, 13, 10,  42, 48),
-         (NEWID(), @TeamId21, '2023/2024', @LeagueId, 34, 9,  12, 13,  39, 49),
-         (NEWID(), @TeamId7, '2023/2024', @LeagueId,  34, 8,  11, 15,  45, 46),
-         (NEWID(), @TeamId15, '2023/2024', @LeagueId, 34, 8,  12, 14,  40, 44),
-         (NEWID(), @TeamId11, '2023/2024', @LeagueId, 34, 10, 16,  8,  41, 58),
-         -- downgraded
-         (NEWID(), @TeamId22, '2023/2024', @LeagueId,   34, 9,  10, 15,  33, 43), --warta poznan
-         (NEWID(), @TeamId23, '2023/2024', @LeagueId,   34, 6,  14, 14,  40, 55), --ruch chorzow
-         (NEWID(), @TeamId24, '2023/2024', @LeagueId,   34, 6,  6,  22,  34, 75),  --lks lodz
-         
-
-    	 (NEWID(), @TeamId5, '2022/2023', @LeagueId,  34, 23, 6,  5,  63, 24),
-         (NEWID(), @TeamId2, '2022/2023', @LeagueId, 34, 19, 9,  6,  57, 37),
-         (NEWID(), @TeamId3, '2022/2023', @LeagueId,  34, 17, 10, 7,  51, 29),
-         (NEWID(), @TeamId6, '2022/2023', @LeagueId,  34, 17, 9,  8,  57, 46),
-         (NEWID(), @TeamId16, '2022/2023', @LeagueId,  34, 15,  8, 11, 40, 31),
-         (NEWID(), @TeamId8, '2022/2023', @LeagueId, 34, 13, 9,  12, 45, 43),
-         (NEWID(), @TeamId7, '2022/2023', @LeagueId,  34, 12, 10, 12, 41, 35),
-         (NEWID(), @TeamId5, '2022/2023', @LeagueId,  34, 12, 9,  13, 37, 35),
-         (NEWID(), @TeamId22, '2022/2023', @LeagueId, 34, 12, 9,  13, 35, 44),
-         (NEWID(), @TeamId14, '2022/2023', @LeagueId,  34, 12, 8,  14, 34, 41),
-         (NEWID(), @TeamId19, '2022/2023', @LeagueId, 34, 11, 10, 13, 36, 40),
-         (NEWID(), @TeamId4, '2022/2023', @LeagueId, 34, 11, 8,  15, 38, 47),
-         (NEWID(), @TeamId15, '2022/2023', @LeagueId, 34, 11,  8, 15, 39, 48),
-         (NEWID(), @TeamId1, '2022/2023', @LeagueId,  34, 9,  14, 11, 48, 49),
-         (NEWID(), @TeamId20, '2022/2023', @LeagueId, 34, 9,  11, 14, 35, 48),
-         -- downgraded
-         (NEWID(), @TeamId9, '2022/2023', @LeagueId,   34, 10,  7, 17,  41, 50), --wisla plock
-         (NEWID(), @TeamId10, '2022/2023', @LeagueId,   34, 8,  6, 20,  28, 56), --lechia gdansk
-         (NEWID(), @TeamId25, '2022/2023', @LeagueId,   34, 4,  11,  19,  33, 55); --miedz legnica
-
-
     COMMIT TRANSACTION
-    PRINT '✅ SUKCES! Ekstraklasa 2025/2026'
+    PRINT '✅ SUKCES! Ekstraklasa 2026/2027'
     PRINT '   - max match rounds: 34'
     PRINT '   - matches: 306'
     PRINT '   - teams: 18'
-    PRINT '   - Sezon: 2025/2026 SeasonStats 2024/2025 & 2023/2024 & 2022/2023'
+    PRINT '   - Sezon: 2026/2027'
     PRINT '   - Status:'
     PRINT '     • played rounds 1-28:'
     PRINT '     • not played rounds 29-34:'
-    PRINT '   - last update 15.04.2026'
+    PRINT '   - last update 20.08.2026'
     PRINT '//////'
 
 END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION
-    PRINT '❌ Cannot insert! Ekstraklasa 2025/2026'
+    PRINT '❌ Cannot insert! Ekstraklasa 2026/2027'
     PRINT 'Error: ' + ERROR_MESSAGE()
 END CATCH
