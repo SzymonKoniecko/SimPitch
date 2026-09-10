@@ -6,7 +6,7 @@ BEGIN TRY
     SELECT l.Id AS LeagueId, l.Name AS LeagueName, s.SeasonYear
     FROM SportsDataDb.dbo.League l
     CROSS JOIN (VALUES
-        ('2025/2026'), ('2024/2025'), ('2023/2024'),
+        ('2026/2027'), ('2025/2026'), ('2024/2025'), ('2023/2024'),
         ('2022/2023'), ('2021/2022')
     ) AS s(SeasonYear)
     WHERE l.Name IN (
@@ -19,21 +19,30 @@ BEGIN TRY
         'UEFA Conference League'
     )
 ),
+PlayedMatches AS (
+    SELECT
+        lr.LeagueId,
+        lr.SeasonYear,
+        COUNT(*) AS MatchCount
+    FROM SportsDataDb.dbo.MatchRound mr
+    JOIN SportsDataDb.dbo.LeagueRound lr ON lr.Id = mr.RoundId
+    WHERE mr.IsPlayed = 1
+    GROUP BY lr.LeagueId, lr.SeasonYear
+),
 Stats AS (
-    SELECT 
+    SELECT
         ls.LeagueId,
         ls.SeasonYear,
         CAST(SUM(ss.GoalsFor) AS DECIMAL(10,4)) /
-        CAST((
-            SELECT (((l2.MaxRound / 2) + 1) * l2.MaxRound) / 2
-            FROM SportsDataDb.dbo.League l2
-            WHERE l2.Id = ls.LeagueId
-        ) AS DECIMAL(10,4)) AS Strength
+        CAST(pm.MatchCount AS DECIMAL(10,4)) AS Strength
     FROM LeagueSeason ls
-    JOIN SportsDataDb.dbo.SeasonStats ss 
+    JOIN SportsDataDb.dbo.SeasonStats ss
         ON ss.LeagueId = ls.LeagueId
         AND ss.SeasonYear = ls.SeasonYear
-    GROUP BY ls.LeagueId, ls.SeasonYear
+    JOIN PlayedMatches pm
+        ON pm.LeagueId = ls.LeagueId
+        AND pm.SeasonYear = ls.SeasonYear
+    GROUP BY ls.LeagueId, ls.SeasonYear, pm.MatchCount
 )
 
 INSERT INTO SportsDataDb.dbo.LeagueStrength (Id, LeagueId, SeasonYear, Strength)

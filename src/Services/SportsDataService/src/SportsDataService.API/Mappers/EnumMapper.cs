@@ -16,6 +16,8 @@ public static class EnumMapper
             return "2024/2025";
         if (SeasonEnum.Season2025_2026 == seasonEnum)
             return "2025/2026";
+        if (SeasonEnum.Season2026_2027 == seasonEnum)
+            return "2026/2027";
         throw new ArgumentException($"Invalid season enum type. Provided {seasonEnum}");
     }
     
@@ -32,6 +34,9 @@ public static class EnumMapper
 
         if (seasonEnum == "2025/2026" || seasonEnum == "2025_2026")
             return SeasonEnum.Season2025_2026;
+
+        if (seasonEnum == "2026/2027" || seasonEnum == "2026_2027")
+            return SeasonEnum.Season2026_2027;
 
         throw new ArgumentException($"Invalid season string type. Provided {seasonEnum}");
     }

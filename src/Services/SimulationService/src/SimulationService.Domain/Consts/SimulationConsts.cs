@@ -37,5 +37,5 @@ public static class SimulationConsts
     /// <summary>
     /// Wskazuje OBECNY sezon, do którego merge SeasonStats będzie dązył
     /// </summary>
-    public const SeasonEnum CURRENT_SEASON = SeasonEnum.Season2025_2026;
+    public const SeasonEnum CURRENT_SEASON = SeasonEnum.Season2026_2027;
 }

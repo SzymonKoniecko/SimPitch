@@ -7,5 +7,6 @@ public enum SeasonEnum
     Season2022_2023 = 0,
     Season2023_2024 = 1,
     Season2024_2025 = 2,
-    Season2025_2026 = 3
+    Season2025_2026 = 3,
+    Season2026_2027 = 4
 }
