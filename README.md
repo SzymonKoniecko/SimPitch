@@ -77,6 +77,9 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 | **gRPC** | Fast, strongly-typed communication between microservices and central logging service |
 | **Redis** | Background job processing and asynchronous task execution (e.g., iterative simulations) |
 | **Microsoft SQL Server** | Persistent database for input data, results, and configurations |
+| **Elasticsearch** | Secondary log store indexed by `LoggingService` — enables full-text search and analytics over centralized logs |
+| **Kibana** | Web UI for exploring/searching indexed logs and visualizing APM traces, service maps, and dependencies |
+| **Elastic APM (APM Server + .NET/Python agents)** | Distributed tracing across all microservices — HTTP/gRPC calls, SQL queries, Redis commands, and errors, all correlated into end-to-end traces |
 | **MSelenium** | Test software |
 | **XgBoost** | Machine learning library to predict match results |
 
@@ -94,6 +97,7 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 - Multiple simulation modes with customizable parameters and configurations
 - **gRPC data chunking** for efficient large response handling  
 - **Memory optimization** in `SimulationService` for multi-iteration performance  
+- **Full observability stack** — logs dual-written to MSSQL + Elasticsearch, searchable/visualized in **Kibana**, plus distributed tracing via **Elastic APM** across every microservice (HTTP, gRPC, SQL, Redis) with an end-to-end service dependency map
 
 ---
 
@@ -121,8 +125,30 @@ Communicates with all other services and controls the simulation algorithm.
 > In future that microservice will choose the exact service to handle a simulation (Can be in GO, Python, C#)
 
 ### **LoggerService**
-Dedicated logging service aggregating logs from all components.  
+Dedicated logging service aggregating logs from all components over gRPC.  
+Dual-writes every log entry to MSSQL (source of truth) and to **Elasticsearch** (best-effort, for search/analytics in Kibana).  
 Simplifies monitoring, debugging, and system health tracking.
+
+---
+
+## Observability Stack (ELK + APM)
+
+On top of the core services, SimPitch ships a full observability stack, wired into every microservice out of the box:
+
+| Component | What it does | Local URL |
+|-----------|--------------|-----------|
+| **Elasticsearch** | Stores centralized logs (`simpitch-logs-*` indices) and APM trace data | `http://localhost:9200` |
+| **Kibana** | UI for searching/filtering logs, browsing APM traces, and viewing the live service dependency map | `http://localhost:5601` |
+| **APM Server** | Intake endpoint that receives trace/span/error data from every service's Elastic APM agent and ships it to Elasticsearch | `http://localhost:8200` |
+
+**What gets traced automatically, with no code changes needed per feature:**
+- Every incoming HTTP/gRPC request (ASP.NET Core instrumentation)
+- Outgoing gRPC calls between microservices (`Elastic.Apm.GrpcClient`)
+- SQL Server queries (`Elastic.Apm.NetCoreAll` SqlClient instrumentation)
+- Redis commands in `SportsDataService` and `SimulationService` (`Elastic.Apm.StackExchange.Redis`)
+- The `SimPitchMl` Python service (via the `elastic-apm` Starlette middleware)
+
+Because trace context (`traceparent`) is propagated automatically across HTTP/gRPC calls, a single request that hops through several microservices (e.g. `EngineService → SimulationService → SportsDataService`) shows up in Kibana as **one distributed trace** with a full waterfall of every hop's duration — not isolated per-service fragments.
 
 ---
 
