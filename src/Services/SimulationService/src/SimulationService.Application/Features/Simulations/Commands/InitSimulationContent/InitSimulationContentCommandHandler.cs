@@ -61,7 +61,7 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
         int totalMatches = 0;
         League currentLeague = null;
 
-        foreach (var leagueRound in leagueRounds) // zmienic na jedynie current_season - bo reszta ma SeasonStats (o ile nie bedzie nigdy symulacji wielu sezonow)
+        foreach (var leagueRound in leagueRounds.Where(x => x.SeasonYear == EnumMapper.SeasonEnumToString(SimulationConsts.CURRENT_SEASON))) // zmienic na jedynie current_season - bo reszta ma SeasonStats (o ile nie bedzie nigdy symulacji wielu sezonow)
         {
             // Pobierz ligę tylko raz, gdy się zmieni
             if (currentLeague == null || currentLeague.Id != leagueRound.LeagueId)

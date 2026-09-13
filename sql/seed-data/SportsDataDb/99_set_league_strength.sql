@@ -1,8 +1,7 @@
 USE SportsDataDb;
 BEGIN TRANSACTION;
 BEGIN TRY
-
-;WITH LeagueSeason AS (
+WITH LeagueSeason AS (
     SELECT l.Id AS LeagueId, l.Name AS LeagueName, s.SeasonYear
     FROM SportsDataDb.dbo.League l
     CROSS JOIN (VALUES
@@ -19,30 +18,24 @@ BEGIN TRY
         'UEFA Conference League'
     )
 ),
-PlayedMatches AS (
-    SELECT
-        lr.LeagueId,
-        lr.SeasonYear,
-        COUNT(*) AS MatchCount
-    FROM SportsDataDb.dbo.MatchRound mr
-    JOIN SportsDataDb.dbo.LeagueRound lr ON lr.Id = mr.RoundId
-    WHERE mr.IsPlayed = 1
-    GROUP BY lr.LeagueId, lr.SeasonYear
-),
 Stats AS (
+    -- Total matches for the league/season is derived from SeasonStats itself
+    -- (SUM(MatchesPlayed) counts every team's played matches, so dividing by
+    -- 2 gives the actual match count) rather than requiring granular
+    -- MatchRound/LeagueRound rows to exist. Most historical seasons only
+    -- have the final SeasonStats table seeded, with no match-by-match data,
+    -- so requiring MatchRound rows here silently dropped them.
     SELECT
         ls.LeagueId,
         ls.SeasonYear,
         CAST(SUM(ss.GoalsFor) AS DECIMAL(10,4)) /
-        CAST(pm.MatchCount AS DECIMAL(10,4)) AS Strength
+        CAST(SUM(ss.MatchesPlayed) / 2.0 AS DECIMAL(10,4)) AS Strength
     FROM LeagueSeason ls
     JOIN SportsDataDb.dbo.SeasonStats ss
         ON ss.LeagueId = ls.LeagueId
         AND ss.SeasonYear = ls.SeasonYear
-    JOIN PlayedMatches pm
-        ON pm.LeagueId = ls.LeagueId
-        AND pm.SeasonYear = ls.SeasonYear
-    GROUP BY ls.LeagueId, ls.SeasonYear, pm.MatchCount
+    GROUP BY ls.LeagueId, ls.SeasonYear
+    HAVING SUM(ss.MatchesPlayed) > 0
 )
 
 INSERT INTO SportsDataDb.dbo.LeagueStrength (Id, LeagueId, SeasonYear, Strength)
