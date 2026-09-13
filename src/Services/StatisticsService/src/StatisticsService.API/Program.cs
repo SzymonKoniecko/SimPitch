@@ -1,3 +1,4 @@
+using Elastic.Apm.NetCoreAll;
 using StatisticsService.API;
 using StatisticsService.Infrastructure;
 using StatisticsService.Application.Features;
@@ -29,6 +30,8 @@ builder.Services.AddGrpc(options =>
 
 builder.Services.AddSimulationGrpcClient(ConfigHelper.GetSimulationServiceAddress());
 builder.Services.AddSportsDataGrpcClient(ConfigHelper.GetSportsDataServiceAddress());
+
+builder.Services.AddAllElasticApm();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

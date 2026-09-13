@@ -50,6 +50,10 @@ services:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:8.15.3
 
+  apm-server:
+    container_name: apm-server
+    image: docker.elastic.co/apm/apm-server:8.15.3
+
 
 
   mssql:

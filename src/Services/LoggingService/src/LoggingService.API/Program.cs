@@ -1,3 +1,4 @@
+using Elastic.Apm.NetCoreAll;
 using LoggingService.API.Services;
 using LoggingService.Infrastructure;
 
@@ -8,6 +9,7 @@ builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddAllElasticApm();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

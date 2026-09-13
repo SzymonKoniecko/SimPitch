@@ -1,3 +1,4 @@
+using Elastic.Apm.NetCoreAll;
 using SportsDataService.API.Services;
 using SportsDataService.Infrastructure;
 using SportsDataService.Infrastructure.Logging;
@@ -39,6 +40,8 @@ builder.Services.AddGrpc(options =>
 {
     options.Interceptors.Add<GrpcExceptionInterceptor>();
 });
+
+builder.Services.AddAllElasticApm();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

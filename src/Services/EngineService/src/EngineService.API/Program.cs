@@ -1,4 +1,5 @@
 
+using Elastic.Apm.NetCoreAll;
 using EngineService.API;
 using EngineService.Infrastructure;
 using EngineService.Infrastructure.Logging;
@@ -37,6 +38,8 @@ builder.WebHost.ConfigureKestrel(options =>
     options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(6);
     options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(4);
 });
+
+builder.Services.AddAllElasticApm();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
