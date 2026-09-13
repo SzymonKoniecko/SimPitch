@@ -1,3 +1,5 @@
+using Elastic.Apm.NetCoreAll;
+using Elastic.Apm.StackExchange.Redis;
 using SimulationService.Infrastructure;
 using SimulationService.Infrastructure.Middlewares;
 using SimulationService.Infrastructure.Logging;
@@ -27,9 +29,12 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = ConfigHelper.GetRedisCacheConnectionString();
     options.InstanceName = "SimulationCache";
 });
-builder.Services.AddSingleton<IConnectionMultiplexer>(
-    ConnectionMultiplexer.Connect(ConfigHelper.GetRedisCacheConnectionString())
-);
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var connection = ConnectionMultiplexer.Connect(ConfigHelper.GetRedisCacheConnectionString());
+    connection.UseElasticApm();
+    return connection;
+});
 
 builder.Services.AddMediatRServices();
 
@@ -45,6 +50,8 @@ builder.Services.AddGrpc(options =>
 builder.Services.AddSportsDataGrpcClient(ConfigHelper.GetSportsDataAddress());
 builder.Services.AddStatisticsGrpcClient(ConfigHelper.GetStatisticsAddress());
 builder.Services.AddSimPitchMlGrpcClient(ConfigHelper.GetSimPitchMlAddress());
+
+builder.Services.AddAllElasticApm();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

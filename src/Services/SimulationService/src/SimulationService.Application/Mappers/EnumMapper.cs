@@ -17,8 +17,8 @@ public static class EnumMapper
             return "2024/2025";
         if (SeasonEnum.Season2025_2026 == seasonEnum)
             return "2025/2026";
-        if (SeasonEnum.Season2025_2026 == seasonEnum)
-            return "2025/2026";
+        if (SeasonEnum.Season2026_2027 == seasonEnum)
+            return "2026/2027";
         throw new ArgumentException($"Invalid season enum type. Provided {seasonEnum}");
     }
 
@@ -32,6 +32,8 @@ public static class EnumMapper
             return SeasonEnum.Season2024_2025;
         if ("2025/2026" == seasonEnum)
             return SeasonEnum.Season2025_2026;
+        if ("2026/2027" == seasonEnum)
+            return SeasonEnum.Season2026_2027;
         throw new ArgumentException($"Invalid season string type. Provided {seasonEnum}");
     }
     /// <summary>
@@ -47,6 +49,8 @@ public static class EnumMapper
             return SeasonEnum.Season2023_2024;
         if (SeasonEnum.Season2025_2026 == seasonEnum)
             return SeasonEnum.Season2024_2025;
+        if (SeasonEnum.Season2026_2027 == seasonEnum)
+            return SeasonEnum.Season2026_2027;
         throw new ArgumentException($"Invalid season enum type. Provided {seasonEnum}");
     }
 
@@ -86,6 +90,8 @@ public static class EnumMapper
             return "2024/2025";
         if (SeasonEnum.Season2025_2026 == season)
             return "2025/2026";
+        if (SeasonEnum.Season2026_2027 == season)
+            return "2026/2027";
         
         throw new KeyNotFoundException($"Cannot map season enum from his INT value to enum value: int?->{seasonYear}//");
     }

@@ -11,10 +11,17 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=${ASPNETCORE_URL}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - ConnectionStrings__LoggingDb=Server=mssql;Database=LoggingDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
+      - Elasticsearch__Uri=http://${ELASTICSEARCH_SERVICE_NAME}:${ELASTICSEARCH_CONTAINER_PORT}
+      - Elasticsearch__IndexFormat=${ELASTICSEARCH_LOG_INDEX_FORMAT}
+      - ELASTIC_APM_SERVER_URL=http://${APM_SERVER_SERVICE_NAME}:${APM_SERVER_CONTAINER_PORT}
+      - ELASTIC_APM_SERVICE_NAME=LoggingService
+      - ELASTIC_APM_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
     networks:
       - backend_network
     depends_on:
       - mssql
+      - elasticsearch
+      - apm-server
 
   sportsdata-service:
     image: simpitch-tc-sportsdata-service:latest
@@ -27,6 +34,9 @@ services:
       - GrpcLogging__Address=http://${LOGGING_SERVICE_NAME}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - GrpcLogging__SourceName=SportsDataService
       - ConnectionStrings__Redis=${REDIS_CONN_STRING}
+      - ELASTIC_APM_SERVER_URL=http://${APM_SERVER_SERVICE_NAME}:${APM_SERVER_CONTAINER_PORT}
+      - ELASTIC_APM_SERVICE_NAME=SportsDataService
+      - ELASTIC_APM_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
 
       #- Kestrel__Endpoints__Grpc__Url=http://0.0.0.0:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
       #- Kestrel__Endpoints__Rest__Url=http://0.0.0.0:${SPORTSDATA_SERVICE_CONTAINER_PORT_REST}
@@ -35,6 +45,7 @@ services:
     depends_on:
       - mssql
       - logging-service
+      - apm-server
 
   engine-service:
     image: simpitch-tc-engine-service:latest
@@ -48,6 +59,9 @@ services:
       - GrpcLogging__SourceName=EngineService
       - SimulationService__Address=http://${SIMULATION_SERVICE_NAME}:${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
       - StatisticsService__Address=http://${STATISTICS_SERVICE_NAME}:${STATISTICS_SERVICE_CONTAINER_PORT_GRPC}
+      - ELASTIC_APM_SERVER_URL=http://${APM_SERVER_SERVICE_NAME}:${APM_SERVER_CONTAINER_PORT}
+      - ELASTIC_APM_SERVICE_NAME=EngineService
+      - ELASTIC_APM_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
     networks:
       - backend_network
     depends_on:
@@ -55,6 +69,7 @@ services:
       - logging-service
       - statistics-service
       - simulation-service
+      - apm-server
 
   simulation-service:
     image: simpitch-tc-simulation-service:latest
@@ -70,11 +85,15 @@ services:
       - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
       - StatisticsService__Address=http://${STATISTICS_SERVICE_NAME}:${STATISTICS_SERVICE_CONTAINER_PORT_GRPC}
       - SimPitchMl__Address=http://${SIMPITCHML_SERVICE_NAME}:${SIMPITCHML_SERVICE_CONTAINER_PORT_GRPC}
+      - ELASTIC_APM_SERVER_URL=http://${APM_SERVER_SERVICE_NAME}:${APM_SERVER_CONTAINER_PORT}
+      - ELASTIC_APM_SERVICE_NAME=SimulationService
+      - ELASTIC_APM_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
     networks:
       - backend_network
     depends_on:
       - mssql
       - logging-service
+      - apm-server
 
   statistics-service:
     image: simpitch-tc-statistics-service:latest
@@ -88,11 +107,15 @@ services:
       - GrpcLogging__SourceName=StatisticsService
       - SportsDataService__Address=http://${SPORTSDATA_SERVICE_NAME}:${SPORTSDATA_SERVICE_CONTAINER_PORT_GRPC}
       - SimulationService__Address=http://${SIMULATION_SERVICE_NAME}:${SIMULATION_SERVICE_CONTAINER_PORT_GRPC}
+      - ELASTIC_APM_SERVER_URL=http://${APM_SERVER_SERVICE_NAME}:${APM_SERVER_CONTAINER_PORT}
+      - ELASTIC_APM_SERVICE_NAME=StatisticsService
+      - ELASTIC_APM_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
     networks:
       - backend_network
     depends_on:
       - mssql
       - logging-service
+      - apm-server
 
   redis-cache:
     image: redis:6.2-alpine
@@ -102,8 +125,51 @@ services:
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
     networks:
       - backend_network
-    volumes: 
+    volumes:
       - cache:/data
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    container_name: elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "${ELASTICSEARCH_HOST_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
+    networks:
+      - backend_network
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.15.3
+    container_name: kibana
+    restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOSTS=http://${ELASTICSEARCH_SERVICE_NAME}:${ELASTICSEARCH_CONTAINER_PORT}
+    ports:
+      - "${KIBANA_HOST_PORT}:${KIBANA_CONTAINER_PORT}"
+    networks:
+      - backend_network
+    depends_on:
+      - elasticsearch
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:8.15.3
+    container_name: apm-server
+    restart: unless-stopped
+    command: ["apm-server", "-e", "--strict.perms=false"]
+    volumes:
+      - ./apm-server/apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
+    ports:
+      - "${APM_SERVER_HOST_PORT}:${APM_SERVER_CONTAINER_PORT}"
+    networks:
+      - backend_network
+    depends_on:
+      - elasticsearch
+      - kibana
 
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -187,7 +253,10 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - IS_RELOAD=False
       - MAX_WORKERS=${MAX_WORKERS:-10} # Domyślnie 10 jeśli nie ustawione w .env
-      - STORAGE_DIR=/app/data_storage 
+      - STORAGE_DIR=/app/data_storage
+      - ELASTIC_APM_SERVER_URL=http://${APM_SERVER_SERVICE_NAME}:${APM_SERVER_CONTAINER_PORT}
+      - ELASTIC_APM_SERVICE_NAME=SimPitchMlService
+      - ELASTIC_APM_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
     volumes:
       - simpitch_ml_data:/app/data_storage
     networks:
@@ -238,3 +307,5 @@ volumes:
   cache:
     driver: local
   simpitch_ml_data:
+  elasticsearch_data:
+    driver: local

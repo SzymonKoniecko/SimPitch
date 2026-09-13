@@ -3,11 +3,11 @@ using LoggingService.Application.Interfaces;
 using LoggingService.Domain.Entities;
 
 namespace LoggingService.Infrastructure.Persistence;
-class LogRepository : ILogRepository
+class SqlLogRepository : ILogRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
-    public LogRepository(IDbConnectionFactory dbConnectionFactory)
+    public SqlLogRepository(IDbConnectionFactory dbConnectionFactory)
     {
         _dbConnectionFactory = dbConnectionFactory;
     }

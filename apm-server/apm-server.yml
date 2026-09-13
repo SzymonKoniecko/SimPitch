@@ -1,0 +1,21 @@
+apm-server:
+  host: "0.0.0.0:8200"
+  rum:
+    enabled: false
+  auth:
+    anonymous:
+      enabled: true
+      allow_agent: ["*"]
+      allow_service: []
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+
+setup.kibana:
+  host: "http://kibana:5601"
+
+setup.template.enabled: true
+
+logging:
+  level: info
+  to_stderr: true
