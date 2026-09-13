@@ -8,10 +8,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=${ASPNETCORE_URL}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - ConnectionStrings__LoggingDb=Server=mssql;Database=LoggingDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
+      - Elasticsearch__Uri=http://${ELASTICSEARCH_SERVICE_NAME}:${ELASTICSEARCH_CONTAINER_PORT}
+      - Elasticsearch__IndexFormat=${ELASTICSEARCH_LOG_INDEX_FORMAT}
     networks:
       - backend_network
     depends_on:
       - mssql
+      - elasticsearch
 
   sportsdata-service:
     ports:
@@ -96,6 +99,30 @@ services:
       - backend_network
     volumes: 
       - cache:/data
+
+  elasticsearch:
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "${ELASTICSEARCH_HOST_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
+    networks:
+      - backend_network
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    restart: unless-stopped
+
+  kibana:
+    environment:
+      - ELASTICSEARCH_HOSTS=http://${ELASTICSEARCH_SERVICE_NAME}:${ELASTICSEARCH_CONTAINER_PORT}
+    ports:
+      - "${KIBANA_HOST_PORT}:${KIBANA_CONTAINER_PORT}"
+    networks:
+      - backend_network
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
 
   mssql:
     environment:
@@ -203,4 +230,6 @@ networks:
 volumes:
   mssql_data:
   cache:
+    driver: local
+  elasticsearch_data:
     driver: local

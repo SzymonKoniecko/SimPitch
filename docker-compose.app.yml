@@ -11,10 +11,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=${ASPNETCORE_URL}:${LOGGING_SERVICE_CONTAINER_PORT_GRPC}
       - ConnectionStrings__LoggingDb=Server=mssql;Database=LoggingDb;User Id=${DB_ADMIN};Password=${DB_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Connection Timeout=30;
+      - Elasticsearch__Uri=http://${ELASTICSEARCH_SERVICE_NAME}:${ELASTICSEARCH_CONTAINER_PORT}
+      - Elasticsearch__IndexFormat=${ELASTICSEARCH_LOG_INDEX_FORMAT}
     networks:
       - backend_network
     depends_on:
       - mssql
+      - elasticsearch
 
   sportsdata-service:
     image: simpitch-tc-sportsdata-service:latest
@@ -102,8 +105,36 @@ services:
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASS}
     networks:
       - backend_network
-    volumes: 
+    volumes:
       - cache:/data
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    container_name: elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "${ELASTICSEARCH_HOST_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
+    networks:
+      - backend_network
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.15.3
+    container_name: kibana
+    restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOSTS=http://${ELASTICSEARCH_SERVICE_NAME}:${ELASTICSEARCH_CONTAINER_PORT}
+    ports:
+      - "${KIBANA_HOST_PORT}:${KIBANA_CONTAINER_PORT}"
+    networks:
+      - backend_network
+    depends_on:
+      - elasticsearch
 
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -238,3 +269,5 @@ volumes:
   cache:
     driver: local
   simpitch_ml_data:
+  elasticsearch_data:
+    driver: local
