@@ -22,3 +22,6 @@
 [submodule "src/ML"]
 	path = src/ML
 	url = https://github.com/SzymonKoniecko/SimPitchML.git
+[submodule "src/Playwright"]
+	path = src/Playwright
+	url = https://github.com/SzymonKoniecko/SimPitchPlaywright.git
