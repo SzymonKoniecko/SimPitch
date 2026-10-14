@@ -83,6 +83,12 @@ dotnet test
 ```
 More options (headed mode, other browsers, traces, running without PowerShell) are described in [src/Playwright/README.md](src/Playwright/README.md).
 
+***[TEST] Fast domain unit tests (FsCheck / Bogus) ***
+
+Property-based tests of the domain logic – no database, network or Docker needed, they run in about a second.
+**FsCheck** generates hundreds of inputs per property (including the seed), **Bogus** turns the seed into realistic,
+reproducible domain data (teams, season stats, fixtures, scoreboards).
+
 ## Tech Stack & Architecture
 
 The system is built with **modern, battle-tested technologies**, **DDD + Strategy Pattern** and **clean architectural patterns**:
@@ -102,7 +108,22 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 | **Elastic APM (APM Server + .NET/Python agents)** | Distributed tracing across all microservices — HTTP/gRPC calls, SQL queries, Redis commands, and errors, all correlated into end-to-end traces |
 | **Selenium** | Test software |
 | **Playwright** | End-to-end UI tests (Playwright for .NET + NUnit) with traces for failed tests |
+| **xUnit + FsCheck + Bogus** | Fast domain unit tests — property-based testing (FsCheck) on realistic, reproducible generated data (Bogus) |
 | **XgBoost** | Machine learning library to predict match results |
+
+---
+
+## Testing Strategy
+
+SimPitch is tested on several levels — from fast, isolated domain checks up to full end-to-end UI flows:
+
+| Level | Tools | What is tested | Needs running stack |
+|---|---|---|---|
+| **Domain property-based tests** | xUnit, FsCheck, Bogus | Invariants of the simulation domain (`SeasonStats`, `TeamStrength`, all simulation strategies, the whole match simulation workflow) and EngineService mapping/paging — verified on hundreds of generated inputs per property | No (~1 s) |
+| **Unit tests** | xUnit, Moq, AutoFixture | Handlers, services and simulation models of each microservice | No |
+| **End-to-end UI tests** | Playwright (.NET), Selenium | User flows in the Vue frontend against the real backend (navigation, preparing/running simulations, results, heat map, league overviews) | Yes |
+
+How to run each level is described in [Setup & Run Instructions](#setup--run-instructions).
 
 ---
 
@@ -118,6 +139,7 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 - Multiple simulation modes with customizable parameters and configurations
 - **gRPC data chunking** for efficient large response handling  
 - **Memory optimization** in `SimulationService` for multi-iteration performance  
+- **Property-based domain tests** (FsCheck + Bogus) guarding the simulation math — every model and the whole simulation workflow are checked against invariants on hundreds of generated leagues and matches
 - **Full observability stack** — logs dual-written to MSSQL + Elasticsearch, searchable/visualized in **Kibana**, plus distributed tracing via **Elastic APM** across every microservice (HTTP, gRPC, SQL, Redis) with an end-to-end service dependency map
 
 ---
