@@ -32,7 +32,7 @@ public class GetAllLeagueRoundsByParamsHandler : IRequestHandler<GetAllLeagueRou
 
         return leagueRoundDtos.Where(r =>
             (r.LeagueId == request.leagueRoundFilterDto.LeagueId) &&
-            (request.leagueRoundFilterDto.LeagueRoundId == Guid.Empty || r.LeagueId == request.leagueRoundFilterDto.LeagueRoundId)
+            (request.leagueRoundFilterDto.LeagueRoundId == Guid.Empty || r.Id == request.leagueRoundFilterDto.LeagueRoundId)
         );
     }
 }

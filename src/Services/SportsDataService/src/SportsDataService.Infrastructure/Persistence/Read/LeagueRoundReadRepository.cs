@@ -30,14 +30,9 @@ public class LeagueRoundReadRepository : ILeagueRoundReadRepository
             cancellationToken: cancellationToken
         );
 
-        var leagueRounds = await connection.QueryAsync<LeagueRound>(command);
-
-        if (leagueRounds == null || leagueRounds.Count() == 0)
-        {
-            throw new KeyNotFoundException($"LeagueRounds with seasonYear '{seasonYear}' was not found.");
-        }
-
-        return leagueRounds;
+        // Past seasons are represented only by SeasonStats (no league rounds are seeded for them),
+        // so an empty result is a valid answer here - not an error.
+        return await connection.QueryAsync<LeagueRound>(command);
     }
 
     public async Task<IEnumerable<LeagueRound>> GetLeagueRoundsByLeagueIdAsync(Guid leagueId, CancellationToken cancellationToken)

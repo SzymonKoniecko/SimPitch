@@ -3,6 +3,7 @@ using MediatR;
 using SimulationService.Application.Features.IterationResults.DTOs;
 using SimulationService.Application.Interfaces;
 using SimulationService.Application.Mappers;
+using SimulationService.Domain.Enums;
 using SimulationService.Domain.Interfaces.Read;
 using SimulationService.Domain.ValueObjects;
 
@@ -30,12 +31,18 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
             query.PagedRequest.SortingMethod.Order
         );
 
-        var cachedResults = await _registry.GetPagedIterationResults(pagedRequest, query.SimulationId, cancellationToken);
+        // Results of a running simulation keep changing - cache pages only once the simulation is finished,
+        // otherwise a partially filled page would be served from the cache after completion.
+        var isFinished = await IsSimulationFinishedAsync(query.SimulationId, cancellationToken);
+
+        var cachedResults = isFinished
+            ? await _registry.GetPagedIterationResults(pagedRequest, query.SimulationId, cancellationToken)
+            : null;
         if (cachedResults == null || cachedResults.Count() == 0)
         {
             var IterationResults = await _IterationResultReadRepository.GetIterationResultsBySimulationIdAsync(
                 query.SimulationId, pagedRequest, cancellationToken);
-            if (IterationResults != null && IterationResults.Count() > 0)
+            if (isFinished && IterationResults != null && IterationResults.Count() > 0)
                 await _registry.SetPagedIterationResults(pagedRequest, IterationResults, cancellationToken);
 
             return (
@@ -62,5 +69,11 @@ public class GetIterationResultsBySimulationIdQueryHandler : IRequestHandler<Get
                 Order = query.PagedRequest.SortingMethod.Order
             }
         );
+    }
+
+    private async Task<bool> IsSimulationFinishedAsync(Guid simulationId, CancellationToken cancellationToken)
+    {
+        var state = await _registry.GetStateAsync(simulationId, cancellationToken);
+        return state?.State is SimulationStatus.Completed or SimulationStatus.Cancelled or SimulationStatus.Failed;
     }
 }

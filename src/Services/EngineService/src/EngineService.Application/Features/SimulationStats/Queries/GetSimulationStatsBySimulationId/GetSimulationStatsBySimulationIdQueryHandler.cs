@@ -25,7 +25,7 @@ public class GetSimulationStatsBySimulationIdQueryHandler : IRequestHandler<GetS
 
         if (response.Item1 == false)
         {
-            _logger.LogError("SimulationTeamStats is not created!");
+            _logger.LogWarning("SimulationTeamStats is not created for simulation {SimulationId} (no scoreboards yet?)", query.SimulationId);
         }
 
         return await _simulationStatsGrpcClient.GetSimulationStatsBySimulationIdAsync(query.SimulationId, cancellationToken);

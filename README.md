@@ -41,6 +41,11 @@ https://github.com/SzymonKoniecko/SimPitchAI
 ### 🔗 [SimPitch.Selenium](https://github.com/SzymonKoniecko/SimPitchSelenium)
 **Automated tests.**
 
+### 🎭 [SimPitch.Playwright](https://github.com/SzymonKoniecko/SimPitchPlaywright)
+**Automated E2E tests (Playwright).**
+*   **Tech:** Playwright for .NET, NUnit, C# .NET 9.
+*   **Role:** End-to-end tests of the Vue frontend against the running stack. Mirrors the Selenium suite 1:1 (tests are prefixed with `pw_`), uses the same `selenium-id` selectors and records a Playwright trace for every failed test.
+
 ## Setup & Run Instructions
 
 You can run SimPitch locally or in a production-like environment using **Docker** and **Docker Compose**.
@@ -63,6 +68,21 @@ scripts/./generate-env.sh --seed false
 docker compose -p sim-pitch-stack -f docker-compose.yml -f docker-compose.app.yml  up -d --build
 ```
 
+***[TEST] E2E tests (Playwright) ***
+
+Requires the running stack (app on `http://localhost:8080`). First time only – build and install the browser:
+```
+cd src/Playwright
+dotnet build
+pwsh SimPitchPlaywright/bin/Debug/net9.0/playwright.ps1 install chromium
+```
+Run the tests:
+```
+cd src/Playwright
+dotnet test
+```
+More options (headed mode, other browsers, traces, running without PowerShell) are described in [src/Playwright/README.md](src/Playwright/README.md).
+
 ## Tech Stack & Architecture
 
 The system is built with **modern, battle-tested technologies**, **DDD + Strategy Pattern** and **clean architectural patterns**:
@@ -80,7 +100,8 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 | **Elasticsearch** | Secondary log store indexed by `LoggingService` — enables full-text search and analytics over centralized logs |
 | **Kibana** | Web UI for exploring/searching indexed logs and visualizing APM traces, service maps, and dependencies |
 | **Elastic APM (APM Server + .NET/Python agents)** | Distributed tracing across all microservices — HTTP/gRPC calls, SQL queries, Redis commands, and errors, all correlated into end-to-end traces |
-| **MSelenium** | Test software |
+| **Selenium** | Test software |
+| **Playwright** | End-to-end UI tests (Playwright for .NET + NUnit) with traces for failed tests |
 | **XgBoost** | Machine learning library to predict match results |
 
 ---

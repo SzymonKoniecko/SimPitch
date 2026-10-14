@@ -31,9 +31,9 @@ public class GetSimulationByIdQueryHandler : IRequestHandler<GetSimulationByIdQu
 
         var iterationsQuery = new GetIterationResultsBySimulationIdQuery(query.simulationId, query.PagedRequest);
         var simulationState = await _simulationEngineGrpcClient.GetSimulationStateAsync(query.simulationId, cancellationToken);
-        if (simulationState.State != "Completed" || simulationState.State != "Failed")
+        if (simulationState.State != "Completed" && simulationState.State != "Failed")
         {
-            Thread.Sleep(2000);
+            await Task.Delay(2000, cancellationToken);
         }
         var simulationOverview = await _simulationEngineGrpcClient.GetSimulationOverviewBySimulationId(query.simulationId, cancellationToken);
 

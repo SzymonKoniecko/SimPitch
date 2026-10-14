@@ -34,6 +34,10 @@ public class GrpcExceptionInterceptor : Interceptor
         {
             return await continuation(request, context);
         }
+        catch (Exception ex) when (context.CancellationToken.IsCancellationRequested)
+        {
+            throw CancelledByCaller(ex, context);
+        }
         catch (RpcException rpcEx)
         {
             // if RpcException exists, log w/o mapping
@@ -45,11 +49,51 @@ public class GrpcExceptionInterceptor : Interceptor
             );
             throw;
         }
+        catch (KeyNotFoundException ex)
+        {
+            // Missing resource is a client-side (NotFound) result, not a server failure.
+            _logger.LogWarning("Resource not found in gRPC request {Method}: {Message}", context.Method, ex.Message);
+            throw MapToRpcException(ex);
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unhandled exception in gRPC request: {Message}", ex.Message);
             throw MapToRpcException(ex);
         }
+    }
+
+    public override async Task ServerStreamingServerHandler<TRequest, TResponse>(
+        TRequest request,
+        IServerStreamWriter<TResponse> responseStream,
+        ServerCallContext context,
+        ServerStreamingServerMethod<TRequest, TResponse> continuation)
+    {
+        try
+        {
+            await continuation(request, responseStream, context);
+        }
+        catch (Exception ex) when (context.CancellationToken.IsCancellationRequested)
+        {
+            throw CancelledByCaller(ex, context);
+        }
+        catch (RpcException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unhandled exception in gRPC streaming request: {Message}", ex.Message);
+            throw MapToRpcException(ex);
+        }
+    }
+
+    /// <summary>
+    /// The caller cancelled the call (closed the page, stopped the simulation, ...) - this is not a server error.
+    /// </summary>
+    private RpcException CancelledByCaller(Exception ex, ServerCallContext context)
+    {
+        _logger.LogInformation("gRPC request {Method} was cancelled by the caller: {Message}", context.Method, ex.Message);
+        return new RpcException(new Status(StatusCode.Cancelled, "The call was cancelled by the caller."));
     }
 
     private RpcException MapToRpcException(Exception ex)
