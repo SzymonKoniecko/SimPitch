@@ -74,6 +74,15 @@ namespace SimulationService.Infrastructure.Background
             var stateRepo = scope.ServiceProvider.GetRequiredService<ISimulationStateWriteRepository>();
             var stateReadRepo = scope.ServiceProvider.GetRequiredService<ISimulationStateReadRepository>();
 
+            // The simulation could have been stopped while it was waiting in the queue - writing job.State
+            // below would overwrite the Cancelled state and run it anyway.
+            var queuedState = await registry.GetStateAsync(job.SimulationId, stoppingToken);
+            if (queuedState?.State == SimulationStatus.Cancelled)
+            {
+                _logger.LogInformation("Simulation {SimulationId} was cancelled before it started - skipping.", job.SimulationId);
+                return;
+            }
+
             try
             {
                 await registry.SetStateAsync(job.SimulationId, job.State, stoppingToken);

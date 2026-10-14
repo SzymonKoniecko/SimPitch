@@ -89,6 +89,16 @@ Property-based tests of the domain logic – no database, network or Docker need
 **FsCheck** generates hundreds of inputs per property (including the seed), **Bogus** turns the seed into realistic,
 reproducible domain data (teams, season stats, fixtures, scoreboards).
 
+***[TEST] API tests with Testcontainers (WebApplicationFactory) ***
+
+Integration tests of the real APIs – only **Docker** is needed (the stack does not have to run).
+**Testcontainers** starts SQL Server (schema from `sql/init.sql`) and Redis, **WebApplicationFactory** hosts the services in-process:
+SimulationService is tested over gRPC, EngineService over REST with real gRPC calls to SimulationService (only StatisticsService is faked).
+```
+dotnet test src/Services/SimulationService/tests/SimulationService.Tests --filter "FullyQualifiedName~ApiTests"
+dotnet test src/Services/EngineService/tests/EngineService.Tests --filter "FullyQualifiedName~ApiTests"
+```
+
 ## Tech Stack & Architecture
 
 The system is built with **modern, battle-tested technologies**, **DDD + Strategy Pattern** and **clean architectural patterns**:
@@ -109,6 +119,7 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 | **Selenium** | Test software |
 | **Playwright** | End-to-end UI tests (Playwright for .NET + NUnit) with traces for failed tests |
 | **xUnit + FsCheck + Bogus** | Fast domain unit tests — property-based testing (FsCheck) on realistic, reproducible generated data (Bogus) |
+| **Testcontainers + WebApplicationFactory** | API integration tests — services hosted in-process against real SQL Server and Redis started in Docker |
 | **XgBoost** | Machine learning library to predict match results |
 
 ---
@@ -121,9 +132,10 @@ SimPitch is tested on several levels — from fast, isolated domain checks up to
 |---|---|---|---|
 | **Domain property-based tests** | xUnit, FsCheck, Bogus | Invariants of the simulation domain (`SeasonStats`, `TeamStrength`, all simulation strategies, the whole match simulation workflow) and EngineService mapping/paging — verified on hundreds of generated inputs per property | No (~1 s) |
 | **Unit tests** | xUnit, Moq, AutoFixture | Handlers, services and simulation models of each microservice | No |
+| **API integration tests** | xUnit, Testcontainers, WebApplicationFactory | SimulationService gRPC API and EngineService REST API end-to-end through the real database and cache: creating, stopping and paging simulations, iteration results and their caching, 404 contract for simulations being prepared | Docker only (~30 s) |
 | **End-to-end UI tests** | Playwright (.NET), Selenium | User flows in the Vue frontend against the real backend (navigation, preparing/running simulations, results, heat map, league overviews) | Yes |
 
-How to run each level is described in [Setup & Run Instructions](#setup--run-instructions).
+How to run each level (unit, API with Testcontainers, ML, Playwright, Selenium) is described in **[TESTING.md](TESTING.md)**.
 
 ---
 

@@ -98,7 +98,8 @@ public record SeasonStats
 
     /// <summary>
     /// Łączy statystyki dwóch sezonów (akumulacja historii drużyny).
-    /// Zawsze bierze LeagueStrength z newData (bieżącego sezonu do symulacji).
+    /// LeagueStrength to średnia z obu sezonów, LeagueId pochodzi z newData,
+    /// a SeasonYear jest zawsze ustawiany na bieżący sezon symulacji (SimulationConsts.CURRENT_SEASON).
     /// </summary>
     /// <param name="accumulator">Aktualne dane (zazwyczaj z symulacji bieżącego sezonu)</param>
     /// <param name="newData">Nowe dane do dodania (zazwyczaj dane historyczne z bazy)</param>
