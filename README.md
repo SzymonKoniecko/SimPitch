@@ -118,6 +118,7 @@ The system is built with **modern, battle-tested technologies**, **DDD + Strateg
 | **Elastic APM (APM Server + .NET/Python agents)** | Distributed tracing across all microservices — HTTP/gRPC calls, SQL queries, Redis commands, and errors, all correlated into end-to-end traces |
 | **Selenium** | Test software |
 | **Playwright** | End-to-end UI tests (Playwright for .NET + NUnit) with traces for failed tests |
+| **k6 + InfluxDB + Grafana** | Load tests of the simulation engine with hard p95 thresholds; results visualized in a provisioned Grafana dashboard |
 | **xUnit + FsCheck + Bogus** | Fast domain unit tests — property-based testing (FsCheck) on realistic, reproducible generated data (Bogus) |
 | **Testcontainers + WebApplicationFactory** | API integration tests — services hosted in-process against real SQL Server and Redis started in Docker |
 | **XgBoost** | Machine learning library to predict match results |
@@ -134,9 +135,10 @@ SimPitch is tested on several levels — from fast, isolated domain checks up to
 | **Unit tests** | xUnit, Moq, AutoFixture | Handlers, services and simulation models of each microservice | No |
 | **API integration tests** | xUnit, Testcontainers, WebApplicationFactory | SimulationService gRPC API and EngineService REST API end-to-end through the real database and cache: creating, stopping and paging simulations, iteration results and their caching, 404 contract for simulations being prepared | Docker only (~30 s) |
 | **gRPC contract tests** | xUnit, Grpc.AspNetCore TestServer, Moq | Client ↔ server contracts EngineService → SimulationService, EngineService → StatisticsService, SimulationService → StatisticsService: identical proto copies on both sides and real client/server mapping over gRPC (dates, GUIDs, optional fields, JSON payloads, NotFound) | No (~1 s) |
+| **Performance tests** | k6, InfluxDB, Grafana | Simulation engine under load: queue time, compute time per model and per iteration, API p95 latency while users browse; hard thresholds in `perf/performance-thresholds.json` | Yes |
 | **End-to-end UI tests** | Playwright (.NET), Selenium | User flows in the Vue frontend against the real backend (navigation, preparing/running simulations, results, heat map, league overviews) | Yes |
 
-How to run each level (unit, API with Testcontainers, gRPC contracts, ML, Playwright, Selenium) is described in **[TESTING.md](TESTING.md)**.
+How to run each level (unit, API with Testcontainers, gRPC contracts, ML, Playwright, Selenium, k6) is described in **[TESTING.md](TESTING.md)**.
 
 ---
 
@@ -196,6 +198,7 @@ On top of the core services, SimPitch ships a full observability stack, wired in
 | **Elasticsearch** | Stores centralized logs (`simpitch-logs-*` indices) and APM trace data | `http://localhost:9200` |
 | **Kibana** | UI for searching/filtering logs, browsing APM traces, and viewing the live service dependency map | `http://localhost:5601` |
 | **APM Server** | Intake endpoint that receives trace/span/error data from every service's Elastic APM agent and ships it to Elasticsearch | `http://localhost:8200` |
+| **Grafana** + **InfluxDB** | Results of k6 load tests (`perf/`) – provisioned dashboard *SimPitch – k6 simulation engine load test* | `http://localhost:3000` / `:8086` |
 
 **What gets traced automatically, with no code changes needed per feature:**
 - Every incoming HTTP/gRPC request (ASP.NET Core instrumentation)
