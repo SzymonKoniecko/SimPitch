@@ -1,5 +1,6 @@
 using System;
 using Newtonsoft.Json;
+using SimulationService.Application.Mappers;
 using SimulationService.Domain.Enums;
 
 namespace SimulationService.Application.Features.SeasonsStats.DTOs;
@@ -8,6 +9,7 @@ public class SeasonStatsDto
 {
     public Guid Id { get; set; }
     public Guid TeamId { get; set; }
+    [JsonConverter(typeof(SeasonYearJsonConverter))]
     public SeasonEnum SeasonYear { get; set; }
     public Guid LeagueId { get; set; }
     public float LeagueStrength { get; set; }

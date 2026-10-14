@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="9.0.9" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <!--
+    Every client and server compiles its own copy of the SimPitch protos (same type names),
+    so each side is referenced under its own alias.
+  -->
+  <ItemGroup>
+    <!-- gRPC clients -->
+    <ProjectReference Include="..\..\EngineService\src\EngineService.Infrastructure\EngineService.Infrastructure.csproj" Aliases="EngineClient" />
+    <ProjectReference Include="..\..\SimulationService\src\SimulationService.Infrastructure\SimulationService.Infrastructure.csproj" Aliases="SimulationClient" />
+    <!-- gRPC servers -->
+    <ProjectReference Include="..\..\SimulationService\src\SimulationService.API\SimulationService.API.csproj" Aliases="SimulationServer" />
+    <ProjectReference Include="..\..\StatisticsService\src\StatisticsService.API\StatisticsService.API.csproj" Aliases="StatisticsServer" />
+  </ItemGroup>
+
+</Project>

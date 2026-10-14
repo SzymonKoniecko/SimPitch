@@ -133,9 +133,10 @@ SimPitch is tested on several levels — from fast, isolated domain checks up to
 | **Domain property-based tests** | xUnit, FsCheck, Bogus | Invariants of the simulation domain (`SeasonStats`, `TeamStrength`, all simulation strategies, the whole match simulation workflow) and EngineService mapping/paging — verified on hundreds of generated inputs per property | No (~1 s) |
 | **Unit tests** | xUnit, Moq, AutoFixture | Handlers, services and simulation models of each microservice | No |
 | **API integration tests** | xUnit, Testcontainers, WebApplicationFactory | SimulationService gRPC API and EngineService REST API end-to-end through the real database and cache: creating, stopping and paging simulations, iteration results and their caching, 404 contract for simulations being prepared | Docker only (~30 s) |
+| **gRPC contract tests** | xUnit, Grpc.AspNetCore TestServer, Moq | Client ↔ server contracts EngineService → SimulationService, EngineService → StatisticsService, SimulationService → StatisticsService: identical proto copies on both sides and real client/server mapping over gRPC (dates, GUIDs, optional fields, JSON payloads, NotFound) | No (~1 s) |
 | **End-to-end UI tests** | Playwright (.NET), Selenium | User flows in the Vue frontend against the real backend (navigation, preparing/running simulations, results, heat map, league overviews) | Yes |
 
-How to run each level (unit, API with Testcontainers, ML, Playwright, Selenium) is described in **[TESTING.md](TESTING.md)**.
+How to run each level (unit, API with Testcontainers, gRPC contracts, ML, Playwright, Selenium) is described in **[TESTING.md](TESTING.md)**.
 
 ---
 
