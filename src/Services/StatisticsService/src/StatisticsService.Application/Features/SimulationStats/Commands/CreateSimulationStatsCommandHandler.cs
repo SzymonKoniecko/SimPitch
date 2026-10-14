@@ -45,6 +45,11 @@ public class CreateSimulationStatsCommandHandler : IRequestHandler<CreateSimulat
             scoreboardTeamStats.AddRange(teamStats.Where(x => x.IsInitialStat == false)); // only full teamStats are needed
         }
 
+        if (scoreboardTeamStats.Count == 0)
+        {
+            return (false, command.SimulationId); // no scoreboards yet (e.g. simulation just started) - nothing to calculate
+        }
+
         List<SimulationTeamStats> simulationTeamStats = _simulationStatsService.CalculateSimulationStatsForTeams(scoreboardTeamStats.OrderBy(x => x.TeamId).ToList(), command.SimulationId);
 
         foreach (var item in simulationTeamStats)

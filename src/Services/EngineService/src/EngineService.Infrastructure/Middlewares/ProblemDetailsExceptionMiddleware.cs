@@ -28,12 +28,20 @@ public class ProblemDetailsExceptionMiddleware
         {
             await _next(context);
         }
+        catch (Exception ex) when (context.RequestAborted.IsCancellationRequested)
+        {
+            // The client closed the connection (e.g. left the page) - nobody is waiting for the response.
+            _logger.LogInformation("Request {Path} was aborted by the client: {Message}", context.Request.Path, ex.Message);
+        }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unhandled exception for {Path}", context.Request.Path);
-
-
             var (status, title, type) = MapException(ex);
+
+            // 404 is an expected result (e.g. a simulation that is still being prepared), not a server failure
+            if (status == StatusCodes.Status404NotFound)
+                _logger.LogWarning("Request {Path} failed with {Status}: {Message}", context.Request.Path, status, ex.Message);
+            else
+                _logger.LogError(ex, "Unhandled exception for {Path}", context.Request.Path);
             var problem = new ProblemDetails
             {
                 Title = title,
