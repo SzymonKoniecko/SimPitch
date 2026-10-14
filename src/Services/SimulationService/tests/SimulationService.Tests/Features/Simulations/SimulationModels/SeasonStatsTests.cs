@@ -1,4 +1,5 @@
 using System;
+using SimulationService.Domain.Consts;
 using SimulationService.Domain.Entities;
 using SimulationService.Domain.Enums;
 using SimulationService.Domain.ValueObjects;
@@ -34,7 +35,7 @@ public class SeasonStatsTests
 
         // 2. Sprawdź kontekst (Musi wziąć z newData)
         Assert.Equal(2.5f, result.LeagueStrength); // Nowa siła
-        Assert.Equal(SeasonEnum.Season2024_2025, result.SeasonYear); // Nowy rok
+        Assert.Equal(SimulationConsts.CURRENT_SEASON, result.SeasonYear); // merged history is simulated as the current season
         Assert.Equal(newLeagueId, result.LeagueId); // Nowa liga
     }
 

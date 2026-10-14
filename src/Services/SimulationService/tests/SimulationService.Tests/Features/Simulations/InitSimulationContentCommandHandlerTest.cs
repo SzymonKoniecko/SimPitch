@@ -18,6 +18,7 @@ using SimulationService.Application.Features.LeagueRounds.Queries.GetLeagueRound
 using SimulationService.Application.Features.Leagues.Query.GetLeagueById;
 using SimulationService.Application.Features.SeasonsStats.Queries.GetSeasonsStatsByTeamIdGrpc;
 using SimulationService.Domain.Consts;
+using SimulationService.Application.Mappers;
 
 namespace SimulationService.Tests.Application.Features.Simulations;
 
@@ -35,8 +36,9 @@ public class InitSimulationContentCommandHandlerTests
         var awayTeamId = Guid.NewGuid();
         var leagueId = Guid.NewGuid();
         var roundId = Guid.NewGuid();
-        string currentSeasonStr = "2023/2024";
-        SeasonEnum currentSeasonEnum = SeasonEnum.Season2023_2024;
+        // Only rounds of the current season are accumulated by the handler
+        SeasonEnum currentSeasonEnum = SimulationConsts.CURRENT_SEASON;
+        string currentSeasonStr = currentSeasonEnum.SeasonEnumToString();
 
         // Simulation Params DTO
         var paramsDto = new SimulationParamsDto
@@ -94,9 +96,9 @@ public class InitSimulationContentCommandHandlerTests
         // Check PriorLeagueStrength calculation: (2+1) goals / 1 match = 3.0
         Assert.Equal(3.0f, result.PriorLeagueStrength);
 
-        // Check LeagueStrength passed correctly
+        // Current season LeagueStrength is replaced by the prior calculated from its played matches
         Assert.Single(result.LeagueStrengths);
-        Assert.Equal(1.8f, result.LeagueStrengths.First().Strength);
+        Assert.Equal(result.PriorLeagueStrength, result.LeagueStrengths.Single().Strength);
 
         // Check MatchRoundsToSimulate (only the unplayed one)
         Assert.Single(result.MatchRoundsToSimulate);
@@ -169,8 +171,9 @@ public class InitSimulationContentCommandHandlerTests
 
         var teamId = Guid.NewGuid();
         var leagueId = Guid.NewGuid();
-        string prevSeasonStr = "2022/2023";
-        string currentSeasonStr = "2023/2024";
+        SeasonEnum prevSeasonEnum = SimulationConsts.CURRENT_SEASON - 1;
+        string prevSeasonStr = prevSeasonEnum.SeasonEnumToString();
+        string currentSeasonStr = SimulationConsts.CURRENT_SEASON.SeasonEnumToString();
 
         // Requesting BOTH seasons
         var paramsDto = new SimulationParamsDto
@@ -192,10 +195,10 @@ public class InitSimulationContentCommandHandlerTests
             IsPlayed = true
         };
 
-        // Historical Data (Season 2022/23: 10 goals scored)
+        // Historical Data (previous season: 10 goals scored)
         // Note: Returning SeasonStats object directly as DTO
-        var historyStatsHomeTeam = new SeasonStats(Guid.NewGuid(), teamId, SeasonEnum.Season2022_2023, leagueId, 2.0f, 10, 5, 3, 2, 10, 5);
-        var historyStatsAwayTeam = new SeasonStats(Guid.NewGuid(), currentMatch.AwayTeamId, SeasonEnum.Season2022_2023, leagueId, 2.0f, 12, 5, 3, 2, 10, 5);
+        var historyStatsHomeTeam = new SeasonStats(Guid.NewGuid(), teamId, prevSeasonEnum, leagueId, 2.0f, 10, 5, 3, 2, 10, 5);
+        var historyStatsAwayTeam = new SeasonStats(Guid.NewGuid(), currentMatch.AwayTeamId, prevSeasonEnum, leagueId, 2.0f, 12, 5, 3, 2, 10, 5);
         var league = new League { Id = leagueId, LeagueStrengths = new List<LeagueStrength>(){new LeagueStrength() { Id = Guid.NewGuid(), LeagueId = leagueId, SeasonYear = SeasonEnum.Season2022_2023, Strength = 1.0f}} }; // No strength in DB
 
         // Mocks

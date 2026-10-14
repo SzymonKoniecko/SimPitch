@@ -391,8 +391,8 @@ public partial class InitSimulationContentCommandHandler : IRequestHandler<InitS
                     .WithExpectedGoalsFromPosterior();
             }
 
-            // Aktualizujemy słownik
-            contentResponse.TeamsStrengthDictionary[teamId].Add(teamStrength);
+            // Aktualizujemy słownik - zastępujemy wpis, bo teamStrength już zawiera bieżący sezon + historię.
+            contentResponse.TeamsStrengthDictionary[teamId] = new List<TeamStrength> { teamStrength };
         }
 
         return (contentResponse, totalGoals);
