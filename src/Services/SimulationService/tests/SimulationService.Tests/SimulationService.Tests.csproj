@@ -17,17 +17,20 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
     <PackageReference Include="Grpc.Core.Testing" Version="2.46.6" />
     <PackageReference Include="Grpc.Net.Client" Version="2.60.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.60.0">
+    <PackageReference Include="Grpc.Tools" Version="2.84.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="9.0.9" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.8" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="Testcontainers.MsSql" Version="4.16.0" />
+    <PackageReference Include="Testcontainers.Redis" Version="4.16.0" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -43,6 +46,15 @@
     <ProjectReference Include="..\..\src\SimulationService.Application\SimulationService.Application.csproj" />
     <ProjectReference Include="..\..\src\SimulationService.Domain\SimulationService.Domain.csproj" />
     <ProjectReference Include="..\..\src\SimulationService.Infrastructure\SimulationService.Infrastructure.csproj" />
+    <!-- Hosted in-process by WebApplicationFactory; aliased because the API compiles the same protos as gRPC server -->
+    <ProjectReference Include="..\..\src\SimulationService.API\SimulationService.API.csproj" Aliases="SimulationApi" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- gRPC clients used by the API tests to call the service -->
+    <Protobuf Include="..\..\src\SimPitchProtos\SimulationService\SimulationEngine\*.proto" GrpcServices="Client" ProtoRoot="..\..\src\SimPitchProtos" />
+    <Protobuf Include="..\..\src\SimPitchProtos\SimulationService\IterationResult\*.proto" GrpcServices="Client" ProtoRoot="..\..\src\SimPitchProtos" />
+    <Protobuf Include="..\..\src\SimPitchProtos\SimulationService\commonTypes.proto" GrpcServices="None" ProtoRoot="..\..\src\SimPitchProtos" />
   </ItemGroup>
 
   <ItemGroup>

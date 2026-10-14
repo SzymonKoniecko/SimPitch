@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Newtonsoft.Json;
 using SimPitchProtos.SimulationService;
 using SimulationService.Application.Features.Simulations.DTOs;
@@ -12,7 +13,7 @@ public static class SimulationOverviewMapper
         var grpc = new SimulationOverviewGrpc();
 
         grpc.Id = dto.Id.ToString();
-        grpc.CreatedDate = dto.CreatedDate.ToString();
+        grpc.CreatedDate = dto.CreatedDate.ToString(GrpcDateFormat.Pattern, CultureInfo.InvariantCulture);
         grpc.SimulationParams = SimulationParamsToProto(dto.SimulationParams);
         grpc.LeagueStrengths = JsonConvert.SerializeObject(dto.LeagueStrengths);
         grpc.PriorLeagueStrength = dto.PriorLeagueStrength;
@@ -42,14 +43,14 @@ public static class SimulationOverviewMapper
             Model = dto.ModelType.ToString(),
         };
 
-        if (dto.LeagueRoundId != Guid.Empty)
+        if (dto.LeagueRoundId is Guid leagueRoundId && leagueRoundId != Guid.Empty) // null must not become ""
         {
-            proto.LeagueRoundId = dto.LeagueRoundId.ToString();
+            proto.LeagueRoundId = leagueRoundId.ToString();
         }
 
-        if (dto.TargetLeagueRoundId != Guid.Empty)
+        if (dto.TargetLeagueRoundId is Guid targetLeagueRoundId && targetLeagueRoundId != Guid.Empty) // null must not become ""
         {
-            proto.TargetLeagueRoundId = dto.TargetLeagueRoundId.ToString();
+            proto.TargetLeagueRoundId = targetLeagueRoundId.ToString();
         }
 
         return proto;

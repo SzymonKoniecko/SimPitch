@@ -53,7 +53,16 @@ public class StopSimulationCommandHandler : IRequestHandler<StopSimulationComman
 
         try
         {
-            var dbState = await _simulationStateReadRepository.GetSimulationStateBySimulationIdAsync(request.SimulationId, cancellationToken);
+            SimulationState? dbState;
+            try
+            {
+                dbState = await _simulationStateReadRepository.GetSimulationStateBySimulationIdAsync(request.SimulationId, cancellationToken);
+            }
+            catch (KeyNotFoundException)
+            {
+                // A queued simulation (not started by the worker yet) exists only in Redis
+                dbState = null;
+            }
 
             if (dbState is null)
             {
@@ -81,6 +90,6 @@ public class StopSimulationCommandHandler : IRequestHandler<StopSimulationComman
             _logger.LogError(ex, "Failed to update SQL state for Simulation {SimulationId}", request.SimulationId);
         }
 
-        return _simulationStateReadRepository.GetSimulationStateBySimulationIdAsync(request.SimulationId, cancellationToken).Result.State.ToString();
+        return cancelledState.State.ToString();
     }
 }

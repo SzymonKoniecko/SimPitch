@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using SimPitchProtos.SimulationService;
 using SimPitchProtos.SimulationService.SimulationEngine;
 using SimulationService.Application.Features.Simulations.DTOs;
@@ -39,7 +40,7 @@ public static class SimulationEngineMapper
         grpc.ProgressPercent = dto.ProgressPercent;
         grpc.LastCompletedIteration = dto.LastCompletedIteration;
         grpc.State = dto.State;
-        grpc.UpdatedAt = dto.UpdatedAt.ToString();
+        grpc.UpdatedAt = dto.UpdatedAt.ToString(GrpcDateFormat.Pattern, CultureInfo.InvariantCulture);
 
         return grpc;
     }
