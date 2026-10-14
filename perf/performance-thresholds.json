@@ -1,0 +1,27 @@
+{
+  "description": "Hard acceptance thresholds for perf/load-test-simulations.js. Exceeding any of them fails the k6 run (exit code 99).",
+  "baseline": {
+    "measuredOn": "2026-10-14, local Docker stack, 1 user, ITERATIONS=50",
+    "list_overviews_ms": "63-104",
+    "create_simulation_ms": "16-39",
+    "simulation_queue_time_s": "3.1-5.2",
+    "simulation_duration_s": "18.4-21.5",
+    "simulation_time_per_iteration_ms": "~400",
+    "get_simulation_result_ms": "230-310",
+    "get_simulation_stats_ms": "70-190"
+  },
+  "thresholds": {
+    "http_req_failed": ["rate<0.01"],
+    "checks": ["rate>0.99"],
+
+    "http_req_duration{name:create_simulation}": ["p(95)<500"],
+    "http_req_duration{name:list_overviews}": ["p(95)<500"],
+    "http_req_duration{name:get_simulation_result}": ["p(95)<1500"],
+    "http_req_duration{name:get_simulation_stats}": ["p(95)<1000"],
+
+    "simulation_success": ["rate>0.95"],
+    "simulation_queue_time": ["p(95)<15000"],
+    "simulation_time_per_iteration": ["p(95)<1500"],
+    "simulation_duration": ["p(95)<90000"]
+  }
+}

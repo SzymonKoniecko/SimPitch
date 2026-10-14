@@ -54,6 +54,19 @@ services:
     container_name: apm-server
     image: docker.elastic.co/apm/apm-server:8.15.3
 
+  # Performance testing: k6 -> InfluxDB -> Grafana
+  influxdb:
+    container_name: influxdb
+    image: influxdb:1.8
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:11.2.0
+
+  k6:
+    container_name: k6
+    image: grafana/k6:0.53.0
+
 
 
   mssql:
@@ -77,3 +90,5 @@ volumes:
   mssql_data:
   cache_data:
   elasticsearch_data:
+  influxdb_data:
+  grafana_data:

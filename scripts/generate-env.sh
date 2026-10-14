@@ -182,6 +182,32 @@ HMR_HOST=localhost
 WEB_DEV_PORT=5173
 
 # ============================================================================
+# OBSERVABILITY (Elasticsearch + Kibana + APM)
+# ============================================================================
+
+ELASTICSEARCH_HOST_PORT=9200
+ELASTICSEARCH_CONTAINER_PORT=9200
+ELASTICSEARCH_LOG_INDEX_FORMAT="simpitch-logs-{0:yyyy.MM.dd}"
+ELASTICSEARCH_SERVICE_NAME="elasticsearch"
+
+KIBANA_HOST_PORT=5601
+KIBANA_CONTAINER_PORT=5601
+KIBANA_SERVICE_NAME="kibana"
+
+APM_SERVER_HOST_PORT=8200
+APM_SERVER_CONTAINER_PORT=8200
+APM_SERVER_SERVICE_NAME="apm-server"
+
+# ============================================================================
+# PERFORMANCE TESTING (k6 -> InfluxDB -> Grafana)
+# ============================================================================
+
+GRAFANA_HOST_PORT=3000
+INFLUXDB_HOST_PORT=8086
+# Load profile used by: docker compose ... run --rm k6  (smoke | load | stress)
+K6_PROFILE=smoke
+
+# ============================================================================
 # NGINX GATEWAY CONFIGURATION
 # API Gateway for routing requests to microservices
 # ============================================================================
@@ -222,6 +248,8 @@ echo -e "  SIMPITCHML gRPC:    ${GREEN}grpc://localhost:40066${NC}"
 echo -e "  SIMPITCHML FASTAPI: ${GREEN}grpc://localhost:4006${NC}"
 echo -e "  MSSQL Database:     ${GREEN}localhost:1433${NC}"
 echo -e "  Redis Cache:        ${GREEN}localhost:6379${NC}"
+echo -e "  Kibana:             ${GREEN}http://localhost:5601${NC}"
+echo -e "  Grafana (k6):       ${GREEN}http://localhost:3000${NC}"
 echo ""
 
 echo -e "${GREEN}Setup complete!${NC}\n"

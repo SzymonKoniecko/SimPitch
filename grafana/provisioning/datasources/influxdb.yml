@@ -1,0 +1,12 @@
+# k6 writes its results to InfluxDB (database "k6") - see the k6 service in docker-compose
+apiVersion: 1
+datasources:
+  - name: k6 (InfluxDB)
+    uid: k6-influxdb
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    isDefault: true
+    jsonData:
+      dbName: k6
+      httpMode: GET

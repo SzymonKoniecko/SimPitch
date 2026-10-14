@@ -1,0 +1,659 @@
+{
+  "uid": "simpitch-k6",
+  "title": "SimPitch – k6 simulation engine load test",
+  "tags": [
+    "simpitch",
+    "k6",
+    "performance"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "refresh": "5s",
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Simulations completed",
+      "description": "Simulations that reached Completed within MAX_WAIT_S.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT sum(\"value\") FROM \"simulations_completed\" WHERE $timeFilter",
+          "resultFormat": "time_series",
+          "alias": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "id": 1
+    },
+    {
+      "type": "stat",
+      "title": "Simulation success rate",
+      "description": "Threshold: > 95 %",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT mean(\"value\") FROM \"simulation_success\" WHERE $timeFilter",
+          "resultFormat": "time_series",
+          "alias": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0.95
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "id": 2
+    },
+    {
+      "type": "stat",
+      "title": "HTTP error rate",
+      "description": "Threshold: < 1 %. 404 while a simulation is being prepared is not an error.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT mean(\"value\") FROM \"http_req_failed\" WHERE $timeFilter",
+          "resultFormat": "time_series",
+          "alias": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.01
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "id": 3
+    },
+    {
+      "type": "stat",
+      "title": "Max virtual users",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT max(\"value\") FROM \"vus\" WHERE $timeFilter",
+          "resultFormat": "time_series",
+          "alias": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "id": 4
+    },
+    {
+      "type": "timeseries",
+      "title": "API latency p95 by endpoint",
+      "description": "Thresholds (p95): create/list < 500 ms, stats < 1000 ms, result page < 1500 ms. Red line = 500 ms.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT percentile(\"value\", 95) FROM \"http_req_duration\" WHERE $timeFilter AND \"name\" =~ /^(create_simulation|list_overviews|get_simulation_result|get_simulation_stats)$/ GROUP BY time($__interval), \"name\" fill(none)",
+          "resultFormat": "time_series",
+          "alias": "$tag_name"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "always",
+            "spanNulls": true,
+            "thresholdsStyle": {
+              "mode": "line+area"
+            },
+            "pointSize": 8
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 500
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 5
+    },
+    {
+      "type": "timeseries",
+      "title": "Simulation duration by model",
+      "description": "From creating the simulation until Completed. Threshold p95 < 90 s (ITERATIONS=50).",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT mean(\"value\") FROM \"simulation_duration\" WHERE $timeFilter GROUP BY time($__interval), \"model\" fill(none)",
+          "resultFormat": "time_series",
+          "alias": "$tag_model"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "always",
+            "spanNulls": true,
+            "thresholdsStyle": {
+              "mode": "line+area"
+            },
+            "pointSize": 8
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 90000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 6
+    },
+    {
+      "type": "timeseries",
+      "title": "Queue time (until the worker starts the simulation)",
+      "description": "API answers 404 until the background worker picks the job up. Threshold p95 < 15 s.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 13,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT mean(\"value\") FROM \"simulation_queue_time\" WHERE $timeFilter GROUP BY time($__interval), \"model\" fill(none)",
+          "resultFormat": "time_series",
+          "alias": "$tag_model"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "always",
+            "spanNulls": true,
+            "thresholdsStyle": {
+              "mode": "line+area"
+            },
+            "pointSize": 8
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 15000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 7
+    },
+    {
+      "type": "timeseries",
+      "title": "Engine time per simulated iteration",
+      "description": "simulation_duration / ITERATIONS. Threshold p95 < 1.5 s.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 13,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT mean(\"value\") FROM \"simulation_time_per_iteration\" WHERE $timeFilter GROUP BY time($__interval), \"model\" fill(none)",
+          "resultFormat": "time_series",
+          "alias": "$tag_model"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "always",
+            "spanNulls": true,
+            "thresholdsStyle": {
+              "mode": "line+area"
+            },
+            "pointSize": 8
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1500
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 8
+    },
+    {
+      "type": "timeseries",
+      "title": "Load: virtual users and requests per second",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 21,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT max(\"value\") FROM \"vus\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
+          "resultFormat": "time_series",
+          "alias": "virtual users"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT sum(\"value\") / ($__interval_ms / 1000) FROM \"http_reqs\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
+          "resultFormat": "time_series",
+          "alias": "requests / s"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "auto",
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "id": 9
+    },
+    {
+      "type": "table",
+      "title": "p95 per endpoint (selected time range)",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "k6-influxdb"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 21,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "k6-influxdb"
+          },
+          "rawQuery": true,
+          "query": "SELECT percentile(\"value\", 95) AS \"p95 ms\", count(\"value\") AS \"requests\" FROM \"http_req_duration\" WHERE $timeFilter AND \"name\" =~ /^(create_simulation|list_overviews|get_simulation_result|get_simulation_stats)$/ GROUP BY \"name\"",
+          "resultFormat": "table",
+          "alias": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            }
+          }
+        }
+      ],
+      "id": 10
+    }
+  ],
+  "description": "Results of perf/load-test-simulations.js (k6 -> InfluxDB). Thresholds mirror perf/performance-thresholds.json."
+}

@@ -10,6 +10,7 @@ Quick reference for every test suite in SimPitch. All commands are run from the 
 | [ML tests (pytest)](#4-ml-tests-pytest) | Python 3 | seconds |
 | [E2E – Playwright](#5-e2e--playwright) | running stack | ~1–2 min |
 | [E2E – Selenium](#6-e2e--selenium) | running stack + Selenium container | a few min |
+| [Performance – k6](#7-performance--k6) | running stack + Grafana/InfluxDB containers | ~2 min (smoke) |
 
 ---
 
@@ -109,6 +110,30 @@ DRIVERMODE=local BASEURL=http://localhost:8080 HEADLESS=true dotnet test
 ```
 
 ---
+
+## 7. Performance – k6
+
+Load test of the simulation engine: `perf/load-test-simulations.js` creates simulations (all 4 models), waits for the result
+and measures the engine (queue time, total time, time per iteration) and the API latency, while other users browse the simulation list.
+Hard acceptance thresholds (p95) are in `perf/performance-thresholds.json` – exceeding any of them fails the run (exit code 99).
+
+k6, InfluxDB and Grafana run as containers of the stack. Start Grafana once, then run k6 (it is started only on demand – profile `perf`):
+
+```bash
+docker compose -p sim-pitch-stack -f docker-compose.yml -f docker-compose.app.yml up -d influxdb grafana
+docker compose -p sim-pitch-stack -f docker-compose.yml -f docker-compose.app.yml --profile perf run --rm k6
+```
+
+Results: **Grafana** at `http://localhost:3000` → dashboard *SimPitch – k6 simulation engine load test*.
+
+| Option | Meaning |
+|---|---|
+| `-e PROFILE=smoke` (default) | 1 simulation per model + light browsing – baseline, ~2 min |
+| `-e PROFILE=load` | 4 users computing in parallel for 5 min |
+| `-e PROFILE=stress` | up to 20 users – looking for the limit of the queue/worker |
+| `-e ITERATIONS=50` | iterations of one simulation (thresholds are calibrated for 50) |
+
+Example: `docker compose ... --profile perf run --rm -e PROFILE=load k6`. With a local k6 installation: `k6 run perf/load-test-simulations.js`.
 
 ## Everything at once
 
