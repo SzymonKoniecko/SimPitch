@@ -21,7 +21,7 @@ public static class SimulationEngineMapper
         dto.Seed = request.SimulationParams.Seed;
         dto.LeagueRoundId = request.SimulationParams.HasLeagueRoundId ? Guid.Parse(request.SimulationParams.LeagueRoundId) : Guid.Empty;
         dto.TargetLeagueRoundId = request.SimulationParams.HasTargetLeagueRoundId ? Guid.Parse(request.SimulationParams.TargetLeagueRoundId) : Guid.Empty;
-        dto.CreateScoreboardOnCompleteIteration = request.SimulationParams.HasCreateScoreboardOnCompleteIteration;
+        dto.CreateScoreboardOnCompleteIteration = request.SimulationParams.HasCreateScoreboardOnCompleteIteration && request.SimulationParams.CreateScoreboardOnCompleteIteration; // presence alone is not the value
         dto.GamesToReachTrust = request.SimulationParams.HasGamesToReachTrust ? request.SimulationParams.GamesToReachTrust : SimulationConsts.GAMES_TO_REACH_TRUST;
         dto.ConfidenceLevel = request.SimulationParams.HasConfidenceLevel ? request.SimulationParams.ConfidenceLevel : SimulationConsts.SIMULATION_CONFIDENCE_LEVEL;
         dto.HomeAdvantage = request.SimulationParams.HasHomeAdvantage ? request.SimulationParams.HomeAdvantage : SimulationConsts.HOME_ADVANTAGE;

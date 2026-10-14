@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Grpc.Core;
 using MediatR;
@@ -109,7 +110,8 @@ public class ScoreboardGrpcService : ScoreboardService.ScoreboardServiceBase
             IterationResultId = dto.IterationResultId.ToString(),
             ScoreboardTeams = { dto.ScoreboardTeams.Select(team => ScoreboardTeamStatsToGrpc(team)).OrderBy(x => x.Rank).ToList() },
             InitialScoreboardTeams = { dto.InitialScoreboardTeams.Select(team => ScoreboardTeamStatsToGrpc(team)).OrderBy(x => x.Rank).ToList() },
-            CreatedAt = dto.CreatedAt.ToString()
+            // Contract with EngineService: parsed there with ParseExact("MM/dd/yyyy HH:mm:ss", InvariantCulture)
+            CreatedAt = dto.CreatedAt.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
         };
 
         return grpc;

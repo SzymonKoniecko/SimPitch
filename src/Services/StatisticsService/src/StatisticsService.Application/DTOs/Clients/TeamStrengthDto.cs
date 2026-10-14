@@ -5,8 +5,8 @@ namespace StatisticsService.Application.DTOs.Clients;
 public class TeamStrengthDto
 {
     public Guid TeamId { get; init; }
-    public (float Offensive, float Defensive) Likelihood { get; init; }
-    public (float Offensive, float Defensive) Posterior { get; init; }
+    public StrengthItemDto Likelihood { get; init; } = new();
+    public StrengthItemDto Posterior { get; init; } = new();
     public float ExpectedGoals { get; init; }
     public DateTime LastUpdate { get; set; } = DateTime.Now;
     /// <summary>
