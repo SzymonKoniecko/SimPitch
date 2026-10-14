@@ -11,6 +11,66 @@ The project showcases how to combine modern technologies, scalable architecture,
 ---
 
 
+## Tech Stack & Architecture
+
+The system is built with **modern, battle-tested technologies**, **DDD + Strategy Pattern** and **clean architectural patterns**:
+
+| Technology | Purpose |
+|-------------|----------|
+| **Docker** | Containerization for independent service deployment, easy scalability, and CI/CD integration |
+| **Kubernates** | Integration in future |
+| **NGINX** | Acts as a reverse proxy, load balancer, and traffic security layer |
+| **Vue.js + TypeScript** | Modern, fast, and responsive front-end framework for intuitive user experience |
+| **C# (.NET Core)** | Core backend with **CQRS** and **Clean Architecture** for clear separation of concerns |
+| **gRPC** | Fast, strongly-typed communication between microservices and central logging service |
+| **Redis** | Background job processing and asynchronous task execution (e.g., iterative simulations) |
+| **Microsoft SQL Server** | Persistent database for input data, results, and configurations |
+| **Elasticsearch** | Secondary log store indexed by `LoggingService` — enables full-text search and analytics over centralized logs |
+| **Kibana** | Web UI for exploring/searching indexed logs and visualizing APM traces, service maps, and dependencies |
+| **Elastic APM (APM Server + .NET/Python agents)** | Distributed tracing across all microservices — HTTP/gRPC calls, SQL queries, Redis commands, and errors, all correlated into end-to-end traces |
+| **Selenium** | Test software |
+| **Playwright** | End-to-end UI tests (Playwright for .NET + NUnit) with traces for failed tests |
+| **k6 + InfluxDB + Grafana** | Load tests of the simulation engine with hard p95 thresholds; results visualized in a provisioned Grafana dashboard |
+| **xUnit + FsCheck + Bogus** | Fast domain unit tests — property-based testing (FsCheck) on realistic, reproducible generated data (Bogus) |
+| **Testcontainers + WebApplicationFactory** | API integration tests — services hosted in-process against real SQL Server and Redis started in Docker |
+| **XgBoost** | Machine learning library to predict match results |
+
+---
+
+## Testing Strategy
+
+SimPitch is tested on several levels — from fast, isolated domain checks up to full end-to-end UI flows:
+
+| Level | Tools | What is tested | Needs running stack |
+|---|---|---|---|
+| **Domain property-based tests** | xUnit, FsCheck, Bogus | Invariants of the simulation domain (`SeasonStats`, `TeamStrength`, all simulation strategies, the whole match simulation workflow) and EngineService mapping/paging — verified on hundreds of generated inputs per property | No (~1 s) |
+| **Unit tests** | xUnit, Moq, AutoFixture | Handlers, services and simulation models of each microservice | No |
+| **API integration tests** | xUnit, Testcontainers, WebApplicationFactory | SimulationService gRPC API and EngineService REST API end-to-end through the real database and cache: creating, stopping and paging simulations, iteration results and their caching, 404 contract for simulations being prepared | Docker only (~30 s) |
+| **gRPC contract tests** | xUnit, Grpc.AspNetCore TestServer, Moq | Client ↔ server contracts EngineService → SimulationService, EngineService → StatisticsService, SimulationService → StatisticsService: identical proto copies on both sides and real client/server mapping over gRPC (dates, GUIDs, optional fields, JSON payloads, NotFound) | No (~1 s) |
+| **Performance tests** | k6, InfluxDB, Grafana | Simulation engine under load: queue time, compute time per model and per iteration, API p95 latency while users browse; hard thresholds in `perf/performance-thresholds.json` | Yes |
+| **End-to-end UI tests** | Playwright (.NET), Selenium | User flows in the Vue frontend against the real backend (navigation, preparing/running simulations, results, heat map, league overviews) | Yes |
+
+How to run each level (unit, API with Testcontainers, gRPC contracts, ML, Playwright, Selenium, k6) is described in **[TESTING.md](TESTING.md)**.
+
+---
+
+## Core Features
+
+- Start and stop football match simulations with live progress tracking  
+- Process real football data to generate realistic simulations  
+- Store detailed iteration results for future analysis  
+- Generate advanced statistics, leaderboards, and reports from simulation data  
+- Reliable microservice communication ensuring flexibility and resilience  
+- Centralized logging and monitoring of all events and errors via **LoggerService**  
+- Asynchronous background workflows that do not block frontend interaction  
+- Multiple simulation modes with customizable parameters and configurations
+- **gRPC data chunking** for efficient large response handling  
+- **Memory optimization** in `SimulationService` for multi-iteration performance  
+- **Property-based domain tests** (FsCheck + Bogus) guarding the simulation math — every model and the whole simulation workflow are checked against invariants on hundreds of generated leagues and matches
+- **Full observability stack** — logs dual-written to MSSQL + Elasticsearch, searchable/visualized in **Kibana**, plus distributed tracing via **Elastic APM** across every microservice (HTTP, gRPC, SQL, Redis) with an end-to-end service dependency map
+
+---
+
 ## 📂 Project Ecosystem
 
 The SimPitch solution is modularized into three distinct repositories to ensure a clean separation of concerns between the simulation engine, the user interface, and the data contracts.
@@ -98,66 +158,6 @@ SimulationService is tested over gRPC, EngineService over REST with real gRPC ca
 dotnet test src/Services/SimulationService/tests/SimulationService.Tests --filter "FullyQualifiedName~ApiTests"
 dotnet test src/Services/EngineService/tests/EngineService.Tests --filter "FullyQualifiedName~ApiTests"
 ```
-
-## Tech Stack & Architecture
-
-The system is built with **modern, battle-tested technologies**, **DDD + Strategy Pattern** and **clean architectural patterns**:
-
-| Technology | Purpose |
-|-------------|----------|
-| **Docker** | Containerization for independent service deployment, easy scalability, and CI/CD integration |
-| **Kubernates** | Integration in future |
-| **NGINX** | Acts as a reverse proxy, load balancer, and traffic security layer |
-| **Vue.js + TypeScript** | Modern, fast, and responsive front-end framework for intuitive user experience |
-| **C# (.NET Core)** | Core backend with **CQRS** and **Clean Architecture** for clear separation of concerns |
-| **gRPC** | Fast, strongly-typed communication between microservices and central logging service |
-| **Redis** | Background job processing and asynchronous task execution (e.g., iterative simulations) |
-| **Microsoft SQL Server** | Persistent database for input data, results, and configurations |
-| **Elasticsearch** | Secondary log store indexed by `LoggingService` — enables full-text search and analytics over centralized logs |
-| **Kibana** | Web UI for exploring/searching indexed logs and visualizing APM traces, service maps, and dependencies |
-| **Elastic APM (APM Server + .NET/Python agents)** | Distributed tracing across all microservices — HTTP/gRPC calls, SQL queries, Redis commands, and errors, all correlated into end-to-end traces |
-| **Selenium** | Test software |
-| **Playwright** | End-to-end UI tests (Playwright for .NET + NUnit) with traces for failed tests |
-| **k6 + InfluxDB + Grafana** | Load tests of the simulation engine with hard p95 thresholds; results visualized in a provisioned Grafana dashboard |
-| **xUnit + FsCheck + Bogus** | Fast domain unit tests — property-based testing (FsCheck) on realistic, reproducible generated data (Bogus) |
-| **Testcontainers + WebApplicationFactory** | API integration tests — services hosted in-process against real SQL Server and Redis started in Docker |
-| **XgBoost** | Machine learning library to predict match results |
-
----
-
-## Testing Strategy
-
-SimPitch is tested on several levels — from fast, isolated domain checks up to full end-to-end UI flows:
-
-| Level | Tools | What is tested | Needs running stack |
-|---|---|---|---|
-| **Domain property-based tests** | xUnit, FsCheck, Bogus | Invariants of the simulation domain (`SeasonStats`, `TeamStrength`, all simulation strategies, the whole match simulation workflow) and EngineService mapping/paging — verified on hundreds of generated inputs per property | No (~1 s) |
-| **Unit tests** | xUnit, Moq, AutoFixture | Handlers, services and simulation models of each microservice | No |
-| **API integration tests** | xUnit, Testcontainers, WebApplicationFactory | SimulationService gRPC API and EngineService REST API end-to-end through the real database and cache: creating, stopping and paging simulations, iteration results and their caching, 404 contract for simulations being prepared | Docker only (~30 s) |
-| **gRPC contract tests** | xUnit, Grpc.AspNetCore TestServer, Moq | Client ↔ server contracts EngineService → SimulationService, EngineService → StatisticsService, SimulationService → StatisticsService: identical proto copies on both sides and real client/server mapping over gRPC (dates, GUIDs, optional fields, JSON payloads, NotFound) | No (~1 s) |
-| **Performance tests** | k6, InfluxDB, Grafana | Simulation engine under load: queue time, compute time per model and per iteration, API p95 latency while users browse; hard thresholds in `perf/performance-thresholds.json` | Yes |
-| **End-to-end UI tests** | Playwright (.NET), Selenium | User flows in the Vue frontend against the real backend (navigation, preparing/running simulations, results, heat map, league overviews) | Yes |
-
-How to run each level (unit, API with Testcontainers, gRPC contracts, ML, Playwright, Selenium, k6) is described in **[TESTING.md](TESTING.md)**.
-
----
-
-## Core Features
-
-- Start and stop football match simulations with live progress tracking  
-- Process real football data to generate realistic simulations  
-- Store detailed iteration results for future analysis  
-- Generate advanced statistics, leaderboards, and reports from simulation data  
-- Reliable microservice communication ensuring flexibility and resilience  
-- Centralized logging and monitoring of all events and errors via **LoggerService**  
-- Asynchronous background workflows that do not block frontend interaction  
-- Multiple simulation modes with customizable parameters and configurations
-- **gRPC data chunking** for efficient large response handling  
-- **Memory optimization** in `SimulationService` for multi-iteration performance  
-- **Property-based domain tests** (FsCheck + Bogus) guarding the simulation math — every model and the whole simulation workflow are checked against invariants on hundreds of generated leagues and matches
-- **Full observability stack** — logs dual-written to MSSQL + Elasticsearch, searchable/visualized in **Kibana**, plus distributed tracing via **Elastic APM** across every microservice (HTTP, gRPC, SQL, Redis) with an end-to-end service dependency map
-
----
 
 ## Microservices Overview
 
